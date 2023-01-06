@@ -1,0 +1,94 @@
+/su（权限：Superuser，{超管|superuser|admin}）
+	/su {ban|封禁} <{QQ|@QQ}>
+	/su {pardon|解封} <{QQ|@QQ}>
+	/su {upload_log|上传日志}
+	/su {plugins|插件管理}
+		/su {plugins|插件管理} {enable|启用} <plugin>
+		/su {plugins|插件管理} {disable|禁用} <plugin>
+		/su {plugins|插件管理} {remove|删除} <plugin>
+	/su {restart|重新启动}
+	/su {call|调用} <api>[\n]<data  (json)>
+	/su {img|图库}
+		/su {img|图库} {add|添加}[\n]<Image>
+		/su {img|图库} {remove|删除} <id>
+		/su {img|图库} {list|列出所有}
+		/su {img|图库} {clear|清空}
+		/su {img|图库} {review|审核库|re}
+			/su {img|图库} {review|审核库|re} {passAll|通过全部} [<group=2>]
+			/su {img|图库} {review|审核库|re} {pass|通过|y} <id> [<group=2>]
+			/su {img|图库} {review|审核库|re} {remove|删除|n} <id>
+			/su {img|图库} {review|审核库|re} {removeAll|全部删除}
+			/su {img|图库} {review|审核库|re} {list|列出所有}
+	/su config
+		/su config set <file> <key>[\n]<value>
+		/su config get <file> <key>
+	/su {ct|发言排名} {clear|清除数据}
+	/su {echo|调试输出} <text>
+	/su {cave|回声洞} {remove|删除} <ID>
+	/su {notice|超级广播} <text>
+	/su {shop|道具商城}
+		/su {shop|道具商城} {set|设置价格} <ID> <价格>
+		/su {shop|道具商城} {add|添加商品} <物品ID> <价格> <数量> [<补货类型=0（0：禁用，1：每天，2：每周）>  <nbt>]
+		/su {shop|道具商城} {remove|下架商品} <ID>
+	/su {gift|礼包}
+		/su {gift|礼包} {create|创建} <礼包码> [<过期时间>]
+		/su {gift|礼包} {add|添加物品} <礼包码> <物品ID> <数量> [<NBT>]
+		/su {gift|礼包} {remove|删除物品} <礼包码> <礼包物品ID>
+		/su {gift|礼包} {list|获取全部物品} <礼包码>
+		/su {gift|礼包} {submit|提交} <礼包码>
+		/su {gift|礼包} {close|关闭} <礼包码>
+		/su {gift|礼包} {all|获取活动礼包} <礼包码>
+
+#/jrrp（权限：ALL，{今日人品}）
+#	/jrrp {@qq|qq}
+#	/jrrp {rank|每日排行}
+
+/ct（权限：ALL，{发言排名}）
+	/ct {data|查询数据} [<QQ|@QQ>]
+
+/cave（权限：ALL，{回声洞}）
+	/cave {add|添加|-a} <内容>
+	/cave {-g|查询} <ID>
+
+/code（权限：ALL，{运行代码}）
+	/code <语言> [<-i STDIN>][\n]<code>
+
+/sign（权限：ALL，{签到}）
+	/sign {rank|签到排行榜}
+
+/help（权限：ALL，{指令帮助|man}）
+	/help <command>
+
+/menu（权限：ALL，{菜单}）
+	/menu <分类>
+
+/messenger（权限：ALL，{信使|msg|信鸽}）
+	/messenger <收件人>[\n]<内容>
+
+/shop（权限：ALL，{道具商城}）
+	/shop {view|查看} <ID>
+	/shop {buy|购买} <ID> [<数量=1>]
+	/shop {sell|卖出} <背包物品ID> <标价> [<数量=1>] 
+
+/bag（权限：ALL，{背包}）
+	/bag <view|查看> <背包物品ID>
+	/bag <drop|丢弃> <背包物品ID>
+
+/gift（权限：ALL，{礼包码}）
+	/gift <礼包码>
+	/gift <view|查看> <礼包码>
+
+/guess（权限：ALL，{猜数字|gn}）
+	/guess {start|开始}
+	/guess <NUM>
+	/guess {rank|排名}
+
+/hijack（权限：ALL，{抢劫}）
+	/hijack {QQ|@QQ}
+
+/use（权限：ALL，{使用item}）
+	/use <背包物品id> [<数量=1>]
+
+/report（权限：ALL，{反馈}，重定向至github）
+
+/status（权限：ALL，{系统状态}）

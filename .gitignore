@@ -1,0 +1,9 @@
+logsndatanconfig.*nvenvnnode_modules
+venv
+.env
+.mypy_cache
+__pycache__
+.env.*
+data/
+Dockerfile
+docker-compose.yml
