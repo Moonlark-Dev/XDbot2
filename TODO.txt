@@ -62,8 +62,8 @@
 /menu（权限：ALL，{菜单}）
 	/menu <分类>
 
-/messenger（权限：ALL，{信使|msg|信鸽}）
-	/messenger <收件人>[\n]<内容>
+#/messenger（权限：ALL，{信使|msg|信鸽}）
+#	/messenger <收件人>[\n]<内容>
 
 /shop（权限：ALL，{道具商城}）
 	/shop {view|查看} <ID>

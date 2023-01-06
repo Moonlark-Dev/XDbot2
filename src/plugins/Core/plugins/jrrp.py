@@ -4,12 +4,12 @@ from nonebot.adapters.onebot.v11.event import GroupMessageEvent
 from nonebot.log import logger
 from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot import on_command
-from nonebot.adapters.onebot.v11.message import MessageSegment
 import random
 import traceback
 import json
 
 jrrp = on_command("jrrp")
+controlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 
 
 async def getJrrp(qq: str):
@@ -101,7 +101,7 @@ async def jrrp_handle(
         try:
             text += f"\n{myRank}. {(await bot.get_stranger_info(user_id=qq))['nickname']}"
         except Exception:
-            await jrrp.send(traceback.format_exc())
+            await bot.send_group_msg(traceback.format_exc(), group_id=controlGroup)
         await jrrp.finish(text)
     else:
         argument = argument.replace("[CQ:at,qq=", "").replace("]", "")
