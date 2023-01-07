@@ -91,4 +91,4 @@
 
 /report（权限：ALL，{反馈}，重定向至github）
 
-/status（权限：ALL，{系统状态}）
+#/status（权限：ALL，{系统状态}）

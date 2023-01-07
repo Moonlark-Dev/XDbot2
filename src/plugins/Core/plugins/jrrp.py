@@ -1,7 +1,6 @@
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.params import CommandArg
 from nonebot.adapters.onebot.v11.event import GroupMessageEvent
-from nonebot.log import logger
 from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot import on_command
 import random
@@ -9,7 +8,7 @@ import traceback
 import json
 
 jrrp = on_command("jrrp")
-controlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
+ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 
 
 async def getJrrp(qq: str):
@@ -55,57 +54,68 @@ async def jrrp_handle(
         bot: Bot,
         event: GroupMessageEvent,
         message: Message = CommandArg()):
-    logger.debug(message)
-    argument = message.extract_plain_text()
-    if argument == "":
-        await jrrp.finish(f"你今天的人品值是：{await getJrrp(event.get_user_id())}", at_sender=True)
-    elif argument == "rank" or argument == "今日排名":
-        userList = await bot.get_group_member_list(
-            group_id=event.get_session_id().split("_")[1])
-        # 计算排名
-        jrrpRank = []
-        for user in userList:
-            random.seed(int(user["user_id"]))
-            luck = random.randint(0, 100)
-            inserted = False
+    try:
+        argument = message.extract_plain_text()
+        if argument == "":
+            await jrrp.finish(f"你今天的人品值是：{await getJrrp(event.get_user_id())}", at_sender=True)
+        elif argument == "rank" or argument == "今日排名":
+            userList = await bot.get_group_member_list(
+                group_id=event.get_session_id().split("_")[1])
+            # 计算排名
+            jrrpRank = []
+            for user in userList:
+                random.seed(int(user["user_id"]))
+                luck = random.randint(0, 100)
+                inserted = False
+                length = 0
+                for r in jrrpRank:
+                    if r["jrrp"] < luck:
+                        jrrpRank.insert(
+                            length, 
+                            {
+                                "username": user["nickname"],
+                                "user_id": user["user_id"],
+                                "jrrp": luck
+                            }
+                        )
+                        inserted = True
+                        break
+                    length += 1
+                if not inserted:
+                    jrrpRank += [{"username": user["nickname"],
+                        "user_id": user["user_id"], "jrrp": luck}]
+            # 生成rank
+            nowRank = 0
             length = 0
+            myRank = None
+            qq = event.get_user_id()
+            temp0 = 114514
             for r in jrrpRank:
-                if r["jrrp"] < luck:
-                    jrrpRank.insert(length, {"username": user["nickname"], "user_id": user["user_id"], "jrrp": luck})
-                    inserted = True
-                    break
+                if r["jrrp"] != temp0:
+                    nowRank += 1
+                    temp0 = r["jrrp"]
+                jrrpRank[length]["rank"] = nowRank
+                # 检查是不是自己
+                if str(r["user_id"]) == qq:
+                    myRank = nowRank
+                # 增加length
                 length += 1
-            if not inserted:
-                jrrpRank += [{"username": user["nickname"], "user_id": user["user_id"], "jrrp": luck}]
-        # 生成rank
-        nowRank = 0
-        length = 0
-        myRank = None
-        qq = event.get_user_id()
-        temp0 = 114514
-        for r in jrrpRank:
-            if r["jrrp"] != temp0:
-                nowRank += 1
-                temp0 = r["jrrp"]
-            jrrpRank[length]["rank"] = nowRank
-            # 检查是不是自己
-            if str(r["user_id"]) == qq:
-                myRank = nowRank
-            # 增加length
-            length += 1
-        # 生成文本
-        text = "今日人品群排名：\n"
-        for user in jrrpRank[:15]:
-            text += f"{user['rank']}. {user['username']}: {user['jrrp']}\n"
-        text += "-"*20
-        try:
+            # 生成文本
+            text = "今日人品群排名：\n"
+            for user in jrrpRank[:15]:
+                text += f"{user['rank']}. {user['username']}\n"
+            text += "-" * 20
             text += f"\n{myRank}. {(await bot.get_stranger_info(user_id=qq))['nickname']}"
-        except Exception:
-            await bot.send_group_msg(traceback.format_exc(), group_id=controlGroup)
-        await jrrp.finish(text)
-    else:
-        argument = argument.replace("[CQ:at,qq=", "").replace("]", "")
-        await jrrp.finish(f"{argument}今天的人品值是：{await getJrrp(argument)}")
+            await jrrp.finish(text)
+        else:
+            await jrrp.finish(f"{argument}今天的人品值是：{await getJrrp(argument)}")
+    except Exception as e:
+        await bot.send_group_msg(
+            message=traceback.format_exc(),
+            group_id=ctrlGroup
+        )
+        await jrrp.finish(f"处理失败：{e}")
+
 
 
 

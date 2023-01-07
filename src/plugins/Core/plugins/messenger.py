@@ -5,8 +5,6 @@ from nonebot.log import logger
 from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot import on_message
 from nonebot import on_command
-from nonebot.adapters.onebot.v11.message import MessageSegment
-import random
 import traceback
 import json
 
@@ -22,7 +20,10 @@ async def messenger_handle(
         message: Message = CommandArg()):
     try:
         logger.debug(message)
-        data = json.load(open("data/messenger.messageList.json", encoding="utf-8"))
+        data = json.load(
+            open(
+                "data/messenger.messageList.json",
+                encoding="utf-8"))
         argument = message.extract_plain_text()
         # 处理信息
         if argument == "":
@@ -36,24 +37,34 @@ async def messenger_handle(
                 "text": text,
                 "sender": sender
             }]
-            json.dump(data, open("data/messenger.messageList.json", "w", encoding="utf-8"))
+            json.dump(
+                data,
+                open(
+                    "data/messenger.messageList.json",
+                    "w",
+                    encoding="utf-8"))
             await bot.send_group_msg(message=(
-                    "信鸽：新任务\n"
-                    f"RECV: {qq}\nSENDER: {sender['user_id']}\nTEXT: {text}"
-                ), group_id=ctrlGroup)
+                "[信鸽]: 新任务\n"
+                f"RECV: {qq}\nSENDER: {sender['user_id']}\nTEXT: {text}"
+            ), group_id=ctrlGroup)
             await messenger.finish("已添加到信鸽队列", at_sender=True)
-    except:
-        err = traceback.format_exc()
-        logger.error(err)
-        await bot.send_group_msg(message=err, group_id=ctrlGroup)
-        
+    except Exception as e:
+        await bot.send_group_msg(
+            message=traceback.format_exc(),
+            group_id=ctrlGroup
+        )
+        await messenger.finish(f"处理失败：{e}")
+
 
 @msg_sender.handle()
 async def msg_sender_handle(
         bot: Bot,
         event: GroupMessageEvent):
     try:
-        data = json.load(open("data/messenger.messageList.json", encoding="utf-8"))
+        data = json.load(
+            open(
+                "data/messenger.messageList.json",
+                encoding="utf-8"))
         length = 0
         for msg in data:
             if msg["recv"] == event.get_user_id():
@@ -63,14 +74,14 @@ async def msg_sender_handle(
                 )
                 data.pop(length)
             length += 1
-        json.dump(data, open("data/messenger.messageList.json", "w", encoding="utf-8"))
-    except:
-        err = traceback.format_exc()
-        logger.error(err)
-        await bot.send_group_msg(message=err, group_id=ctrlGroup)
-
-        
-
-
-
-    
+        json.dump(
+            data,
+            open(
+                "data/messenger.messageList.json",
+                "w",
+                encoding="utf-8"))
+    except BaseException:
+        await bot.send_group_msg(
+            message=traceback.format_exc(),
+            group_id=ctrlGroup
+        )
