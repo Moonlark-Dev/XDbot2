@@ -6,6 +6,7 @@ from nonebot import on_command
 import random
 import traceback
 import json
+import time
 
 jrrp = on_command("jrrp")
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
@@ -20,7 +21,7 @@ async def getJrrp(qq: str):
             "管理团队不承担任何由人品计算结果产生的后果！"), at_sender=True)
         data[qq] = {"max": 0}
     # 计算人品值
-    random.seed(int(qq))
+    random.seed(int(qq) + int(time.time() / 86400))
     luck = random.randint(0, 100)
     if luck > data[qq]["max"]:
         await jrrp.send(Message(f"[CQ:at,qq={qq}] 个人最高记录已刷新！"))
@@ -64,14 +65,14 @@ async def jrrp_handle(
             # 计算排名
             jrrpRank = []
             for user in userList:
-                random.seed(int(user["user_id"]))
+                random.seed(int(user["user_id"]) + int(time.time() / 86400))
                 luck = random.randint(0, 100)
                 inserted = False
                 length = 0
                 for r in jrrpRank:
                     if r["jrrp"] < luck:
                         jrrpRank.insert(
-                            length, 
+                            length,
                             {
                                 "username": user["nickname"],
                                 "user_id": user["user_id"],
@@ -83,7 +84,7 @@ async def jrrp_handle(
                     length += 1
                 if not inserted:
                     jrrpRank += [{"username": user["nickname"],
-                        "user_id": user["user_id"], "jrrp": luck}]
+                                  "user_id": user["user_id"], "jrrp": luck}]
             # 生成rank
             nowRank = 0
             length = 0
@@ -115,9 +116,3 @@ async def jrrp_handle(
             group_id=ctrlGroup
         )
         await jrrp.finish(f"处理失败：{e}")
-
-
-
-
-
-    
