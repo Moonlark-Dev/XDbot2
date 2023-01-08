@@ -1,13 +1,13 @@
 /su（权限：Superuser，{超管|superuser|admin}）
-	/su {ban|封禁} <{QQ|@QQ}>
-	/su {pardon|解封} <{QQ|@QQ}>
+#	/su {ban|封禁} <{QQ|@QQ}>
+#	/su {pardon|解封} <{QQ|@QQ}>
 	/su {upload_log|上传日志}
-	/su {plugins|插件管理}
-		/su {plugins|插件管理} {enable|启用} <plugin>
-		/su {plugins|插件管理} {disable|禁用} <plugin>
-		/su {plugins|插件管理} {remove|删除} <plugin>
-	/su {restart|重新启动}
-	/su {call|调用} <api>[\n]<data  (json)>
+#	/su {plugins|插件管理}
+#		/su {plugins|插件管理} {enable|启用} <plugin>
+#		/su {plugins|插件管理} {disable|禁用} <plugin>
+-		/su {plugins|插件管理} {remove|删除} <plugin>
+#	/su {restart|重新启动}
+#	/su {call|调用} <api>[\n]<data  (json)>
 	/su {img|图库}
 		/su {img|图库} {add|添加}[\n]<Image>
 		/su {img|图库} {remove|删除} <id>
@@ -19,13 +19,13 @@
 			/su {img|图库} {review|审核库|re} {remove|删除|n} <id>
 			/su {img|图库} {review|审核库|re} {removeAll|全部删除}
 			/su {img|图库} {review|审核库|re} {list|列出所有}
-	/su config
-		/su config set <file> <key>[\n]<value>
-		/su config get <file> <key>
-	/su {ct|发言排名} {clear|清除数据}
-	/su {echo|调试输出} <text>
+#	/su config
+#		/su config set <file> <key>[\n]<value>
+#		/su config get <file> <key>
+#	/su {ct|发言排名} {clear|清除数据}
+#	/su {echo|调试输出} <text>
 	/su {cave|回声洞} {remove|删除} <ID>
-	/su {notice|超级广播} <text>
+#	/su {notice|超级广播} <text>
 	/su {shop|道具商城}
 		/su {shop|道具商城} {set|设置价格} <ID> <价格>
 		/su {shop|道具商城} {add|添加商品} <物品ID> <价格> <数量> [<补货类型=0（0：禁用，1：每天，2：每周）>  <nbt>]

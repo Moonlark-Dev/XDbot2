@@ -13,6 +13,10 @@ try:
     disablePlugins = global_config.disabled
 except BaseException:
     disablePlugins = []
+try:
+    disablePlugins += json.load(open("data/init.disabled.json"))
+except BaseException:
+    pass
 
 # 初始化
 # XDbot2 版本 1.0.0
@@ -59,6 +63,9 @@ json.dump(
         "version": config.VERSION,
         "plugins": loadedPlugins,
         "time": time.time(),
+        "config": {
+            "command_start": list(global_config.command_start)
+        },
         "control": config.CONTROL_GROUP
     },
     open("data/init.json", "w", encoding="utf-8")

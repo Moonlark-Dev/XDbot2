@@ -30,6 +30,14 @@ class Config(BaseSettings):
         {
             "path": "data/ct.globalData.json",
             "text": "{}"
+        },
+        {
+            "path": "data/su.blackList.json",
+            "text": '[]'
+        },
+        {
+            "path": "data/init.disabled.json",
+            "text": "[]"
         }
     ]
 

@@ -14,6 +14,7 @@ import math
 ct = on_command("ct", aliases={"发言排名"})
 ctRecorder = on_message()
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
+globalConfig = json.load(open("data/init.json", encoding="utf-8"))["config"]
 
 
 @ct.handle()
@@ -57,10 +58,14 @@ async def ctHandle(
             myQQ = event.get_user_id()
             myCount = "暂无数据"
             nowCount = math.inf
+            temp0 = 1
             for user in users:
                 if user["count"] < nowCount:
                     nowCount = user["count"]
-                    nowRank += 1
+                    nowRank += temp0
+                    temp0 = 1
+                else:
+                    temp0 += 1
                 users[length]["rank"] = nowRank
                 # 判断是不是自己
                 if user['user'] == myQQ:
@@ -109,10 +114,14 @@ async def ctHandle(
             myQQ = event.get_user_id()
             myCount = "暂无数据"
             nowCount = math.inf
+            temp0 = 1
             for user in users:
                 if user["count"] < nowCount:
                     nowCount = user["count"]
-                    nowRank += 1
+                    nowRank += temp0
+                    temp0 = 1
+                else:
+                    temp0 += 1
                 users[length]["rank"] = nowRank
                 # 判断是不是自己
                 if user['user'] == myQQ:
@@ -132,7 +141,7 @@ async def ctHandle(
             await ct.finish("""Usage：ct [group]""")
 
     except FinishedException:
-        pass
+        raise FinishedException()
     except Exception:
         await bot.send_group_msg(
             message=traceback.format_exc(),
@@ -145,6 +154,10 @@ async def ctRecorderHandle(
         bot: Bot,
         event: GroupMessageEvent):
     try:
+        # 忽略命令
+        for start in globalConfig["command_start"]:
+            if event.get_plaintext().startswith(start):
+                return 
         # 获取数据
         globalData = json.load(open("data/ct.globalData.json"))
         group = event.get_session_id().split("_")[1]

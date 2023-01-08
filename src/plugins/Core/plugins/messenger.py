@@ -50,7 +50,7 @@ async def messengerHandle(
             await messenger.finish("已添加到信鸽队列", at_sender=True)
 
     except FinishedException:
-        pass
+        raise FinishedException()
     except Exception:
         await bot.send_group_msg(
             message=traceback.format_exc(),
@@ -70,7 +70,7 @@ async def msgSenderHandle(
         length = 0
         for msg in data:
             if msg["recv"] == event.get_user_id():
-                await msg_sender.send(
+                await msgSender.send(
                     f"\n发信：{msg['sender']['nickname']}({msg['sender']['user_id']})\n{msg['text']}",
                     at_sender=True
                 )

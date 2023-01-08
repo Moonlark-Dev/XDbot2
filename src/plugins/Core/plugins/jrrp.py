@@ -118,7 +118,7 @@ async def jrrpHandle(
             await jrrp.finish(f"{argument[0]}今天的人品值是：{await getJrrp(argument[0])}")
 
     except FinishedException:
-        pass
+        raise FinishedException()
     except Exception:
         await bot.send_group_msg(
             message=traceback.format_exc(),
