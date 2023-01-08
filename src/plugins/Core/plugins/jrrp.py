@@ -3,6 +3,7 @@ from nonebot.params import CommandArg
 from nonebot.adapters.onebot.v11.event import GroupMessageEvent
 from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot import on_command
+from nonebot.exception import FinishedException
 import random
 import traceback
 import json
@@ -51,15 +52,20 @@ async def getJrrp(qq: str):
 
 
 @jrrp.handle()
-async def jrrp_handle(
+async def jrrpHandle(
         bot: Bot,
         event: GroupMessageEvent,
         message: Message = CommandArg()):
     try:
-        argument = message.extract_plain_text()
-        if argument == "":
+        argument = message.extract_plain_text().split(" ")
+        if argument[0] == "":
             await jrrp.finish(f"你今天的人品值是：{await getJrrp(event.get_user_id())}", at_sender=True)
-        elif argument == "rank" or argument == "今日排名":
+        elif argument[0] == "rank" or argument[0] == "今日排名":
+            if argument.__len__() >= 2:
+                count = int(argument[1])
+            else:
+                count = 10
+            # 群成员列表
             userList = await bot.get_group_member_list(
                 group_id=event.get_session_id().split("_")[1])
             # 计算排名
@@ -103,16 +109,18 @@ async def jrrp_handle(
                 length += 1
             # 生成文本
             text = "今日人品群排名：\n"
-            for user in jrrpRank[:15]:
+            for user in jrrpRank[:count]:
                 text += f"{user['rank']}. {user['username']}\n"
             text += "-" * 20
             text += f"\n{myRank}. {(await bot.get_stranger_info(user_id=qq))['nickname']}"
             await jrrp.finish(text)
         else:
-            await jrrp.finish(f"{argument}今天的人品值是：{await getJrrp(argument)}")
-    except Exception as e:
+            await jrrp.finish(f"{argument[0]}今天的人品值是：{await getJrrp(argument[0])}")
+
+    except FinishedException:
+        pass
+    except Exception:
         await bot.send_group_msg(
             message=traceback.format_exc(),
-            group_id=ctrlGroup
-        )
-        await jrrp.finish(f"处理失败：{e}")
+            group_id=ctrlGroup)
+        await jrrp.finish("处理失败")

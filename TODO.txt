@@ -43,8 +43,8 @@
 #	/jrrp {@qq|qq}
 #	/jrrp {rank|每日排行}
 
-/ct（权限：ALL，{发言排名}）
-	/ct {data|查询数据} [<QQ|@QQ>]
+#/ct（权限：ALL，{发言排名}）
+#	/ct {data|查询数据} [<QQ|@QQ>]
 
 /cave（权限：ALL，{回声洞}）
 	/cave {add|添加|-a} <内容>

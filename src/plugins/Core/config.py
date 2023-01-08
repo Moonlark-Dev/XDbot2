@@ -26,6 +26,10 @@ class Config(BaseSettings):
         {
             "path": "data/ctrl.json",
             "text": json.dumps({"control": CONTROL_GROUP})
+        },
+        {
+            "path": "data/ct.globalData.json",
+            "text": "{}"
         }
     ]
 

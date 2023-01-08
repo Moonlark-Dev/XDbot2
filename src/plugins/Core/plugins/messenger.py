@@ -1,4 +1,5 @@
 from nonebot.adapters.onebot.v11 import Message
+from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
 from nonebot.adapters.onebot.v11.event import GroupMessageEvent
 from nonebot.log import logger
@@ -9,12 +10,12 @@ import traceback
 import json
 
 messenger = on_command("messenger", aliases={"msg", "信鸽"})
-msg_sender = on_message()
+msgSender = on_message()
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 
 
 @messenger.handle()
-async def messenger_handle(
+async def messengerHandle(
         bot: Bot,
         event: GroupMessageEvent,
         message: Message = CommandArg()):
@@ -37,27 +38,28 @@ async def messenger_handle(
                 "text": text,
                 "sender": sender
             }]
-            json.dump(
-                data,
-                open(
-                    "data/messenger.messageList.json",
-                    "w",
-                    encoding="utf-8"))
+            json.dump(data, open(
+                "data/messenger.messageList.json",
+                mode="w",
+                encoding="utf-8"
+            ))
             await bot.send_group_msg(message=(
                 "[信鸽]: 新任务\n"
                 f"RECV: {qq}\nSENDER: {sender['user_id']}\nTEXT: {text}"
             ), group_id=ctrlGroup)
             await messenger.finish("已添加到信鸽队列", at_sender=True)
-    except Exception as e:
+
+    except FinishedException:
+        pass
+    except Exception:
         await bot.send_group_msg(
             message=traceback.format_exc(),
-            group_id=ctrlGroup
-        )
-        await messenger.finish(f"处理失败：{e}")
+            group_id=ctrlGroup)
+        await messenger.finish("处理失败")
 
 
-@msg_sender.handle()
-async def msg_sender_handle(
+@msgSender.handle()
+async def msgSenderHandle(
         bot: Bot,
         event: GroupMessageEvent):
     try:
@@ -69,7 +71,7 @@ async def msg_sender_handle(
         for msg in data:
             if msg["recv"] == event.get_user_id():
                 await msg_sender.send(
-                    f"\n发件人：{msg['sender']['nickname']}（{msg['sender']['user_id']}）\n{msg['text']}",
+                    f"\n发信：{msg['sender']['nickname']}({msg['sender']['user_id']})\n{msg['text']}",
                     at_sender=True
                 )
                 data.pop(length)
@@ -80,7 +82,7 @@ async def msg_sender_handle(
                 "data/messenger.messageList.json",
                 "w",
                 encoding="utf-8"))
-    except BaseException:
+    except Exception:
         await bot.send_group_msg(
             message=traceback.format_exc(),
             group_id=ctrlGroup
