@@ -7,10 +7,11 @@ import traceback
 import os
 import time
 import json
-from nonebot.message import event_preprocessor 
+from . import _userCtrl
+from nonebot.message import event_preprocessor
 from nonebot.permission import SUPERUSER
 
-su = on_command("su", aliases={"超管", "superuser"}, permission = SUPERUSER)
+su = on_command("su", aliases={"超管", "superuser"}, permission=SUPERUSER)
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 blackListData = json.load(open("data/su.blackList.json"))
 
@@ -92,7 +93,10 @@ async def suHandle(
                     encoding="utf-8"
                 ))
         elif argument[0] == "plugins" or argument[0] == "插件管理":
-            config = json.load(open("data/init.disabled.json", encoding="utf-8"))
+            config = json.load(
+                open(
+                    "data/init.disabled.json",
+                    encoding="utf-8"))
             if argument[1] == "disable" or argument[1] == "禁用":
                 if argument[2] not in config:
                     config += [argument[2]]
@@ -102,10 +106,27 @@ async def suHandle(
                     if conf == argument[2]:
                         config.pop(length)
                         break
-            json.dump(config, open("data/init.disabled.json", "w", encoding="utf-8"))
+            json.dump(
+                config,
+                open(
+                    "data/init.disabled.json",
+                    "w",
+                    encoding="utf-8"))
         elif argument[0] == "restart" or argument[0] == "重新启动":
             with open("data/reboot.py", "w") as f:
                 f.write(str(time.time()))
+        elif argument[0] == "cave" or argument[0] == "回声洞":
+            if argument[1] == "remove" or argument[1] == "移除":
+                data = json.load(open("data/cave.data.json", encoding="utf-8"))
+                data['data'].pop(argument[2])
+                json.dump(
+                    data,
+                    open(
+                        "data/cave.data.json",
+                        "w",
+                        encoding="utf-8"))
+        elif argument[0] == "give" or argument[0] == "给予":
+            _userCtrl.addItem(argument[1], argument[2], int(argument[3]), json.loads(argument[4]))
         # 反馈
         await su.finish("完成")
 
@@ -116,6 +137,7 @@ async def suHandle(
             message=traceback.format_exc(),
             group_id=ctrlGroup)
         await su.finish("处理失败")
+
 
 @event_preprocessor
 async def blackListHandle(
@@ -131,4 +153,3 @@ async def blackListHandle(
         await bot.send_group_msg(
             message=traceback.format_exc(),
             group_id=ctrlGroup)
- 

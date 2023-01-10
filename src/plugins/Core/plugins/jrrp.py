@@ -61,6 +61,10 @@ async def jrrpHandle(
         if argument[0] == "":
             await jrrp.finish(f"你今天的人品值是：{await getJrrp(event.get_user_id())}", at_sender=True)
         elif argument[0] == "rank" or argument[0] == "今日排名":
+            # 限时开启
+            if time.localtime().tm_hour < 15:
+                await jrrp.finish("人品排名将在每天 15:00 准时开启")
+            # 开始计算
             if argument.__len__() >= 2:
                 count = int(argument[1])
             else:

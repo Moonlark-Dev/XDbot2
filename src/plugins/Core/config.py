@@ -3,7 +3,7 @@ import json
 
 
 class Config(BaseSettings):
-    # Your Config Here 
+    # Your Config Here
     # 版本常量
     VERSION = "1.0.0"
     # 控制中心
@@ -11,7 +11,8 @@ class Config(BaseSettings):
 
     # 初始化
     DIRECTORIES = [
-        "data"
+        "data",
+        "data/caveImages"
     ]
     # 数据文件命名规则：子插件.数据名.json
     FILES = [
@@ -38,6 +39,52 @@ class Config(BaseSettings):
         {
             "path": "data/init.disabled.json",
             "text": "[]"
+        },
+        {
+            "path": "data/cave.data.json",
+            "text": json.dumps({
+                "count": 0,
+                "data": dict()
+            })
+        },
+        {
+            "path": "data/etm.bag.json",
+            "text": "{}"
+        },
+        {
+            "path": "data/etm.items.json",
+            "text": json.dumps({
+                "0": {
+                    "name": "VimCoin",
+                    "info": "XDbot2 通用货币",
+                    "data": {
+                        "canDrop": False,
+                        "canSell": False
+                    }
+                },
+                "1": {
+                    "name": "FZSGBall",
+                    "info": "球你tm不女装我还不删了！（",
+                    "data": {}
+                },
+                "2": {
+                    "name": "每日VimCoin礼包",
+                    "info": "打开后可获得：\n1. VimCoin x0~50",
+                    "data": {}
+                }
+            })
+        },
+        {
+            "path": "data/sign.latestTime.json",
+            "text": "{}"
+        },
+        {
+            "path": "data/sign.signDay.json",
+            "text": "{}"
+        },
+        {
+            "path": "data/etm.userData.json",
+            "text": "{}"
         }
     ]
 

@@ -157,7 +157,7 @@ async def ctRecorderHandle(
         # 忽略命令
         for start in globalConfig["command_start"]:
             if event.get_plaintext().startswith(start):
-                return 
+                return
         # 获取数据
         globalData = json.load(open("data/ct.globalData.json"))
         group = event.get_session_id().split("_")[1]

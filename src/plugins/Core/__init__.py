@@ -7,6 +7,10 @@ import json
 import time
 
 # 获取配置
+try:
+    os.remove("data/etm.items.json")
+except Exception:
+    pass
 global_config = get_driver().config
 config = Config.parse_obj(global_config)
 try:
@@ -44,7 +48,8 @@ logger.debug(pluginList)
 
 # 导入插件（此导入方式不可调用）
 for plugin in pluginList:
-    if plugin.endswith(".py") and plugin not in disablePlugins:
+    if plugin.endswith(
+            ".py") and plugin not in disablePlugins and not plugin.startswith("_"):
         try:
             __import__(f"src.plugins.Core.plugins.{plugin[:-3]}")
         except Exception as e:
@@ -70,4 +75,3 @@ json.dump(
     },
     open("data/init.json", "w", encoding="utf-8")
 )
-
