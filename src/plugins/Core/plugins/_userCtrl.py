@@ -23,9 +23,9 @@ def addItem(userID: str, itemID: str, count: int, itemData: dict):
     users = json.load(open("data/etm.bag.json", encoding="utf-8"))
     if userID not in list(users.keys()):
         users[userID] = []
-    data = itemData.copy()
-    data.update(defaultItemData)
+    data = defaultItemData.copy()
     data.update(items[itemID]["data"])
+    data.update(itemData)
     length = 0
     for item in users[userID]:
         if item["id"] == itemID and item["data"] == data:

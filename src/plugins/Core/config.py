@@ -85,6 +85,10 @@ class Config(BaseSettings):
         {
             "path": "data/etm.userData.json",
             "text": "{}"
+        },
+        {
+            "path": "data/forward.groupList.json",
+            "text": "[]"
         }
     ]
 
