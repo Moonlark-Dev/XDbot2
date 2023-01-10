@@ -62,7 +62,7 @@ def removeItemsFromBag(userID: str, itemPos: int, count: int,
 
 def removeItemsByID(userID: str, itemID: str, itemCount: int,
                     removeType: str = "Use"):
-    userData = json.load(open("data/etm.bag.json", "w", encoding="utf-8"))
+    userData = json.load(open("data/etm.bag.json", encoding="utf-8"))
     if userID not in list(userData.keys()):
         userData[userID] = []
     count = itemCount
@@ -71,10 +71,12 @@ def removeItemsByID(userID: str, itemID: str, itemCount: int,
         if item["id"] == itemID and item["data"][f"can{removeType}"]:
             if item["count"] > count:
                 userData[userID][length]["count"] -= count
-                break
+                json.dump(userData, open("data/etm.bag.json", "w", encoding="utf-8"))
+                return True
             elif item["count"] == count:
                 userData[userID].pop(length)
-                break
+                json.dump(userData, open("data/etm.bag.json", "w", encoding="utf-8"))
+                return True
             else:
                 count -= userData[userID].pop(length)["count"]
     if count == 0:

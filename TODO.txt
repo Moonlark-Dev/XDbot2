@@ -65,10 +65,10 @@
 #/messenger（权限：ALL，{信使|msg|信鸽}）
 #	/messenger <收件人>[\n]<内容>
 
-/shop（权限：ALL，{道具商城}）
-	/shop {view|查看} <ID>
-	/shop {buy|购买} <ID> [<数量=1>]
-	/shop {sell|卖出} <背包物品ID> <标价> [<数量=1>] 
+#/shop（权限：ALL，{道具商城}）
+#	/shop {view|查看} <ID>
+#	/shop {buy|购买} <ID> [<数量=1>]
+#	/shop {sell|卖出} <背包物品ID> <标价> [<数量=1>] 
 
 #/bag（权限：ALL，{背包}）
 #	/bag <view|查看> <背包物品ID>

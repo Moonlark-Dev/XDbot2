@@ -89,6 +89,26 @@ class Config(BaseSettings):
         {
             "path": "data/forward.groupList.json",
             "text": "[]"
+        },
+        {
+            "path": "data/shop.items.json",
+            "text": json.dumps({
+                "0": {
+                    "name": "VimCoin",
+                    "count": 2,
+                    "price": 114,
+                    "seller": {
+                        "nickname": "StarWorld",
+                        "user_id": "2915495930"
+                    },
+                    "info": "XDbot2 通用货币",
+                    "item": {
+                        "id": "0",
+                        "count": None,
+                        "data": {}
+                    }
+                }
+            })
         }
     ]
 

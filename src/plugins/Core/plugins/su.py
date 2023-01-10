@@ -127,6 +127,36 @@ async def suHandle(
                         encoding="utf-8"))
         elif argument[0] == "give" or argument[0] == "给予":
             _userCtrl.addItem(argument[1], argument[2], int(argument[3]), json.loads(argument[4]))
+        elif argument[0] == "forward" or argument[0] == "消息转发":
+            data = json.load(open("data/forward.groupList.json", encoding="utf-8"))
+            if argument[1] == "add" or argument[1] == "添加群":
+                data += [argument[2]]
+            elif argument[1] == "remove" or argument[1] == "删除群":
+                length = 0
+                for group in data:
+                    if group == argument[2]:
+                        data.pop(length)
+                    else:
+                        length += 1
+            json.dump(data, open("data/forward.groupList.json", "w", encoding="utf-8"))
+        elif argument[0] == "shop" or argument[0] == "商店":
+            shopData = json.load(open("data/shop.items.json", encoding="utf-8"))
+            if argument[1] == "remove" or argument[1] == "下架商品":
+                item = shopData.pop(argument[2])
+                _userCtrl.addItem(str(item["seller"]["user_id"]), item["item"]["id"], item["count"], item["item"]["data"])
+                json.dump(shopData, open("data/shop.items.json", "w", encoding="utf-8"))
+                # 通知卖家
+                msgList = json.load(open("data/messenger.messageList.json", encoding="utf-8"))
+                msgList += [{
+                    "recv": str(item["seller"]["user_id"]),
+                    "text": f"您出售的商品「{item['name']}」已被超管下架\n您获得了：「{item['name']}」 x{item['count']}",
+                    "sender": {
+                        "nickname": "X-D-B-O-T",
+                        "user_id": 0
+                    }
+                }]
+                json.dump(msgList, open("data/messenger.messageList.json", "w", encoding="utf-8"))
+                
         # 反馈
         await su.finish("完成")
 
