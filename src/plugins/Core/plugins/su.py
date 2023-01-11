@@ -184,6 +184,20 @@ async def suHandle(
                         "data/messenger.messageList.json",
                         "w",
                         encoding="utf-8"))
+            elif argument[1] == "add" or argument[1] == "添加商品":
+                data = json.load(open("data/autosell.items.json", encoding="utf-8"))
+                data += {
+                    "id": argument[2],
+                    "count": int(argument[3]),
+                    "price": int(argument[4]),
+                    "info": None,
+                    "data": json.loads(argument[5])
+                }
+                json.dump(data, open("data/autosell.items.json", "w", encoding="utf-8"))
+        elif argument[0] == "todo" or argument[0] == "代办":
+            with open("TODO.txt", encoding="utf-8") as f:
+                await su.send(f.read())
+
 
         # 反馈
         await su.finish("完成")

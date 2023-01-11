@@ -32,7 +32,7 @@ async def reloadSell():
             if str(length) not in shopData.keys():
                 shopData[str(length)] = {
                     "name": items[item["id"]]["name"],
-                    "info": items[item["id"]]["info"],
+                    "info": f'{items[item["id"]]["info"]}\n下次补货时间：{time.strftime("%Y:%M:%d 00:00:00", time.localtime(time.time() + 86400))}',
                     "item": {
                         "id": item["id"],
                         "count": 1,
@@ -42,7 +42,7 @@ async def reloadSell():
                     "price": item["price"],
                     "from": "autosell",
                     "seller": {
-                        "nickname": "X-D-B-O-T",
+                        "nickname": "xxtg666",
                         "user_id": "1747433912"
                     }
                 }

@@ -93,38 +93,38 @@ class Config(BaseSettings):
         {
             "path": "data/shop.items.json",
             "text": json.dumps({
-                "0": {
-                    "name": "VimCoin",
-                    "count": 2,
-                    "price": 114,
-                    "seller": {
-                        "nickname": "StarWorld",
-                        "user_id": "2915495930"
-                    },
-                    "info": "XDbot2 通用货币",
-                    "item": {
-                        "id": "0",
-                        "count": None,
-                        "data": {}
-                    }
-                }
+                #"0": {
+                #    "name": "VimCoin",
+                #    "count": 2,
+                #    "price": 114,
+                #    "seller": {
+                #        "nickname": "StarWorld",
+                #        "user_id": "2915495930"
+                #    },
+                #    "info": "XDbot2 通用货币",
+                #    "item": {
+                #        "id": "0",
+                #        "count": None,
+                #        "data": {}
+                #    }
+                #}
             })
         },
         {
             "path": "data/autosell.items.json",
             "text": json.dumps([
-                {
-                    "id": "0",
-                    "count": 5,
-                    "price": 5,
-                    "data": {}
-                }
+                #{
+                #    "id": "0",
+                #    "count": 5,
+                #    "price": 5,
+                #    "data": {}
+                #}
             ])
         },
-        {
-            "path": "data/autosell.latest.json",
-            "text": "{\"mday\":0}"
-        }
+        #{
+        #    "path": "data/autosell.latest.json",
+        #    "text": "{\"mday\":0}"
+        #}
     ]
 
     class Config:
