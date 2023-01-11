@@ -9,6 +9,7 @@ from nonebot.params import CommandArg
 bag = on_command("bag", aliases={"背包"})
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 
+
 @bag.handle()
 async def bagHandle(
         bot: Bot,
@@ -40,14 +41,13 @@ async def bagHandle(
                 _userCtrl.removeItemsFromBag(
                     userID=event.get_user_id(),
                     itemPos=int(argument[1]),
-                    count=bagData[event.get_user_id()][int(argument[1])]["count"],
+                    count=bagData[event.get_user_id()][int(
+                        argument[1])]["count"],
                     removeType="Drop"
                 )
             except _userCtrl.ItemCanNotRemove:
                 await bag.finish("物品被标记为：无法丢弃")
             await bag.finish("完成")
-
-
 
     except FinishedException:
         raise FinishedException()

@@ -46,6 +46,6 @@ async def groupForwardHandle(
 
     except Exception:
         await bot.send_group_msg(
-                message=traceback.format_exc(),
-                group_id=ctrlGroup
-                )
+            message=traceback.format_exc(),
+            group_id=ctrlGroup
+        )

@@ -63,35 +63,46 @@ def removeItemsFromBag(userID: str, itemPos: int, count: int,
 def removeItemsByID(userID: str, itemID: str, itemCount: int,
                     removeType: str = "Use"):
     userData = json.load(open("data/etm.bag.json", encoding="utf-8"))
-    if userID not in list(userData.keys()):
+    if userID not in userData.keys():
         userData[userID] = []
     count = itemCount
     length = 0
-    for item in userData[userID]:
+    bag = userData[userID].copy()
+    for item in bag:
         if item["id"] == itemID and item["data"][f"can{removeType}"]:
             if item["count"] > count:
                 userData[userID][length]["count"] -= count
-                json.dump(userData, open("data/etm.bag.json", "w", encoding="utf-8"))
+                json.dump(
+                    userData,
+                    open(
+                        "data/etm.bag.json",
+                        "w",
+                        encoding="utf-8"))
                 return True
             elif item["count"] == count:
                 userData[userID].pop(length)
-                json.dump(userData, open("data/etm.bag.json", "w", encoding="utf-8"))
+                json.dump(
+                    userData,
+                    open(
+                        "data/etm.bag.json",
+                        "w",
+                        encoding="utf-8"))
                 return True
             else:
                 count -= userData[userID].pop(length)["count"]
-    if count == 0:
-        # 保存操作
-        json.dump(userData, open("data/etm.bag.json", encoding="utf-8"))
-        return True
-    else:
-        # 丢弃更改
-        return False
+                length -= 1
+            length += 1
+    # 丢弃更改
+    return False
 
 
 def useItem(userID: str, pos: int):
     userData = json.load(open("data/etm.bag.json", encoding="utf-8"))
     item = userData[userID][pos]
-    vipLevel = json.load(open("data/etm.userData.json", encoding="utf-8"))[userID]["vip"]["level"]
+    vipLevel = json.load(
+        open(
+            "data/etm.userData.json",
+            encoding="utf-8"))[userID]["vip"]["level"]
     removeItemsFromBag(userID, pos, 1)
     # 处理物品
     if item["id"] == "2":
@@ -109,7 +120,7 @@ def useItem(userID: str, pos: int):
             count *= 1 + (vipLevel / 75 * 2)
         addItem(userID, "0", int(count), dict())
         return f"你获得了：\n1. VimCoin x{int(count)}"
- 
+
     else:
         addItem(userID, item["id"], 1, item["data"])
         return "你在尝试着什么……"

@@ -36,19 +36,24 @@ async def shopHandle(
 +-------------------------+"""
             await shop.finish(Message(text))
         elif argument[0] == "buy" or argument[0] == "购买":
-            shopData = json.load(open("data/shop.items.json", encoding="utf-8"))
+            shopData = json.load(
+                open(
+                    "data/shop.items.json",
+                    encoding="utf-8"))
             itemData = shopData[argument[1]]
             try:
                 count = int(argument[2])
             except IndexError:
                 count = 1
             # 检查是否符合购买条件
-            if _userCtrl.getCountOfItem(event.get_user_id(), "0") < itemData["price"]:
-                await shop.finish("余额不足！", at_sender = True)
+            if _userCtrl.getCountOfItem(
+                    event.get_user_id(), "0") < itemData["price"]:
+                await shop.finish("余额不足！", at_sender=True)
             if "maxBuy" in list(itemData.keys()):
                 if "bought" in list(itemData.keys()):
                     if event.get_user_id() in list(itemData["bought"].keys()):
-                        if itemData["bought"][event.get_user_id()] >= itemData["maxBuy"]:
+                        if itemData["bought"][event.get_user_id()
+                                              ] >= itemData["maxBuy"]:
                             await shop.finish(f"商品被标记为：最多购买 {itemData['maxBuy']} 次", at_sender=True)
                         else:
                             itemData["bought"][event.get_user_id()] += 1
@@ -57,9 +62,19 @@ async def shopHandle(
             if count > itemData["count"]:
                 await shop.finish("库存不足！", at_sender=True)
             # 购买
-            if _userCtrl.removeItemsByID(event.get_user_id(), "0", itemData["price"] * count):
-                _userCtrl.addItem(event.get_user_id(), itemData["item"]["id"], count, itemData["item"])
-                _userCtrl.addItem(itemData["seller"]["user_id"], "0", itemData["price"] * count, {})
+            if _userCtrl.removeItemsByID(
+                    event.get_user_id(), "0", itemData["price"] * count):
+                _userCtrl.addItem(
+                    event.get_user_id(),
+                    itemData["item"]["id"],
+                    count,
+                    itemData["item"])
+                _userCtrl.addItem(
+                    itemData["seller"]["user_id"],
+                    "0",
+                    itemData["price"] *
+                    count,
+                    {})
                 _userCtrl.addExp(event.get_user_id(), int(count / 2))
                 # 修改商店数据
                 if count == itemData["count"]:
@@ -67,10 +82,15 @@ async def shopHandle(
                 else:
                     shopData[argument[1]]["count"] -= count
                 # 保存数据
-                json.dump(shopData, open("data/shop.items.json", "w", encoding="utf-8"))
+                json.dump(
+                    shopData,
+                    open(
+                        "data/shop.items.json",
+                        "w",
+                        encoding="utf-8"))
                 await shop.finish("购买成功！", at_sender=True)
             else:
-                await shop.finish("余额不足！", at_sender = True)
+                await shop.finish("余额不足！", at_sender=True)
 
         elif argument[0] == "sell" or argument[0] == "卖出":
             bagData = json.load(open("data/etm.bag.json", encoding="utf-8"))
@@ -96,7 +116,10 @@ async def shopHandle(
                 "item": item,
                 "seller": await bot.get_stranger_info(user_id=event.get_user_id())
             }
-            shopData = json.load(open("data/shop.items.json", encoding="utf-8"))
+            shopData = json.load(
+                open(
+                    "data/shop.items.json",
+                    encoding="utf-8"))
             itemIDs = shopData.keys()
             length = 0
             while True:
@@ -104,12 +127,16 @@ async def shopHandle(
                     shopData[str(length)] = itemData
                     break
                 length += 1
-            json.dump(shopData, open("data/shop.items.json", "w", encoding="utf-8"))
+            json.dump(
+                shopData,
+                open(
+                    "data/shop.items.json",
+                    "w",
+                    encoding="utf-8"))
             await bot.send_group_msg(
                 message=f"「道具商店新上架（#{length}）」\n{itemData}",
                 group_id=ctrlGroup)
             await shop.finish(f"上架成功，ID：#{length}", at_sender=True)
-
 
     except FinishedException:
         raise FinishedException()
@@ -119,4 +146,3 @@ async def shopHandle(
             group_id=ctrlGroup
         )
         await shop.finish("处理失败")
-    

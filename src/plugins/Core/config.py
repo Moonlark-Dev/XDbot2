@@ -109,6 +109,21 @@ class Config(BaseSettings):
                     }
                 }
             })
+        },
+        {
+            "path": "data/autosell.items.json",
+            "text": json.dumps([
+                {
+                    "id": "0",
+                    "count": 5,
+                    "price": 5,
+                    "data": {}
+                }
+            ])
+        },
+        {
+            "path": "data/autosell.latest.json",
+            "text": "{\"mday\":0}"
         }
     ]
 
