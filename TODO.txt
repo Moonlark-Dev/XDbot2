@@ -26,10 +26,10 @@
 #	/su {echo|调试输出} <text>
 #	/su {cave|回声洞} {remove|删除} <ID>
 #	/su {notice|超级广播} <text>
-	/su {shop|道具商城}
-		/su {shop|道具商城} {set|设置价格} <ID> <价格>
-		/su {shop|道具商城} {add|添加商品} <物品ID> <价格> <数量> [<补货类型=0（0：禁用，1：每天，2：每周）>  <nbt>]
-		/su {shop|道具商城} {remove|下架商品} <ID>
+#	/su {shop|道具商城}
+-		/su {shop|道具商城} {set|设置价格} <ID> <价格>
+#		/su {shop|道具商城} {add|添加商品} <物品ID> <价格> <数量> [<补货类型=0（0：禁用，1：每天，2：每周）>  <nbt>]
+#		/su {shop|道具商城} {remove|下架商品} <ID>
 	/su {gift|礼包}
 		/su {gift|礼包} {create|创建} <礼包码> [<过期时间>]
 		/su {gift|礼包} {add|添加物品} <礼包码> <物品ID> <数量> [<NBT>]

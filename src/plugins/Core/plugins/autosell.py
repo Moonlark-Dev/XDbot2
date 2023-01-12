@@ -1,7 +1,7 @@
 from nonebot_plugin_apscheduler import scheduler
 from nonebot import require
 import json
-import asyncio
+from nonebot.log import logger
 import time
 # import threading
 
@@ -9,7 +9,6 @@ latestReload = json.load(open("data/autosell.latest.json", encoding="utf-8"))
 
 
 async def reloadSell():
-    # print(114514)
     shopData = json.load(
         open(
             "data/shop.items.json",
@@ -32,7 +31,7 @@ async def reloadSell():
             if str(length) not in shopData.keys():
                 shopData[str(length)] = {
                     "name": items[item["id"]]["name"],
-                    "info": f'{items[item["id"]]["info"]}\n下次补货时间：{time.strftime("%Y:%M:%d 00:00:00", time.localtime(time.time() + 86400))}',
+                    "info": items[item["id"]]["info"],
                     "item": {
                         "id": item["id"],
                         "count": 1,
@@ -60,14 +59,11 @@ async def reloadSell():
 require("nonebot_plugin_apscheduler")
 
 
-"""
-@scheduler.scheduled_job("cron", minute="*/1", id="awa")
-async def run_every_2_hour():
-    await reloadSell()
-"""
-
-scheduler.add_job(reloadSell, "interval", days=1, id="reloadAutoSellItems")
-
-
-# asyncio.create_task(reloadSell())
-#threading.Thread(None, reloadSell).start()
+@scheduler.scheduled_job("cron", hour="*/1", id="reloadSell")
+async def checkReloaded():
+    latest = json.load(open("data/autosell.latest.json", encoding="utf-8"))
+    if latest["mday"] != time.localtime().tm_mday:
+        logger.info("正在刷新商城货架")
+        await reloadSell()
+        latest["mday"] = time.localtime().tm_mday
+        json.dump(latest, open("data/autosell.latest.json", "w", encoding="utf-8"))

@@ -157,33 +157,46 @@ async def suHandle(
                     encoding="utf-8"))
             if argument[1] == "remove" or argument[1] == "下架商品":
                 item = shopData.pop(argument[2])
-                _userCtrl.addItem(str(
-                    item["seller"]["user_id"]), item["item"]["id"], item["count"], item["item"]["data"])
-                json.dump(
-                    shopData,
-                    open(
-                        "data/shop.items.json",
-                        "w",
-                        encoding="utf-8"))
-                # 通知卖家
-                msgList = json.load(
-                    open(
-                        "data/messenger.messageList.json",
-                        encoding="utf-8"))
-                msgList += [{
-                    "recv": str(item["seller"]["user_id"]),
-                    "text": f"您出售的商品「{item['name']}」已被超管下架\n您获得了：「{item['name']}」 x{item['count']}",
-                    "sender": {
-                        "nickname": "X-D-B-O-T",
-                        "user_id": 0
-                    }
-                }]
-                json.dump(
-                    msgList,
-                    open(
-                        "data/messenger.messageList.json",
-                        "w",
-                        encoding="utf-8"))
+                if "from" not in item.keys():
+                    # 用户出售商品
+                    _userCtrl.addItem(str(
+                        item["seller"]["user_id"]), item["item"]["id"], item["count"], item["item"]["data"])
+                    json.dump(
+                        shopData,
+                        open(
+                            "data/shop.items.json",
+                            "w",
+                            encoding="utf-8"))
+                    # 通知卖家
+                    msgList = json.load(
+                        open(
+                            "data/messenger.messageList.json",
+                            encoding="utf-8"))
+                    msgList += [{
+                        "recv": str(item["seller"]["user_id"]),
+                        "text": f"您出售的商品「{item['name']}」已被超管下架\n您获得了：「{item['name']}」 x{item['count']}",
+                        "sender": {
+                            "nickname": "X-D-B-O-T",
+                            "user_id": 0
+                        }
+                    }]
+                    json.dump(
+                        msgList,
+                        open(
+                            "data/messenger.messageList.json",
+                            "w",
+                            encoding="utf-8"))
+                elif item["from"] == "autosell":
+                    # 系统出售商品
+                    autoSellData = json.load(open("data/autosell.items.json", encoding="utf-8"))
+                    length = 0
+                    for itemData in autoSellData:
+                        if itemData["id"] == item["item"]["id"] and itemData["data"] == item["item"]["data"]:
+                            autosellItem = autoSellData.pop(length)
+                            break
+                        lenght += 1
+                    json.dump(autoSellData, open("data/autosell.items.json", "w", encoding="utf-8"))
+                    await su.send(f"自动出售商品已下架：\n{autosellItem}")
             elif argument[1] == "add" or argument[1] == "添加商品":
                 data = json.load(open("data/autosell.items.json", encoding="utf-8"))
                 data += {
@@ -194,6 +207,7 @@ async def suHandle(
                     "data": json.loads(argument[5])
                 }
                 json.dump(data, open("data/autosell.items.json", "w", encoding="utf-8"))
+                await su.send("商品已添加到自动出售任务清单！")
         elif argument[0] == "todo" or argument[0] == "代办":
             with open("TODO.txt", encoding="utf-8") as f:
                 await su.send(f.read())

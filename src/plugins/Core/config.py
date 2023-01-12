@@ -121,10 +121,10 @@ class Config(BaseSettings):
                 #}
             ])
         },
-        #{
-        #    "path": "data/autosell.latest.json",
-        #    "text": "{\"mday\":0}"
-        #}
+        {
+            "path": "data/autosell.latest.json",
+            "text": "{\"mday\":0}"
+        }
     ]
 
     class Config:
