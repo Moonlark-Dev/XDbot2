@@ -211,6 +211,9 @@ async def suHandle(
         elif argument[0] == "todo" or argument[0] == "代办":
             with open("TODO.txt", encoding="utf-8") as f:
                 await su.send(f.read())
+        elif argument[0] == "rule" or argument[0] == "自定义规则":
+            if argument[1] == "":
+                ...
 
 
         # 反馈

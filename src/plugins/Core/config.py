@@ -21,6 +21,10 @@ class Config(BaseSettings):
             "text": "{}"
         },
         {
+            "path": "data/rule.rules.json",
+            "text": "[]"
+        }
+        {
             "path": "data/messenger.messageList.json",
             "text": "[]"
         },
@@ -124,6 +128,10 @@ class Config(BaseSettings):
         {
             "path": "data/autosell.latest.json",
             "text": "{\"mday\":0}"
+        },
+        {
+            "path": "data/rule.rules.json",
+            "text": "[]"
         }
     ]
 

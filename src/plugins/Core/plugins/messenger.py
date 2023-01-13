@@ -31,7 +31,11 @@ async def messengerHandle(
             await messenger.finish("Usage: messenger <收件人QQ>\n<内容>")
         else:
             qq = argument.split("\n")[0]
-            text = argument.replace(qq + "\n", "")
+            text1 = argument.split("\n")[1:]
+            text = ""
+            for t in text1:
+                text += t
+                text += "\n"
             sender = await bot.get_stranger_info(user_id=event.get_user_id())
             data += [{
                 "recv": qq,
