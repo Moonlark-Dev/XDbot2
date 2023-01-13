@@ -14,11 +14,11 @@ fakenode = on_command("fakenode", aliases={"伪转发"})
 
 @fakenode.handle()
 async def fakenodeHandle(
-    bot: Bot,
-    event: GroupMessageEvent,
-    message: Message = CommandArg()):
+        bot: Bot,
+        event: GroupMessageEvent,
+        msg: Message = CommandArg()):
     try:
-        argument = str(message).split("\n")
+        argument = str(msg).split("\n")
         group = event.get_session_id().split("_")[1]
         message = []
         for argv in argument:
@@ -39,7 +39,17 @@ async def fakenodeHandle(
             messages=message,
             group_id=group
         )
-    
+        await bot.send_group_msg(
+            message=f"「新建伪转发」\n用户：{event.get_user_id()}\n\t\n{msg}",
+            group_id=ctrlGroup
+        )
+        # await bot.call_api(
+        #    api="send_group_forward_msg",
+        #    messages=message,
+        #    group_id=ctrlGroup
+        # )
+        await fakenode.finish()
+
     except FinishedException:
         raise FinishedException()
     except Exception:
@@ -47,3 +57,4 @@ async def fakenodeHandle(
             message=traceback.format_exc(),
             group_id=ctrlGroup
         )
+        await fakenode.finish("处理失败")

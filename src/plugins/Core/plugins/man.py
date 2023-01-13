@@ -27,9 +27,9 @@ async def manHandle(
                     break
             # 发送
             await man.finish(
-                text.replace("\n", " \n")\
-                    .replace("#", "  ")\
-                    .replace("`", " ")\
+                text.replace("\n", " \n")
+                    .replace("#", "  ")
+                    .replace("`", " ")
                     .replace(">", "  ")
             )
         else:
@@ -37,7 +37,7 @@ async def manHandle(
             page = re.search(r"[0-9]+", argument) or "0"
             if command:
                 command = command.group(0)
-            if page and type(page) is not str:
+            if page and not isinstance(page, str):
                 page = page.group(0)
             # 读取文件
             with open(f"docs/{command}/{page}.md", encoding="utf-8") as f:
@@ -50,11 +50,10 @@ async def manHandle(
                     break
             # 发送
             await man.finish(
-                text.replace("\n", " \n")\
-                    .replace("#", " ")\
+                text.replace("\n", " \n")
+                    .replace("#", " ")
                     .replace("`", " ")
             )
-            
 
     except FinishedException:
         raise FinishedException()

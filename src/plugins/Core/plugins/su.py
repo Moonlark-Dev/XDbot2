@@ -188,17 +188,28 @@ async def suHandle(
                             encoding="utf-8"))
                 elif item["from"] == "autosell":
                     # 系统出售商品
-                    autoSellData = json.load(open("data/autosell.items.json", encoding="utf-8"))
+                    autoSellData = json.load(
+                        open(
+                            "data/autosell.items.json",
+                            encoding="utf-8"))
                     length = 0
                     for itemData in autoSellData:
                         if itemData["id"] == item["item"]["id"] and itemData["data"] == item["item"]["data"]:
                             autosellItem = autoSellData.pop(length)
                             break
                         lenght += 1
-                    json.dump(autoSellData, open("data/autosell.items.json", "w", encoding="utf-8"))
+                    json.dump(
+                        autoSellData,
+                        open(
+                            "data/autosell.items.json",
+                            "w",
+                            encoding="utf-8"))
                     await su.send(f"自动出售商品已下架：\n{autosellItem}")
             elif argument[1] == "add" or argument[1] == "添加商品":
-                data = json.load(open("data/autosell.items.json", encoding="utf-8"))
+                data = json.load(
+                    open(
+                        "data/autosell.items.json",
+                        encoding="utf-8"))
                 data += {
                     "id": argument[2],
                     "count": int(argument[3]),
@@ -206,7 +217,12 @@ async def suHandle(
                     "info": None,
                     "data": json.loads(argument[5])
                 }
-                json.dump(data, open("data/autosell.items.json", "w", encoding="utf-8"))
+                json.dump(
+                    data,
+                    open(
+                        "data/autosell.items.json",
+                        "w",
+                        encoding="utf-8"))
                 await su.send("商品已添加到自动出售任务清单！")
         elif argument[0] == "todo" or argument[0] == "代办":
             with open("TODO.txt", encoding="utf-8") as f:
@@ -214,7 +230,6 @@ async def suHandle(
         elif argument[0] == "rule" or argument[0] == "自定义规则":
             if argument[1] == "":
                 ...
-
 
         # 反馈
         await su.finish("完成")

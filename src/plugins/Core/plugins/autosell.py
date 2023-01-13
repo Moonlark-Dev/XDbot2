@@ -66,4 +66,9 @@ async def checkReloaded():
         logger.info("正在刷新商城货架")
         await reloadSell()
         latest["mday"] = time.localtime().tm_mday
-        json.dump(latest, open("data/autosell.latest.json", "w", encoding="utf-8"))
+        json.dump(
+            latest,
+            open(
+                "data/autosell.latest.json",
+                "w",
+                encoding="utf-8"))
