@@ -23,7 +23,7 @@ class Config(BaseSettings):
         {
             "path": "data/rule.rules.json",
             "text": "[]"
-        }
+        },
         {
             "path": "data/messenger.messageList.json",
             "text": "[]"
