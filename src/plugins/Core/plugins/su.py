@@ -235,25 +235,16 @@ async def suHandle(
                     code += c
                     code += "\n"
                 code = json.loads(code)
-                rules = json.load(open("data/rule.rules.json", encoding="utf-8"))
-                rules += [code]
-                json.dump(rules, open("data/rule.rules.json", encoding="utf-8"))
+                json.dump(rules, open(f"rules/{code}.json", encoding="utf-8"))
             elif argument[1] == "ls" or argument[1] == "查看全部":
-                rules = json.load(open("data/rule.rules.json", encoding="utf-8"))
-                text = "活动的规则："
-                for rule in rules:
-                    text += rule["规则名"]
-                    text += "\n"
-                await su.send(text)
+                rules = os.listdir("rules")
+                activeRules = []
+                for r in rules:
+                    if not r.startswith("_") and r.endswith(".json"):
+                        activeRules += [r]
+                await su.send(f"活动的规则：{activeRules}")
             elif argument[1] == "remove" or argument[1] == "删除":
-                rules = json.load(open("data/rule.rules.json", encoding="utf-8"))
-                _rules = rules.copy()
-                length = 0
-                for r in _rules:
-                    if r["规则名"] == argument[2]:
-                        rules.pop(length)
-                    else:
-                        length += 1
+                os.remove(f"rules/{argument[2]}.json")
 
                 
 

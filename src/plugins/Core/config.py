@@ -128,11 +128,11 @@ class Config(BaseSettings):
         {
             "path": "data/autosell.latest.json",
             "text": "{\"mday\":0}"
-        },
-        {
-            "path": "data/rule.rules.json",
-            "text": "[]"
-        }
+        }#,
+        #{
+        #    "path": "data/rule.rules.json",
+        #    "text": "[]"
+        #}
     ]
 
     class Config:
