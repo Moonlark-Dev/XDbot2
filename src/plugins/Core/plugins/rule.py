@@ -31,9 +31,9 @@ async def runRule(
                 return eval(c["代码"])  # , __locals=locals())
             elif c["调用"] == "如果真":
                 if await runRule(bot, event, argument, c["条件"], handle):
-                    await runRule(bot, event, argument, c["执行"])
+                    await runRule(bot, event, argument, c["执行"], handle)
                 elif "否则" in c.keys():
-                    await runRule(bot, event, argument, c["否则"])
+                    await runRule(bot, event, argument, c["否则"], handle)
             elif c["调用"] == "发送消息":
                 await handle.send(Message(await runRule(bot, event, argument, c["消息"], handle)))
             elif c["调用"] == "执行":
