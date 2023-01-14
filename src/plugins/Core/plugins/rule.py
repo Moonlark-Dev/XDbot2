@@ -34,8 +34,7 @@ async def runRule(
             elif c["调用"] == "发送控制中心消息":
                 await bot.send_group_msg(
                     message=Message(await runRule(bot, event, argument, c["消息"])),
-                    group_id=ctrlGroup
-                )
+                    group_id=ctrlGroup)
             elif c["调用"] == "取变量":
                 return local[c["变量名"]]
             elif c["调用"] == "设置变量":
