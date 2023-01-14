@@ -49,7 +49,7 @@ async def signHandle(
             # 修改数据
             if latestSign[userID] == int(time.time() / 86400):
                 await sign.finish("您已经签到过了", at_sender=True)
-            if latestSign[userID] - int(time.time() / 86400) == 1:
+            if latestSign[userID] - int(time.time() / 86400) == -1:
                 signDay[userID] += 1
             else:
                 signDay[userID] = 0
