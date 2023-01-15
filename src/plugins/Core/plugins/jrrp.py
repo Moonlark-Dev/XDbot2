@@ -1,13 +1,14 @@
-from nonebot.adapters.onebot.v11 import Message
-from nonebot.params import CommandArg
-from nonebot.adapters.onebot.v11.event import GroupMessageEvent
-from nonebot.adapters.onebot.v11.bot import Bot
-from nonebot import on_command
-from nonebot.exception import FinishedException
-import random
-import traceback
 import json
+import random
 import time
+import traceback
+
+from nonebot import on_command
+from nonebot.adapters.onebot.v11 import Message
+from nonebot.adapters.onebot.v11.bot import Bot
+from nonebot.adapters.onebot.v11.event import GroupMessageEvent
+from nonebot.exception import FinishedException
+from nonebot.params import CommandArg
 
 jrrp = on_command("jrrp")
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
@@ -59,7 +60,9 @@ async def jrrpHandle(
     try:
         argument = message.extract_plain_text().split(" ")
         if argument[0] == "":
-            await jrrp.finish(f"你今天的人品值是：{await getJrrp(event.get_user_id())}", at_sender=True)
+            await jrrp.finish(
+                message=f"你今天的人品值是：{await getJrrp(event.get_user_id())}",
+                at_sender=True)
         elif argument[0] == "rank" or argument[0] == "今日排名":
             # 限时开启
             if time.localtime().tm_hour < 15:
