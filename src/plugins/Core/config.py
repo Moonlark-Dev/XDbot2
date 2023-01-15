@@ -128,7 +128,12 @@ class Config(BaseSettings):
         {
             "path": "data/autosell.latest.json",
             "text": "{\"mday\":0}"
-        }#,
+        },
+        {
+            "path": "data/ban.banData.json",
+            "text": "{}"
+        }
+        #,
         #{
         #    "path": "data/rule.rules.json",
         #    "text": "[]"

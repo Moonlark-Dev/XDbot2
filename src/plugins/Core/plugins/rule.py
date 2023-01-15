@@ -15,7 +15,7 @@ rule = on_message()
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 commands = {}
 local = {}
-func = on_command("function")
+func = on_command("function", aliases={"func", "调用"})
 
 
 async def runRule(
