@@ -97,7 +97,7 @@ class Config(BaseSettings):
         {
             "path": "data/shop.items.json",
             "text": json.dumps({
-                #"0": {
+                # "0": {
                 #    "name": "VimCoin",
                 #    "count": 2,
                 #    "price": 114,
@@ -111,18 +111,18 @@ class Config(BaseSettings):
                 #        "count": None,
                 #        "data": {}
                 #    }
-                #}
+                # }
             })
         },
         {
             "path": "data/autosell.items.json",
             "text": json.dumps([
-                #{
+                # {
                 #    "id": "0",
                 #    "count": 5,
                 #    "price": 5,
                 #    "data": {}
-                #}
+                # }
             ])
         },
         {
@@ -132,12 +132,16 @@ class Config(BaseSettings):
         {
             "path": "data/ban.banData.json",
             "text": "{}"
+        },
+        {
+            "path": "data/vote.data.json",
+            "text": "[]"
         }
-        #,
-        #{
+        # ,
+        # {
         #    "path": "data/rule.rules.json",
         #    "text": "[]"
-        #}
+        # }
     ]
 
     class Config:
