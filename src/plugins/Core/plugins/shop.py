@@ -1,9 +1,11 @@
 import json
 import traceback
+
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, Message
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
+
 # from psutil import users
 from . import _userCtrl
 
@@ -140,6 +142,8 @@ async def shopHandle(
 
     except FinishedException:
         raise FinishedException()
+    except KeyError:
+        await shop.finish("商品不存在")
     except Exception:
         await bot.send_group_msg(
             message=traceback.format_exc(),

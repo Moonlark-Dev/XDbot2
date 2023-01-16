@@ -1,15 +1,14 @@
-from nonebot.adapters.onebot.v11.bot import Bot
-from nonebot import on_message
-from nonebot.adapters.onebot.v11 import Message
-from nonebot.adapters.onebot.v11.event import GroupMessageEvent
-from nonebot import on_command
-from nonebot.exception import FinishedException
-from nonebot.params import CommandArg
-import traceback
-import os.path
 import json
 import math
+import os.path
+import traceback
 
+from nonebot import on_command, on_message
+from nonebot.adapters.onebot.v11 import Message
+from nonebot.adapters.onebot.v11.bot import Bot
+from nonebot.adapters.onebot.v11.event import GroupMessageEvent
+from nonebot.exception import FinishedException
+from nonebot.params import CommandArg
 
 ct = on_command("ct", aliases={"发言排名"})
 ctRecorder = on_message()

@@ -1,8 +1,10 @@
-from nonebot_plugin_apscheduler import scheduler
-from nonebot import require
 import json
-from nonebot.log import logger
 import time
+
+from nonebot import require
+from nonebot.log import logger
+from nonebot_plugin_apscheduler import scheduler
+
 # import threading
 
 latestReload = json.load(open("data/autosell.latest.json", encoding="utf-8"))
@@ -64,7 +66,10 @@ async def checkReloaded():
     latest = json.load(open("data/autosell.latest.json", encoding="utf-8"))
     if latest["mday"] != time.localtime().tm_mday:
         logger.info("正在刷新商城货架")
-        await reloadSell()
+        try:
+            await reloadSell()
+        except BaseException as e:
+            logger.error(e)
         latest["mday"] = time.localtime().tm_mday
         json.dump(
             latest,

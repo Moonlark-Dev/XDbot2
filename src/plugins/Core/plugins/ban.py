@@ -1,10 +1,11 @@
-from nonebot import *
-from fastapi.responses import HTMLResponse
-from nonebot.adapters.onebot.v11.event import GroupBanNoticeEvent
-from nonebot.adapters.onebot.v11.bot import Bot
 import json
 import time
 import traceback
+
+from fastapi.responses import HTMLResponse
+from nonebot import get_app, get_bots, on_type
+from nonebot.adapters.onebot.v11.bot import Bot
+from nonebot.adapters.onebot.v11.event import GroupBanNoticeEvent
 
 banCount = on_type(GroupBanNoticeEvent)
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
@@ -41,9 +42,7 @@ async def viewBans(group_id):
 
 
 @banCount.handle()
-async def banCountHandle(
-    bot: Bot,
-    event: GroupBanNoticeEvent):
+async def banCountHandle(bot: Bot, event: GroupBanNoticeEvent):
     try:
         data = json.load(open("data/ban.banData.json", encoding="utf-8"))
         event.group_id = str(event.group_id)
@@ -58,7 +57,7 @@ async def banCountHandle(
             }])
         else:
             nowTime = int(time.time())
-            length = 0 
+            length = 0
             for item in data[event.group_id]:
                 print(
                     item["banTime"] + item["duration"] > nowTime,
@@ -72,12 +71,10 @@ async def banCountHandle(
                             break
                 length += 1
         json.dump(data, open("data/ban.banData.json", "w", encoding="utf-8"))
-    
+
     except Exception:
         await bot.send_group_msg(
             group_id=ctrlGroup,
             message=traceback.format_exc()
         )
 
-
-#app.mount("/ban", webapp)

@@ -1,6 +1,7 @@
-import traceback
-import re
 import json
+import re
+import traceback
+
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Bot, Message
 from nonebot.exception import FinishedException
@@ -57,6 +58,8 @@ async def manHandle(
 
     except FinishedException:
         raise FinishedException()
+    except FileNotFoundError:
+        await man.finish("对应手册页不存在")
     except Exception:
         await bot.send_group_msg(
             message=traceback.format_exc(),

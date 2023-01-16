@@ -1,11 +1,12 @@
 import json
-import time
-import httpx
-import random
 import os.path
+import random
+import time
 import traceback
+
+import httpx
 from nonebot import on_command
-from nonebot.adapters.onebot.v11 import Bot, Message, MessageEvent, MessageSegment
+from nonebot.adapters.onebot.v11 import (Bot, Message, MessageEvent)
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
 
@@ -99,6 +100,8 @@ async def cave_handle(
 
     except FinishedException:
         raise FinishedException()
+    except KeyError as e:
+        await cave.finish(f"回声洞（{e}）不存在")
     except Exception:
         await bot.send_group_msg(
             message=traceback.format_exc(),

@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from nonebot import on_command
-from nonebot.adapters.onebot.v11.bot import Bot
-from nonebot.adapters.onebot.v11.event import GroupMessageEvent
-from nonebot.adapters.onebot.v11 import Message
-from nonebot.params import CommandArg
-from nonebot.exception import FinishedException
 import json
 import time
 import traceback
+
+from nonebot import on_command
+from nonebot.adapters.onebot.v11 import Message
+from nonebot.adapters.onebot.v11.bot import Bot
+from nonebot.adapters.onebot.v11.event import GroupMessageEvent
+from nonebot.exception import FinishedException
+from nonebot.params import CommandArg
 
 vote = on_command("vote", aliases={"投票"})
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))['control']
@@ -95,6 +96,8 @@ async def voteHandle(
 
     except FinishedException:
         raise FinishedException()
+    except IndexError:
+        await vote.finish("投票不存在")
     except Exception:
         await bot.send_group_msg(
             message=traceback.format_exc(),

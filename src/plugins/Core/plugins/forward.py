@@ -1,8 +1,9 @@
 import json
 import traceback
-from nonebot import on_message
 
-from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, Message, PrivateMessageEvent
+from nonebot import on_message
+from nonebot.adapters.onebot.v11 import (Bot, GroupMessageEvent, Message,
+                                         PrivateMessageEvent)
 
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 privateForward = on_message()

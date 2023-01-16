@@ -1,15 +1,14 @@
-from nonebot import on_command
-from nonebot.adapters.onebot.v11 import Bot
-from nonebot.adapters.onebot.v11 import Message
-from nonebot.adapters.onebot.v11.event import MessageEvent
-from nonebot.params import CommandArg
-from nonebot import on_message
-from nonebot.exception import FinishedException
-from nonebot.log import logger
 import json
 import os
 import os.path
 import traceback
+
+from nonebot import on_command, on_message
+from nonebot.adapters.onebot.v11 import Bot, Message
+from nonebot.adapters.onebot.v11.event import MessageEvent
+from nonebot.exception import FinishedException
+from nonebot.log import logger
+from nonebot.params import CommandArg
 
 rule = on_message()
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
@@ -157,15 +156,13 @@ async def funcHandle(
             await func.finish(f"找不到指令：{command}")
     
     except FinishedException:
-       raise FinishedException()
+        raise FinishedException()
     except Exception:
         await bot.send_group_msg(
             message=traceback.format_exc(),
             group_id=ctrlGroup
         )
         await func.finish("处理失败")
-
-
 
 
 # 预处理

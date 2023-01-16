@@ -1,10 +1,12 @@
+import json
 import traceback
+
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, Message
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
+
 from . import _userCtrl
-import json
 
 use = on_command("use", aliases={"使用"})
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
@@ -25,6 +27,8 @@ async def useHandle(
         await use.finish("物品被标记为：不可使用")
     except FinishedException:
         raise FinishedException()
+    except IndexError:
+        await use.finish("找不到物品")
     except Exception:
         await bot.send_group_msg(
             message=traceback.format_exc(),

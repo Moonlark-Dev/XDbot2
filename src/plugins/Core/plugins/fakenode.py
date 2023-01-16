@@ -1,12 +1,13 @@
+import json
+import traceback
+
+from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.adapters.onebot.v11.bot import Bot
-from nonebot.params import CommandArg
-from nonebot.exception import FinishedException
-from nonebot.adapters.onebot.v11.message import MessageSegment
 from nonebot.adapters.onebot.v11.event import GroupMessageEvent
-from nonebot import on_command
-import traceback
-import json
+#from nonebot.adapters.onebot.v11.message import MessageSegment
+from nonebot.exception import FinishedException
+from nonebot.params import CommandArg
 
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 fakenode = on_command("fakenode", aliases={"伪转发"})
@@ -40,14 +41,14 @@ async def fakenodeHandle(
             group_id=group
         )
         await bot.send_group_msg(
-            message=f"「新建伪转发」\n用户：{event.get_user_id()}\n\t\n{msg}",
+            message=f"「新建伪转发」\n用户：{event.get_user_id()}",
             group_id=ctrlGroup
         )
-        # await bot.call_api(
-        #    api="send_group_forward_msg",
-        #    messages=message,
-        #    group_id=ctrlGroup
-        # )
+        await bot.call_api(
+           api="send_group_forward_msg",
+           messages=message,
+           group_id=ctrlGroup
+        )
         await fakenode.finish()
 
     except FinishedException:
