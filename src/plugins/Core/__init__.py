@@ -1,10 +1,12 @@
-from nonebot.log import logger
-from nonebot import get_driver
-from .config import Config
-import os.path
-import os
 import json
+import os
+import os.path
 import time
+
+from nonebot import get_driver
+from nonebot.log import logger
+
+from .config import Config
 
 # 获取配置
 try:
@@ -51,12 +53,11 @@ for plugin in pluginList:
     if plugin.endswith(
             ".py") and plugin not in disablePlugins and not plugin.startswith("_"):
         try:
-            __import__(f"src.plugins.Core.plugins.{plugin[:-3]}")
-        except Exception as e:
-            logger.error(f"加载失败：插件{plugin}加载发生错误：{e}")
-        else:
+            __import__(f"src.plugins.Core.plugins.{plugin[:-3]}") 
             logger.info(f"成功加载插件{plugin}")
             loadedPlugins += [plugin]
+        except Exception as e:
+            logger.error(f"加载失败：插件{plugin}加载发生错误：{e}")
     else:
         logger.warning(f"未知或已禁用插件：{plugin}")
 logger.info(f"已成功加载 {loadedPlugins.__len__()} 个插件")
