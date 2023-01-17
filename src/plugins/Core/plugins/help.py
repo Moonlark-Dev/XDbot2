@@ -25,7 +25,7 @@ def _help_init_():
                             l=l.split(" ")
                             n=l[0]
                             nums.append(n)
-                            command[n]={"num":n,"plugin":pluginname,"name":l[1]}
+                            command[n]={"num":n,"plugin":pluginname,"name":l[1].replace("\n","")}
                             l.pop(0)
                             command[n]["usage"]=" ".join(l).replace("\n","").replace("\\n","\n")
                             continue
