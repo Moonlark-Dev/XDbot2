@@ -136,6 +136,15 @@ class Config(BaseSettings):
         {
             "path": "data/vote.data.json",
             "text": "[]"
+        },
+        {
+            "path": "data/reply.images.json",
+            "text": json.dumps({
+                "A": [],
+                "B": [],
+                "C": [],
+                "review": dict()
+            })
         }
         # ,
         # {

@@ -129,12 +129,8 @@ async def shopHandle(
                     shopData[str(length)] = itemData
                     break
                 length += 1
-            json.dump(
-                shopData,
-                open(
-                    "data/shop.items.json",
-                    "w",
-                    encoding="utf-8"))
+            json.dump(shopData, open(
+                "data/shop.items.json", "w", encoding="utf-8"))
             await bot.send_group_msg(
                 message=f"「道具商店新上架（#{length}）」\n{itemData}",
                 group_id=ctrlGroup)
