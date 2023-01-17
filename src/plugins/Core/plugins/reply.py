@@ -28,7 +28,7 @@ async def repetitionHandle(
     try:
         global latestSend
         # 检查冷却
-        if time.time() - latestSend < 30 or random.random() <= 0.1:
+        if time.time() - latestSend < 15:
             return None
         # 处理信息
         if event.group_id not in repetitionCache.keys():
@@ -49,7 +49,10 @@ async def repetitionHandle(
                             repetitionCache.pop(event.group_id)
                             latestSend = time.time()
                 else:
-                    repetitionCache.pop(event.group_id)
+                    try:
+                        repetitionCache.pop(event.group_id)
+                    except BaseException:
+                        pass
 
     except Exception:
         await bot.send_group_msg(
