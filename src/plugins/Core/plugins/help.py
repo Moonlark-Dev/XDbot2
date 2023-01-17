@@ -27,7 +27,7 @@ def _help_init_():
                             nums.append(n)
                             command[n]={"num":n,"plugin":pluginname,"name":l[1]}
                             l.pop(0)
-                            command[n]["usage"]=" ".join(l).replace("\n","")
+                            command[n]["usage"]=" ".join(l).replace("\n","").replace("\\n","\n")
                             continue
                         if l.startswith("# !Info "):
                             l=l.replace("# !Info ", "")
@@ -57,7 +57,7 @@ async def helpHandle(
             if argument == i["name"]:
                 reply+="命令用法："+command_start+i["usage"]+"\n"
                 reply+=f"来源：插件{i['plugin']}的第{i['num']}条命令\n"
-                reply+="说明："+i["info"]
+                reply+="说明："+i["info"]+"\n\n"
     await help.finish(reply)
 
 # [HELPSTART]
@@ -84,5 +84,5 @@ async def helpHandle(
 # `命令帮助结束
 #
 # 警告：Usage一定要写在相同num的Info前面，一个num必须同时有Usage和Info，不然我也不知道会出什么bug
-
+#
 ###################################

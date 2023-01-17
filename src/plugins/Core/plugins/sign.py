@@ -104,3 +104,8 @@ async def signHandle(
             message=traceback.format_exc(),
             group_id=ctrlGroup)
         await sign.finish("处理失败")
+
+# [HELPSTART]
+# !Usage 1 sign
+# !Info 1 在 XDbot2 上签到
+# [HELPEND]

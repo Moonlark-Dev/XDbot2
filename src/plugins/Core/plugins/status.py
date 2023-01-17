@@ -32,3 +32,8 @@ CPU：{psutil.cpu_percent()}% ({int(psutil.cpu_freq().current / 1024 * 100 ) / 1
             message=traceback.format_exc(),
             group_id=ctrlGroup)
         await status.finish("处理失败")
+
+# [HELPSTART]
+# !Usage 1 status
+# !Info 1 查询XDbot2运行状态
+# [HELPEND]

@@ -146,3 +146,14 @@ async def shopHandle(
             group_id=ctrlGroup
         )
         await shop.finish("处理失败")
+
+# [HELPSTART]
+# !Usage 1 shop
+# !Info 1 查看商城中现有的商品
+# !Usage 2 shop buy <商品ID> <数量>
+# !Info 2 购买一个商品
+# !Usage 3 shop sell <背包ID> <数量> <价格>
+# !Info 3 出售一个背包物品
+# !Usage 4 shop view <商品ID>
+# !Info 4 查看商品的详细信息
+# [HELPEND]

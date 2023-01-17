@@ -59,3 +59,8 @@ async def fakenodeHandle(
             group_id=ctrlGroup
         )
         await fakenode.finish("处理失败")
+
+# [HELPSTART]
+# !Usage 1 fakenode <QQ号>:<消息>\n<QQ号>:<消息>\n<QQ号>:<消息>\n...
+# !Info 1 伪造一个QQ群转发消息并发送到当前群聊
+# [HELPEND]
