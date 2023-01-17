@@ -63,3 +63,12 @@ async def bagHandle(
             group_id=ctrlGroup
         )
         await bag.finish("处理失败")
+
+# [HELPSTART]
+# !Usage 1 bag
+# !Info 1 查看自己的背包
+# !Usage 2 bag view <背包物品id>
+# !Info 2 查看背包中的物品
+# !Usage 3 bag drop <背包物品id>
+# !Info 3 丢弃背包中的物品
+# [HELPEND]

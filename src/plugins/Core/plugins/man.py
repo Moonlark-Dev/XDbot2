@@ -65,3 +65,8 @@ async def manHandle(
             message=traceback.format_exc(),
             group_id=ctrlGroup)
         await man.finish("处理失败")
+
+# [HELPSTART]
+# !Usage 1 man <指令名> [页面]
+# !Info 1 man 是 XDbot2 内置的使用参考手册接口，其类似与 Linux 系统下的 man 程序，手册大部分内容与 XDbot2 Wiki 同步
+# [HELPEND]

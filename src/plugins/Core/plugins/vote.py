@@ -103,3 +103,8 @@ async def voteHandle(
             message=traceback.format_exc(),
             group_id=ctrlGroup
         )
+
+# [HELPSTART]
+# !Usage 1 vote
+# !Info 1 显示群投票列表（暂未完善，等待xd来改help）
+# [HELPEND]

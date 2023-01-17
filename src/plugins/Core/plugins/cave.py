@@ -118,3 +118,12 @@ async def cave_handle(
             group_id=ctrlGroup
         )
         await cave.finish("处理失败")
+
+# [HELPSTART]
+# !Usage 1 cave
+# !Info 1 随机抽取一条回声洞
+# !Usage 2 cave add <内容>
+# !Info 2 投稿一条回声洞\n我们不建议您投稿垃圾内容，可能会被超级用户封禁（见/man su(1)）\n关于回声洞投稿守则，见/man cave(1)
+# !Usage 3 cave-g <回声洞ID>
+# !Info 3 显示ID为 <回声洞ID> 的回声洞
+# [HELPEND]

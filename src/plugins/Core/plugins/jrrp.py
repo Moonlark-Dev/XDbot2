@@ -131,3 +131,10 @@ async def jrrpHandle(
             message=traceback.format_exc(),
             group_id=ctrlGroup)
         await jrrp.finish("处理失败")
+
+# [HELPSTART]
+# !Usage 1 jrrp [QQ号]
+# !Info 1 查询对应qq号的今日人品，若未指定QQ号，则查询自己的今日人品
+# !Usage 2 jrrp rank
+# !Info 2 查询当前群聊的群成员的今日人品排名（详见 /man Jrrp(1)）
+# [HELPEND]
