@@ -13,6 +13,16 @@ from nonebot.params import CommandArg
 cave = on_command("cave", aliases={"回声洞"})
 ctrlGroup = json.load(open("data/ctrl.json"))["control"]
 path = os.path.abspath(os.path.dirname("."))
+commandHelp = {
+    "name": "cave",
+    "info": "回声洞",
+    "msg": "投稿，随机或查询一条回声洞",
+    "usage": [
+        "cave：随机一条回声洞",
+        "cave-a <内容>：投稿一条回声洞（见cave(1)）",
+        "cave-g <回声洞ID>：查看回声洞"
+    ]
+}
 
 
 async def downloadImages(message: str):

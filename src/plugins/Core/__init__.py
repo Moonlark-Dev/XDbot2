@@ -3,10 +3,15 @@ import os
 import os.path
 import time
 
+import sys
+
 from nonebot import get_driver
 from nonebot.log import logger
 
 from .config import Config
+
+import importlib
+import traceback
 
 # 获取配置
 try:
@@ -47,23 +52,38 @@ pluginList = os.listdir(os.path.join(path, "plugins"))
 loadedPlugins = []
 logger.info(f"找到 {pluginList.__len__()} 个文件或目录（于 {path} 下）")
 logger.debug(pluginList)
+helpData = {}
+pluginsModule = dict()
 
 # 导入插件（此导入方式不可调用）
+sys.path.append(path)
 for plugin in pluginList:
     if plugin.endswith(
             ".py") and plugin not in disablePlugins and not plugin.startswith("_"):
         try:
-            __import__(f"src.plugins.Core.plugins.{plugin[:-3]}") 
+            pluginsModule[plugin] = getattr(__import__(
+                f"plugins.{plugin[:-3]}"), plugin[:-3])
             logger.info(f"成功加载插件{plugin}")
             loadedPlugins += [plugin]
+            # 读取帮助
+            if type(pluginsModule[plugin].commandHelp) == list:
+                for command in pluginsModule[plugin].commandHelp:
+                    helpData[command["name"]] = command.copy()
+            else:
+                helpData[pluginsModule[plugin].commandHelp["name"]
+                         ] = pluginsModule[plugin].commandHelp.copy()
+
+        except AttributeError:
+            logger.warning(f"在{plugin}中找不到指令文档")
         except Exception as e:
             logger.error(f"加载失败：插件{plugin}加载发生错误：{e}")
+            print(traceback.format_exc())
     else:
         logger.warning(f"未知或已禁用插件：{plugin}")
-logger.info(f"已成功加载 {loadedPlugins.__len__()} 个插件")
+logger.info(f"已成功加载 {loadedPlugins.__len__()} 个插件，{len(helpData.keys())}个指令帮助")
 # logger.debug(loadedPlugins)
 
-# 写入数据文件
+# 写入加载数据文件
 json.dump(
     {
         "version": config.VERSION,
@@ -76,3 +96,6 @@ json.dump(
     },
     open("data/init.json", "w", encoding="utf-8")
 )
+
+# 写入帮助文件
+json.dump(helpData, open("data/help.json", "w", encoding="utf-8"))
