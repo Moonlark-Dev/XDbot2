@@ -10,7 +10,7 @@ from nonebot.log import logger
 
 from .config import Config
 
-import importlib
+from . import getHelp
 import traceback
 
 # 获取配置
@@ -66,12 +66,7 @@ for plugin in pluginList:
             logger.info(f"成功加载插件{plugin}")
             loadedPlugins += [plugin]
             # 读取帮助
-            if type(pluginsModule[plugin].commandHelp) == list:
-                for command in pluginsModule[plugin].commandHelp:
-                    helpData[command["name"]] = command.copy()
-            else:
-                helpData[pluginsModule[plugin].commandHelp["name"]
-                         ] = pluginsModule[plugin].commandHelp.copy()
+            helpData.update(getHelp.getPluginHelp(plugin[:-3], pluginsModule[plugin]))
 
         except AttributeError:
             logger.warning(f"在{plugin}中找不到指令文档")
@@ -98,4 +93,5 @@ json.dump(
 )
 
 # 写入帮助文件
+logger.debug(helpData)
 json.dump(helpData, open("data/help.json", "w", encoding="utf-8"))

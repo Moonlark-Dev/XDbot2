@@ -1,3 +1,4 @@
 nb-cli
 nonebot-adapter-onebot
 psutil
+nonebot_plugin_apscheduler

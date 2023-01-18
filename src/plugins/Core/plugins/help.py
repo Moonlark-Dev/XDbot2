@@ -1,68 +1,58 @@
+import json
+import traceback
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Bot, Message
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
-import os
-command_start="/"
-def _help_init_():
-    commands=[]
-    plugindir=os.sep.join(__file__.split(os.sep)[0:-1])
-    for fn in os.listdir(plugindir):
-        if not fn.endswith(".py"):
-            continue
-        with open(plugindir+os.sep+fn,"r",encoding="utf-8") as f:
-            fl=f.readlines()
-            command = {}
-            nums = []
-            pluginname = fn.replace(".py","")
-            for i in range(len(fl)):
-                if fl[i].startswith("# [HELPSTART]") :
-                    while not fl[i].startswith("# [HELPEND]"):
-                        i+=1
-                        l=fl[i]
-                        if l.startswith("# !Usage "):
-                            l=l.replace("# !Usage ","")
-                            l=l.split(" ")
-                            n=l[0]
-                            nums.append(n)
-                            command[n]={"num":n,"plugin":pluginname,"name":l[1].replace("\n","")}
-                            l.pop(0)
-                            command[n]["usage"]=" ".join(l).replace("\n","").replace("\\n","\n")
-                            continue
-                        if l.startswith("# !Info "):
-                            l=l.replace("# !Info ", "")
-                            l=l.split(" ")
-                            n=l[0]
-                            l.pop(0)
-                            command[n]["info"]=" ".join(l).replace("\n","").replace("\\n","\n")
-                            continue
-                    break
-            for n in nums:
-                commands.append(command[n])
-    return commands
-commands=_help_init_()
 
+ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
+command_start = "/"
 help = on_command("help", aliases={"帮助"})
-@help.handle()
-async def helpHandle(
-        bot: Bot,
-        message: Message = CommandArg()):
-    argument = message.extract_plain_text()
-    reply=""
-    if argument == "":
-        for i in commands:
-            reply+=command_start+i["usage"]+"\n"
-    else:
-        for i in commands:
-            if argument == i["name"]:
-                reply+="命令用法："+command_start+i["usage"]+"\n"
-                reply+=f"来源：插件{i['plugin']}的第{i['num']}条命令\n"
-                reply+="说明："+i["info"]+"\n\n"
-    await help.finish(reply)
 
-# [HELPSTART]
+
+@help.handle()
+async def helpHandle(bot: Bot, message: Message = CommandArg()):
+    try:
+        argument = message.extract_plain_text()
+        reply = ""
+        commands = json.load(open("data/help.json", encoding="utf-8"))
+        if argument == "":
+            reply = "命令列表 —— XDbot2\n"
+            for key in list(commands.keys()):
+                reply += f"[√] {key}：{commands[key]['msg']}\n"
+            reply += "使用 /help <命令> 获取更多信息"
+        elif argument == "list":
+            for key in list(commands.keys()):
+                for u in commands[key]["usage"]:
+                    reply += f"{u}\n"
+        else:
+            usage = ""
+            length = 0
+            for u in commands[argument]['usage']:
+                usage += f"{length}. {u}"
+                length += 1
+            reply = (
+                f"说明：{commands[argument]['info']}\n"
+                f"来源：{commands[argument]['from']}\n"
+                f"用法（{length}）：\n{usage}"
+            )
+        await help.finish(reply)
+    except FinishedException:
+        raise FinishedException()
+    except Exception:
+        await bot.send_group_msg(message=traceback.format_exc(),
+                                 group_id=ctrlGroup)
+
+
+# [HELPSTART] Version: 2
+# Command: help
+# Usage: help [指令名]
+# Info: 查询指定命令说明，若未指定指令名，则显示全部命令用法
+# Msg: 指令帮助
+# [END]
+
 # !Usage 1 help [指令名]
-# !Info 1 查询指定命令说明，若未指定指令名，则显示全部命令用法
+
 # [HELPEND]
 
 # ########### help的写法 ############
