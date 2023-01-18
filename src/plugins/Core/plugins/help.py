@@ -24,17 +24,17 @@ async def helpHandle(bot: Bot, message: Message = CommandArg()):
         elif argument == "list":
             for key in list(commands.keys()):
                 for u in commands[key]["usage"]:
-                    reply += f"{u}\n"
+                    reply += f"{command_start}{u}\n"
         else:
             usage = ""
-            length = 0
+            length = 1
             for u in commands[argument]['usage']:
-                usage += f"{length}. {u}"
+                usage += f"  {length}. {u}\n"
                 length += 1
             reply = (
-                f"说明：{commands[argument]['info']}\n"
-                f"来源：{commands[argument]['from']}\n"
-                f"用法（{length}）：\n{usage}"
+                f"\n说明：{commands[argument]['info']}\n"
+                # f"来源：{commands[argument]['from']}\n"
+                f"用法（{length - 1}）：\n{usage}"
             )
         await help.finish(reply)
     except FinishedException:
@@ -46,9 +46,11 @@ async def helpHandle(bot: Bot, message: Message = CommandArg()):
 
 # [HELPSTART] Version: 2
 # Command: help
-# Usage: help [指令名]
+# Usage: help：查看指令列表
+# Usage: help list：查看所有指令的所有用法
+# Usage: help <指令名>：查看指定指令的用法
 # Info: 查询指定命令说明，若未指定指令名，则显示全部命令用法
-# Msg: 指令帮助
+# Msg: 查看指令帮助
 # [END]
 
 # !Usage 1 help [指令名]

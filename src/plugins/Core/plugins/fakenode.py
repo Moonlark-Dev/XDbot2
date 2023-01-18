@@ -5,7 +5,7 @@ from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot.adapters.onebot.v11.event import GroupMessageEvent
-#from nonebot.adapters.onebot.v11.message import MessageSegment
+# from nonebot.adapters.onebot.v11.message import MessageSegment
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
 
@@ -45,9 +45,9 @@ async def fakenodeHandle(
             group_id=ctrlGroup
         )
         await bot.call_api(
-           api="send_group_forward_msg",
-           messages=message,
-           group_id=ctrlGroup
+            api="send_group_forward_msg",
+            messages=message,
+            group_id=ctrlGroup
         )
         await fakenode.finish()
 

@@ -246,8 +246,6 @@ async def suHandle(
             elif argument[1] == "remove" or argument[1] == "删除":
                 os.remove(f"rules/{argument[2]}.json")
 
-                
-
         # 反馈
         await su.finish("完成")
 

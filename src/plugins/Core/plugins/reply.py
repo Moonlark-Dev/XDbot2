@@ -37,11 +37,14 @@ async def repetitionHandle(
                 "user": [event.get_user_id()]
             }
         else:
-            if event.get_user_id() not in repetitionCache[event.group_id]["user"]:
-                if event.get_plaintext() == repetitionCache[event.group_id]["message"]:
+            if event.get_user_id(
+            ) not in repetitionCache[event.group_id]["user"]:
+                if event.get_plaintext(
+                ) == repetitionCache[event.group_id]["message"]:
                     repetitionCache[event.group_id]["user"].append(
                         event.get_user_id())
-                    if len(repetitionCache[event.group_id]["user"]) >= random.randint(2, 5):
+                    if len(repetitionCache[event.group_id]
+                           ["user"]) >= random.randint(2, 5):
                         if (len(repetitionCache[event.group_id]["user"]) <= random.randint(0, 50)
                                 or len(repetitionCache[event.group_id]["message"]) <= 10):
                             await asyncio.sleep(random.random() * 0.3 * (len(repetitionCache[event.group_id]["message"]) / 2))
@@ -80,7 +83,7 @@ async def imageSender(
                     images += [image, image]
                 for image in imageData["C"]:
                     images += [image]
-                    
+
                 images.sort()
                 # 发送图片
                 image = random.choice(images)
@@ -119,10 +122,16 @@ async def imageSaverHandle(
             imageCQ = re.match(r"\[CQ:image(.*)\]", message)
             if imageCQ is not None:
                 imageCQ = imageCQ.group(0)
-                isMeme = int(re.search(r"subType=\d", imageCQ).group(0).split("=")[1])
+                isMeme = int(
+                    re.search(
+                        r"subType=\d",
+                        imageCQ).group(0).split("=")[1])
                 # await imageSaver.send(str(bool(isMeme)))
                 if isMeme and random.random() <= 0.05:      # 概率：5%
-                    data = json.load(open("data/reply.images.json", encoding="utf-8"))
+                    data = json.load(
+                        open(
+                            "data/reply.images.json",
+                            encoding="utf-8"))
                     imageID = len(data["review"].keys())
                     data["review"][imageID] = imageCQ
                     await bot.send_group_msg(
@@ -137,7 +146,10 @@ async def imageSaverHandle(
                     await imageSaver.send("好图，我的了")
                     latestSend = time.time()
                 elif isMeme and random.random() <= 0.10:      # 概率：10%
-                    data = json.load(open("data/reply.images.json", encoding="utf-8"))
+                    data = json.load(
+                        open(
+                            "data/reply.images.json",
+                            encoding="utf-8"))
                     imageID = len(data["review"].keys())
                     data["review"][imageID] = imageCQ
                     await bot.send_group_msg(
@@ -151,7 +163,7 @@ async def imageSaverHandle(
                     await asyncio.sleep(random.random() / 2)
                     await imageSaver.send("好图，我的了")
                     latestSend = time.time()
-                # elif random.random() <= 0.01:        
+                # elif random.random() <= 0.01:
 
     except Exception:
         await bot.send_group_msg(

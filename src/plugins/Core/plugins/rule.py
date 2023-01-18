@@ -142,9 +142,9 @@ async def ruleHandle(
 
 @func.handle()
 async def funcHandle(
-    bot: Bot,
-    event: MessageEvent,
-    message: Message = CommandArg()):
+        bot: Bot,
+        event: MessageEvent,
+        message: Message = CommandArg()):
     try:
         argument = message.extract_plain_text()
         command = argument.split(" ")[0]
@@ -154,7 +154,7 @@ async def funcHandle(
             await runRule(bot, event, argv, commands[command], func)
         else:
             await func.finish(f"找不到指令：{command}")
-    
+
     except FinishedException:
         raise FinishedException()
     except Exception:

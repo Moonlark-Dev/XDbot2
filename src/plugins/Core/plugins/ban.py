@@ -67,7 +67,8 @@ async def banCountHandle(bot: Bot, event: GroupBanNoticeEvent):
                 if item["banTime"] + item["duration"] > nowTime:
                     if str(item["user"]["user_id"]) == event.get_user_id():
                         if "pardonTime" not in item.keys():
-                            data[event.group_id][length]["pardonTime"] = int(time.time())
+                            data[event.group_id][length]["pardonTime"] = int(
+                                time.time())
                             break
                 length += 1
         json.dump(data, open("data/ban.banData.json", "w", encoding="utf-8"))
@@ -77,4 +78,3 @@ async def banCountHandle(bot: Bot, event: GroupBanNoticeEvent):
             group_id=ctrlGroup,
             message=traceback.format_exc()
         )
-

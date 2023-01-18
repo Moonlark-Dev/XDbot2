@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import re
-#import json
+# import re
+# import json
 import os.path
-#from nonebot.log import logger
+# from nonebot.log import logger
 
 
 def getPluginHelp(pluginName: str, module: any):
@@ -22,7 +22,7 @@ def getPluginHelp(pluginName: str, module: any):
         # 采集数据
         lines = pluginFile[start:pluginFile.find("# [HELPEND]", start)]
         lines = lines.replace("# ", "").replace("#", "").split("\n")
-        if "Version: 2" in lines[1]:
+        if lines[0].find("Version: 2") != -1:
             helpVersion = 2
         else:
             helpVersion = 1
@@ -39,7 +39,8 @@ def getPluginHelp(pluginName: str, module: any):
                     nowCommand = l[1]
                     commandHelp[nowCommand] = {"usage": []}
                 elif l[0] in ["Usage", "用法"]:
-                    commandHelp[nowCommand]["usage"].append(l[1].replace(r"\n", "\n"))
+                    commandHelp[nowCommand]["usage"].append(
+                        l[1].replace(r"\n", "\n"))
                 elif l[0] in ["Info", "描述"]:
                     commandHelp[nowCommand]["info"] = l[1].replace(r"\n", "\n")
                 elif l[0] in ["Msg", "概述"]:
@@ -55,9 +56,11 @@ def getPluginHelp(pluginName: str, module: any):
                     commands[lineSplited[1]] = {"usage": []}
                 # 处理
                 if lineSplited[0] == "!Usage":
-                    commands[lineSplited[1]]["usage"].append(line.replace(f"!Usage {lineSplited[1]}", "").strip().replace(r"\n", "\n"))
+                    commands[lineSplited[1]]["usage"].append(line.replace(
+                        f"!Usage {lineSplited[1]}", "").strip().replace(r"\n", "\n"))
                 elif lineSplited[0] == "!Info":
-                    commands[lineSplited[1]]["info"] = line.replace(f"!Info {lineSplited[1]}", "").strip().replace(r"\n", "\n")
+                    commands[lineSplited[1]]["info"] = line.replace(
+                        f"!Info {lineSplited[1]}", "").strip().replace(r"\n", "\n")
             for key in list(commands.keys()):
                 command = commands[key]
                 commandName = command["usage"][0].split(" ")[0]

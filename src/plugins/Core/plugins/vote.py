@@ -85,7 +85,8 @@ async def voteHandle(
                 if event.get_user_id() in c["user"]:
                     await vote.finish("您已经参与过了")
             # 选择
-            if event.get_session_id().split("_")[1] == data[int(argument[0][1])]['group'] and voteData["status"] != "已结束":
+            if event.get_session_id().split("_")[1] == data[int(
+                    argument[0][1])]['group'] and voteData["status"] != "已结束":
                 data[int(argument[0][1])]["choices"][int(
                     argument[0][2])]["user"].append(event.get_user_id())
                 json.dump(data, open(
