@@ -134,8 +134,8 @@ class Config(BaseSettings):
             "text": "{}"
         },
         {
-            "path": "data/vote.data.json",
-            "text": "[]"
+            "path": "data/vote.list.json",
+            "text": "{}"
         },
         {
             "path": "data/reply.images.json",

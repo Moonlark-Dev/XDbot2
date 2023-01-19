@@ -32,9 +32,21 @@ async def suHandle(
             if argument[1] not in data:
                 data += [argument[1]]
                 await su.send(f"已封禁{argument[1]}")
+            # 广播
+            groupList = await bot.get_group_list()
+            if len(argument) >= 3:
+                because = argument[2]
+            else:
+                because = "超管未指定原因"
+            username = (await bot.get_stranger_info(user_id=argument[1]))['nickname']
+            for group in groupList:
+                await bot.send_group_msg(
+                    message=f"用户 {username}({argument[1]}) 已被超管封禁：{because}",
+                    group_id=group['group_id']
+                )
             json.dump(data, open("data/su.blackList.json", "w"))
             reloadBlackList()
-        elif argument[0] == "pardon" or argument[0] == "解封":
+        elif argument[0] == "pardon" or argument[0] == "解封" or argument[0] == "unban":
             data = json.load(open("data/su.blackList.json"))
             length = 0
             for user in data:
@@ -197,7 +209,7 @@ async def suHandle(
                         if itemData["id"] == item["item"]["id"] and itemData["data"] == item["item"]["data"]:
                             autosellItem = autoSellData.pop(length)
                             break
-                        lenght += 1
+                        length += 1
                     json.dump(
                         autoSellData,
                         open(
