@@ -14,14 +14,18 @@ cave = on_command("cave", aliases={"回声洞"})
 ctrlGroup = json.load(open("data/ctrl.json"))["control"]
 path = os.path.abspath(os.path.dirname("."))
 commandHelp = {
-    "name": "cave",
-    "info": "回声洞",
-    "msg": "投稿，随机或查询一条回声洞",
-    "usage": [
-        "cave：随机一条回声洞",
-        "cave-a <内容>：投稿一条回声洞（见cave(1)）",
-        "cave-g <回声洞ID>：查看回声洞"
-    ]
+    "cave": {
+        "name":
+        "cave",
+        "info":
+        "随机回声洞",
+        "msg":
+        "投稿，随机或查询一条回声洞",
+        "usage": [
+            "cave：随机一条回声洞", "cave-a <内容>：投稿一条回声洞（见cave(1)）",
+            "cave-g <回声洞ID>：查看置顶回声洞"
+        ]
+    }
 }
 
 
@@ -39,11 +43,8 @@ async def downloadImages(message: str):
             with open(f"data/caveImages/{imageID}.png", "wb") as f:
                 f.write(response.read())
         return await downloadImages(
-            message.replace(
-                message[cqStart:message.find("]", cqStart)],
-                f"[[Img:{imageID}]]"
-            )
-        )
+            message.replace(message[cqStart:message.find("]", cqStart)],
+                            f"[[Img:{imageID}]]"))
 
 
 def parseCave(text: str):
@@ -54,19 +55,13 @@ def parseCave(text: str):
         imageID = text[imageIDStart + 6:text.find("]]]", imageIDStart)]
         imagePath = os.path.join(path, "data", "caveImages", f"{imageID}.png")
         imageCQ = f"[CQ:image,file=file://{imagePath}]"
-        return parseCave(
-            text.replace(
-                f"[[Img:{imageID}]]]",
-                str(imageCQ)
-            )
-        )
+        return parseCave(text.replace(f"[[Img:{imageID}]]]", str(imageCQ)))
 
 
 @cave.handle()
-async def cave_handle(
-        bot: Bot,
-        event: MessageEvent,
-        message: Message = CommandArg()):
+async def cave_handle(bot: Bot,
+                      event: MessageEvent,
+                      message: Message = CommandArg()):
     try:
         data = json.load(open("data/cave.data.json", encoding="utf-8"))
         argument = message.extract_plain_text().split(" ")
@@ -74,13 +69,22 @@ async def cave_handle(
             caveList = data["data"].values()
             caveData = random.choice(list(caveList))
             text = parseCave(caveData["text"])
-            senderData = await bot.get_stranger_info(user_id=caveData["sender"])
-            await cave.finish(Message(f"""回声洞——（{caveData['id']}）
+            if type(caveData["sender"]) == dict:
+                if caveData["sender"]["type"] == "nickname":
+                    senderData = {"nickname": caveData["sender"]["name"]}
+                else:
+                    senderData = {"nickname": "未知"}
+            else:
+                senderData = await bot.get_stranger_info(
+                    user_id=caveData["sender"])
+            await cave.finish(
+                Message(f"""回声洞——（{caveData['id']}）
 {text}
 ——{senderData['nickname']}"""))
 
         elif argument[0] in ["add", "-a", "添加"]:
-            text = await downloadImages(str(message)[argument[0].__len__():].strip())
+            text = await downloadImages(
+                str(message)[argument[0].__len__():].strip())
             data["data"][data["count"]] = {
                 "id": data["count"],
                 "text": text,
@@ -88,14 +92,11 @@ async def cave_handle(
             }
             data["count"] += 1
             # 发送通知
-            await bot.send_group_msg(
-                message=Message((
-                    f"「回声洞新投稿（{data['count'] - 1}）」\n"
-                    f"来自：{event.get_session_id()}\n"
-                    f"内容：{str(message)[argument[0].__len__():].strip()}"
-                )),
-                group_id=ctrlGroup
-            )
+            await bot.send_group_msg(message=Message(
+                (f"「回声洞新投稿（{data['count'] - 1}）」\n"
+                 f"来自：{event.get_session_id()}\n"
+                 f"内容：{str(message)[argument[0].__len__():].strip()}")),
+                                     group_id=ctrlGroup)
             # 写入数据
             json.dump(data, open("data/cave.data.json", "w", encoding="utf-8"))
             await cave.finish(f"回声洞（{data['count'] - 1}）已添加")
@@ -103,8 +104,10 @@ async def cave_handle(
         elif argument[0] in ["-g", "查询"]:
             caveData = data["data"][argument[1]]
             text = parseCave(caveData["text"])
-            senderData = await bot.get_stranger_info(user_id=caveData["sender"])
-            await cave.finish(Message(f"""回声洞——（{caveData['id']}）
+            senderData = await bot.get_stranger_info(user_id=caveData["sender"]
+                                                     )
+            await cave.finish(
+                Message(f"""回声洞——（{caveData['id']}）
 {text}
 ——{senderData['nickname']}"""))
 
@@ -113,17 +116,6 @@ async def cave_handle(
     except KeyError as e:
         await cave.finish(f"回声洞（{e}）不存在")
     except Exception:
-        await bot.send_group_msg(
-            message=traceback.format_exc(),
-            group_id=ctrlGroup
-        )
+        await bot.send_group_msg(message=traceback.format_exc(),
+                                 group_id=ctrlGroup)
         await cave.finish("处理失败")
-
-# [HELPSTART]
-# !Usage 1 cave
-# !Info 1 随机抽取一条回声洞
-# !Usage 2 cave add <内容>
-# !Info 2 投稿一条回声洞\n我们不建议您投稿垃圾内容，可能会被超级用户封禁（见/man su(1)）\n关于回声洞投稿守则，见/man cave(1)
-# !Usage 3 cave-g <回声洞ID>
-# !Info 3 显示ID为 <回声洞ID> 的回声洞
-# [HELPEND]
