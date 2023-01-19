@@ -257,7 +257,8 @@ async def suHandle(
                 await su.send(f"活动的规则：{activeRules}")
             elif argument[1] == "remove" or argument[1] == "删除":
                 os.remove(f"rules/{argument[2]}.json")
-
+        elif argument[0] in ["update", "检查更新"]:
+            await su.send("正在检查更新，请稍候 ...")
         # 反馈
         await su.finish("完成")
 
