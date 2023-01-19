@@ -4,14 +4,17 @@
 import json
 import time
 import traceback
+import re
 
-from nonebot import on_command
+from nonebot_plugin_apscheduler import scheduler
+from nonebot import on_command, require, get_bot
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot.adapters.onebot.v11.event import GroupMessageEvent
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
 
+require("nonebot_plugin_apscheduler")
 vote = on_command("vote", aliases={"投票"})
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))['control']
 
@@ -22,78 +25,98 @@ async def voteHandle(
         event: GroupMessageEvent,
         message: Message = CommandArg()):
     try:
-        data = json.load(open("data/vote.data.json", encoding="utf-8"))
+        data = json.load(open("data/vote.list.json", encoding="utf-8"))
+        answer = ""
         argument = message.extract_plain_text().split("\n")
-        group = event.get_session_id().split("_")[1]
-        argument[0] = argument[0].split(" ")
-        # 检查过期
-        nowTime = time.time()
-        length = 0
-        _data = data.copy()
-        for voteData in _data:
-            if nowTime >= voteData["endTime"]:
-                data[length]["status"] = "已结束"
-            length += 1
-        # 解析参数
-        if argument[0][0] == "":
-            text = "XDbot2 群投票列表：\n"
-            length = 0
-            for item in data:
-                if item["group"] == group:
-                    text += f"{length}. {item['title']}（{item['status']}）\n"
-                length += 1
-            await vote.finish(text)
-        elif argument[0][0] == "create" or argument[0][0] == "创建":
-            voteID = max(len(data) - 1, 0)
-            if len(argument[0]) < 2:
-                argument[0].append(24)
+        mode = argument[0].split(" ")[0]
+        if mode == "create" or mode == "创建":
+            # 收集数据
+            timeMatch = re.search(r"[0-9]+h", argument[0])
+            # 持续时间
+            if timeMatch is not None:
+                voteTime = int(timeMatch.group(0).replace("h", "")) * 60 * 60
             else:
-                argument[0][1] = int(argument[0][1])
+                voteTime = 86400
+            # 是否为投票全局
+            if "global" in argument[0]:
+                globalVote = True
+                # group = None
+            else:
+                globalVote = False
+            group = event.group_id
+            # 选项列表
             choices = []
-            for c in argument[2:]:
-                choices.append({"name": c, "user": []})
-            data.append({
-                "title": argument[1],
-                "choices": choices,
-                "sender": event.get_user_id(),
-                "startTime": time.time(),
-                "status": "进行中",
+            for choice in argument[2:]:
+                choices.append(choice)
+            # 标题
+            title = argument[1]
+            # 发起人
+            sender = event.get_user_id()
+            # 开始、结束时间
+            startTime = time.time()
+            endTime = time.time() + voteTime
+            # 投票ID
+            length = 0
+            while True:
+                length += 1
+                if str(length) not in data.keys():
+                    voteID = str(length)
+                    break
+            # 汇总数据
+            voteData = {
+                "id": voteID,
+                "global": globalVote,
                 "group": group,
-                "endTime": time.time() + 60 * 60 * argument[0][1]
-            })
-            json.dump(data, open("data/vote.data.json", "w", encoding="utf-8"))
-            await vote.finish(f"投票 #{voteID} 已创建")
-        elif argument[0][0] == "view" or argument[0][0] == "查看":
-            voteData = data[int(argument[0][1])]
-            if event.get_session_id().split("_")[1] == voteData['group']:
-                text = f"{voteData['title']}（{voteData['status']}）\n \n"
-                length = 0
+                "sender": sender,
+                "startTime": startTime,
+                "endTime": endTime,
+                "choices": choices,
+                "users": dict(),
+                "bot": (await bot.get_login_info())["user_id"],
+                "title": title,
+                "status": "进行中"
+            }
+            # 添加数据
+            data[voteID] = voteData
+            # 返回
+            answer = (
+                "投票创建成功！\n",
+                f"ID: #{voteID}")
+        elif mode == "list" or mode == "列表" or mode == "":
+            answer = "XDbot2 投票列表：\n"
+            for key in list(data.keys()):
+                voteData = data[key]
+                if voteData["group"] == event.group_id or voteData["global"]:
+                    answer += f"[{key}] {voteData['title']} （{voteData['status']}）\n"
+        elif mode == "view" or mode == "查看":
+            voteData = data[argument[0].split(" ")[1]]
+            answer = f"[{voteData['status']}] {voteData['title']}\n \n"
+            length = 0
+            for c in voteData["choices"]:
                 selected = 0
-                for c in voteData["choices"]:
-                    selected += len(c['user'])
-                for choice in voteData['choices']:
-                    text += f"{length}. {choice['name']}（{len(choice['user'])}/{selected}）\n"
-                    length += 1
-                text += f" \n发起人：{(await bot.get_stranger_info(user_id=voteData['sender']))['nickname']}({voteData['sender']})"
-                text += f"\n截止时间：{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}"
-                await vote.finish(text)
+                for k in voteData["users"].keys():
+                    if voteData["users"][k] == length:
+                        selected += 1
+                length += 1
+                answer += f"{length}. {c} （{selected}/{len(voteData['users'])}）\n"
+
+        elif mode == "select" or mode == "选择":
+            voteData = data[argument[0].split(" ")[1]]
+            choice = int(argument[0].split(" ")[2])
+            if voteData['status'] == "进行中":
+                if voteData["group"] == event.group_id or voteData["global"]:
+                    if event.get_user_id() not in voteData["users"]:
+                        data[argument[0].split(" ")[1]]["users"][event.get_user_id()] = choice
+                        answer = f"已选择：{voteData['choices'][choice]}"
+                    else:
+                        answer = "错误：不能重复投票"
+                else:
+                    answer = "错误：权限不足"
             else:
-                await vote.finish("权限不足")
-        elif argument[0][0] == "select" or argument[0][0] == "选择":
-            # 是否重复选择
-            for c in data[int(argument[0][1])]["choices"]:
-                if event.get_user_id() in c["user"]:
-                    await vote.finish("您已经参与过了")
-            # 选择
-            if event.get_session_id().split("_")[1] == data[int(
-                    argument[0][1])]['group'] and voteData["status"] != "已结束":
-                data[int(argument[0][1])]["choices"][int(
-                    argument[0][2])]["user"].append(event.get_user_id())
-                json.dump(data, open(
-                    "data/vote.data.json", "w", encoding="utf-8"))
-                await vote.finish("OK")
-            else:
-                await vote.finish("权限不足")
+                answer = "错误：投票已结束"
+            
+        json.dump(data, open("data/vote.list.json", "w", encoding="utf-8"))
+        await vote.finish(str(answer))
 
     except FinishedException:
         raise FinishedException()
@@ -104,6 +127,32 @@ async def voteHandle(
             message=traceback.format_exc(),
             group_id=ctrlGroup
         )
+
+
+
+
+
+@scheduler.scheduled_job("cron", minute="*/1", id="reloadVote")
+async def reloadVote():
+    data = json.load(open("data/vote.list.json", encoding="utf-8"))
+    for key in list(data.keys()):
+        voteData = data[key]
+        bot = get_bot(str(voteData["bot"]))
+        if voteData["status"] == "进行中":
+            if time.time() >= voteData["endTime"]:
+                await bot.send_group_msg(
+                    message=f"投票「{voteData['title']}」已结束\n使用 /vote view {voteData['id']} 查看结果",
+                    group_id=voteData["group"]
+                )
+                data[key]["status"] = "已结束"
+            elif int(voteData["endTime"] - time.time()) <= 3600 and "msg" not in voteData.keys():   # 3600s，一小时
+                await bot.send_group_msg(
+                    message=f"投票「{voteData['title']}」将在 1 小时后截止",
+                    group_id = voteData["group"]
+                )
+                data[key]["msg"] = True
+    json.dump(data, open("data/vote.list.json", "w", encoding="utf-8"))
+
 
 # [HELPSTART]
 # !Usage 1 vote
