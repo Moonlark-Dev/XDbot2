@@ -54,12 +54,12 @@ async def banCountHandle(bot: Bot, event: GroupBanNoticeEvent):
         if event.group_id not in data.keys():
             data[event.group_id] = []
         if event.duration != 0:
-            data[event.group_id].insert(0, [{
+            data[event.group_id].insert(0, {
                 "user": await bot.get_stranger_info(user_id=event.get_user_id()),
                 "duration": event.duration,
                 "operator": await bot.get_stranger_info(user_id=event.operator_id),
                 "banTime": int(time.time())
-            }])
+            })
         else:
             nowTime = int(time.time())
             length = 0
