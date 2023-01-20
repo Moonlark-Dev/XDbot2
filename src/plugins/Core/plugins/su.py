@@ -243,7 +243,7 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
                         tempID = len(data[group])
                         image = data["review"].pop(argument[3])
                         data[group].append(image)
-                        await su.send(f"「图片已添加」\n临时ID：{group}{tempID}")
+                        await su.send(Message(f"「图片已添加」\n临时ID：{group}{tempID}"))
                 elif argument[3] in ["remove", "删除"]:
                     if argument[4] in ["all", "所有", "*"]:
                         data["review"] = dict()
@@ -254,7 +254,7 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
             elif argument[1] in ["list", "列表"]:
                 length = 0
                 for image in data[argument[2]]:
-                    await su.send(f"「临时ID：{argument[2]}{length}」\n{image}")
+                    await su.send(Message(f"「临时ID：{argument[2]}{length}」\n{image}"))
                     length += 1
             elif argument[1] in ["remove", "删除"]:
                 data[argument[2]].pop(argument[3])
