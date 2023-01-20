@@ -91,3 +91,10 @@ async def msgSenderHandle(
             message=traceback.format_exc(),
             group_id=ctrlGroup
         )
+
+# [HELPSTART] Version: 2
+# Command: messenger
+# Info: 信使，让XDbot帮你带话
+# Msg: XDbot2 信使
+# Usage: messenger <收信人>\n<内容>
+# [HELPEND]

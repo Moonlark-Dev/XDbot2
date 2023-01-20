@@ -172,3 +172,4 @@ async def imageSaverHandle(
             message=traceback.format_exc(),
             group_id=ctrlGroup
         )
+

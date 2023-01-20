@@ -185,4 +185,11 @@ for r in rules:
             try:
                 runRuleSync(ruleData["初始化"])
             except BaseException:
-                pass
+                logger.error(traceback.format_exc())
+
+# [HELPSTART] Version: 2
+# Command: function
+# Info: 调用由 XDbot2 Rules 提供的命令
+# Msg: 调用规则命令
+# Usage: function <命令> [参数]
+# [HELPEND]

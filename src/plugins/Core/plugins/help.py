@@ -37,6 +37,8 @@ async def helpHandle(bot: Bot, message: Message = CommandArg()):
                 f"用法（{length - 1}）：\n{usage}"
             )
         await help.finish(reply)
+    except KeyError as e:
+        await help.finish(f"未知指令：{e}")
     except FinishedException:
         raise FinishedException()
     except Exception:
@@ -51,7 +53,7 @@ async def helpHandle(bot: Bot, message: Message = CommandArg()):
 # Usage: help <指令名>：查看指定指令的用法
 # Info: 查询指定命令说明，若未指定指令名，则显示全部命令用法
 # Msg: 查看指令帮助
-# [END]
+# [HELPEND]
 
 # !Usage 1 help [指令名]
 

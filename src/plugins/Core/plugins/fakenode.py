@@ -41,7 +41,7 @@ async def fakenodeHandle(
             group_id=group
         )
         await bot.send_group_msg(
-            message=f"「新建伪转发」\n用户：{event.get_user_id()}",
+            message=f"「新建伪转发」\n用户：{event.get_user_id()}\n \n{msg}",
             group_id=ctrlGroup
         )
         await bot.call_api(
@@ -60,7 +60,9 @@ async def fakenodeHandle(
         )
         await fakenode.finish("处理失败")
 
-# [HELPSTART]
-# !Usage 1 fakenode <QQ号>:<消息>\n<QQ号>:<消息>\n<QQ号>:<消息>\n...
-# !Info 1 伪造一个QQ群转发消息并发送到当前群聊
+# [HELPSTART] Version: 2
+# Command: fakenode
+# Usage fakenode <QQ号>:<消息>：伪造群消息转发（见fakenode(0)）
+# Info 伪造一个QQ群转发消息并发送到当前群聊
+# Msg 伪造消息转发
 # [HELPEND]

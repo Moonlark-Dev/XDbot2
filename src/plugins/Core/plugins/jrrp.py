@@ -134,9 +134,9 @@ async def jrrpHandle(
 
 # [HELPSTART] Version: 2
 # Command: jrrp
-# Usage: jrrp（计算自己的人品值）
-# Usage: jrrp <QQ号>（计算别人的人品值）
-# Usage: jrrp rank [count]（查询人品群排名）
+# Usage: jrrp：计算自己的人品值
+# Usage: jrrp <QQ号>：计算别人的人品值
+# Usage: jrrp rank [count]：查询人品群排名（见jrrp(1)）
 # Info: 计算自己或别人的人品值，或查询今日人品群排名
 # Msg: 计算今日人品
 # [HELPEND]

@@ -38,5 +38,5 @@ async def useHandle(
 
 # [HELPSTART]
 # !Usage 1 use <背包物品ID>
-# !Info 1 使用背包中的物品（暂不支持自定义使用数量）
+# !Info 1 使用物品
 # [HELPEND]
