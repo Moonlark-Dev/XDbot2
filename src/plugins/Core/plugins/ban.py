@@ -30,7 +30,12 @@ async def homepage():
 async def viewBans(group_id):
     data = json.load(open("data/ban.banData.json", encoding="utf-8"))
     html = "<table border='1'><tr><td>用户</td><td>时长</td><td>禁言时间</td><td>解除时间</td><td>操作员</td></tr>"
-    for item in data[group_id]:
+    for i in data[group_id]:
+        # 类型转换处理（我写了个啥……）
+        if type(i) == list:
+            item = i[0]
+        else:
+            item = i
         if "pardonTime" in item.keys():
             pardonTime = item['pardonTime']
         else:
