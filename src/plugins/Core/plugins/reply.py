@@ -140,6 +140,8 @@ async def imageSaverHandle(
                             f"{event.get_session_id()}")),
                         group_id=ctrlGroup
                     )
+
+                    json.dump(data, open("data/reply.images.json", "w"))
                     await asyncio.sleep(random.random() / 2)
                     await imageSaver.send("好图，我的了")
                     latestSend = time.time()
@@ -160,6 +162,8 @@ async def imageSaverHandle(
                     )
                     await asyncio.sleep(random.random() / 2)
                     await imageSaver.send("好图，我的了")
+
+                    json.dump(data, open("data/reply.images.json", "w"))
                     latestSend = time.time()
                 # elif random.random() <= 0.01:
 
