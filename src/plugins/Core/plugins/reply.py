@@ -65,9 +65,7 @@ async def repetitionHandle(
 
 
 @imageSender.handle()
-async def imageSender(
-        bot: Bot,
-        event: GroupMessageEvent):
+async def imageSenderHandle(bot: Bot):
     try:
         global latestSend
         if time.time() - latestSend > 90:
