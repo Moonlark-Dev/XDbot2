@@ -257,7 +257,7 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
                     await su.send(Message(f"「临时ID：{argument[2]}{length}」\n{image}"))
                     length += 1
             elif argument[1] in ["remove", "删除"]:
-                data[argument[2]].pop(argument[3])
+                data[argument[2]].pop(int(argument[3]))
             elif argument[1] in ["clear", "清空"]:
                 data = {"A": [], "B": [], "C": [], "review": dict()}
 
