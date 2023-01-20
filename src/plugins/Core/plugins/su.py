@@ -24,7 +24,7 @@ def reloadBlackList():
 @su.handle()
 async def suHandle(bot: Bot, message: Message = CommandArg()):
     try:
-        argument = message.extract_plain_text().split(" ")
+        argument = str(message).split(" ")
         if argument[0] == "ban" or argument[0] == "封禁":
             data = json.load(open("data/su.blackList.json"))
             if argument[1] not in data:
@@ -250,7 +250,7 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
                     else:
                         data["review"].pop(argument[4])
             elif argument[1] in ["添加", "add"]:
-                data[argument[2]] = argument[3]
+                data[argument[2]].append(argument[3])
             elif argument[1] in ["list", "列表"]:
                 length = 0
                 for image in data[argument[2]]:
