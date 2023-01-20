@@ -1,4 +1,4 @@
-# XDbot2 V2.0.0-beta master/84798514
+# XDbot2 V2.0.0-beta master/af3df071
 
 import os
 import json
@@ -14,5 +14,5 @@ for key in list(data.keys()):
         else:
             banList.append(item)
     data[key] = banList
-json.dump(data, open("ban.banData.json", encoding="utf-8"))
+json.dump(data, open("ban.banData.json", "w", encoding="utf-8"))
 print("已重写：data/ban.banData.json")
