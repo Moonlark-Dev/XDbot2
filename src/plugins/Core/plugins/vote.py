@@ -106,7 +106,8 @@ async def voteHandle(
             if voteData['status'] == "进行中":
                 if voteData["group"] == event.group_id or voteData["global"]:
                     if event.get_user_id() not in voteData["users"]:
-                        data[argument[0].split(" ")[1]]["users"][event.get_user_id()] = choice
+                        data[argument[0].split(
+                            " ")[1]]["users"][event.get_user_id()] = choice
                         answer = f"已选择：{voteData['choices'][choice]}"
                     else:
                         answer = "错误：不能重复投票"
@@ -114,7 +115,7 @@ async def voteHandle(
                     answer = "错误：权限不足"
             else:
                 answer = "错误：投票已结束"
-            
+
         json.dump(data, open("data/vote.list.json", "w", encoding="utf-8"))
         await vote.finish(str(answer))
 
@@ -127,9 +128,6 @@ async def voteHandle(
             message=traceback.format_exc(),
             group_id=ctrlGroup
         )
-
-
-
 
 
 @scheduler.scheduled_job("cron", minute="*/1", id="reloadVote")
@@ -145,10 +143,11 @@ async def reloadVote():
                     group_id=voteData["group"]
                 )
                 data[key]["status"] = "已结束"
-            elif int(voteData["endTime"] - time.time()) <= 3600 and "msg" not in voteData.keys():   # 3600s，一小时
+            # 3600s，一小时
+            elif int(voteData["endTime"] - time.time()) <= 3600 and "msg" not in voteData.keys():
                 await bot.send_group_msg(
                     message=f"投票「{voteData['title']}」将在 1 小时后截止",
-                    group_id = voteData["group"]
+                    group_id=voteData["group"]
                 )
                 data[key]["msg"] = True
     json.dump(data, open("data/vote.list.json", "w", encoding="utf-8"))

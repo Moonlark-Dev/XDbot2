@@ -32,7 +32,7 @@ async def viewBans(group_id):
     html = "<table border='1'><tr><td>用户</td><td>时长</td><td>禁言时间</td><td>解除时间</td><td>操作员</td></tr>"
     for i in data[group_id]:
         # 类型转换处理（我写了个啥……）
-        if type(i) == list:
+        if isinstance(i, list):
             item = i[0]
         else:
             item = i

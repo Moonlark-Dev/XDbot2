@@ -253,7 +253,7 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
                 data[argument[2]] = argument[3]
             elif argument[1] in ["list", "列表"]:
                 length = 0
-                for image in data[argument[2]].keys():
+                for image in data[argument[2]]:
                     await su.send(f"「临时ID：{argument[2]}{length}」\n{image}")
                     length += 1
             elif argument[1] in ["remove", "删除"]:

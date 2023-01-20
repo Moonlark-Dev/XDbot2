@@ -69,7 +69,7 @@ async def cave_handle(bot: Bot,
             caveList = data["data"].values()
             caveData = random.choice(list(caveList))
             text = parseCave(caveData["text"])
-            if type(caveData["sender"]) == dict:
+            if isinstance(caveData["sender"], dict):
                 if caveData["sender"]["type"] == "nickname":
                     senderData = {"nickname": caveData["sender"]["name"]}
                 else:
@@ -96,7 +96,7 @@ async def cave_handle(bot: Bot,
                 (f"「回声洞新投稿（{data['count'] - 1}）」\n"
                  f"来自：{event.get_session_id()}\n"
                  f"内容：{str(message)[argument[0].__len__():].strip()}")),
-                                     group_id=ctrlGroup)
+                group_id=ctrlGroup)
             # 写入数据
             json.dump(data, open("data/cave.data.json", "w", encoding="utf-8"))
             await cave.finish(f"回声洞（{data['count'] - 1}）已添加")
