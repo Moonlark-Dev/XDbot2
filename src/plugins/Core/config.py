@@ -145,6 +145,10 @@ class Config(BaseSettings):
                 "C": [],
                 "review": dict()
             })
+        },
+        {
+            "path": "data/whoAtme.data.json",
+            "text": "{}"
         }
         # ,
         # {
