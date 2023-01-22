@@ -59,7 +59,7 @@ async def voteHandle(
             length = 0
             while True:
                 length += 1
-                    if str(length) not in data.keys():
+                if str(length) not in data.keys():
                     voteID = str(length)
                     break
             # 汇总数据
