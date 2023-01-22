@@ -59,7 +59,7 @@ async def voteHandle(
             length = 0
             while True:
                 length += 1
-                if str(length) not in data.keys():
+                    if str(length) not in data.keys():
                     voteID = str(length)
                     break
             # 汇总数据
@@ -115,7 +115,18 @@ async def voteHandle(
                     answer = "错误：权限不足"
             else:
                 answer = "错误：投票已结束"
-
+        elif mode == "close" or mode == "结束":
+            voteindex=argument[0].split(" ")[1]
+            voteData = data[voteindex]
+            if voteData['status'] == "进行中":
+                voteData['status']="已结束"
+                answer = f"结束了投票{voteindex}"
+            else:
+                answer = f"错误：投票{voteindex}已结束"
+        elif mode == "delete" or mode == "删除":
+            voteindex=argument[0].split(" ")[1]
+            data.pop(voteindex)
+            answer = f"投票{voteindex}已删除"
         json.dump(data, open("data/vote.list.json", "w", encoding="utf-8"))
         await vote.finish(str(answer))
 
@@ -155,5 +166,5 @@ async def reloadVote():
 
 # [HELPSTART]
 # !Usage 1 vote
-# !Info 1 显示群投票列表
+# !Info 1 群投票
 # [HELPEND]
