@@ -20,7 +20,7 @@ async def linuxmanHandle(
     try:
         argument = message.extract_plain_text().split(" ")
         try:
-            with req.urlopen(f"https://man.archlinux.org/man/{argument[0]}.txt") as fp:
+            with req.urlopen(f"https://man.archlinux.org/man/{argument[1]}.txt") as fp:
                 manpage=fp.read()
                 await linuxman.finish(manpage)
         except urllib.error.HTTPError as e:
