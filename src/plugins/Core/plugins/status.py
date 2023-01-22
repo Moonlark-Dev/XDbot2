@@ -13,37 +13,37 @@ import platform
 status = on_command("status", aliases={"系统状态", "状态"})
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 
-async def cpu_percent(): return psutil.cpu_percent()
-async def cpu_freq(): return f"{round(psutil.cpu_freq().current/1000,2)} Ghz / {round(psutil.cpu_freq().max/1000,2)} Ghz"
-async def cpu_count(): return psutil.cpu_count()
+def cpu_percent(): return psutil.cpu_percent()
+def cpu_freq(): return f"{round(psutil.cpu_freq().current/1000,2)} Ghz / {round(psutil.cpu_freq().max/1000,2)} Ghz"
+def cpu_count(): return psutil.cpu_count()
 
-async def mem_used(): return round(psutil.virtual_memory().used/1024/1024/1024, 1)
-async def mem_total(): return round(psutil.virtual_memory().total/1024/1024/1024, 1)
-async def mem_percent(): return psutil.virtual_memory().percent
+def mem_used(): return round(psutil.virtual_memory().used/1024/1024/1024, 1)
+def mem_total(): return round(psutil.virtual_memory().total/1024/1024/1024, 1)
+def mem_percent(): return psutil.virtual_memory().percent
 
-async def swap_used(): return round(psutil.swap_memory().used/1024/1024/1024, 1)
-async def swap_total(): return round(psutil.swap_memory().total/1024/1024/1024, 1)
-async def swap_percent(): return psutil.swap_memory().percent
+def swap_used(): return round(psutil.swap_memory().used/1024/1024/1024, 1)
+def swap_total(): return round(psutil.swap_memory().total/1024/1024/1024, 1)
+def swap_percent(): return psutil.swap_memory().percent
 
-async def format_time(seconds):
+def format_time(seconds):
     d = int(seconds/86400)
     h = int(seconds/3600) % 60
     m = int(seconds/60) % 60
     s = seconds % 60
     return f"{d}d{h}h{m}m{s}s"
 
-async def uptime():
+def uptime():
     try:
         seconds = int(float(open("/proc/uptime").read().split(' ')[0]))
     except:
         return 'Unknown'
     return format_time(seconds)
 
-async def datetime(): return time.strftime("%Y/%m/%d %H:%M:%S", time.localtime())
-async def user(): return getpass.getuser()
-async def hostname(): return socket.gethostname()
-async def os(): return platform.platform() 
-async def pyver(): return platform.python_version()
+def datetime(): return time.strftime("%Y/%m/%d %H:%M:%S", time.localtime())
+def user(): return getpass.getuser()
+def hostname(): return socket.gethostname()
+def os(): return platform.platform() 
+def pyver(): return platform.python_version()
 
 @status.handle()
 async def statusHandle(bot: Bot):
