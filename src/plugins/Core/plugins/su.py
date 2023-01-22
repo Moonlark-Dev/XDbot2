@@ -58,7 +58,7 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
             for group in groupList:
                 await bots[muiltAccoutData[group]].send_group_msg(
                     message=f"用户 {username}({argument[1]}) 已被超管封禁：{because}",
-                    group_id=group['group_id'])
+                    group_id=group)
             json.dump(data, open("data/su.blackList.json", "w"))
             reloadBlackList()
         elif argument[0] == "pardon" or argument[0] == "解封" or argument[
@@ -96,7 +96,7 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
             for group in groupList:
                 await bots[muiltAccoutData[group]
                            ].send_group_msg(message=Message(f"【超级广播】\n{text}"),
-                                            group_id=group['group_id'])
+                                            group_id=group)
         elif argument[0] == "config" or argument[0] == "配置":
             if argument[1] == "get" or argument[1] == "获取":
                 await su.send(
