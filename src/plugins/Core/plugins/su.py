@@ -307,7 +307,7 @@ async def blackListHandle(bot: Bot, event: MessageEvent):
 async def muiltAccoutManager(bot: Bot, event: GroupMessageEvent):
     try:
         if event.group_id in muiltAccoutData.keys():
-            if (await bot.get_login_info())["user_id"] != muiltAccoutData[event.group_id]:
+            if str((await bot.get_login_info())["user_id"]) != muiltAccoutData[event.group_id]:
                 raise IgnoredException("多帐号：忽略")
 
     except IgnoredException as e:
