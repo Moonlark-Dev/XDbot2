@@ -50,7 +50,7 @@ async def statusHandle(bot: Bot):
     try:
         initData = json.load(open("data/init.json", encoding="utf-8"))
         await status.finish(f"""系统状态：
-CPU：({cpu_freq()} {cpu_count()}x {cpu_percent()})
+CPU：{cpu_freq()} {cpu_count()}x {cpu_percent()}%
 内存：{mem_used()}GiB / {mem_total()}GiB ({mem_percent()}%)
 交换内存：{swap_used()}GiB / {swap_total()}GiB ({swap_percent()}%)
 运行时间：{format_time(int(time.time() - initData['time']))}
