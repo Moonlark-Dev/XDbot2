@@ -15,6 +15,7 @@ su = on_command("su", aliases={"超管", "superuser"}, permission=SUPERUSER)
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 blackListData = json.load(open("data/su.blackList.json"))
 muiltAccoutData = {}
+bots = []
 driver = get_driver()
 
 
@@ -26,8 +27,9 @@ def reloadBlackList():
 @driver.on_bot_connect
 @driver.on_bot_disconnect
 async def reloadMuiltData():
-    global muiltAccoutData
+    global muiltAccoutData, bots
     bots = get_bots()
+    muiltAccoutData = {}
     for key in list(bots.keys()):
         bot = bots[key]
         groups = await bot.get_group_list()
@@ -46,7 +48,7 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
                 data += [argument[1]]
                 await su.send(f"已封禁{argument[1]}")
             # 广播
-            groupList = await bot.get_group_list()
+            groupList = list(muiltAccoutData.keys())
             if len(argument) >= 3:
                 because = argument[2]
             else:
@@ -54,7 +56,7 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
             username = (await
                         bot.get_stranger_info(user_id=argument[1]))['nickname']
             for group in groupList:
-                await bot.send_group_msg(
+                await bots[muiltAccoutData[group]].send_group_msg(
                     message=f"用户 {username}({argument[1]}) 已被超管封禁：{because}",
                     group_id=group['group_id'])
             json.dump(data, open("data/su.blackList.json", "w"))
@@ -89,11 +91,12 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
         elif argument[0] == "notice" or argument[0] == "超级广播" or argument[
                 0] == "广播":
             text = message.extract_plain_text()[argument[0].__len__() + 1:]
-            groupList = await bot.get_group_list()
+            groupList = list(muiltAccoutData.keys())
             # 开始广播
             for group in groupList:
-                await bot.send_group_msg(message=Message(f"【超级广播】\n{text}"),
-                                         group_id=group['group_id'])
+                await bots[muiltAccoutData[group]
+                           ].send_group_msg(message=Message(f"【超级广播】\n{text}"),
+                                            group_id=group['group_id'])
         elif argument[0] == "config" or argument[0] == "配置":
             if argument[1] == "get" or argument[1] == "获取":
                 await su.send(
@@ -258,7 +261,8 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
                         tempID = len(data[group])
                         image = data["review"].pop(argument[3])
                         data[group].append(image)
-                        await su.send(Message(f"「图片已添加」\n临时ID：{group}{tempID}"))
+                        await su.send(Message(f"「图片已添加」\n临时ID：{group}{tempID}")
+                                      )
                 elif argument[3] in ["remove", "删除"]:
                     if argument[4] in ["all", "所有", "*"]:
                         data["review"] = dict()
@@ -269,7 +273,8 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
             elif argument[1] in ["list", "列表"]:
                 length = 0
                 for image in data[argument[2]]:
-                    await su.send(Message(f"「临时ID：{argument[2]}{length}」\n{image}"))
+                    await su.send(
+                        Message(f"「临时ID：{argument[2]}{length}」\n{image}"))
                     length += 1
             elif argument[1] in ["remove", "删除"]:
                 data[argument[2]].pop(int(argument[3]))
@@ -307,16 +312,15 @@ async def blackListHandle(bot: Bot, event: MessageEvent):
 async def muiltAccoutManager(bot: Bot, event: GroupMessageEvent):
     try:
         if event.group_id in muiltAccoutData.keys():
-            if str((await bot.get_login_info())["user_id"]) != muiltAccoutData[event.group_id]:
+            if str((await bot.get_login_info()
+                    )["user_id"]) != muiltAccoutData[event.group_id]:
                 raise IgnoredException("多帐号：忽略")
 
     except IgnoredException as e:
         raise IgnoredException(e)
     except Exception:
-        await bot.send_group_msg(
-            message=traceback.format_exc(),
-            group_id=ctrlGroup
-        )
+        await bot.send_group_msg(message=traceback.format_exc(),
+                                 group_id=ctrlGroup)
 
 
 # [HELPSTART] Version: 2
@@ -336,4 +340,3 @@ async def muiltAccoutManager(bot: Bot, event: GroupMessageEvent):
 # Usage: su cave remove <回声洞ID>：删除回声洞（su(9)）
 # Usage：我tm不想写了自己去看/man把艹
 # [HELPEND]
-
