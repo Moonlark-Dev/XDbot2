@@ -1,6 +1,6 @@
-from nonebot.adapters.onebot.v11 import MessageEvent, Message
+from nonebot.adapters.onebot.v11 import MessageEvent, Message, GroupMessageEvent
 from nonebot.adapters.onebot.v11.bot import Bot
-from nonebot import on_command
+from nonebot import on_command, get_bots, on_type, get_driver
 from nonebot.exception import FinishedException, IgnoredException
 from nonebot.params import CommandArg
 import traceback
@@ -14,11 +14,26 @@ from nonebot.permission import SUPERUSER
 su = on_command("su", aliases={"超管", "superuser"}, permission=SUPERUSER)
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 blackListData = json.load(open("data/su.blackList.json"))
+muiltAccoutData = {}
+driver = get_driver()
 
 
 def reloadBlackList():
     global blackListData
     blackListData = json.load(open("data/su.blackList.json"))
+
+
+@driver.on_bot_connect
+@driver.on_bot_disconnect
+async def reloadMuiltData():
+    global muiltAccoutData
+    bots = get_bots()
+    for key in list(bots.keys()):
+        bot = bots[key]
+        groups = await bot.get_group_list()
+        for group in groups:
+            if group["group_id"] not in muiltAccoutData.keys():
+                muiltAccoutData[group["group_id"]] = key
 
 
 @su.handle()
@@ -286,6 +301,22 @@ async def blackListHandle(bot: Bot, event: MessageEvent):
     except Exception:
         await bot.send_group_msg(message=traceback.format_exc(),
                                  group_id=ctrlGroup)
+
+
+@event_preprocessor
+async def muiltAccoutManager(bot: Bot, event: GroupMessageEvent):
+    try:
+        if event.group_id in muiltAccoutData.keys():
+            if (await bot.get_login_info())["user_id"] != muiltAccoutData[event.group_id]:
+                raise IgnoredException("多帐号：忽略")
+
+    except IgnoredException as e:
+        raise IgnoredException(e)
+    except Exception:
+        await bot.send_group_msg(
+            message=traceback.format_exc(),
+            group_id=ctrlGroup
+        )
 
 
 # [HELPSTART] Version: 2
