@@ -241,8 +241,9 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
             elif argument[1] == "remove" or argument[1] == "删除":
                 os.remove(f"rules/{argument[2]}.json")
         elif argument[0] in ["update", "检查更新"]:
-            await su.send("正在检查更新，请稍候 ...")
-            # TODO
+            await su.send("正在运行更新程序，请稍候 ...")
+            os.system("python3 update.py")
+            await su.send("运行完成！")
         elif argument[0] in ["img", "图库"]:
             data = json.load(open("data/reply.images.json", encoding="utf-8"))
             if argument[1] in ["review", "审核库", "re"]:
