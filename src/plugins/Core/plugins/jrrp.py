@@ -102,6 +102,7 @@ async def jrrpHandle(
             nowRank = 0
             length = 0
             myRank = None
+            myJrrp = -1
             qq = event.get_user_id()
             temp0 = 114514
             for r in jrrpRank:
@@ -112,6 +113,7 @@ async def jrrpHandle(
                 # 检查是不是自己
                 if str(r["user_id"]) == qq:
                     myRank = nowRank
+                    myJrrp = jrrpRank[length]['jrrp']
                 # 增加length
                 length += 1
             # 生成文本
@@ -119,7 +121,7 @@ async def jrrpHandle(
             for user in jrrpRank[:count]:
                 text += f"{user['rank']}. {user['username']}: {user['jrrp']}\n"
             text += "-" * 20
-            text += f"\n{myRank}. {(await bot.get_stranger_info(user_id=qq))['nickname']}: {jrrpRank[myRank - 1]['jrrp']}"
+            text += f"\n{myRank}. {(await bot.get_stranger_info(user_id=qq))['nickname']}: {myJrrp}"
             await jrrp.finish(text)
         else:
             await jrrp.finish(f"{argument[0]}今天的人品值是：{await getJrrp(argument[0])}")
