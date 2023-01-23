@@ -79,9 +79,7 @@ async def voteHandle(
             # 添加数据
             data[voteID] = voteData
             # 返回
-            answer = (
-                "投票创建成功！\n",
-                f"ID: #{voteID}")
+            answer = "投票创建成功！ID: #{voteID}"
         elif mode == "list" or mode == "列表" or mode == "":
             answer = "XDbot2 投票列表：\n"
             for key in list(data.keys()):
