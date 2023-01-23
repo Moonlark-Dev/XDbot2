@@ -126,6 +126,8 @@ async def jrrpHandle(
 
     except FinishedException:
         raise FinishedException()
+    except ValueError:
+        await jrrp.finish("无效参数", at_sender=True)
     except Exception:
         await bot.send_group_msg(
             message=traceback.format_exc(),

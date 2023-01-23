@@ -95,7 +95,7 @@ async def statusHandle(bot: Bot, message: Message = CommandArg()):
         argument = message.extract_plain_text()
         if argument == "":
             await status.finish(f"""系统状态：
-CPU：{cpu_percent()}%
+CPU：{cpu_percent()}% {cpu_freq()}
 内存：{mem_used()}GiB / {mem_total()}GiB ({mem_percent()}%)
 交换内存：{swap_used()}GiB / {swap_total()}GiB
 运行时间：{format_time(int(time.time() - initData['time']))}
