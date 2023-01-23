@@ -119,7 +119,7 @@ async def jrrpHandle(
             for user in jrrpRank[:count]:
                 text += f"{user['rank']}. {user['username']}: {user['jrrp']}\n"
             text += "-" * 20
-            text += f"\n{myRank}. {(await bot.get_stranger_info(user_id=qq))['nickname']}: {jrrpRank[myRank]['jrrp']}"
+            text += f"\n{myRank}. {(await bot.get_stranger_info(user_id=qq))['nickname']}: {jrrpRank[myRank - 1]['jrrp']}"
             await jrrp.finish(text)
         else:
             await jrrp.finish(f"{argument[0]}今天的人品值是：{await getJrrp(argument[0])}")
