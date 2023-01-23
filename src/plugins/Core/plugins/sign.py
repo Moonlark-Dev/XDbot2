@@ -36,7 +36,7 @@ async def signrankHandle(bot: Bot,
         num += 1
         rank += f"{str(num)}. {(await bot.get_stranger_info(user_id=i['qq']))['nickname']}（{i['time']}）\n"
         if i["qq"] == int(event.get_user_id()):
-            me = f"{str(num)}.{(await bot.get_stranger_info(user_id=i['qq']))['nickname']}（{i['time']}）"
+            me = f"{str(num)}. {(await bot.get_stranger_info(user_id=i['qq']))['nickname']}（{i['time']}）"
     rank += "--------------------\n" + me
     await signrank.finish(rank)
 

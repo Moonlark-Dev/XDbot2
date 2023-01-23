@@ -65,8 +65,8 @@ async def jrrpHandle(
                 at_sender=True)
         elif argument[0] == "rank" or argument[0] == "今日排名":
             # 限时开启
-            if time.localtime().tm_hour < 15:
-                await jrrp.finish("人品排名将在每天 15:00 准时开启")
+            if time.localtime().tm_hour < 17:
+                await jrrp.finish("人品排名将在每天服务器时间 17:00 准时开启")
             # 开始计算
             if argument.__len__() >= 2:
                 count = int(argument[1])
@@ -117,9 +117,9 @@ async def jrrpHandle(
             # 生成文本
             text = "今日人品群排名：\n"
             for user in jrrpRank[:count]:
-                text += f"{user['rank']}. {user['username']}\n"
+                text += f"{user['rank']}. {user['username']}: {user['jrrp']}\n"
             text += "-" * 20
-            text += f"\n{myRank}. {(await bot.get_stranger_info(user_id=qq))['nickname']}"
+            text += f"\n{myRank}. {(await bot.get_stranger_info(user_id=qq))['nickname']}: {user['jrrp']}"
             await jrrp.finish(text)
         else:
             await jrrp.finish(f"{argument[0]}今天的人品值是：{await getJrrp(argument[0])}")
