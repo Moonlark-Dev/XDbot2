@@ -36,6 +36,7 @@ async def reloadMuiltData():
         for group in groups:
             if group["group_id"] not in muiltAccoutData.keys():
                 muiltAccoutData[group["group_id"]] = key
+    json.dump(muiltAccoutData, open("data/su.multiaccoutdata.ro.json", "w"))
 
 
 @su.handle()

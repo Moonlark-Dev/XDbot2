@@ -116,15 +116,15 @@ async def voteHandle(
             else:
                 answer = "错误：投票已结束"
         elif mode == "close" or mode == "结束":
-            voteindex=argument[0].split(" ")[1]
+            voteindex = argument[0].split(" ")[1]
             voteData = data[voteindex]
             if voteData['status'] == "进行中":
-                voteData['status']="已结束"
+                voteData['status'] = "已结束"
                 answer = f"结束了投票{voteindex}"
             else:
                 answer = f"错误：投票{voteindex}已结束"
         elif mode == "delete" or mode == "删除":
-            voteindex=argument[0].split(" ")[1]
+            voteindex = argument[0].split(" ")[1]
             data.pop(voteindex)
             answer = f"投票{voteindex}已删除"
         json.dump(data, open("data/vote.list.json", "w", encoding="utf-8"))
