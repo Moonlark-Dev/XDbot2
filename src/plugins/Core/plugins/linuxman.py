@@ -22,17 +22,19 @@ async def linuxmanHandle(bot: Bot,
         try:
             with req.urlopen(
                     f"https://man.archlinux.org/man/{argument[0]}.txt") as fp:
-                manpage = fp.read()
-                await bot.send_group_forward_msg(messages=[{
+                manpage = fp.read().decode("utf-8")
+                await bot.call_api(
+                    api="seng_group_forward_msg",
+                    messages=[{
                         "type": "node",
                         "data": {
                             "name": "XDbot2 LINUXMAN",
-                            "uin": str((await bot.get_login_info())['user_id']),
+                            "uin": str((await
+                                        bot.get_login_info())['user_id']),
                             "content": str(manpage)
                         }
                     }],
-                    group=str(event.group_id)
-                )
+                    group=str(event.group_id))
                 await linuxman.finish()
         except urllib.error.HTTPError as e:
             if e.status == 404:
