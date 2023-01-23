@@ -2,6 +2,8 @@ from nonebot import on_command
 from nonebot.adapters.onebot.v11 import (Bot, Message, MessageEvent)
 from nonebot.params import CommandArg
 import os
+import marshal
+import random
 
 status = False # [游戏状态] False:待机 True:进行中
 number = -1 # [答案数字] -1:待机 其他数字:进行中
@@ -21,7 +23,8 @@ async def guess_handle(bot: Bot,
         if status:
             reply += "有正在进行中的游戏，请等待结束再发起"
             await guess.finish(reply)
-        number = ord(os.urandom(1)) % 101
+        random.seed(marshal.loads(b'\xe9'+os.urandom(4)))
+        number = random.randint(0,100)
         status = True
         reply += "游戏已开始，请使用 /guess <number> 参与，数字为0~100的整数"
         await guess.finish(reply)
