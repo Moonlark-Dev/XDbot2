@@ -38,11 +38,11 @@ async def guess_handle(bot: Bot,
         except ValueError:
             reply += "无效命令"
             await guess.finish(reply)
-        if num > 100 or num < 0:
-            reply += "无效数字"
-            await guess.finish(reply)
         if not status:
             reply += "没有进行中的游戏，请使用 /guess start 发起一轮游戏"
+            await guess.finish(reply)
+        if num > 100 or num < 0:
+            reply += "无效数字"
             await guess.finish(reply)
         if num > number:
             reply += f"{args[0]} 太大了"
