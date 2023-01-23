@@ -1,8 +1,10 @@
 import json
+import os
 import os.path
 import random
 import time
 import traceback
+import marshal
 
 import httpx
 from nonebot import on_command
@@ -67,6 +69,7 @@ async def cave_handle(bot: Bot,
         argument = str(message).split(" ")
         if argument[0] == "":
             caveList = data["data"].values()
+            random.seed(marshal.loads(b'\xe9' + os.urandom(4)))
             caveData = random.choice(list(caveList))
             text = parseCave(caveData["text"])
             if isinstance(caveData["sender"], dict):
