@@ -85,7 +85,7 @@ async def whoAtmdWriterHandle(
         event: GroupMessageEvent):
     try:
         data = json.load(open("data/whoAtme.data.json", encoding="utf-8"))
-        message = event.get_plaintext()
+        message = str(event.get_message())
         msgID = event.message_id
         match = re.search("\\[CQ:at,qq=[0-9]+\\]", message)
         if match:
