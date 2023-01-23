@@ -27,9 +27,12 @@ async def whoAtmd(
         bot: Bot,
         event: GroupMessageEvent):
     try:
-        data = json.load(open(f"data/whoAtmd.data.json", encoding="utf-8"))
+        data = json.load(open(f"data/whoAtme.data.json", encoding="utf-8"))
         userData = data[event.get_user_id()]
-        groupData = data[event.get_user_id()].pop(event.group_id)
+        try:
+            groupData = data[event.get_user_id()].pop(str(event.group_id))
+        except KeyError:
+            groupData = []
         forwardMessage = [
             {
                 "type": "node",
@@ -87,16 +90,21 @@ async def whoAtmdWriterHandle(
         data = json.load(open("data/whoAtme.data.json", encoding="utf-8"))
         message = str(event.get_message())
         msgID = event.message_id
+        # print(message)
         match = re.search("\\[CQ:at,qq=[0-9]+\\]", message)
+        # print(match)
         if match:
             qq = match.group(0).replace("[CQ:at,qq=", "").replace("]", "")
             try:
-                data[qq][event.group_id].append(msgID)
+                if len(data[qq][str(event.group_id)]) >= 98:
+                    data[qq][str(event.group_id)].pop(0)
+                data[qq][str(event.group_id)].append(msgID)
+
             except Exception:
                 try:
-                    data[qq][event.group_id] = [msgID]
+                    data[qq][str(event.group_id)] = [msgID]
                 except Exception:
-                    data[qq] = {event.group_id: [msgID]}
+                    data[qq] = {str(event.group_id): [msgID]}
             json.dump(
                 data,
                 open(
