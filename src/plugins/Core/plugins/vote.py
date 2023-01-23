@@ -96,11 +96,11 @@ async def voteHandle(
                     if voteData["users"][k] == length:
                         selected += 1
                 length += 1
-                answer += f"{length}. {c} （{selected}/{len(voteData['users'])}）\n"
+                answer += f"{length}. {c} （{selected}/{len(voteData['users'])}） {int(selected / len(voteData['user'] ) * 100)}%\n"
 
         elif mode == "select" or mode == "选择":
             voteData = data[argument[0].split(" ")[1]]
-            choice = int(argument[0].split(" ")[2]) + 1
+            choice = int(argument[0].split(" ")[2]) - 1
             if voteData['status'] == "进行中":
                 if voteData["group"] == event.group_id or voteData["global"]:
                     if event.get_user_id() not in voteData["users"]:
