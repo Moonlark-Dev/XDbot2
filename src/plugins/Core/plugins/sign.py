@@ -26,7 +26,7 @@ async def signrankHandle(bot: Bot,
             sign_rank_data = json.load(f)
             if sign_rank_data["day"] != int(time.time() / 86400):
                 raise FileNotFoundError
-    except:
+    except BaseException:
         sign_rank_data = {"day": int(time.time() / 86400), "rank": []}
     if not sign_rank_data["rank"]:
         await signrank.finish("今天还没有人签到！")
@@ -107,7 +107,7 @@ async def signHandle(bot: Bot, event: GroupMessageEvent):
                     sign_rank_data = json.load(f)
                     if sign_rank_data["day"] != int(time.time() / 86400):
                         raise FileNotFoundError
-            except:
+            except BaseException:
                 sign_rank_data = {"day": int(time.time() / 86400), "rank": []}
             sign_rank_data["rank"].append({
                 "qq":

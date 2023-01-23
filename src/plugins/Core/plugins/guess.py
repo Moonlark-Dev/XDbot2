@@ -25,8 +25,8 @@ async def guess_handle(bot: Bot,
         if status:
             reply += "有正在进行中的游戏，请等待结束再发起"
             await guess.finish(reply)
-        random.seed(marshal.loads(b'\xe9'+os.urandom(4)))
-        number = random.randint(0,100)
+        random.seed(marshal.loads(b'\xe9' + os.urandom(4)))
+        number = random.randint(0, 100)
         status = True
         reply += "游戏已开始，请使用 /guess <number> 参与，数字为0~100的整数"
         await guess.finish(reply)
