@@ -100,7 +100,7 @@ async def whoAtmdWriterHandle(
             json.dump(
                 data,
                 open(
-                    "data/whoAtmd.data.json",
+                    "data/whoAtme.data.json",
                     "w",
                     encoding="utf-8"))
 
