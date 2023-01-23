@@ -88,18 +88,18 @@ async def imageSenderHandle(bot: Bot):
                 await asyncio.sleep(random.random() / 2)
                 await imageSender.send(Message(image))
                 latestSend = time.time()
-            if random.random() <= 0.15:     # 清理图库，机率：15%
-                imageData = json.load(
-                    open("data/reply.images.json", encoding="utf-8"))
-                try:
-                    b2cLen = random.randint(0, len(imageData["B"]) - 1)
-                    removeLen = random.randint(0, len(imageData["C"]) - 1)
-                    imageData["C"].append(imageData["B"].pop(b2cLen))
-                    imageData["C"].pop(removeLen)
-                except BaseException:
-                    pass
-                json.dump(imageData, open(
-                    "data/reply.images.json", "w", encoding="utf-8"))
+                if random.random() <= 0.05:     # 清理图库，机率：5% x 5%
+                    imageData = json.load(
+                        open("data/reply.images.json", encoding="utf-8"))
+                    try:
+                        b2cLen = random.randint(0, len(imageData["B"]) - 1)
+                        removeLen = random.randint(0, len(imageData["C"]) - 1)
+                        imageData["C"].append(imageData["B"].pop(b2cLen))
+                        imageData["C"].pop(removeLen)
+                    except BaseException:
+                        pass
+                    json.dump(imageData, open(
+                        "data/reply.images.json", "w", encoding="utf-8"))
 
     except Exception:
         await bot.send_group_msg(
