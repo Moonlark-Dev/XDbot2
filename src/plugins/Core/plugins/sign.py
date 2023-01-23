@@ -2,16 +2,42 @@ import json
 import traceback
 import random
 import time
-from nonebot import on_keyword
-from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent
+from nonebot import on_keyword,on_command
+from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, Message
 from nonebot.exception import FinishedException
+from nonebot.params import CommandArg
 from . import _userCtrl
 
 sign = on_keyword({"sign", "签到"})
-# sign = on_command("sign", aliases={"签到"})
+signrank = on_command("sign", aliases={"签到"})
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 
-
+@signrank.handle()
+async def signrankHandle(bot: Bot,
+                         event: GroupMessageEvent,
+                         args: Message = CommandArg()):
+    args = args.extract_plain_text().split(" ")
+    if not args[0] == "rank":
+        return
+    rank = "今日签到排行榜：\n"
+    try:
+        with open("data/sign.rank.json", "r") as f:
+            sign_rank_data = json.load(f)
+            if sign_rank_data["day"] != int(time.time() / 86400):
+                raise FileNotFoundError
+    except:
+        sign_rank_data = {"day": int(time.time() / 86400), "rank": []}
+    if not sign_rank_data["rank"]:
+        await signrank.finish("今天还没有人签到！")
+    num = 0
+    me = "你今天还没有签到！"
+    for i in sign_rank_data["rank"]:
+        num += 1
+        rank += f"{str(num)}.[{i['time']}] {(await bot.get_stranger_info(user_id=i['qq']))['nickname']}\n"
+        if i["qq"]==int(event.get_user_id()):
+            me = f"{str(num)}.[{i['time']}] {(await bot.get_stranger_info(user_id=i['qq']))['nickname']}"
+    rank += "--------------------\n" + me
+    await signrank.finish(rank)
 @sign.handle()
 async def signHandle(
         bot: Bot,
@@ -89,12 +115,23 @@ async def signHandle(
                     "data/sign.latestTime.json",
                     "w",
                     encoding="utf-8"))
+            try:
+                with open("data/sign.rank.json", "r") as f:
+                    sign_rank_data=json.load(f)
+                    if sign_rank_data["day"] != int(time.time()/86400):
+                        raise FileNotFoundError
+            except:
+                sign_rank_data={"day":int(time.time()/86400),"rank":[]}
+            sign_rank_data["rank"].append({"qq":int(event.get_user_id()),"time":time.strftime("%H:%M:%S", time.localtime())})
+            with open("data/sign.rank.json", "w") as f:
+                json.dump(sign_rank_data,f)
             # 反馈结果
             await sign.finish(f"""+-----------------------------+
 \t签到成功！
  「VimCoin」：{oldCoinCount} -> {oldCoinCount + addCoin} (+{addCoin})
  「经验」：{userData[userID]['exp']} -> {userData[userID]['exp'] + addExp} (+{addExp})
     您已连续签到{signDay[userID]}天
+    您是今天第{len(sign_rank_data['rank'])}个签到的
 +-----------------------------+""")
 
     except FinishedException:
