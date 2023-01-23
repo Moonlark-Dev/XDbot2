@@ -79,13 +79,13 @@ async def voteHandle(
             # 添加数据
             data[voteID] = voteData
             # 返回
-            answer = "投票创建成功！ID: #{voteID}"
+            answer = f"投票创建成功！ID: #{voteID}"
         elif mode == "list" or mode == "列表" or mode == "":
             answer = "XDbot2 投票列表：\n"
             for key in list(data.keys()):
                 voteData = data[key]
                 if voteData["group"] == event.group_id or voteData["global"]:
-                    answer += f"[{key}] {voteData['title']} （{voteData['status']}）\n"
+                    answer += f"{key}. {voteData['title']} （{voteData['status']}）\n"
         elif mode == "view" or mode == "查看":
             voteData = data[argument[0].split(" ")[1]]
             answer = f"[{voteData['status']}] {voteData['title']}\n \n"
@@ -96,7 +96,7 @@ async def voteHandle(
                     if voteData["users"][k] == length:
                         selected += 1
                 length += 1
-                answer += f"{length}. {c} （{selected}/{len(voteData['users'])}） {int(selected / len(voteData['user'] ) * 100)}%\n"
+                answer += f"{length}. {c} （{selected}/{len(voteData['users'])}） {int(selected / len(voteData['users'] ) * 100)}%\n"
 
         elif mode == "select" or mode == "选择":
             voteData = data[argument[0].split(" ")[1]]
