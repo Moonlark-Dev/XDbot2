@@ -51,7 +51,7 @@ async def guess_handle(bot: Bot,
             reply += f"{args[0]} 太小了"
             await guess.finish(reply)
         if num == number:
-            reply += f"{bot.get_stranger_info(user_id=int(event.get_user_id()))} 率先猜对了答案为 {str(number)} ！游戏结束"
+            reply += f"{(await bot.get_stranger_info(user_id=int(event.get_user_id())))["nickname"]} 率先猜对了答案为 {str(number)} ！游戏结束"
             status = False
             number = -1
             await guess.finish(reply)
