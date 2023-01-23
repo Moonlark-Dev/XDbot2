@@ -5,18 +5,20 @@ import os
 import marshal
 import random
 
-status = False # [游戏状态] False:待机 True:进行中
-number = -1 # [答案数字] -1:待机 其他数字:进行中
+status = False  # [游戏状态] False:待机 True:进行中
+number = -1  # [答案数字] -1:待机 其他数字:进行中
 
-guess = on_command("guess", aliases={"gn","猜数字"})
+guess = on_command("guess", aliases={"gn", "猜数字"})
+
+
 @guess.handle()
 async def guess_handle(bot: Bot,
-                      event: MessageEvent,
-                      message: Message = CommandArg()):
+                       event: MessageEvent,
+                       message: Message = CommandArg()):
     global status, number
     args = message.extract_plain_text().split(" ")
     reply = "[猜数字] "
-    if args[0] == "" :
+    if args[0] == "":
         reply += "使用 /guess start 发起一轮游戏"
         await guess.finish(reply)
     elif args[0] == "start":

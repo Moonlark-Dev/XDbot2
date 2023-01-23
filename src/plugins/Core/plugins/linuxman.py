@@ -12,6 +12,7 @@ import urllib.error
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 linuxman = on_command("linuxman")
 
+
 @linuxman.handle()
 async def linuxmanHandle(
         bot: Bot,
@@ -21,10 +22,10 @@ async def linuxmanHandle(
         argument = message.extract_plain_text().split(" ")
         try:
             with req.urlopen(f"https://man.archlinux.org/man/{argument[1]}.txt") as fp:
-                manpage=fp.read()
+                manpage = fp.read()
                 await linuxman.finish(manpage)
         except urllib.error.HTTPError as e:
-            if e.status==404:
+            if e.status == 404:
                 await linuxman.finish("找不到manpage")
     except FinishedException:
         raise FinishedException()

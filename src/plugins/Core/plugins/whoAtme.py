@@ -10,7 +10,14 @@ import traceback
 import time
 import re
 
-whoAtme = on_command("whoAtMe", aliases={"whoAtme", "whoatmd", "wam", "谁At我", "谁他妈At我"})
+whoAtme = on_command(
+    "whoAtMe",
+    aliases={
+        "whoAtme",
+        "whoatmd",
+        "wam",
+        "谁At我",
+        "谁他妈At我"})
 whoAtmeWriter = on_message()
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 
@@ -80,7 +87,7 @@ async def whoAtmdWriterHandle(
         data = json.load(open("data/whoAtme.data.json", encoding="utf-8"))
         message = str(event.get_message())
         msgID = event.message_id
-        match = re.search("\[CQ:at,qq=[0-9]+\]", message)
+        match = re.search("\\[CQ:at,qq=[0-9]+\\]", message)
         if match:
             qq = match.group(0).replace("[CQ:at,qq=", "").replace("]", "")
             try:
@@ -89,8 +96,13 @@ async def whoAtmdWriterHandle(
                 try:
                     data[qq][event.group_id] = [msgID]
                 except Exception:
-                    data[qq] = {event.group_id:[msgID]}
-            json.dump(data, open("data/whoAtmd.data.json", "w", encoding="utf-8"))
+                    data[qq] = {event.group_id: [msgID]}
+            json.dump(
+                data,
+                open(
+                    "data/whoAtmd.data.json",
+                    "w",
+                    encoding="utf-8"))
 
     except Exception:
         await bot.send_group_msg(
