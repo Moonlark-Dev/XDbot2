@@ -1,5 +1,5 @@
 from nonebot.adapters.onebot.v11.bot import Bot
-from nonebot.adapters.onebot.v11.event import MessageEvent
+from nonebot.adapters.onebot.v11.event import GroupMessageEvent
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.params import CommandArg
 from nonebot.exception import FinishedException
@@ -14,27 +14,36 @@ linuxman = on_command("linuxman")
 
 
 @linuxman.handle()
-async def linuxmanHandle(
-        bot: Bot,
-        event: MessageEvent,
-        message: Message = CommandArg()):
+async def linuxmanHandle(bot: Bot,
+                         event: GroupMessageEvent,
+                         message: Message = CommandArg()):
     try:
         argument = message.extract_plain_text().split(" ")
         try:
-            with req.urlopen(f"https://man.archlinux.org/man/{argument[0]}.txt") as fp:
+            with req.urlopen(
+                    f"https://man.archlinux.org/man/{argument[0]}.txt") as fp:
                 manpage = fp.read()
-                await linuxman.finish(str(manpage))
+                await bot.send_group_forward_msg(messages=[{
+                        "type": "node",
+                        "data": {
+                            "name": "XDbot2 LINUXMAN",
+                            "uin": str((await bot.get_login_info())['user_id']),
+                            "content": str(manpage)
+                        }
+                    }],
+                    group=str(event.group_id)
+                )
+                await linuxman.finish()
         except urllib.error.HTTPError as e:
             if e.status == 404:
                 await linuxman.finish("找不到manpage")
     except FinishedException:
         raise FinishedException()
     except Exception:
-        await bot.send_group_msg(
-            message=traceback.format_exc(),
-            group_id=ctrlGroup
-        )
+        await bot.send_group_msg(message=traceback.format_exc(),
+                                 group_id=ctrlGroup)
     await linuxman.finish("处理失败")
+
 
 # [HELPSTART] Version: 2
 # Command: linuxman
