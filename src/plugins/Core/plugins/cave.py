@@ -104,8 +104,16 @@ async def cave_handle(bot: Bot,
         elif argument[0] in ["-g", "查询"]:
             caveData = data["data"][argument[1]]
             text = parseCave(caveData["text"])
-            senderData = await bot.get_stranger_info(user_id=caveData["sender"]
-                                                     )
+            # senderData = await bot.get_stranger_info(user_id=caveData["sender"]
+            #                                         )
+            if isinstance(caveData["sender"], dict):
+                if caveData["sender"]["type"] == "nickname":
+                    senderData = {"nickname": caveData["sender"]["name"]}
+                else:
+                    senderData = {"nickname": "未知"}
+            else:
+                senderData = await bot.get_stranger_info(
+                    user_id=caveData["sender"])
             await cave.finish(
                 Message(f"""回声洞——（{caveData['id']}）
 {text}
