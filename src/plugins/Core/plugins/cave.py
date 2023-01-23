@@ -64,7 +64,7 @@ async def cave_handle(bot: Bot,
                       message: Message = CommandArg()):
     try:
         data = json.load(open("data/cave.data.json", encoding="utf-8"))
-        argument = message.extract_plain_text().split(" ")
+        argument = str(message).split(" ")
         if argument[0] == "":
             caveList = data["data"].values()
             caveData = random.choice(list(caveList))

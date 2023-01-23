@@ -91,7 +91,7 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
                                                      1:]))
         elif argument[0] == "notice" or argument[0] == "超级广播" or argument[
                 0] == "广播":
-            text = message.extract_plain_text()[argument[0].__len__() + 1:]
+            text = str(message)[argument[0].__len__() + 1:]
             groupList = list(muiltAccoutData.keys())
             # 开始广播
             for group in groupList:

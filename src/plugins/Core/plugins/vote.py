@@ -27,7 +27,7 @@ async def voteHandle(
     try:
         data = json.load(open("data/vote.list.json", encoding="utf-8"))
         answer = ""
-        argument = message.extract_plain_text().split("\n")
+        argument = str(message).split("\n")
         mode = argument[0].split(" ")[0]
         if mode == "create" or mode == "创建":
             # 收集数据

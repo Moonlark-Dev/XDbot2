@@ -20,12 +20,12 @@ async def messengerHandle(
         event: GroupMessageEvent,
         message: Message = CommandArg()):
     try:
-        logger.debug(message)
+        # logger.debug(message)
         data = json.load(
             open(
                 "data/messenger.messageList.json",
                 encoding="utf-8"))
-        argument = message.extract_plain_text()
+        argument = str(message)
         # 处理信息
         if argument == "":
             await messenger.finish("Usage: messenger <收件人QQ>\n<内容>")

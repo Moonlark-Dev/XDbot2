@@ -10,7 +10,8 @@ import re
 from urllib import request as req
 
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
-linuxkernelnews = on_command("linuxkernelnews",aliases={"lkn"})
+linuxkernelnews = on_command("linuxkernelnews", aliases={"lkn"})
+
 
 @linuxkernelnews.handle()
 async def linuxkernelnewsHandle(
@@ -20,13 +21,14 @@ async def linuxkernelnewsHandle(
     try:
         with req.urlopen(f"https://www.kernel.org/feeds/kdist.xml") as fp:
             data = fp.read()
-        data=re.findall(r'https://cdn.kernel.org/pub/linux/kernel/*./linux-.*.tar.xz"',data)
-        kernels=[]
+        data = re.findall(
+            r'https://cdn.kernel.org/pub/linux/kernel/*./linux-.*.tar.xz"', data)
+        kernels = []
         for i in data:
-            index=data.index(i)
-            i=i[:-1]
-            kernels+=f"{index}. {i}\n"
-        answer=f"""kernel.org最新可用内核:
+            index = data.index(i)
+            i = i[:-1]
+            kernels += f"{index}. {i}\n"
+        answer = f"""kernel.org最新可用内核:
 {kernels}
 """
         await linuxkernelnews.finish(answer)
