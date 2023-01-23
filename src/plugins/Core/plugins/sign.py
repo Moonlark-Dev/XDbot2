@@ -2,7 +2,7 @@ import json
 import traceback
 import random
 import time
-from nonebot import on_keyword,on_command
+from nonebot import on_keyword, on_command
 from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, Message
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
@@ -11,6 +11,7 @@ from . import _userCtrl
 sign = on_keyword({"sign", "签到"})
 signrank = on_command("sign", aliases={"签到"})
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
+
 
 @signrank.handle()
 async def signrankHandle(bot: Bot,
@@ -33,29 +34,23 @@ async def signrankHandle(bot: Bot,
     me = "你今天还没有签到！"
     for i in sign_rank_data["rank"]:
         num += 1
-        rank += f"{str(num)}.[{i['time']}] {(await bot.get_stranger_info(user_id=i['qq']))['nickname']}\n"
-        if i["qq"]==int(event.get_user_id()):
-            me = f"{str(num)}.[{i['time']}] {(await bot.get_stranger_info(user_id=i['qq']))['nickname']}"
+        rank += f"{str(num)}. {(await bot.get_stranger_info(user_id=i['qq']))['nickname']}（{i['time']}）\n"
+        if i["qq"] == int(event.get_user_id()):
+            me = f"{str(num)}.{(await bot.get_stranger_info(user_id=i['qq']))['nickname']}（{i['time']}）"
     rank += "--------------------\n" + me
     await signrank.finish(rank)
+
+
 @sign.handle()
-async def signHandle(
-        bot: Bot,
-        event: GroupMessageEvent):
+async def signHandle(bot: Bot, event: GroupMessageEvent):
     try:
         if event.get_plaintext().__len__() <= 5:
             latestSign = json.load(
-                open(
-                    "data/sign.latestTime.json",
-                    encoding="utf-8"))
+                open("data/sign.latestTime.json", encoding="utf-8"))
             signDay = json.load(
-                open(
-                    "data/sign.signDay.json",
-                    encoding="utf-8"))
+                open("data/sign.signDay.json", encoding="utf-8"))
             userData = json.load(
-                open(
-                    "data/etm.userData.json",
-                    encoding="utf-8"))
+                open("data/etm.userData.json", encoding="utf-8"))
             userID = event.get_user_id()
             # 检查数据是否存在
             if userID not in list(latestSign.keys()):
@@ -103,28 +98,25 @@ async def signHandle(
             _userCtrl.addItem(userID, "0", addCoin, dict())
             _userCtrl.addExp(userID, addExp)
             # 保存数据
-            json.dump(
-                signDay,
-                open(
-                    "data/sign.signDay.json",
-                    "w",
-                    encoding="utf-8"))
-            json.dump(
-                latestSign,
-                open(
-                    "data/sign.latestTime.json",
-                    "w",
-                    encoding="utf-8"))
+            json.dump(signDay,
+                      open("data/sign.signDay.json", "w", encoding="utf-8"))
+            json.dump(latestSign,
+                      open("data/sign.latestTime.json", "w", encoding="utf-8"))
             try:
                 with open("data/sign.rank.json", "r") as f:
-                    sign_rank_data=json.load(f)
-                    if sign_rank_data["day"] != int(time.time()/86400):
+                    sign_rank_data = json.load(f)
+                    if sign_rank_data["day"] != int(time.time() / 86400):
                         raise FileNotFoundError
             except:
-                sign_rank_data={"day":int(time.time()/86400),"rank":[]}
-            sign_rank_data["rank"].append({"qq":int(event.get_user_id()),"time":time.strftime("%H:%M:%S", time.localtime())})
+                sign_rank_data = {"day": int(time.time() / 86400), "rank": []}
+            sign_rank_data["rank"].append({
+                "qq":
+                int(event.get_user_id()),
+                "time":
+                time.strftime("%H:%M:%S", time.localtime())
+            })
             with open("data/sign.rank.json", "w") as f:
-                json.dump(sign_rank_data,f)
+                json.dump(sign_rank_data, f)
             # 反馈结果
             await sign.finish(f"""+-----------------------------+
 \t签到成功！
@@ -137,10 +129,10 @@ async def signHandle(
     except FinishedException:
         raise FinishedException()
     except Exception:
-        await bot.send_group_msg(
-            message=traceback.format_exc(),
-            group_id=ctrlGroup)
+        await bot.send_group_msg(message=traceback.format_exc(),
+                                 group_id=ctrlGroup)
         await sign.finish("处理失败")
+
 
 # [HELPSTART]
 # !Usage 1 sign
