@@ -100,7 +100,6 @@ CPU：{cpu_percent()}%
 交换内存：{swap_used()}GiB / {swap_total()}GiB
 运行时间：{format_time(int(time.time() - initData['time']))}
 开机时间：{uptime()}
-系统类型：{os.name}
 Python版本：{pyver()}""")
         elif argument == "cpu":
             await status.finish(
@@ -112,7 +111,7 @@ Python版本：{pyver()}""")
             for _ in range(10 - int(mem_percent() / 10)):
                 bar += "  "
             await status.finish(
-                f"内存：{mem_used()}GiB / {mem_total()}GiB ({mem_percent()}%)\n[{bar}]"
+                f"内存：{mem_used()}GiB / {mem_total()}GiB ({mem_percent()}%) [{bar}]"
             )
         elif argument in ["swap", "交换内存"]:
             await status.finish(
@@ -121,10 +120,10 @@ Python版本：{pyver()}""")
         elif argument in ["system", "系统"]:
             await status.finish(osData())
         elif argument in ["host"]:
-            await status.finish(f"{user}@{hostname}")
+            await status.finish(f"{user()}@{hostname()}")
         else:
             await status.finish(
-                f"无效参数：{argument}\n可用值：cpu、mem、swap、system（可留空）")
+                f"无效参数：{argument}\n可用值：cpu、mem、swap、system、host（可留空）")
 
     except FinishedException:
         raise FinishedException()
@@ -134,7 +133,10 @@ Python版本：{pyver()}""")
         await status.finish("处理失败")
 
 
-# [HELPSTART]
-# !Usage 1 status
-# !Info 1 查询XDbot2运行状态
+# [HELPSTART] Version: 2
+# Command: status
+# Info: 查询 XDbot2 后端运行状态
+# Msg: 系统状态
+# Usage: status：查看状态概述
+# Usage: status <cpu/mem/swap/system/host>：查看详细状态
 # [HELPEND]
