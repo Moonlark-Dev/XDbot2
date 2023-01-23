@@ -23,7 +23,7 @@ async def linuxmanHandle(
         try:
             with req.urlopen(f"https://man.archlinux.org/man/{argument[0]}.txt") as fp:
                 manpage = fp.read()
-                await linuxman.finish(manpage)
+                await linuxman.finish(str(manpage))
         except urllib.error.HTTPError as e:
             if e.status == 404:
                 await linuxman.finish("找不到manpage")
