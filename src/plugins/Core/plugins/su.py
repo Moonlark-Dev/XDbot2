@@ -54,6 +54,7 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
                 because = argument[2]
             else:
                 because = "超管未指定原因"
+            bots = get_bots()
             username = (await
                         bot.get_stranger_info(user_id=argument[1]))['nickname']
             for group in groupList:
