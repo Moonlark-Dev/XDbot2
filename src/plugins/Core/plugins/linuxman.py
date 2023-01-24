@@ -30,6 +30,7 @@ async def linuxmanHandle(bot: Bot,
             text = text.split("\n\n")
             msg = []
             qq = str((await bot.get_login_info())['user_id'])
+            nowLen = 0
             for t in text:
                 msg.append(
                     {
@@ -41,11 +42,14 @@ async def linuxmanHandle(bot: Bot,
                         }
                     }
                 )
-            await bot.call_api(
-                api="send_group_forward_msg",
-                messages=msg,
-                group_id=str(event.group_id)
-            )
+            nowLen = 0
+            for _ in range(len(msg) // 99 + 1):
+                nowLen += 99
+                await bot.call_api(
+                    api="send_group_forward_msg",
+                    messages=msg[nowLen - 99:nowLen],
+                    group_id=str(event.group_id)
+                )
             await linuxman.finish("完成")
     except FinishedException:
         raise FinishedException()
