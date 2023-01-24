@@ -19,9 +19,11 @@ async def homepage():
     for bot in bots:
         groups += await bots[bot].get_group_list()
     html = "<table border='1'><tr><td>群名称</td><td>群号</td><td>操作</td></tr>"
+    addedGroup = []
     for group in groups:
-        print(group)
-        html += f"<tr><td>{group['group_name']}</td><td>{group['group_id']}</td><td><a href=\"./ban/{group['group_id']}\">查看禁言记录</td>"
+        if group["group_id"] not in addedGroup:
+            html += f"<tr><td>{group['group_name']}</td><td>{group['group_id']}</td><td><a href=\"./ban/{group['group_id']}\">查看禁言记录</td>"
+            addedGroup.append(group["group_id"])
     html += "</table>"
     return html
 
@@ -54,21 +56,24 @@ async def banCountHandle(bot: Bot, event: GroupBanNoticeEvent):
         if event.group_id not in data.keys():
             data[event.group_id] = []
         if event.duration != 0:
-            data[event.group_id].insert(0, {
-                "user": await bot.get_stranger_info(user_id=event.get_user_id()),
-                "duration": event.duration,
-                "operator": await bot.get_stranger_info(user_id=event.operator_id),
-                "banTime": int(time.time())
-            })
+            data[event.group_id].insert(
+                0, {
+                    "user":
+                    await bot.get_stranger_info(user_id=event.get_user_id()),
+                    "duration":
+                    event.duration,
+                    "operator":
+                    await bot.get_stranger_info(user_id=event.operator_id),
+                    "banTime":
+                    int(time.time())
+                })
         else:
             nowTime = int(time.time())
             length = 0
             for item in data[event.group_id]:
-                print(
-                    item["banTime"] + item["duration"] > nowTime,
-                    str(item["user"]["user_id"]) == event.get_user_id(),
-                    "pardonTime" not in item.keys()
-                )
+                print(item["banTime"] + item["duration"] > nowTime,
+                      str(item["user"]["user_id"]) == event.get_user_id(),
+                      "pardonTime" not in item.keys())
                 if item["banTime"] + item["duration"] > nowTime:
                     if str(item["user"]["user_id"]) == event.get_user_id():
                         if "pardonTime" not in item.keys():
@@ -79,7 +84,5 @@ async def banCountHandle(bot: Bot, event: GroupBanNoticeEvent):
         json.dump(data, open("data/ban.banData.json", "w", encoding="utf-8"))
 
     except Exception:
-        await bot.send_group_msg(
-            group_id=ctrlGroup,
-            message=traceback.format_exc()
-        )
+        await bot.send_group_msg(group_id=ctrlGroup,
+                                 message=traceback.format_exc())
