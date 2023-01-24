@@ -4,6 +4,7 @@ from nonebot.adapters.onebot.v11 import Message
 from nonebot.params import CommandArg
 from nonebot.exception import FinishedException
 from nonebot import on_command
+from nonebot.exception import ActionFailed
 import json
 import traceback
 import httpx
@@ -21,8 +22,15 @@ async def linuxmanHandle(bot: Bot,
             req = await client.get(f"https://man.archlinux.org/man/{argument}.txt")
             text = req.read().decode("utf-8")
         if req.status_code == 404:
-            await linuxman.finish("找不到收册页")
-        await linuxman.finish(text)
+            await linuxman.finish("找不到手册页")
+        try:
+            await linuxman.finish(text)
+        except ActionFailed:
+            nowlen = 0
+            for _ in range(len(text) // 100):
+                nowlen += 100
+                await linuxman.send(text[nowlen - 100:nowlen])
+            await linuxman.finish("完成")
     except FinishedException:
         raise FinishedException()
     except Exception:
