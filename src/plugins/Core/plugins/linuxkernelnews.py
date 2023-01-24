@@ -39,5 +39,7 @@ async def linuxkernelnewsHandle(bot: Bot):
 
 # [HELPSTART] Version: 2
 # Command: linuxkernelnews
+# Usage: linuxkernelnews
+# Msg: 查看最新linux内核
 # Info: linuxkernelnews（查看最新的linux内核）
 # [HELPEND]
