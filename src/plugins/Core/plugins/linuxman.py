@@ -18,7 +18,7 @@ async def linuxmanHandle(bot: Bot,
     try:
         argument = message.extract_plain_text()
         async with httpx.AsyncClient() as client:
-            req = await client.get(argument)
+            req = await client.get(f"https://man.archlinux.org/man/{argument}.txt")
             text = req.read().decode("utf-8")
         if req.status_code == 404:
             await linuxman.finish("找不到收册页")
