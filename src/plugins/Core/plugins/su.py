@@ -139,6 +139,15 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
                 data['data'].pop(argument[2])
                 json.dump(data,
                           open("data/cave.data.json", "w", encoding="utf-8"))
+            elif argument[1] in ["add", "添加"]:
+                data = json.load(open("data/cave.data.json", encoding="utf-8"))
+                data['data'][str(data['count'])] = {
+                    "id": str(data['count']),
+                    "text": argument[2].replace("%20", " ").replace(r"\n", "\n"),
+                    "sender": {"type": "unkown"}
+                }
+                data['count'] += 1
+                json.dump(data, open("data/cave.data.json", "w", encoding="utf-8"))
         elif argument[0] == "give" or argument[0] == "给予":
             _userCtrl.addItem(argument[1], argument[2], int(argument[3]),
                               json.loads(argument[4]))
