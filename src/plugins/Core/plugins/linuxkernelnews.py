@@ -20,12 +20,10 @@ async def linuxkernelnewsHandle(bot: Bot):
             req = await client.get("https://www.kernel.org/feeds/kdist.xml")
             data = req.read().decode("utf-8")
         data = re.findall(
-            r'https://cdn.kernel.org/pub/linux/kernel/*./linux-.*.tar.xz"', data)
+            r'https://cdn.kernel.org/pub/linux/kernel/.*/linux-.*.tar.xz"', data)
         kernels = ""
-        for i in data:
-            index = data.index(i)
-            i = i[:-1]
-            kernels += f"{index}. {i}\n"
+        for i in range(len(data)):
+            kernels += f"{i}. {data[i][:-1]}\n"
         answer = f"""kernel.org 最新可用内核:
 {kernels}
 """
