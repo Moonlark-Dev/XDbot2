@@ -27,7 +27,7 @@ async def linuxmanHandle(bot: Bot,
             await linuxman.finish(text)
         except ActionFailed:
             nowlen = 0
-            for _ in range(len(text) // 100):
+            for _ in range(len(text) // 800):
                 nowlen += 100
                 await linuxman.send(text[nowlen - 100:nowlen])
             await linuxman.finish("完成")
