@@ -7,20 +7,18 @@ from nonebot import on_command
 import json
 import traceback
 import re
-from urllib import request as req
+import httpx
 
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 linuxkernelnews = on_command("linuxkernelnews", aliases={"lkn"})
 
 
 @linuxkernelnews.handle()
-async def linuxkernelnewsHandle(
-        bot: Bot,
-        event: MessageEvent,
-        message: Message = CommandArg()):
+async def linuxkernelnewsHandle(bot: Bot):
     try:
-        with req.urlopen(f"https://www.kernel.org/feeds/kdist.xml") as fp:
-            data = fp.read()
+        async with httpx.AsyncClient() as client:
+            req = await client.get("https://www.kernel.org/feeds/kdist.xml")
+            data = req.read().decode("utf-8")
         data = re.findall(
             r'https://cdn.kernel.org/pub/linux/kernel/*./linux-.*.tar.xz"', data)
         kernels = []
@@ -28,7 +26,7 @@ async def linuxkernelnewsHandle(
             index = data.index(i)
             i = i[:-1]
             kernels += f"{index}. {i}\n"
-        answer = f"""kernel.org最新可用内核:
+        answer = f"""kernel.org 最新可用内核:
 {kernels}
 """
         await linuxkernelnews.finish(answer)
