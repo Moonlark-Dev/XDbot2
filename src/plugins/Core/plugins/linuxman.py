@@ -26,10 +26,9 @@ async def linuxmanHandle(bot: Bot,
         try:
             await linuxman.finish(text)
         except ActionFailed:
-            nowlen = 0
-            for _ in range(len(text) // 800):
-                nowlen += 100
-                await linuxman.send(text[nowlen - 100:nowlen])
+            text = text.split("\n\n")
+            for t in text:
+                await linuxman.send(t.strip())
             await linuxman.finish("完成")
     except FinishedException:
         raise FinishedException()
