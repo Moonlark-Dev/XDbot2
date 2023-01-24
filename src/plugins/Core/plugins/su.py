@@ -14,7 +14,7 @@ from nonebot.permission import SUPERUSER
 su = on_command("su", aliases={"超管", "superuser"}, permission=SUPERUSER)
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 blackListData = json.load(open("data/su.blackList.json"))
-muiltAccoutData = {}
+multiAccoutData = {}
 bots = []
 driver = get_driver()
 
@@ -27,16 +27,16 @@ def reloadBlackList():
 @driver.on_bot_connect
 @driver.on_bot_disconnect
 async def reloadMuiltData():
-    global muiltAccoutData, bots
+    global multiAccoutData, bots
     bots = get_bots()
-    muiltAccoutData = {}
+    multiAccoutData = {}
     for key in list(bots.keys()):
         bot = bots[key]
         groups = await bot.get_group_list()
         for group in groups:
-            if group["group_id"] not in muiltAccoutData.keys():
-                muiltAccoutData[group["group_id"]] = key
-    json.dump(muiltAccoutData, open("data/su.multiaccoutdata.ro.json", "w"))
+            if group["group_id"] not in multiAccoutData.keys():
+                multiAccoutData[group["group_id"]] = key
+    json.dump(multiAccoutData, open("data/su.multiaccoutdata.ro.json", "w"))
 
 
 @su.handle()
@@ -49,7 +49,7 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
                 data += [argument[1]]
                 await su.send(f"已封禁{argument[1]}")
             # 广播
-            groupList = list(muiltAccoutData.keys())
+            groupList = list(multiAccoutData.keys())
             if len(argument) >= 3:
                 because = argument[2]
             else:
@@ -57,7 +57,7 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
             username = (await
                         bot.get_stranger_info(user_id=argument[1]))['nickname']
             for group in groupList:
-                await bots[muiltAccoutData[group]].send_group_msg(
+                await bots[multiAccoutData[group]].send_group_msg(
                     message=f"用户 {username}({argument[1]}) 已被超管封禁：{because}",
                     group_id=group)
             json.dump(data, open("data/su.blackList.json", "w"))
@@ -76,8 +76,8 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
             json.dump(data, open("data/su.blackList.json", "w"))
             reloadBlackList()
         elif argument[0] == "call" or argument[0] == "调用":
-            await su.send(await bot.call_api(api=argument[1],
-                                             data=json.loads(argument[2])))
+            await su.send(str(await bot.call_api(api=argument[1],
+                                             data=json.loads(argument[2]))))
         elif argument[0] == "ct" or argument[0] == "发言排名":
             if argument[1] == "clear" or argument[1] == "清除数据":
                 fileList = os.listdir("data")
@@ -92,10 +92,10 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
         elif argument[0] == "notice" or argument[0] == "超级广播" or argument[
                 0] == "广播":
             text = str(message)[argument[0].__len__() + 1:]
-            groupList = list(muiltAccoutData.keys())
+            groupList = list(multiAccoutData.keys())
             # 开始广播
             for group in groupList:
-                await bots[muiltAccoutData[group]
+                await bots[multiAccoutData[group]
                            ].send_group_msg(message=Message(f"【超级广播】\n{text}"),
                                             group_id=group)
         elif argument[0] == "config" or argument[0] == "配置":
@@ -291,9 +291,27 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
                 data[argument[2]].pop(int(argument[3]))
             elif argument[1] in ["clear", "清空"]:
                 data = {"A": [], "B": [], "C": [], "review": dict()}
-
             json.dump(data,
                       open("data/reply.images.json", "w", encoding="utf-8"))
+        elif argument[0] in ["ma", "multiaccout", "多账户"]:
+            if argument[1] in ["status", "状态"]:
+                reply = "「XDbot2 Multi-Accout 账户列表」\n"
+                bots = get_bots()
+                reply += f"已连接账户：{len(bots.keys())}\n"
+                length = 1
+                for accout in list(bots.keys()):
+                    userData = await bot.get_stranger_info(
+                        user_id=str((await bots[accout].get_login_info())["user_id"]))
+                    reply += f"{length}. {userData['nickname']} ({userData['user_id']})\n"
+                    length += 1
+                await su.send(reply)
+                # 分配情况
+                length = 1
+                reply = "「XDbot2 Multi-Accout 群聊分配」\n"
+                for group in list(multiAccoutData.keys()):
+                    reply += f"{length}. {group}: {multiAccoutData[group]}\n"
+                    length += 1
+                await su.send(reply)
 
         # 反馈
         await su.finish("完成")
@@ -320,11 +338,11 @@ async def blackListHandle(bot: Bot, event: MessageEvent):
 
 
 @event_preprocessor
-async def muiltAccoutManager(bot: Bot, event: GroupMessageEvent):
+async def multiAccoutManager(bot: Bot, event: GroupMessageEvent):
     try:
-        if event.group_id in muiltAccoutData.keys():
+        if event.group_id in multiAccoutData.keys():
             if str((await bot.get_login_info()
-                    )["user_id"]) != muiltAccoutData[event.group_id]:
+                    )["user_id"]) != multiAccoutData[event.group_id]:
                 raise IgnoredException("多帐号：忽略")
 
     except IgnoredException as e:
