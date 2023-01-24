@@ -22,5 +22,3 @@ if newVersion != oldVersion:
     exec(script)
 
 print("完成！")
-
-

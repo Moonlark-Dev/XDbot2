@@ -5,7 +5,7 @@ import json
 class Config(BaseSettings):
     # Your Config Here
     # 版本常量
-    VERSION = "v2.0.128-beta"
+    VERSION = "v2.1.15-beta"
     # 控制中心
     CONTROL_GROUP = "598443695"
 
