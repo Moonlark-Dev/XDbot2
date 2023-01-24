@@ -94,6 +94,7 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
                 0] == "广播":
             text = str(message)[argument[0].__len__() + 1:]
             groupList = list(multiAccoutData.keys())
+            bots = get_bots()
             # 开始广播
             for group in groupList:
                 await bots[multiAccoutData[group]
