@@ -21,7 +21,7 @@ async def linuxkernelnewsHandle(bot: Bot):
             data = req.read().decode("utf-8")
         data = re.findall(
             r'https://cdn.kernel.org/pub/linux/kernel/*./linux-.*.tar.xz"', data)
-        kernels = []
+        kernels = ""
         for i in data:
             index = data.index(i)
             i = i[:-1]
