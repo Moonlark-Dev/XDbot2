@@ -1,5 +1,5 @@
 from nonebot.adapters.onebot.v11.bot import Bot
-# from nonebot.adapters.onebot.v11.event import GroupMessageEvent
+from nonebot.adapters.onebot.v11.event import GroupMessageEvent
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.params import CommandArg
 from nonebot.exception import FinishedException
@@ -15,6 +15,7 @@ linuxman = on_command("linuxman")
 
 @linuxman.handle()
 async def linuxmanHandle(bot: Bot,
+                         event: GroupMessageEvent,
                          message: Message = CommandArg()):
     try:
         argument = message.extract_plain_text()
@@ -27,8 +28,24 @@ async def linuxmanHandle(bot: Bot,
             await linuxman.finish(text)
         except ActionFailed:
             text = text.split("\n\n")
+            msg = []
+            qq = str((await bot.get_login_info())['user_id'])
             for t in text:
-                await linuxman.send(t.strip())
+                msg.append(
+                    {
+                        "type": "node",
+                        "data": {
+                            "uin": qq,
+                            "name": "XDBOT2 LINUX MAN",
+                            "content": t.strip()
+                        }
+                    }
+                )
+            await bot.call_api(
+                api="send_group_forward_msg",
+                messages=msg,
+                group_id=str(event.group_id)
+            )
             await linuxman.finish("完成")
     except FinishedException:
         raise FinishedException()
