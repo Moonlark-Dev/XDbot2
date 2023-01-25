@@ -21,7 +21,7 @@ async def useHandle(
         argument = int(message.extract_plain_text())
         await use.finish(Message(
             _userCtrl.useItem(
-                event.get_user_id(), argument)))
+                event.get_user_id(), argument)), at_sender=True)
 
     except _userCtrl.ItemCanNotRemove:
         await use.finish("物品被标记为：不可使用")
