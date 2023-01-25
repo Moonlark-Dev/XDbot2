@@ -7,7 +7,7 @@ import traceback
 import marshal
 
 import httpx
-from nonebot import on_command
+from nonebot import on_command, get_app
 from nonebot.adapters.onebot.v11 import (Bot, Message, MessageEvent)
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
@@ -15,6 +15,7 @@ from nonebot.params import CommandArg
 cave = on_command("cave", aliases={"回声洞"})
 ctrlGroup = json.load(open("data/ctrl.json"))["control"]
 path = os.path.abspath(os.path.dirname("."))
+app = get_app()
 commandHelp = {
     "cave": {
         "name":
@@ -31,9 +32,14 @@ commandHelp = {
 }
 
 
+@app.get("/cave/data.json")
+async def getCaveData():
+    return json.load(open("data/cave.data.json", encoding="utf-8"))
+
+
 async def downloadImages(message: str):
     cqStart = message.find("[CQ:image")
-    print("message", message)
+    # print("message", message)
     if cqStart == -1:
         return message
     else:
