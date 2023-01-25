@@ -23,10 +23,9 @@ async def linuxkernelnewsHandle(bot: Bot):
             r'https://cdn.kernel.org/pub/linux/kernel/.*/linux-.*.tar.xz"', data)
         kernels = ""
         for i in range(len(data)):
-            kernels += f"{i}. {data[i][:-1]}\n"
+            kernels += f"{i+1}. {data[i][:-1]}\n"
         answer = f"""kernel.org 最新可用内核:
-{kernels}
-"""
+{kernels}"""
         await linuxkernelnews.finish(answer)
     except FinishedException:
         raise FinishedException()
@@ -38,8 +37,8 @@ async def linuxkernelnewsHandle(bot: Bot):
     await linuxkernelnews.finish("处理失败")
 
 # [HELPSTART] Version: 2
-# Command: linuxkernelnews
-# Usage: linuxkernelnews
+# Command: lkn
+# Usage: lkn
 # Msg: 查看最新linux内核
 # Info: linuxkernelnews（查看最新的linux内核）
 # [HELPEND]
