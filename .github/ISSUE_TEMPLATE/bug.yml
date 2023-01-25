@@ -14,8 +14,6 @@ body:
   attributes:
     label: 重现步骤
     description: "详细描述要怎么操作才能再次触发这个 Bug。"
-    value: |
-      使用xxx命令
   validations:
     required: true
 - type: textarea
