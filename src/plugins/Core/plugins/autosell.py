@@ -70,10 +70,11 @@ async def checkReloaded():
             await reloadSell()
         except BaseException as e:
             logger.error(e)
-        latest["mday"] = time.localtime().tm_mday
-        json.dump(
-            latest,
-            open(
-                "data/autosell.latest.json",
-                "w",
-                encoding="utf-8"))
+        else:
+            latest["mday"] = time.localtime().tm_mday
+            json.dump(
+                latest,
+                open(
+                    "data/autosell.latest.json",
+                    "w",
+                    encoding="utf-8"))
