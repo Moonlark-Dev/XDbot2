@@ -120,6 +120,33 @@ def useItem(userID: str, pos: int):
             count *= 1 + (vipLevel / 75 * 2)
         addItem(userID, "0", int(count), dict())
         return f"你获得了：\n1. VimCoin x{int(count)}"
+    elif item["id"] == "3":
+        # 20面骰子
+        num = randint(1, 20)
+        if num == 20:
+            addItem(userID, "0", 50, {})
+            return "买了一个二十面骰子，掷出了 20，大成功，获得了 50vi！"
+        elif 18 <= num <= 19:
+            addItem(userID, "0", 20, {})
+            return f"买了一个二十面骰子，掷出了 {num}，运气绝佳，获得了 20vi！"
+        elif 15 <= num <= 17:
+            addItem(userID, "0", 10, {})
+            return f"买了一个二十面骰子，掷出了 {num}，运气不错，获得了 10vi！"
+        elif 10 <= num <= 14:
+            addItem(userID, "0", 5, {})
+            return f"买了一个二十面骰子，掷出了 {num}，拿回了自己的 5vi！"
+        elif 2 <= num <= 9:
+            return f"买了一个二十面骰子，掷出了 {num}，一无所获……"
+        elif num == 1:
+            bag = userData.copy()
+            length = 0
+            for i in bag:
+                if i["id"] == "0":
+                    userData.pop(length)
+                else:
+                    length += 1
+            json.dump(userData, open("data/etm.bag.json", "w"))
+            return f"买了一个二十面骰子，掷出了 {num}，大失败，倾家荡产，被丢了出去！"
 
     else:
         addItem(userID, item["id"], 1, item["data"])

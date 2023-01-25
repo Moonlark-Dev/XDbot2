@@ -75,6 +75,11 @@ class Config(BaseSettings):
                     "name": "每日VimCoin礼包",
                     "info": "打开后可获得：\n1. VimCoin x0~50",
                     "data": {}
+                },
+                "3": {
+                    "name": "二十面骰",
+                    "info": "二十面骰子，致敬LTW3",
+                    "data": {}
                 }
             })
         },
