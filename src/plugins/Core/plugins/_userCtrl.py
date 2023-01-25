@@ -164,7 +164,7 @@ def addExp(userID: str, exp: int):
             "title": None,
             "vip": {
                 "level": None,
-                "buyTime": None
+                "endTime": None
             }
         }
     while True:

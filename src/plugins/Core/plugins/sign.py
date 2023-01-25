@@ -62,8 +62,7 @@ async def signHandle(bot: Bot, event: GroupMessageEvent):
                     "level": 1,
                     "exp": 0,
                     "vip": {
-                        "buyTime": None,
-                        "name": None,
+                        "endTime": None,
                         "level": None
                     }
                 }
