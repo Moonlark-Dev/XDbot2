@@ -95,6 +95,36 @@ def removeItemsByID(userID: str, itemID: str, itemCount: int,
     # 丢弃更改
     return False
 
+def removeItemsByID_allowBelowZero(userID: str, itemID: str, itemCount: int, removeType: str = "Use", itemData: dict = {}):
+    userData = json.load(open("data/etm.bag.json", encoding="utf-8"))
+    if userID not in userData.keys():
+        userData[userID] = []
+    count = itemCount
+    length = 0
+    bag = userData[userID].copy()
+    for item in bag:
+        if item["id"] == itemID and item["data"][f"can{removeType}"]:
+            if item["count"] != count:
+                userData[userID][length]["count"] -= count
+                json.dump(
+                    userData,
+                    open(
+                        "data/etm.bag.json",
+                        "w",
+                        encoding="utf-8"))
+                return True
+            elif item["count"] == count:
+                userData[userID].pop(length)
+                json.dump(
+                    userData,
+                    open(
+                        "data/etm.bag.json",
+                        "w",
+                        encoding="utf-8"))
+                return True
+        length += 1
+    addItem(userID,itemID,0-itemCount,itemData)
+    return True
 
 def useItem(userID: str, pos: int):
     userData = json.load(open("data/etm.bag.json", encoding="utf-8"))
@@ -138,15 +168,8 @@ def useItem(userID: str, pos: int):
         elif 2 <= num <= 9:
             return f"买了一个二十面骰子，掷出了 {num}，一无所获……"
         elif num == 1:
-            bag = userData[userID].copy()
-            length = 0
-            for i in bag:
-                if i["id"] == "0":
-                    userData[userID].pop(length)
-                else:
-                    length += 1
-            json.dump(userData, open("data/etm.bag.json", "w"))
-            return f"买了一个二十面骰子，掷出了 {num}，大失败，倾家荡产，被丢了出去！"
+            removeItemsByID_allowBelowZero(userID, "0", 50, itemData={})
+            return f"买了一个二十面骰子，掷出了 {num}，大失败，倾家荡产，丢失了 50vi！"
 
     else:
         addItem(userID, item["id"], 1, item["data"])
