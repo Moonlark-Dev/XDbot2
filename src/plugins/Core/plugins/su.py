@@ -224,13 +224,13 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
             elif argument[1] == "add" or argument[1] == "添加商品":
                 data = json.load(
                     open("data/autosell.items.json", encoding="utf-8"))
-                data += {
+                data.append({
                     "id": argument[2],
                     "count": int(argument[3]),
                     "price": int(argument[4]),
                     "info": None,
                     "data": json.loads(argument[5])
-                }
+                })
                 json.dump(
                     data,
                     open("data/autosell.items.json", "w", encoding="utf-8"))
