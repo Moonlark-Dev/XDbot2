@@ -61,7 +61,7 @@ async def reloadSell():
 require("nonebot_plugin_apscheduler")
 
 
-@scheduler.scheduled_job("cron", hour="*/1", id="reloadSell")
+@scheduler.scheduled_job("cron", minute="*/2", id="reloadSell")
 async def checkReloaded():
     latest = json.load(open("data/autosell.latest.json", encoding="utf-8"))
     if latest["mday"] != time.localtime().tm_mday:
