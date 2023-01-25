@@ -19,7 +19,7 @@ async def guess_handle(bot: Bot,
     args = message.extract_plain_text().split(" ")
     reply = "[猜数字] "
     if args[0] == "":
-        reply += "使用 /guess start 发起一轮游戏"
+        reply += "请使用 /guess start 发起一轮游戏"
         await guess.finish(reply)
     elif args[0] == "start":
         if status:
