@@ -11,6 +11,12 @@ from . import _userCtrl
 from nonebot.message import event_preprocessor
 from nonebot.permission import SUPERUSER
 
+# 可选依赖
+try:
+    import pyautogui
+except ImportError:
+    pass
+
 su = on_command("su", aliases={"超管", "superuser"}, permission=SUPERUSER)
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 blackListData = json.load(open("data/su.blackList.json"))
@@ -331,6 +337,19 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
                     reply += f"{length}. {group}: {multiAccoutData[group]}\n"
                     length += 1
                 await su.send(reply)
+        elif argument[0] in ["截图", "screenshot"]:
+            try:
+                os.remove("data/screenshot.png")
+            except BaseException:
+                pass
+            try:
+                pyautogui.screenshot(path="data/screenshot.png")
+            except NameError:
+                await su.send("错误：可选依赖 pyautogui 未安装")
+            except OSError:
+                await su.send("失败：无法截图")
+            else:
+                await su.send(Message(f"[CQ:image,file=file://{os.abspath('./data/screenshot.png')}]"))
 
         # 反馈
         await su.finish("完成")
