@@ -43,8 +43,8 @@ async def reloadSell():
                     "price": item["price"],
                     "from": "autosell",
                     "seller": {
-                        "nickname": "xxtg666",
-                        "user_id": "1747433912"
+                        "nickname": "System",
+                        "user_id": "AdminShop"
                     }
                 }
                 break
