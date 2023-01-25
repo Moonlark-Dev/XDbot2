@@ -29,7 +29,7 @@ async def userInfoHandle(bot: Bot, event: MessageEvent):
             endTime = "???"
         else:
             vip = "VIP" + "+" * data['vip']['level'] + f"({data['vip']['level']})"
-            if data['vip']['level'] == None:
+            if data['vip']["endTime"] == None:
                 endTime = "永久"
             else:
                 endTime = time.strftime("%Y-%m-%d", time.localtime(data['vip']['endTime']))
