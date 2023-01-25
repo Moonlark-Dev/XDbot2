@@ -28,20 +28,20 @@ async def userInfoHandle(bot: Bot, event: MessageEvent):
             vip = "未开通"
             endTime = "???"
         else:
-            vip = "VIP" + "+" * data['vip']['level'] + f"({data['vip']['level']})"
+            vip = "VIP" + "+" * data['vip']['level'] + f" ({data['vip']['level']})"
             if data['vip']["endTime"] == None:
                 endTime = "永久"
             else:
                 endTime = time.strftime("%Y-%m-%d", time.localtime(data['vip']['endTime']))
 
         reply = (
-            "+----「用户信息」----+\n"
+            "+-----「用户信息」-----+\n"
             f" {(await bot.get_stranger_info(user_id=event.get_user_id()))['nickname']}({event.get_user_id()})\n \n"
             f"  等级：Lv{data['level']}（{data['exp']} / {data['level'] ** 2}）\n"
             f"    [{bar}]\n"
             f"  会员：{vip}\n"
             f"    到期时间：{endTime}\n"
-            "+-----------------------+")
+            "+-------------------------+")
         await userInfo.finish(reply)
 
 
