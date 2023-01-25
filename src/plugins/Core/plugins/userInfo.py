@@ -21,7 +21,7 @@ async def userInfoHandle(bot: Bot, event: MessageEvent):
         bar = ""
         for _ in range(int(data['exp'] / (data['level'] ** 2) * 10)):
             bar += "="
-        for _ in range(10 - int(data['exp'] / (data['level'] ** 2)) * 10):
+        for _ in range(10 - int(data['exp'] / (data['level'] ** 2) * 10)):
             bar += "  "
         # VIP
         if data['vip']['level'] == None:
@@ -41,7 +41,7 @@ async def userInfoHandle(bot: Bot, event: MessageEvent):
             f"    [{bar}]\n"
             f"  会员：{vip}\n"
             f"    到期时间：{endTime}\n"
-            "+--------------------+")
+            "+-----------------------+")
         await userInfo.finish(reply)
 
 
