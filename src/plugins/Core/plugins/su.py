@@ -164,16 +164,14 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
             elif argument[1] in ["modify", "修改"]:
                 data = json.load(open("data/cave.data.json", encoding="utf-8"))
                 if argument[3] == "sender":
-                    if argument[4] in ["name", "nickname"]:
-                        data[argument[2]]["sender"] = {
-                            "type": "nickname", "name": argument[5]}
-                    elif argument[4] in ["id", "qq"]:
-                        data[argument[2]]["sender"] = argument[5]
-                    elif argument[4] in ["unknown", "unkown"]:
-                        data[argument[2]]["sender"] = {"type": "unknown"}
+                    if argument[4] in ["name","nickname"]:
+                        data["data"][argument[2]]["sender"] = {"type":"nickname","name":argument[5]}
+                    elif argument[4] in ["id","qq"]:
+                        data["data"][argument[2]]["sender"] = argument[5]
+                    elif argument[4] in ["unknown","unkown"]:
+                        data["data"][argument[2]]["sender"] = {"type":"unknown"}
                 elif argument[3] == "text":
-                    data[argument[2]]["text"] = argument[4].replace(
-                        "%20", " ").replace(r"\n", "\n")
+                    data["data"][argument[2]]["text"] = argument[4].replace("%20"," ").replace(r"\n", "\n")
                 json.dump(data,
                           open("data/cave.data.json", "w", encoding="utf-8"))
         elif argument[0] == "give" or argument[0] == "给予":
