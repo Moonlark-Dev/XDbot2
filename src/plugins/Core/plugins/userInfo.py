@@ -19,7 +19,7 @@ async def userInfoHandle(bot: Bot, event: MessageEvent):
         data = json.load(open("data/etm.userData.json"))[event.get_user_id()]
         # 等级进度条
         bar = ""
-        for _ in range(int(data['exp'] / (data['level'] ** 2)) * 10):
+        for _ in range(int(data['exp'] / (data['level'] ** 2) * 10)):
             bar += "="
         for _ in range(10 - int(data['exp'] / (data['level'] ** 2)) * 10):
             bar += "  "
@@ -35,13 +35,13 @@ async def userInfoHandle(bot: Bot, event: MessageEvent):
                 endTime = time.strftime("%Y-%m-%d", time.localtime(data['vip']['endTime']))
 
         reply = (
-            "+------「用户信息」------+\n"
-            f" {(await bot.get_stranger_info(user_id=event.get_user_id()))['nickname']}(event.get_user_id())\n \n"
+            "+----「用户信息」----+\n"
+            f" {(await bot.get_stranger_info(user_id=event.get_user_id()))['nickname']}({event.get_user_id()})\n \n"
             f"  等级：Lv{data['level']}（{data['exp']} / {data['level'] ** 2}）\n"
             f"    [{bar}]\n"
             f"  会员：{vip}\n"
-            f"    到期时间：{endTime}"
-            "+------------------------+")
+            f"    到期时间：{endTime}\n"
+            "+--------------------+")
         await userInfo.finish(reply)
 
 
