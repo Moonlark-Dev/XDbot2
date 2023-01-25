@@ -91,7 +91,7 @@ def removeItemsByID(userID: str, itemID: str, itemCount: int,
             else:
                 count -= userData[userID].pop(length)["count"]
                 length -= 1
-            length += 1
+        length += 1
     # 丢弃更改
     return False
 
