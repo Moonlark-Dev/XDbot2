@@ -2,7 +2,7 @@ import json
 import random
 import time
 import traceback
-
+from . import _error
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.adapters.onebot.v11.bot import Bot
@@ -131,10 +131,7 @@ async def jrrpHandle(
     except ValueError:
         await jrrp.finish("无效参数", at_sender=True)
     except Exception:
-        await bot.send_group_msg(
-            message=traceback.format_exc(),
-            group_id=ctrlGroup)
-        await jrrp.finish("处理失败")
+        await _error.report(traceback.format_exc(), jrrp)
 
 # [HELPSTART] Version: 2
 # Command: jrrp

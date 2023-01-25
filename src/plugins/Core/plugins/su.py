@@ -6,6 +6,7 @@ from nonebot.params import CommandArg
 import traceback
 import os
 import time
+from . import _error
 import json
 from . import _userCtrl
 from nonebot.message import event_preprocessor
@@ -370,9 +371,7 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
     except FinishedException:
         raise FinishedException()
     except Exception:
-        await bot.send_group_msg(message=traceback.format_exc(),
-                                 group_id=ctrlGroup)
-        await su.finish("处理失败")
+        await _error.report(traceback.format_exc())
 
 
 @event_preprocessor

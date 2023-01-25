@@ -2,7 +2,7 @@ import json
 import os
 import os.path
 import traceback
-
+from . import _error
 from nonebot import on_command, on_message
 from nonebot.adapters.onebot.v11 import Bot, Message
 from nonebot.adapters.onebot.v11.event import MessageEvent
@@ -134,10 +134,7 @@ async def ruleHandle(
         # except FinishedException:
         # raise FinishedException()
     except Exception:
-        await bot.send_group_msg(
-            message=traceback.format_exc(),
-            group_id=ctrlGroup
-        )
+        await _error.report(traceback.format_exc())
 
 
 @func.handle()
@@ -158,12 +155,7 @@ async def funcHandle(
     except FinishedException:
         raise FinishedException()
     except Exception:
-        await bot.send_group_msg(
-            message=traceback.format_exc(),
-            group_id=ctrlGroup
-        )
-        await func.finish("处理失败")
-
+        await _error.report(traceback.format_exc(), func)
 
 # 预处理
 rules = os.listdir("rules")

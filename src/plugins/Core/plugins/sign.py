@@ -2,6 +2,7 @@ import json
 import traceback
 import random
 import time
+from . import _error
 from nonebot import on_keyword, on_command
 from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, Message
 from nonebot.exception import FinishedException
@@ -128,9 +129,7 @@ async def signHandle(bot: Bot, event: GroupMessageEvent):
     except FinishedException:
         raise FinishedException()
     except Exception:
-        await bot.send_group_msg(message=traceback.format_exc(),
-                                 group_id=ctrlGroup)
-        await sign.finish("处理失败")
+        await _error.report(traceback.format_exc(), sign)
 
 
 # [HELPSTART]

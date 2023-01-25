@@ -5,7 +5,7 @@ import random
 import time
 import traceback
 import marshal
-
+from . import _error
 import httpx
 from nonebot import on_command, get_app
 from nonebot.adapters.onebot.v11 import (Bot, Message, MessageEvent)
@@ -138,6 +138,4 @@ async def cave_handle(bot: Bot,
     except KeyError as e:
         await cave.finish(f"回声洞（{e}）不存在")
     except Exception:
-        await bot.send_group_msg(message=traceback.format_exc(),
-                                 group_id=ctrlGroup)
-        await cave.finish("处理失败")
+        await _error.report(traceback.format_exc(), cave)

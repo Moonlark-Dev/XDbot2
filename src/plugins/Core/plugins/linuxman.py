@@ -6,6 +6,7 @@ from nonebot.exception import FinishedException
 from nonebot import on_command
 from nonebot.exception import ActionFailed
 import json
+from . import _error
 import traceback
 import httpx
 
@@ -54,9 +55,7 @@ async def linuxmanHandle(bot: Bot,
     except FinishedException:
         raise FinishedException()
     except Exception:
-        await bot.send_group_msg(message=traceback.format_exc(),
-                                 group_id=ctrlGroup)
-    await linuxman.finish("处理失败")
+        await _error.report(traceback.format_exc(), linuxman)
 
 
 # [HELPSTART] Version: 2

@@ -2,7 +2,7 @@ import json
 import math
 import os.path
 import traceback
-
+from . import _error
 from nonebot import on_command, on_message
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.adapters.onebot.v11.bot import Bot
@@ -142,10 +142,7 @@ async def ctHandle(
     except FinishedException:
         raise FinishedException()
     except Exception:
-        await bot.send_group_msg(
-            message=traceback.format_exc(),
-            group_id=ctrlGroup)
-        await ct.finish("处理失败")
+        await _error.report(traceback.format_exc())
 
 
 @ctRecorder.handle()
@@ -179,10 +176,7 @@ async def ctRecorderHandle(
         json.dump(groupData, open(f"data/ct.{group}.json", "w"))
 
     except Exception:
-        await bot.send_group_msg(
-            message=traceback.format_exc(),
-            group_id=ctrlGroup
-        )
+        await _error.report(traceback.format_exc())
 
 # [HELPSTART]
 # !Usage 1 ct

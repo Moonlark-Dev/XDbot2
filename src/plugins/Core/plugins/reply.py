@@ -7,7 +7,7 @@ import random
 import re
 import time
 import traceback
-
+from . import _error
 from nonebot import on_message
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.adapters.onebot.v11.bot import Bot
@@ -58,10 +58,7 @@ async def repetitionHandle(
                         pass
 
     except Exception:
-        await bot.send_group_msg(
-            message=traceback.format_exc(),
-            group_id=ctrlGroup
-        )
+        await _error.report(traceback.format_exc())
 
 
 @imageSender.handle()
@@ -102,10 +99,7 @@ async def imageSenderHandle(bot: Bot):
                         "data/reply.images.json", "w", encoding="utf-8"))
 
     except Exception:
-        await bot.send_group_msg(
-            message=traceback.format_exc(),
-            group_id=ctrlGroup
-        )
+        await _error.report(traceback.format_exc())
 
 
 @imageSaver.handle()
@@ -168,7 +162,4 @@ async def imageSaverHandle(
                 # elif random.random() <= 0.01:
 
     except Exception:
-        await bot.send_group_msg(
-            message=traceback.format_exc(),
-            group_id=ctrlGroup
-        )
+        await _error.report(traceback.format_exc())

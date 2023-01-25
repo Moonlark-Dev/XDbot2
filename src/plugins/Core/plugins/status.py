@@ -4,7 +4,7 @@ from nonebot.params import CommandArg
 from nonebot import on_command
 from nonebot.exception import FinishedException
 import psutil
-import os
+from . import _error
 import traceback
 import json
 import getpass
@@ -128,10 +128,7 @@ Python版本：{pyver()}""")
     except FinishedException:
         raise FinishedException()
     except Exception:
-        await bot.send_group_msg(message=traceback.format_exc(),
-                                 group_id=ctrlGroup)
-        await status.finish("处理失败")
-
+        await _error.report(traceback.format_exc())
 
 # [HELPSTART] Version: 2
 # Command: status

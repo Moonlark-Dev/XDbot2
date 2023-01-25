@@ -1,7 +1,7 @@
 import json
 import time
 import traceback
-
+from . import _error
 from fastapi.responses import HTMLResponse
 from nonebot import get_app, get_bots, on_type
 from nonebot.adapters.onebot.v11.bot import Bot
@@ -14,18 +14,19 @@ app = get_app()
 
 @app.get("/ban", response_class=HTMLResponse)
 async def homepage():
-    bots = get_bots()
-    groups = []
-    for bot in bots:
-        groups += await bots[bot].get_group_list()
-    html = "<table border='1'><tr><td>群名称</td><td>群号</td><td>操作</td></tr>"
-    addedGroup = []
-    for group in groups:
-        if group["group_id"] not in addedGroup:
-            html += f"<tr><td>{group['group_name']}</td><td>{group['group_id']}</td><td><a href=\"./ban/{group['group_id']}\">查看禁言记录</td>"
-            addedGroup.append(group["group_id"])
-    html += "</table>"
-    return f"""<!DOCTYPE html>
+    try:
+        bots = get_bots()
+        groups = []
+        for bot in bots:
+            groups += await bots[bot].get_group_list()
+        html = "<table border='1'><tr><td>群名称</td><td>群号</td><td>操作</td></tr>"
+        addedGroup = []
+        for group in groups:
+            if group["group_id"] not in addedGroup:
+                html += f"<tr><td>{group['group_name']}</td><td>{group['group_id']}</td><td><a href=\"./ban/{group['group_id']}\">查看禁言记录</td>"
+                addedGroup.append(group["group_id"])
+        html += "</table>"
+        return f"""<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
@@ -38,29 +39,32 @@ async def homepage():
         </footer>
     </body>
 </html>"""
+    except BaseException:
+        await _error.report(traceback.format_exc())
 
 
 @app.get("/ban/{group_id}", response_class=HTMLResponse)
 async def viewBans(group_id):
-    data = json.load(open("data/ban.banData.json", encoding="utf-8"))
-    html = "<table border='1'><tr><td>用户</td><td>时长</td><td>禁言时间</td><td>解除时间</td><td>操作员</td></tr>"
     try:
-        for i in data[group_id]:
-            # 类型转换处理（我写了个啥……）
-            if isinstance(i, list):
-                item = i[0]
-            else:
-                item = i
-            if "pardonTime" in item.keys():
-                pardonTime = item['pardonTime']
-            else:
-                pardonTime = item['banTime'] + item['duration']
-            html += f"<tr><td>{item['user']['nickname']}({item['user']['user_id']})</td><td>{item['duration']/60}分钟</td><td>{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(item['banTime']))}</td><td>{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(pardonTime))}</td><td>{item['operator']['nickname']}({item['operator']['user_id']})</td></tr>"
-
-        html += "</table>"
-    except KeyError:
-        html = "错误：群聊不存在或无数据"
-    return f"""<!DOCTYPE html>
+        data = json.load(open("data/ban.banData.json", encoding="utf-8"))
+        html = "<table border='1'><tr><td>用户</td><td>时长</td><td>禁言时间</td><td>解除时间</td><td>操作员</td></tr>"
+        try:
+            for i in data[group_id]:
+                # 类型转换处理（我写了个啥……）
+                if isinstance(i, list):
+                    item = i[0]
+                else:
+                    item = i
+                if "pardonTime" in item.keys():
+                    pardonTime = item['pardonTime']
+                else:
+                    pardonTime = item['banTime'] + item['duration']
+                html += f"<tr><td>{item['user']['nickname']}({item['user']['user_id']})</td><td>{item['duration']/60}分钟</td><td>{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(item['banTime']))}</td><td>{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(pardonTime))}</td><td>{item['operator']['nickname']}({item['operator']['user_id']})</td></tr>"
+    
+            html += "</table>"
+        except KeyError:
+            html = "错误：群聊不存在或无数据"
+        return f"""<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
@@ -73,6 +77,8 @@ async def viewBans(group_id):
         </footer>
     </body>
 </html>"""
+    except BaseException:
+        _error.report(traceback.format_exc())
 
 
 @banCount.handle()
@@ -111,5 +117,4 @@ async def banCountHandle(bot: Bot, event: GroupBanNoticeEvent):
         json.dump(data, open("data/ban.banData.json", "w", encoding="utf-8"))
 
     except Exception:
-        await bot.send_group_msg(group_id=ctrlGroup,
-                                 message=traceback.format_exc())
+        await _error.report(traceback.format_exc())

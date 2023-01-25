@@ -1,3 +1,4 @@
+from . import _error
 import json
 import traceback
 from nonebot import on_command
@@ -42,9 +43,7 @@ async def helpHandle(bot: Bot, message: Message = CommandArg()):
     except FinishedException:
         raise FinishedException()
     except Exception:
-        await bot.send_group_msg(message=traceback.format_exc(),
-                                 group_id=ctrlGroup)
-
+        await _error.report(traceback.format_exc(), help)
 
 # [HELPSTART] Version: 2
 # Command: help

@@ -1,6 +1,7 @@
 import json
 import time
-
+from . import _error
+import traceback
 from nonebot import require
 from nonebot.log import logger
 from nonebot_plugin_apscheduler import scheduler
@@ -78,8 +79,8 @@ async def checkReloaded():
         logger.info("正在刷新商城货架")
         try:
             await reloadSell()
-        except BaseException as e:
-            logger.error(e)
+        except BaseException:
+            await _error.report(traceback.format_exc())
         else:
             latest["mday"] = time.localtime().tm_mday
             json.dump(

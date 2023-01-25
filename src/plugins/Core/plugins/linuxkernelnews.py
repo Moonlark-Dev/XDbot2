@@ -1,7 +1,8 @@
 from nonebot.adapters.onebot.v11.bot import Bot
-from nonebot.adapters.onebot.v11.event import MessageEvent
-from nonebot.adapters.onebot.v11 import Message
-from nonebot.params import CommandArg
+#from nonebot.adapters.onebot.v11.event import MessageEvent
+#from nonebot.adapters.onebot.v11 import Message
+#from nonebot.params import CommandArg
+from . import _error
 from nonebot.exception import FinishedException
 from nonebot import on_command
 import json
@@ -30,11 +31,7 @@ async def linuxkernelnewsHandle(bot: Bot):
     except FinishedException:
         raise FinishedException()
     except Exception:
-        await bot.send_group_message(
-            message=traceback.format_exc(),
-            group_id=ctrlGroup
-        )
-    await linuxkernelnews.finish("处理失败")
+        await _error.report(traceback.format_exc(), linuxkernelnews)
 
 # [HELPSTART] Version: 2
 # Command: lkn

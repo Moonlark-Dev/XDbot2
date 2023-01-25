@@ -1,6 +1,6 @@
 import json
 import traceback
-
+from . import _error
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.adapters.onebot.v11.bot import Bot
@@ -54,11 +54,7 @@ async def fakenodeHandle(
     except FinishedException:
         raise FinishedException()
     except Exception:
-        await bot.send_group_msg(
-            message=traceback.format_exc(),
-            group_id=ctrlGroup
-        )
-        await fakenode.finish("处理失败")
+        await _error.report(traceback.format_exc(), fakenode)
 
 # [HELPSTART] Version: 2
 # Command: fakenode

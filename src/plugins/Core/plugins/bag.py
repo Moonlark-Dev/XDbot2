@@ -1,6 +1,6 @@
 import json
 import traceback
-
+from . import _error
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, Message
 from nonebot.exception import FinishedException
@@ -57,9 +57,7 @@ async def bagHandle(bot: Bot,
     except IndexError:
         await bag.finish("错误：找不到物品")
     except Exception:
-        await bot.send_group_msg(message=traceback.format_exc(),
-                                 group_id=ctrlGroup)
-        await bag.finish("处理失败")
+        await _error.report(traceback.format_exc(), bag) 
 
 
 # [HELPSTART] Version: 2

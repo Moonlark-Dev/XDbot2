@@ -1,6 +1,6 @@
 import json
 import traceback
-
+from . import _error
 from nonebot import on_message
 from nonebot.adapters.onebot.v11 import (Bot, GroupMessageEvent, Message,
                                          PrivateMessageEvent)
@@ -24,9 +24,7 @@ async def privateForwardHandle(
         )
 
     except Exception:
-        await bot.send_group_msg(
-            message=traceback.format_exc(),
-            group_id=ctrlGroup)
+        await _error.report(traceback.format_exc(), privateForward)
 
 
 @groupForward.handle()
@@ -46,7 +44,4 @@ async def groupForwardHandle(
             )
 
     except Exception:
-        await bot.send_group_msg(
-            message=traceback.format_exc(),
-            group_id=ctrlGroup
-        )
+        await _error.report(traceback.format_exc())
