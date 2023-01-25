@@ -9,8 +9,8 @@ import time
 import traceback
 import json
 
-userInfo = on_command("user-info", aliases={"userinfo", "info", "我的信息"})
-ctrlGroup = json.load(open("data/ctrl.json"))
+userInfo = on_command("user-info", aliases={"userinfo", "info", "我的信息", "userInfo"})
+ctrlGroup = json.load(open("data/ctrl.json"))["control"]
 
 
 @userInfo.handle()
