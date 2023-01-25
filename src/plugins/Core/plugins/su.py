@@ -77,8 +77,9 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
             json.dump(data, open("data/su.blackList.json", "w"))
             reloadBlackList()
         elif argument[0] == "call" or argument[0] == "调用":
-            await su.send(str(await bot.call_api(api=argument[1],
-                                                 data=json.loads(argument[2]))))
+            await su.send(
+                str(await bot.call_api(api=argument[1],
+                                       data=json.loads(argument[2]))))
         elif argument[0] == "ct" or argument[0] == "发言排名":
             if argument[1] == "clear" or argument[1] == "清除数据":
                 fileList = os.listdir("data")
@@ -103,10 +104,11 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
         elif argument[0] == "config" or argument[0] == "配置":
             if argument[1] == "get" or argument[1] == "获取":
                 await su.send(
-                    str(
-                        json.load(
-                            open(f"data/{argument[2]}.json",
-                                 encoding="utf-8"))[argument[3]]))
+                    json.dumps(
+                        str(
+                            json.load(
+                                open(f"data/{argument[2]}.json",
+                                     encoding="utf-8"))[argument[3]])))
             elif argument[1] == "set" or argument == "设置":
                 config = json.load(
                     open(f"data/{argument[2]}.json", encoding="utf-8"))
@@ -145,16 +147,15 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
                 data = json.load(open("data/cave.data.json", encoding="utf-8"))
                 data['data'][str(data['count'])] = {
                     "id": str(data['count']),
-                    "text": argument[2].replace("%20", " ").replace(r"\n", "\n"),
-                    "sender": {"type": "unkown"}
+                    "text": argument[2].replace("%20",
+                                                " ").replace(r"\n", "\n"),
+                    "sender": {
+                        "type": "unkown"
+                    }
                 }
                 data['count'] += 1
-                json.dump(
-                    data,
-                    open(
-                        "data/cave.data.json",
-                        "w",
-                        encoding="utf-8"))
+                json.dump(data,
+                          open("data/cave.data.json", "w", encoding="utf-8"))
         elif argument[0] == "give" or argument[0] == "给予":
             _userCtrl.addItem(argument[1], argument[2], int(argument[3]),
                               json.loads(argument[4]))
@@ -307,8 +308,8 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
                 reply += f"已连接账户：{len(bots.keys())}\n"
                 length = 1
                 for accout in list(bots.keys()):
-                    userData = await bot.get_stranger_info(
-                        user_id=str((await bots[accout].get_login_info())["user_id"]))
+                    userData = await bot.get_stranger_info(user_id=str((
+                        await bots[accout].get_login_info())["user_id"]))
                     reply += f"{length}. {userData['nickname']} ({userData['user_id']})\n"
                     length += 1
                 await su.send(reply)
