@@ -138,11 +138,11 @@ def useItem(userID: str, pos: int):
         elif 2 <= num <= 9:
             return f"买了一个二十面骰子，掷出了 {num}，一无所获……"
         elif num == 1:
-            bag = userData.copy()
+            bag = userData[userID].copy()
             length = 0
             for i in bag:
                 if i["id"] == "0":
-                    userData.pop(length)
+                    userData[userID].pop(length)
                 else:
                     length += 1
             json.dump(userData, open("data/etm.bag.json", "w"))
