@@ -161,7 +161,7 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
                 data['count'] += 1
                 json.dump(data,
                           open("data/cave.data.json", "w", encoding="utf-8"))
-            elif argument[1] in ["modify","修改"]:
+            elif argument[1] in ["modify", "修改"]:
                 data = json.load(open("data/cave.data.json", encoding="utf-8"))
                 if argument[3] == "sender":
                     if argument[4] in ["name","nickname"]:
@@ -255,8 +255,8 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
                     "price": int(argument[4]),
                     "info": None,
                     "data": json.loads(argument[5]),
-                    "nickname":s_nickname,
-                    "user_id":s_user_id
+                    "nickname": s_nickname,
+                    "user_id": s_user_id
                 })
                 try:
                     data[-1]["maxBuy"] = int(argument[6])

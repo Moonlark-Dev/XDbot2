@@ -9,7 +9,13 @@ import time
 import traceback
 import json
 
-userInfo = on_command("user-info", aliases={"userinfo", "info", "我的信息", "userInfo"})
+userInfo = on_command(
+    "user-info",
+    aliases={
+        "userinfo",
+        "info",
+        "我的信息",
+        "userInfo"})
 ctrlGroup = json.load(open("data/ctrl.json"))["control"]
 
 
@@ -24,15 +30,19 @@ async def userInfoHandle(bot: Bot, event: MessageEvent):
         for _ in range(10 - int(data['exp'] / (data['level'] ** 2) * 10)):
             bar += "  "
         # VIP
-        if data['vip']['level'] == None:
+        if data['vip']['level'] is None:
             vip = "未开通"
             endTime = "???"
         else:
-            vip = "VIP" + "+" * data['vip']['level'] + f" ({data['vip']['level']})"
-            if data['vip']["endTime"] == None:
+            vip = "VIP" + "+" * data['vip']['level'] + \
+                f" ({data['vip']['level']})"
+            if data['vip']["endTime"] is None:
                 endTime = "永久"
             else:
-                endTime = time.strftime("%Y-%m-%d", time.localtime(data['vip']['endTime']))
+                endTime = time.strftime(
+                    "%Y-%m-%d",
+                    time.localtime(
+                        data['vip']['endTime']))
 
         reply = (
             "+-----「用户信息」-----+\n"
@@ -44,7 +54,6 @@ async def userInfoHandle(bot: Bot, event: MessageEvent):
             "+-------------------------+")
         await userInfo.finish(reply)
 
-
     except FinishedException:
         raise FinishedException()
     except Exception:
@@ -53,4 +62,3 @@ async def userInfoHandle(bot: Bot, event: MessageEvent):
             group_id=ctrlGroup
         )
         await userInfo.finish("处理失败")
-

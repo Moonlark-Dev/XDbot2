@@ -95,7 +95,9 @@ def removeItemsByID(userID: str, itemID: str, itemCount: int,
     # 丢弃更改
     return False
 
-def removeItemsByID_allowBelowZero(userID: str, itemID: str, itemCount: int, removeType: str = "Use", itemData: dict = {}):
+
+def removeItemsByID_allowBelowZero(
+        userID: str, itemID: str, itemCount: int, removeType: str = "Use", itemData: dict = {}):
     userData = json.load(open("data/etm.bag.json", encoding="utf-8"))
     if userID not in userData.keys():
         userData[userID] = []
@@ -123,8 +125,9 @@ def removeItemsByID_allowBelowZero(userID: str, itemID: str, itemCount: int, rem
                         encoding="utf-8"))
                 return True
         length += 1
-    addItem(userID,itemID,0-itemCount,itemData)
+    addItem(userID, itemID, 0 - itemCount, itemData)
     return True
+
 
 def useItem(userID: str, pos: int):
     userData = json.load(open("data/etm.bag.json", encoding="utf-8"))
