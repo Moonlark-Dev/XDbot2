@@ -23,7 +23,7 @@ async def linuxkernelnewsHandle(bot: Bot):
             r'https://cdn.kernel.org/pub/linux/kernel/.*/linux-.*.tar.xz"', data)
         kernels = ""
         for i in range(len(data)):
-            kernels += f"{i+1}. {data[i][:-1]}\n"
+            kernels += f"{i+1}. {data[i][:-1].replace('cdn.kernel.org/pub','mirrors.ustc.edu.cn/kernel.org')}\n"
         answer = f"""kernel.org 最新可用内核:
 {kernels}"""
         await linuxkernelnews.finish(answer)
