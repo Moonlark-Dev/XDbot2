@@ -31,6 +31,12 @@ async def reloadSell():
         length = 0
         while True:
             if str(length) not in shopData.keys():
+                try:
+                    s_nickname = item["nickname"]
+                    s_user_id = item["user_id"]
+                except KeyError:
+                    s_nickname = "System"
+                    s_user_id = "AdminShop"
                 shopData[str(length)] = {
                     "name": items[item["id"]]["name"],
                     "info": items[item["id"]]["info"],
@@ -43,10 +49,14 @@ async def reloadSell():
                     "price": item["price"],
                     "from": "autosell",
                     "seller": {
-                        "nickname": "System",
-                        "user_id": "AdminShop"
+                        "nickname": s_nickname,
+                        "user_id": s_user_id,
                     }
                 }
+                try:
+                    shopData[str(length)]["maxBuy"] = int(item["maxBuy"])
+                except KeyError:
+                    pass
                 break
             length += 1
         json.dump(
