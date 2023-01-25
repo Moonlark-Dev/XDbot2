@@ -1,0 +1,28 @@
+name: "Bug 反馈"
+description: "发现了 XDbot 的 Bug"
+labels: [· Bug]
+body:
+- type: textarea
+  id: "yml-2"
+  attributes:
+    label: 描述
+    description: "详细描述该 Bug 的具体表现。"
+  validations:
+    required: true
+- type: textarea
+  id: "yml-3"
+  attributes:
+    label: 重现步骤
+    description: "详细描述要怎么操作才能再次触发这个 Bug。"
+    value: |
+      使用xxx命令
+  validations:
+    required: true
+- type: textarea
+  id: "yml-4"
+  attributes:
+    label: 截图
+    description: "上传 Bug 触发时的截图"
+    placeholder: "先点击这个文本框，然后再将文件直接拖拽到文本框中以上传，或者复制图片，在文本框内粘贴。"
+  validations:
+    required: false
