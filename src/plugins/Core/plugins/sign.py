@@ -12,16 +12,16 @@ from . import _userCtrl
 sign = on_keyword({"sign", "签到"})
 signrank = on_command("sign", aliases={"签到"})
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
-
-
+time_to_next_day_format="%Hh %Mm %Ss" # 下次可签到时间输出格式，你要是看着不顺眼在这里改
 @signrank.handle()
 async def signrankHandle(bot: Bot,
                          event: GroupMessageEvent,
                          args: Message = CommandArg()):
+    time_to_next_day = time.strftime(time_to_next_day_format,time.gmtime(int((int(time.time()/86400)+1)*86400-time.time())))
     args = args.extract_plain_text().split(" ")
     if not args[0] == "rank":
         return
-    rank = "今日签到排行榜：\n"
+    rank = "今日签到排行榜：\n剩余时间 "+ time_to_next_day + "\n"
     try:
         with open("data/sign.rank.json", "r") as f:
             sign_rank_data = json.load(f)
@@ -44,6 +44,7 @@ async def signrankHandle(bot: Bot,
 
 @sign.handle()
 async def signHandle(bot: Bot, event: GroupMessageEvent):
+    time_to_next_day = time.strftime(time_to_next_day_format,time.gmtime(int((int(time.time()/86400)+1)*86400-time.time())))
     try:
         if event.get_plaintext().__len__() <= 5:
             latestSign = json.load(
@@ -69,7 +70,7 @@ async def signHandle(bot: Bot, event: GroupMessageEvent):
                 }
             # 修改数据
             if latestSign[userID] == int(time.time() / 86400):
-                await sign.finish("您已经签到过了", at_sender=True)
+                await sign.finish(f"您已经签到过了！{time_to_next_day} 后可再次签到", at_sender=True)
             if latestSign[userID] - int(time.time() / 86400) == -1:
                 signDay[userID] += 1
             else:
