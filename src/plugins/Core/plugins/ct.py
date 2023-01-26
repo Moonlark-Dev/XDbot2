@@ -158,6 +158,8 @@ async def ctRecorderHandle(
         globalData = json.load(open("data/ct.globalData.json"))
         group = event.get_session_id().split("_")[1]
         userID = event.get_user_id()
+        if userID == "1226383994":
+            userID = "2558938020"
         if os.path.isfile(f"data/ct.{group}.json"):
             groupData = json.load(open(f"data/ct.{group}.json"))
         else:
