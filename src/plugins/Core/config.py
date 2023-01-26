@@ -165,6 +165,14 @@ class Config(BaseSettings):
             "text": json.dumps({
                 "time": time.time()
             })
+        },
+        {
+            "path": "data/setu.config.json",
+            "text": json.dumps({
+                "sleep": 45,
+                "delete_sleep": 25,
+                "proxies": "http://127.0.0.1:7890"
+            })
         }
         # ,
         # {
