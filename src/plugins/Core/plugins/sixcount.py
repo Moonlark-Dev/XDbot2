@@ -25,7 +25,7 @@ async def on_six_handle(event: MessageEvent) -> None:
         try:
             data[event.get_user_id()] += 1
         except KeyError:
-            data[event.get_user_id] = 1
+            data[event.get_user_id()] = 1
         json.dump(data, open("data/sixcount.data.json", "w"))
 
     except Exception:

@@ -1,7 +1,7 @@
-# XDbot2 v2.2.46-beta
+# XDbot2 v2.2.47-beta
 
 import os
 
-print("欢迎使用：XDbot2 v2.2.46-beta")
+print("欢迎使用：XDbot2 v2.2.47-beta")
 
-os.system("python3 -m pip install pyecharts")
+os.remove("data/sixcount.data.json")
