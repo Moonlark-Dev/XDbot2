@@ -12,7 +12,7 @@ from . import _userCtrl
 sign = on_keyword({"sign", "签到"})
 signrank = on_command("sign", aliases={"签到"})
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
-time_to_next_day_format="%H:%M:%S" # 下次可签到时间输出格式，你要是看着不顺眼在这里改
+time_to_next_day_format="%H:%M'%S''" # 下次可签到时间输出格式，你要是看着不顺眼在这里改
 @signrank.handle()
 async def signrankHandle(bot: Bot,
                          event: GroupMessageEvent,
