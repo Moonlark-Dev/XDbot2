@@ -28,3 +28,9 @@ async def st_handle():
         raise FinishedException()
     except Exception:
         await _error.report(traceback.format_exc(), st)
+
+
+# [HELPSTART]
+# Usage 1 st
+# Info 1 随机图片
+# [HELPEND]
