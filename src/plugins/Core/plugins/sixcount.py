@@ -67,11 +67,11 @@ async def pie():
 
         for i in range(len(user_list)):
             user_data.append((
-                await bot.get_stranger_info(user_id=data[user_list[i]]),
+                (await bot.get_stranger_info(user_id=data[user_list[i]]))['nickname'],
                 data[user_list[i]]))
 
         file_path = ((Pie(init_opts=opts.InitOpts(bg_color='rgba(255,255,255,1)'))
-                .add("", data)
+                .add("", user_data)
                     .set_global_opts(
                         title_opts=opts.TitleOpts(
                             title="6",
