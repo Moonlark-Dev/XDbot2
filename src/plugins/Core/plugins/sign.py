@@ -12,7 +12,7 @@ from . import _userCtrl
 sign = on_keyword({"sign", "签到"})
 signrank = on_command("sign", aliases={"签到"})
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
-time_to_next_day_format="%Hh%Mm%Ss" # 下次可签到时间输出格式，你要是看着不顺眼在这里改
+time_to_next_day_format="%H:%M:%Ss" # 下次可签到时间输出格式，你要是看着不顺眼在这里改
 @signrank.handle()
 async def signrankHandle(bot: Bot,
                          event: GroupMessageEvent,
@@ -21,7 +21,7 @@ async def signrankHandle(bot: Bot,
     args = args.extract_plain_text().split(" ")
     if not args[0] == "rank":
         return
-    rank = "今日签到排行榜：（剩余"+ time_to_next_day + "）\n"
+    rank = "今日签到榜：（剩余"+ time_to_next_day + "）\n"
     try:
         with open("data/sign.rank.json", "r") as f:
             sign_rank_data = json.load(f)
