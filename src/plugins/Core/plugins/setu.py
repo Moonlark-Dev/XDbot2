@@ -68,8 +68,8 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
         # 生成文本
         msg = MessageSegment.image(f"file://{image_path}")
         msg += data["title"]
-        msg += f'(P{data["pid"]})'
-        msg += f"作者：{data['author']}"
+        msg += f' (P{data["pid"]})'
+        msg += f"\n作者：{data['author']}"
         msg += f"\n[本消息将在{config['delete_sleep']}s后撤回]"
         msg = Message(msg)
 
@@ -89,6 +89,9 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
         asyncio.create_task(delete_msg(bot, message_id))
         latest_send = time.time()
 
+    except httpx.ConnectTimeout:
+        await _error.report("警告：一个请求超时！")
+        await setu.finish("错误：请求超时，请稍候重试！\n（本次不计入冷却）")
     except FinishedException:
         raise FinishedException()
     except Exception:
