@@ -6,7 +6,7 @@ from nonebot.adapters.onebot.v11.message import MessageSegment
 from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.adapters.onebot.v11.event import MessageEvent
-from nonebot.exception import FinishedException
+from nonebot.exception import FinishedException, ActionFailed
 from nonebot.params import CommandArg
 from . import _error
 import asyncio
@@ -70,7 +70,7 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
         msg += data["title"]
         msg += f' (P{data["pid"]})'
         msg += f"\n作者：{data['author']}"
-        msg += f"\n[本消息将在{config['delete_sleep']}s后撤回]"
+        msg += f"\n[消息将在{config['delete_sleep']}s后撤回]"
         msg = Message(msg)
 
         # 发送文本
@@ -91,7 +91,9 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
 
     except httpx.ConnectTimeout:
         await _error.report("警告：一个请求超时！")
-        await setu.finish("错误：请求超时，请稍候重试！\n（本次不计入冷却）")
+        await setu.finish("错误：请求超时，请稍候重试！（本次不计入冷却）")
+    except ActionFailed:
+        await setu.finish("错误：图片被腾讯风控！（本次不计入冷却）")
     except FinishedException:
         raise FinishedException()
     except Exception:
