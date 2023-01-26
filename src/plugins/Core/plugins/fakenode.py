@@ -58,7 +58,7 @@ async def fakenodeHandle(
 
 # [HELPSTART] Version: 2
 # Command: fakenode
-# Usage fakenode <QQ号>:<消息>：伪造群消息转发（见fakenode(0)）
-# Info 伪造一个QQ群转发消息并发送到当前群聊
-# Msg 伪造消息转发
+# Usage: fakenode <QQ号>:<消息>：伪造群消息转发（见fakenode(0)）
+# Info: 伪造一个QQ群转发消息并发送到当前群聊
+# Msg: 伪造消息转发
 # [HELPEND]
