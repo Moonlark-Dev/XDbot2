@@ -1,5 +1,6 @@
 from pydantic import BaseSettings
 import json
+import time
 
 
 class Config(BaseSettings):
@@ -154,6 +155,16 @@ class Config(BaseSettings):
         {
             "path": "data/whoAtme.data.json",
             "text": "{}"
+        },
+        {
+            "path": "data/sixcount.data.json",
+            "text": "{}"
+        },
+        {
+            "path": "data/sixcount.starttime.json",
+            "text": json.dumps({
+                "time": time.time()
+            })
         }
         # ,
         # {

@@ -1,19 +1,7 @@
-# XDbot2 v2.2.17-beta
+# XDbot2 v2.2.46-beta
 
-import json
+import os
 
-print("欢迎使用：XDbot2 v2.2.17-beta")
+print("欢迎使用：XDbot2 v2.2.46-beta")
 
-data = json.load(open("data/etm.userData.json"))
-
-for key in list(data.keys()):
-#    try:
-        buyTime = data[key]["vip"].pop("buyTime")
-        if buyTime:
-            data[key]["vip"]["endTime"] = buyTime + 604800
-        else:
-            data[key]["vip"]["endTime"] = None
-#    except:
-#        pass
-
-json.dump(data, open("data/etm.userData.json", "w"))
+os.system("python3 -m pip install pyecharts")
