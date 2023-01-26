@@ -22,10 +22,13 @@ async def on_six_handle(event: MessageEvent) -> None:
     """「6」计数器"""
     try:
         data = json.load(open("data/sixcount.data.json"))
+        userID = event.get_user_id()
+        if userID == "1226383994":
+            userID = "2558938020"
         try:
-            data[event.get_user_id()] += 1
+            data[userID] += 1
         except KeyError:
-            data[event.get_user_id()] = 1
+            data[userID] = 1
         json.dump(data, open("data/sixcount.data.json", "w"))
 
     except Exception:
