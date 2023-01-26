@@ -68,7 +68,8 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
         # 生成文本
         msg = MessageSegment.image(f"file://{image_path}")
         msg += data["title"]
-        msg += f'\nP{data["pid"]}'
+        msg += f'(P{data["pid"]})'
+        msg += f"作者：{data['author']}"
         msg += f"\n[本消息将在{config['delete_sleep']}s后撤回]"
         msg = Message(msg)
 
