@@ -33,13 +33,6 @@ async def guess_handle(bot: Bot,
             status = True
             reply += "游戏已开始，请使用 /guess <number> 参与，数字为0~100的整数"
             await guess.finish(reply)
-        # elif args[0] == "stop":
-        #    # 这边你来写个权限判断，我懒得翻文档了 --xxtg
-
-        #    status = False
-        #    number = -1
-        #    reply += "已强制终止本轮游戏"
-        #    await guess.finish(reply)
         else:
             try:
                 num = int(args[0])
@@ -63,5 +56,5 @@ async def guess_handle(bot: Bot,
                 status = False
                 number = -1
                 await guess.finish(reply)
-    except:
+    except BaseException:
         await _error.report(traceback.format_exc(), guess)

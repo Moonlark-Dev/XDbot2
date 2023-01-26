@@ -12,8 +12,24 @@ ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 app = get_app()
 
 
+def formatHtml(html: str) -> str:
+    return f"""<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>XDbot2</title>
+    </head>
+    <body>
+        {html}
+        <footer>
+            <p>Powered by <a href="https://github.com/This-is-XiaoDeng/XDbot2">XDbot2</a></p>
+        </footer>
+    </body>
+</html>"""
+
+
 @app.get("/ban", response_class=HTMLResponse)
-async def homepage():
+async def homepage() -> str:
     try:
         bots = get_bots()
         groups = []
@@ -41,10 +57,15 @@ async def homepage():
 </html>"""
     except BaseException:
         await _error.report(traceback.format_exc())
+        formatHtml((
+            "<h1>服务器内部错误</h1>"
+            "<p>建议前往："
+            "https://github.com/This-is-XiaoDeng/XDbot2/issues/new?assignees=&labels=%C2%B7+Bug&template=bug.yml"
+            " 提交一个 Issue 反馈该问题</p>"))
 
 
 @app.get("/ban/{group_id}", response_class=HTMLResponse)
-async def viewBans(group_id):
+async def viewBans(group_id) -> str:
     try:
         data = json.load(open("data/ban.banData.json", encoding="utf-8"))
         html = "<table border='1'><tr><td>用户</td><td>时长</td><td>禁言时间</td><td>解除时间</td><td>操作员</td></tr>"
@@ -60,29 +81,22 @@ async def viewBans(group_id):
                 else:
                     pardonTime = item['banTime'] + item['duration']
                 html += f"<tr><td>{item['user']['nickname']}({item['user']['user_id']})</td><td>{item['duration']/60}分钟</td><td>{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(item['banTime']))}</td><td>{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(pardonTime))}</td><td>{item['operator']['nickname']}({item['operator']['user_id']})</td></tr>"
-    
+
             html += "</table>"
         except KeyError:
             html = "错误：群聊不存在或无数据"
-        return f"""<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>XDbot2</title>
-    </head>
-    <body>
-        {html}
-        <footer>
-            <p>Powered by <a href="https://github.com/This-is-XiaoDeng/XDbot2">XDbot2</a></p>
-        </footer>
-    </body>
-</html>"""
+        return formatHtml(html)
     except BaseException:
         _error.report(traceback.format_exc())
+        return formatHtml((
+            "<h1>服务器内部错误</h1>"
+            "<p>建议前往："
+            "https://github.com/This-is-XiaoDeng/XDbot2/issues/new?assignees=&labels=%C2%B7+Bug&template=bug.yml"
+            " 提交一个 Issue 反馈该问题</p>"))
 
 
 @banCount.handle()
-async def banCountHandle(bot: Bot, event: GroupBanNoticeEvent):
+async def banCountHandle(bot: Bot, event: GroupBanNoticeEvent) -> None:
     try:
         data = json.load(open("data/ban.banData.json", encoding="utf-8"))
         event.group_id = str(event.group_id)

@@ -103,8 +103,8 @@ async def cave_handle(bot: Bot,
             # 发送通知
             await bot.send_group_msg(message=Message(
                 (f"「回声洞新投稿（{data['count'] - 1}）」\n"
-                 f"来自：{event.get_session_id()}\n"
-                 f"内容：{str(message)[argument[0].__len__():].strip()}")),
+                 f"{event.get_session_id()}\n \n"
+                 f"{str(message)[argument[0].__len__():].strip()}")),
                 group_id=ctrlGroup)
             # 写入数据
             json.dump(data, open("data/cave.data.json", "w", encoding="utf-8"))

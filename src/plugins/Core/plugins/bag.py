@@ -57,7 +57,7 @@ async def bagHandle(bot: Bot,
     except IndexError:
         await bag.finish("错误：找不到物品")
     except Exception:
-        await _error.report(traceback.format_exc(), bag) 
+        await _error.report(traceback.format_exc(), bag)
 
 
 # [HELPSTART] Version: 2
