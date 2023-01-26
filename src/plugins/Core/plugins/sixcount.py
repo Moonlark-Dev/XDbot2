@@ -33,7 +33,7 @@ async def on_six_handle(event: MessageEvent) -> None:
 
 
 @app.get("/six/data.json")
-async def get_data() -> dict:
+async def get_data() -> dict | None:
     """从Web获取数据"""
     try:
         return json.load(open("data/sixcount.data.json"))
@@ -41,8 +41,8 @@ async def get_data() -> dict:
         await _error.report(traceback.format_exc())
 
 
-@app.get("/six/data.json")
-async def get_data() -> dict:
+@app.get("/six/startime.json")
+async def get_start_time() -> dict | None:
     """从Web获取开始时间"""
     try:
         return json.load(open("data/sixcount.starttime.json"))
@@ -58,7 +58,7 @@ async def pie():
         start_time = time.strftime(
             "%Y-%m-%d %H:%M:%S",
             time.localtime(json.load(
-                open("data/sixcounnt.starttime.json"))["time"]))
+                open("data/sixcount.starttime.json"))["time"]))
 
         user_data = []
         bots = get_bots()
