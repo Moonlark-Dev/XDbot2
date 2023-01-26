@@ -35,7 +35,7 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
     try:
         # 冷却
         if time.time() - latest_send <= config["sleep"]:
-            await setu.finish(f"冷却中，剩余{time.time() - latest_send}s")
+            await setu.finish(f"冷却中，剩余{config['sleep'] - (time.time() - latest_send)}s")
         
         # 收集信息
         argument = message.extract_plain_text().split(" ")
