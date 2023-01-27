@@ -20,6 +20,7 @@ import time
 setu = on_command("setu", aliases={"涩图", "st-r"})
 latest_send = time.time()
 config = json.load(open("data/setu.config.json"))
+allow_r18 = json.load(open("data/setu.allow.json"))["r18"]
 
 
 async def delete_msg(bot: Bot, message: int) -> None:
@@ -45,7 +46,10 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
         tags = ""
         for argv in argument:
             if argv == "r18":
-                r18 = 1
+                if allow_r18:
+                    r18 = 1
+                else:
+                    await setu.finish("R18图片被超管标记为：不允许\n如果需要，请给XDbot2捐一个帐号(x)")
             else:
                 tags += f"&tag={argv}"
 
@@ -109,3 +113,9 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
         raise FinishedException()
     except Exception:
         await _error.report(traceback.format_exc(), setu)
+
+# [HELPSTART] Version: 2
+# Command: st-r
+# Info: 随机图片（增强）
+# Usage: st-r [r18] [tag ...]
+# [HELPEND]

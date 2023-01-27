@@ -30,7 +30,8 @@ async def st_handle():
         await _error.report(traceback.format_exc(), st)
 
 
-# [HELPSTART]
-# Usage 1 st
-# Info 1 随机图片
+# [HELPSTART] Version: 2
+# Command: st
+# Info: 随机图片
+# Usage: st
 # [HELPEND]

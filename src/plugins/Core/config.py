@@ -18,6 +18,12 @@ class Config(BaseSettings):
     # 数据文件命名规则：子插件.数据名.json
     FILES = [
         {
+            "path": "data/setu.allow.json",
+            "text": json.dumps({
+                "r18": False
+            })
+        },
+        {
             "path": "data/jrrp.users.json",
             "text": "{}"
         },
