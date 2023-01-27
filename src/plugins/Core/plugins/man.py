@@ -1,7 +1,7 @@
 import json
 import re
 import traceback
-from . from . import _error
+from . import _error
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Bot, Message
 from nonebot.exception import FinishedException
