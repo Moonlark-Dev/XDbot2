@@ -15,7 +15,7 @@ import httpx
 import json
 import os.path
 import time
-import copy
+# import copy
 
 setu = on_command("setu", aliases={"涩图", "st-r"})
 latest_send = time.time()
@@ -73,7 +73,8 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
         msg += f"\n作者：{data['author']}"
         msg += f"\n[消息将在{config['delete_sleep']}s后撤回]"
         msg = Message(msg)
-        pid = copy.deepcopy(data["pid"])
+        # pid = copy.deepcopy(data["pid"])
+
         # 发送文本
         try:
             message_id = (
@@ -102,8 +103,9 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
         await _error.report("警告：一个请求超时！")
         await setu.finish("错误：请求超时，请稍候重试！（本次不计入冷却）")
     except ActionFailed:
-        await setu.finish(f"错误：图片{pid}被腾讯风控！（本次不计入冷却）")
+        await setu.finish(f"错误：图片（P{data['pid']}）发送失败！（本次不计入冷却）")
     except FinishedException:
         raise FinishedException()
     except Exception:
         await _error.report(traceback.format_exc(), setu)
+
