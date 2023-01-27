@@ -173,6 +173,10 @@ class Config(BaseSettings):
                 "delete_sleep": 25,
                 "proxies": "http://127.0.0.1:7890"
             })
+        },
+        {
+            "path": "data/setu.count.json",
+            "text": "{}"
         }
         # ,
         # {

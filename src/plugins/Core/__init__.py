@@ -66,7 +66,8 @@ for plugin in pluginList:
             logger.info(f"成功加载插件{plugin}")
             loadedPlugins += [plugin]
             # 读取帮助
-            helpData.update(getHelp.get_plugin_help(plugin[:-3], pluginsModule[plugin]))
+            helpData.update(getHelp.get_plugin_help(
+                plugin[:-3], pluginsModule[plugin]))
 
         except AttributeError:
             logger.warning(f"在{plugin}中找不到指令文档")

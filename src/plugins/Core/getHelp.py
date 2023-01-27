@@ -39,7 +39,8 @@ def get_plugin_help(plugin_name: str, module: any) -> dict:
                     command_help[now_command]["usage"].append(
                         line_splited[1].replace(r"\n", "\n"))
                 elif line_splited[0] in ["Info", "描述"]:
-                    command_help[now_command]["info"] = line_splited[1].replace(r"\n", "\n")
+                    command_help[now_command]["info"] = line_splited[1].replace(
+                        r"\n", "\n")
                 elif line_splited[0] in ["Msg", "概述"]:
                     command_help[now_command]["msg"] = line_splited[1]
         elif help_version == 1:

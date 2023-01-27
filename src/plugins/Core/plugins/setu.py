@@ -36,7 +36,7 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
         # 冷却
         if time.time() - latest_send <= config["sleep"]:
             await setu.finish(f"冷却中，剩余{config['sleep'] - (time.time() - latest_send)}s")
-        
+
         # 收集信息
         argument = message.extract_plain_text().split(" ")
         r18 = 0
@@ -46,7 +46,7 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
                 r18 = 1
             else:
                 tags += f"&tag={argv}"
-        
+
         # 发起请求
         async with httpx.AsyncClient() as client:
             req = await client.get(f"https://api.lolicon.app/setu/v2?r18={r18}{tags}")
@@ -88,6 +88,14 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
         # 启动删除任务
         asyncio.create_task(delete_msg(bot, message_id))
         latest_send = time.time()
+
+        # 修改调用数据
+        data = json.load(open("data/setu.count.json"))
+        try:
+            data[event.get_user_id()] += 1
+        except KeyError:
+            data[event.get_user_id()] = 1
+        json.dump(data, open("data/setu.count.json", "w"))
 
     except httpx.ConnectTimeout:
         await _error.report("警告：一个请求超时！")

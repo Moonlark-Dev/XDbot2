@@ -74,14 +74,14 @@ async def pie():
                 data[user_list[i]]))
 
         file_path = ((Pie(init_opts=opts.InitOpts(bg_color='rgba(255,255,255,1)'))
-                .add("", user_data)
-                    .set_global_opts(
-                        title_opts=opts.TitleOpts(
-                            title="6",
-                            subtitle=start_time+" 至今"))
-                    .set_series_opts(
-                        label_opts=opts.LabelOpts(
-                            formatter="{b}: {c}")))
+                      .add("", user_data)
+                      .set_global_opts(
+            title_opts=opts.TitleOpts(
+                title="6",
+                subtitle=start_time + " 至今"))
+            .set_series_opts(
+            label_opts=opts.LabelOpts(
+                formatter="{b}: {c}")))
             .render(path="data/sixcount.render.ro.html"))
 
         with open(file_path, encoding="utf-8") as f:
