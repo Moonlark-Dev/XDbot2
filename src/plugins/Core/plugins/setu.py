@@ -108,4 +108,3 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
         raise FinishedException()
     except Exception:
         await _error.report(traceback.format_exc(), setu)
-
