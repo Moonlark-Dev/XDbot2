@@ -40,7 +40,7 @@ async def guess_handle(bot: Bot,
                 reply += "无效命令"
                 await guess.finish(reply, at_sender=True)
             if not status:
-                reply += "没有进行中的游戏，请使用 /guess start 发起一轮游戏"
+                reply += "并没有进行中的游戏，阁下可以试试 /guess start "
                 await guess.finish(reply, at_sender=True)
             if num > 100 or num < 0:
                 reply += "无效数字"

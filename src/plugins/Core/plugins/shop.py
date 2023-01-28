@@ -50,13 +50,13 @@ async def shopHandle(
             # 检查是否符合购买条件
             if _userCtrl.getCountOfItem(
                     event.get_user_id(), "0") < itemData["price"]:
-                await shop.finish("余额不足！", at_sender=True)
+                await shop.finish("怒小臣直言，阁下好像没钱了……", at_sender=True)
             if "maxBuy" in list(itemData.keys()):
                 if "bought" in list(itemData.keys()):
                     if event.get_user_id() in list(itemData["bought"].keys()):
                         if itemData["bought"][event.get_user_id()
                                               ] >= itemData["maxBuy"]:
-                            await shop.finish(f"商品被标记为：最多购买 {itemData['maxBuy']} 次", at_sender=True)
+                            await shop.finish(f"不是吧，你怎么上当了 {itemData['maxBuy']} 次", at_sender=True)
                         else:
                             itemData["bought"][event.get_user_id()] += 1
                     else:
@@ -90,9 +90,9 @@ async def shopHandle(
                         "data/shop.items.json",
                         "w",
                         encoding="utf-8"))
-                await shop.finish("购买成功！", at_sender=True)
+                await shop.finish("好耶，又上当一个！", at_sender=True)
             else:
-                await shop.finish("余额不足！", at_sender=True)
+                await shop.finish("阁下真的没钱了！！", at_sender=True)
 
         elif argument[0] == "sell" or argument[0] == "卖出":
             bagData = json.load(open("data/etm.bag.json", encoding="utf-8"))
@@ -107,9 +107,9 @@ async def shopHandle(
                     "Sell"
                 )
             except _userCtrl.NotHaveEnoughItem:
-                await shop.finish("物品数量不足")
+                await shop.finish("没货了怎么办……在线等挺急的")
             except _userCtrl.ItemCanNotRemove:
-                await shop.finish("物品被标记为：不可出售")
+                await shop.finish("买不了，根本买不了！！！！！！！！！！！")
             itemData = {
                 "name": item["data"]["displayName"] or items[item["id"]]["name"],
                 "info": item["data"]["information"] or items[item["id"]]["info"],
@@ -139,7 +139,7 @@ async def shopHandle(
     except FinishedException:
         raise FinishedException()
     except KeyError:
-        await shop.finish("商品不存在")
+        await shop.finish("阁下，您的眼光犀利到一眼就看到了不存在的物品……诶，我是不是说错话了")
     except Exception:
         await _error.report(traceback.format_exc(), shop)
 

@@ -128,7 +128,7 @@ async def cave_handle(bot: Bot,
 {text}
 ——{senderData['nickname']}"""))
         elif argument[0] in ["-d", "data", "数据"]:
-            await cave.send("正在收集数据，请稍候")
+            await cave.send("请阁下等候，小臣还在收集数据")
             count = data['count']
             canReadCount = len(data['data'].keys())
             await cave.finish(f"总数：{count}\n有效：{canReadCount}")

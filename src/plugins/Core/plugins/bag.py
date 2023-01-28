@@ -29,12 +29,12 @@ async def bagHandle(bot: Bot,
                 text += f" {length}. {name} x{item['count']}\n"
                 length += 1
             await bag.finish(text)
-        elif argument[0] == "view" or argument[0] == "查看":
+        elif argument[0] == "view" or argument[0] == "看看":
             item = bagData[event.get_user_id()][int(argument[1])]
             name = item["data"]["displayName"] or itemData[item["id"]]["name"]
             info = item["data"]["information"] or itemData[item["id"]]["info"]
             await bag.finish(f"""「{name}」
-当前拥有：{item['count']}
+阁下当前拥有：{item['count']}
 {info}
 \t
 {item['data']}""")
@@ -53,9 +53,9 @@ async def bagHandle(bot: Bot,
     except FinishedException:
         raise FinishedException()
     except KeyError:
-        await bag.finish("错误：背包为空")
+        await bag.finish("你的背包是空的哦～")
     except IndexError:
-        await bag.finish("错误：找不到物品")
+        await bag.finish("你没有这个物品，才不是因为找不到呢～")
     except Exception:
         await _error.report(traceback.format_exc(), bag)
 

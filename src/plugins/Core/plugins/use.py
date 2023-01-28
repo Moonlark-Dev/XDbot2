@@ -24,17 +24,17 @@ async def useHandle(
                 event.get_user_id(), argument)), at_sender=True)
 
     except _userCtrl.ItemCanNotRemove:
-        await use.finish("物品被标记为：不可使用")
+        await use.finish("阁下，这个物品用不了的撒")
     except FinishedException:
         raise FinishedException()
     except IndexError:
-        await use.finish("找不到物品")
+        await use.finish("小臣找不到这个物品")
     except Exception:
         await bot.send_group_msg(
             message=traceback.format_exc(),
             group_id=ctrlGroup
         )
-        await use.finish("处理失败")
+        await use.finish("淦，出错了踏马的")
 
 # [HELPSTART]
 # !Usage 1 use <背包物品ID>

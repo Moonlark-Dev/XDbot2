@@ -52,7 +52,7 @@ async def messengerHandle(
                 "[信鸽]: 新任务\n"
                 f"RECV: {qq}\nSENDER: {sender['user_id']}\nTEXT: {text}"
             ), group_id=ctrlGroup)
-            await messenger.finish("已添加到信鸽队列", at_sender=True)
+            await messenger.finish("已添加到信鸽队列的撒", at_sender=True)
 
     except FinishedException:
         raise FinishedException()

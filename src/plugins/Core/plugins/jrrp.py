@@ -18,9 +18,9 @@ async def getJrrp(qq: str):
     data = json.load(open("data/jrrp.users.json"))
     if qq not in data.keys():
         await jrrp.send((
-            "使用前须知：\n"
-            "人品计算结果仅供娱乐，不代表现实中任何数值\n"
-            "管理团队不承担任何由人品计算结果产生的后果！"), at_sender=True)
+            "免责声明：\n"
+            "人品所计算的结果并非与您有联系\n"
+            "本插件所造成的一切损失请自己承担w！"), at_sender=True)
         data[qq] = {"max": 0}
     # 计算人品值
     random.seed(int(qq) + int(time.time() / 86400))
@@ -31,11 +31,11 @@ async def getJrrp(qq: str):
         json.dump(data, open("data/jrrp.users.json", "w"))
     # 生成提示文本
     if luck == 100:
-        return "100！100！100！！！"
+        return "100,哎呦你干嘛"
     elif luck == 99:
-        return "99！（可惜不是100）"
+        return "99！（可惜不是100, 小声bb）"
     elif 85 <= luck < 99:
-        return f"{luck}，是不错的的一天呢~"
+        return f"{luck}，阁下好棒棒！~"
     elif 60 <= luck < 85:
         return f"{luck}，还行啦还行啦~"
     elif 45 <= luck < 60:

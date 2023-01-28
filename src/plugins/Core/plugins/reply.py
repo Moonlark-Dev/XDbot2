@@ -137,7 +137,7 @@ async def imageSaverHandle(
 
                     json.dump(data, open("data/reply.images.json", "w"))
                     await asyncio.sleep(random.random() / 2)
-                    await imageSaver.send("好图，我的了")
+                    await imageSaver.send("好图，悄悄收走阁下不会怪罪于我吧")
                     latestSend = time.time()
                 elif isMeme and random.random() <= 0.10:      # 概率：10%
                     data = json.load(

@@ -59,7 +59,7 @@ async def manHandle(
     except FinishedException:
         raise FinishedException()
     except FileNotFoundError:
-        await man.finish("对应手册页不存在")
+        await man.finish("手……手册找不到， 哼哼哼啊啊啊啊啊啊")
     except Exception:
         await _error.report(traceback.format_exc(), man)
 
