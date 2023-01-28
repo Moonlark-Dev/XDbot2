@@ -19,6 +19,38 @@ repetitionCache = dict()
 imageSaver = on_message()
 imageSender = on_message()
 latestSend = time.time()
+dictionary = {
+    "poke": [
+        "?",
+        "¿",
+        "喵？",
+        "a？",
+        "啊咧？",
+        "撒？",
+        "哈？",
+        "哎呦你干嘛（？",
+        "（被撅）哼哼哼啊啊啊啊啊啊啊啊",
+        "（拍桌）你是不是有病啊？",
+        "（脸红）啊……不可以"
+    ],
+    "to_me": [
+        "?",
+        "¿",
+        "喵？",
+        "a？",
+        "（窥屏.jpg）",
+        "喵喵喵？"
+    ],
+    "primary": [
+        "（窥屏.jpg）",
+        "az……"
+    ],
+    "tips": [
+        "你知道吗：XDbot的生日是2022/06/28",
+        "你知道吗：不你不知道",
+        "你知道吗：想不出来了如果可以的话给个issue帮着写点把qaq（https://github.com/This-is-XiaoDeng/XDbot2"
+    ]
+}
 
 
 @repetition.handle()
