@@ -48,7 +48,7 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
         # 冷却
         if time.time() - latest_send <= config["sleep"]:
             await setu.finish(f"冷却中，剩余{config['sleep'] - (time.time() - latest_send)}s")
-        await setu.send("少女祈祷中 ...")
+        await setu.send("阁下忍住，别急啊！")
 
         # 收集信息
         argument = message.extract_plain_text().split(" ")
@@ -59,7 +59,7 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
                 if allow_r18:
                     r18 = 1
                 else:
-                    await setu.finish("R18图片被超管标记为：不允许\n如果需要，请给XDbot2捐一个帐号(x)")
+                    await setu.finish("R18放不出来，怎么想我都放不出来的！")
             else:
                 tags += f"&tag={argv}"
 
@@ -74,7 +74,7 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
         try:
             data = data['data'][0]
         except IndexError:
-            await setu.finish("错误：查找失败！（本次不计入冷却）", at_sender=True)
+            await setu.finish("哎呦，好像搞砸了呢……", at_sender=True)
         img_url = data['urls']['original']
 
         # 下载图片
@@ -107,7 +107,7 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
                         message=msg))["message_id"]
         except ActionFailed:
             await setu.finish((
-                f"错误：图片发送失败！（本次不计入冷却）\n"
+                f"搞……搞砸了……希望阁下不要怪罪于我……\n"
                 f"https://xdbot2.thisisxd.top/setu"))
 
         # 启动删除任务
@@ -124,7 +124,7 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
 
     except httpx.ConnectTimeout:
         await _error.report("警告：一个请求超时！")
-        await setu.finish("错误：请求超时，请稍候重试！（本次不计入冷却）")
+        await setu.finish("你是一个一个请求超时啊啊啊")
     except FinishedException:
         raise FinishedException()
     except Exception:

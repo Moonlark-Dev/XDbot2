@@ -14,7 +14,7 @@ userInfo = on_command(
     aliases={
         "userinfo",
         "info",
-        "我的信息",
+        "爷的信息",
         "userInfo"})
 ctrlGroup = json.load(open("data/ctrl.json"))["control"]
 

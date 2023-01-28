@@ -150,7 +150,7 @@ async def funcHandle(
         if command in commands.keys():
             await runRule(bot, event, argv, commands[command], func)
         else:
-            await func.finish(f"找不到指令：{command}")
+            await func.finish(f"阁下，小臣找不到{command}命令的撒")
 
     except FinishedException:
         raise FinishedException()

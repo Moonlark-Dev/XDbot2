@@ -24,7 +24,7 @@ async def linuxmanHandle(bot: Bot,
             req = await client.get(f"https://man.archlinux.org/man/{argument}.txt")
             text = req.read().decode("utf-8")
         if req.status_code == 404:
-            await linuxman.finish("找不到手册页")
+            await linuxman.finish("找不到手册页怎么办，在线等挺急的qwq")
         try:
             await linuxman.finish(text)
         except ActionFailed:

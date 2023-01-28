@@ -35,7 +35,7 @@ async def signrankHandle(bot: Bot,
     if not sign_rank_data["rank"]:
         await signrank.finish("今天还没有人签到！")
     num = 0
-    me = "你今天还没有签到！"
+    me = "阁下快去签到！"
     for i in sign_rank_data["rank"]:
         num += 1
         rank += f"{str(num)}. {(await bot.get_stranger_info(user_id=i['qq']))['nickname']}（{i['time']}）\n"
@@ -74,7 +74,7 @@ async def signHandle(bot: Bot, event: GroupMessageEvent):
                 }
             # 修改数据
             if latestSign[userID] == int(time.time() / 86400):
-                await sign.finish(f"您已经签到过了！{time_to_next_day} 后可再次签到", at_sender=True)
+                await sign.finish(f"阁下已经签到过了啊！{time_to_next_day} 后可再次签到", at_sender=True)
             if latestSign[userID] - int(time.time() / 86400) == -1:
                 signDay[userID] += 1
             else:

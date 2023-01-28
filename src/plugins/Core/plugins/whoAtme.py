@@ -17,6 +17,8 @@ whoAtme = on_command(
         "whoatmd",
         "wam",
         "谁At我",
+        "又有没妈的At我了？",
+        "哪个傻逼At我",
         "谁他妈At我"})
 whoAtmeWriter = on_message()
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
@@ -39,7 +41,7 @@ async def whoAtmd(
                 "data": {
                     "name": "XDBOT2 温馨提示",
                     "uin": (await bot.get_login_info())["user_id"],
-                    "content": "为了方便阅读，聊天记录默认以发送时间倒序排序（距现在越近排序越靠前）\nXDBOT2 最多为每个用户单个群聊保存98条消息"
+                    "content": "阁下, 为了方便阅读，请从下往上读呦～（越近排序越靠前）\nXDBOT2 最多为每个用户单个群聊保存98条消息"
                 }
             }
         ]
@@ -79,7 +81,7 @@ async def whoAtmd(
         await bot.send_group_msg(
             message=traceback.format_exc(),
             group_id=ctrlGroup)
-        await whoAtme.finish("处理失败")
+        await whoAtme.finish("阁下失败了……")
 
 
 @whoAtmeWriter.handle()

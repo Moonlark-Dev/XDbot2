@@ -59,9 +59,9 @@ async def homepage() -> str:
         await _error.report(traceback.format_exc())
         formatHtml((
             "<h1>服务器内部错误</h1>"
-            "<p>建议前往："
+            "<p>给老子去："
             "https://github.com/This-is-XiaoDeng/XDbot2/issues/new?assignees=&labels=%C2%B7+Bug&template=bug.yml"
-            " 提交一个 Issue 反馈该问题</p>"))
+            " 提交 Issue </p>"))
 
 
 @app.get("/ban/{group_id}", response_class=HTMLResponse)
@@ -84,15 +84,15 @@ async def viewBans(group_id) -> str:
 
             html += "</table>"
         except KeyError:
-            html = "错误：群聊不存在或无数据"
+            html = "啊哦，好像并没有这个呢"
         return formatHtml(html)
     except BaseException:
         _error.report(traceback.format_exc())
         return formatHtml((
-            "<h1>服务器内部错误</h1>"
-            "<p>建议前往："
+            "<h1>你吗你给服务器搞踏马炸了</h1>"
+            "<p>给老子滚去："
             "https://github.com/This-is-XiaoDeng/XDbot2/issues/new?assignees=&labels=%C2%B7+Bug&template=bug.yml"
-            " 提交一个 Issue 反馈该问题</p>"))
+            " 提交 Issue </p>"))
 
 
 @banCount.handle()
