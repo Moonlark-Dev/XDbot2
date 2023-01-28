@@ -6,6 +6,7 @@ from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot.adapters.onebot.v11.event import GroupMessageEvent
+
 # from nonebot.adapters.onebot.v11.message import MessageSegment
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
@@ -16,9 +17,8 @@ fakenode = on_command("fakenode", aliases={"伪转发"})
 
 @fakenode.handle()
 async def fakenodeHandle(
-        bot: Bot,
-        event: GroupMessageEvent,
-        msg: Message = CommandArg()):
+    bot: Bot, event: GroupMessageEvent, msg: Message = CommandArg()
+):
     try:
         argument = str(msg).split("\n")
         group = event.get_session_id().split("_")[1]
@@ -32,23 +32,19 @@ async def fakenodeHandle(
                     "data": {
                         "name": userData["nickname"],
                         "uin": data[0].strip(),
-                        "content": data[1].strip()
-                    }
+                        "content": data[1].strip(),
+                    },
                 }
             ]
         await bot.call_api(
-            api="send_group_forward_msg",
-            messages=message,
-            group_id=group
+            api="send_group_forward_msg", messages=message, group_id=group
         )
         await bot.send_group_msg(
             message=_lang.text("fakenode.new", [event.get_user_id(), msg]),
-            group_id=ctrlGroup
+            group_id=ctrlGroup,
         )
         await bot.call_api(
-            api="send_group_forward_msg",
-            messages=message,
-            group_id=ctrlGroup
+            api="send_group_forward_msg", messages=message, group_id=ctrlGroup
         )
         await fakenode.finish()
 
@@ -56,6 +52,7 @@ async def fakenodeHandle(
         raise FinishedException()
     except Exception:
         await _error.report(traceback.format_exc(), fakenode)
+
 
 # [HELPSTART] Version: 2
 # Command: fakenode

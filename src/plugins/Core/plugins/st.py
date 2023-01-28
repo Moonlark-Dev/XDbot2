@@ -11,7 +11,7 @@ api_list = [
     "https://img.xjh.me/random_img.php?return=302",
     "https://api.vvhan.com/api/acgimg",
     "https://api.yimian.xyz/img?type=moe",
-    "https://api.yimian.xyz/img?type=wallpaper",   # <- 偷偷混进去的Bing壁纸API
+    "https://api.yimian.xyz/img?type=wallpaper",  # <- 偷偷混进去的Bing壁纸API
     "https://cdn.seovx.com/d/?mom=302",
     "https://img.xjh.me/random_img.php",
     "http://api.btstu.cn/sjbz/?lx=dongman",
@@ -26,7 +26,10 @@ async def st_handle():
         await st.finish(
             nonebot.adapters.onebot.v11.message.Message(
                 nonebot.adapters.onebot.v11.MessageSegment.image(
-                    random.choice(api_list))))
+                    random.choice(api_list)
+                )
+            )
+        )
 
     except FinishedException:
         raise FinishedException()

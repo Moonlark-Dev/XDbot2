@@ -18,12 +18,7 @@ local = {}
 func = on_command("function", aliases={"func", "调用"})
 
 
-async def runRule(
-        bot: Bot,
-        event: MessageEvent,
-        argument: str,
-        code: any,
-        handle: any):
+async def runRule(bot: Bot, event: MessageEvent, argument: str, code: any, handle: any):
     global local, commands
     if isinstance(code, list):
         for c in code:
@@ -35,13 +30,18 @@ async def runRule(
                 elif "否则" in c.keys():
                     await runRule(bot, event, argument, c["否则"], handle)
             elif c["调用"] == "发送消息":
-                await handle.send(Message(await runRule(bot, event, argument, c["消息"], handle)))
+                await handle.send(
+                    Message(await runRule(bot, event, argument, c["消息"], handle))
+                )
             elif c["调用"] == "执行":
                 exec(c["代码"])  # , __locals=locals())
             elif c["调用"] == "发送控制中心消息":
                 await bot.send_group_msg(
-                    message=Message(await runRule(bot, event, argument, c["消息"], handle)),
-                    group_id=ctrlGroup)
+                    message=Message(
+                        await runRule(bot, event, argument, c["消息"], handle)
+                    ),
+                    group_id=ctrlGroup,
+                )
             elif c["调用"] == "取变量":
                 return local[c["变量名"]]
             elif c["调用"] == "设置变量":
@@ -115,9 +115,7 @@ def runRuleSync(code: any):
 
 
 @rule.handle()
-async def ruleHandle(
-        bot: Bot,
-        event: MessageEvent):
+async def ruleHandle(bot: Bot, event: MessageEvent):
     try:
         # logger.info("nmslnmslnmsl")
         # 将rules路径修改为`rules/*`同时忽略`_`开头和非`.json`结尾的文件
@@ -127,10 +125,9 @@ async def ruleHandle(
         argument = event.get_plaintext()
         for r in rules:
             if not r.startswith("_") and r.endswith(".json"):
-                ruleData = json.load(
-                    open(os.path.join("rules", r), encoding="utf-8"))
-                logger.info(_lang.text("rule.run", [ruleData['规则名']]))
-                await runRule(bot, event, argument, ruleData['执行'], rule)
+                ruleData = json.load(open(os.path.join("rules", r), encoding="utf-8"))
+                logger.info(_lang.text("rule.run", [ruleData["规则名"]]))
+                await runRule(bot, event, argument, ruleData["执行"], rule)
 
         # except FinishedException:
         # raise FinishedException()
@@ -139,10 +136,7 @@ async def ruleHandle(
 
 
 @func.handle()
-async def funcHandle(
-        bot: Bot,
-        event: MessageEvent,
-        message: Message = CommandArg()):
+async def funcHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg()):
     try:
         argument = message.extract_plain_text()
         command = argument.split(" ")[0]
@@ -158,14 +152,14 @@ async def funcHandle(
     except Exception:
         await _error.report(traceback.format_exc(), func)
 
+
 # 预处理
 rules = os.listdir("rules")
 logger.info(rules)
 imported = []
 for r in rules:
     if not r.startswith("_") and r.endswith(".json"):
-        ruleData = json.load(
-            open(os.path.join("rules", r), encoding="utf-8"))
+        ruleData = json.load(open(os.path.join("rules", r), encoding="utf-8"))
         # 导入模块
         if "导入" in ruleData.keys():
             for m in ruleData["导入"]:

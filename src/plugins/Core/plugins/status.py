@@ -63,9 +63,9 @@ def format_time(seconds):
 
 def uptime():
     try:
-        seconds = int(float(open("/proc/uptime").read().split(' ')[0]))
+        seconds = int(float(open("/proc/uptime").read().split(" ")[0]))
     except BaseException:
-        return 'Unknown'
+        return "Unknown"
     return format_time(seconds)
 
 
@@ -95,16 +95,19 @@ async def statusHandle(bot: Bot, event: MessageEvent, message: Message = Command
         initData = json.load(open("data/init.json", encoding="utf-8"))
         argument = message.extract_plain_text()
         if argument == "":
-            await status.finish(f"""{_lang.text("status.title",[],event.get_user_id())}
+            await status.finish(
+                f"""{_lang.text("status.title",[],event.get_user_id())}
 {_lang.text("status.cpu",[],event.get_user_id())}{cpu_percent()}% {cpu_freq()}
 {_lang.text("status.ram",[],event.get_user_id())}{mem_used()}GiB / {mem_total()}GiB ({mem_percent()}%)
 {_lang.text("status.swap",[],event.get_user_id())}{swap_used()}GiB / {swap_total()}GiB
 {_lang.text("status.run",[],event.get_user_id())}{format_time(int(time.time() - initData['time']))}
 {_lang.text("status.boot",[],event.get_user_id())}{uptime()}
-{_lang.text("status.py",[],event.get_user_id())}{pyver()}""")
+{_lang.text("status.py",[],event.get_user_id())}{pyver()}"""
+            )
         elif argument == "cpu":
             await status.finish(
-                f"{_lang.text('status.cpu',[],event.get_user_id())}{cpu_percent()}%（{cpu_freq()} x{cpu_count()}）")
+                f"{_lang.text('status.cpu',[],event.get_user_id())}{cpu_percent()}%（{cpu_freq()} x{cpu_count()}）"
+            )
         elif argument in ["mem", "内存"]:
             bar = ""
             for _ in range(int(mem_percent() / 10)):
@@ -123,12 +126,15 @@ async def statusHandle(bot: Bot, event: MessageEvent, message: Message = Command
         elif argument in ["host"]:
             await status.finish(f"{user()}@{hostname()}")
         else:
-            await status.finish(_lang.text("status.error", [argument], event.get_user_id()))
+            await status.finish(
+                _lang.text("status.error", [argument], event.get_user_id())
+            )
 
     except FinishedException:
         raise FinishedException()
     except Exception:
         await _error.report(traceback.format_exc())
+
 
 # [HELPSTART] Version: 2
 # Command: status
