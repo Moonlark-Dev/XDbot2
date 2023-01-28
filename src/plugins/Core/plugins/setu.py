@@ -9,7 +9,7 @@ from nonebot.adapters.onebot.v11.event import MessageEvent
 from nonebot.exception import FinishedException, ActionFailed
 from nonebot.params import CommandArg
 from . import _error
-from fastapi.responses import Response
+from fastapi.responses import FileResponse
 import asyncio
 import traceback
 import httpx
@@ -26,7 +26,7 @@ config = json.load(open("data/setu.config.json"))
 allow_r18 = json.load(open("data/setu.allow.json"))["r18"]
 
 
-@app.get("/setu", response_class=Response)
+@app.get("/setu", response_class=FileResponse)
 async def get_latest_image() -> bytes | str:
     try:
         with open(f"data/setu.image.{latest_ext}", "rb") as f:
