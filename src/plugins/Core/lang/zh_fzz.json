@@ -79,7 +79,7 @@
   "reply.pass": "使用 /su img re pass {} [组] 通过\n",
   "reply.rm": "使用 /su img re rm {} 删除\n",
   "report.github": "如果阁下发现了不得了的事情，千万不要去Github提交issue哦！！https://github.com/This-is-XiaoDeng/XDbot2/issues",
-  "rule.run": "正在执行：{ruleData['规则名']}",
+  "rule.run": "正在执行：{}",
   "rule.error": "阁下，小臣找不到 {} 命令的撒",
   "setu.cd": "冷却中，剩余 {}s",
   "setu.cd2": "阁下忍住，别急啊！",
