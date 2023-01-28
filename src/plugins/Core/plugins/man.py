@@ -61,7 +61,7 @@ async def manHandle(
     except FinishedException:
         raise FinishedException()
     except FileNotFoundError:
-        await man.finish(_lang.text("man.error",[],event.get_user_id()))
+        await man.finish(_lang.text("man.error", [], event.get_user_id()))
     except Exception:
         await _error.report(traceback.format_exc(), man)
 

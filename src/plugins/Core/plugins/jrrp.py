@@ -18,7 +18,7 @@ ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 async def getJrrp(qq: str):
     data = json.load(open("data/jrrp.users.json"))
     if qq not in data.keys():
-        await jrrp.send(_lang.text("jrrp.notice",[],qq), at_sender=True)
+        await jrrp.send(_lang.text("jrrp.notice", [], qq), at_sender=True)
         data[qq] = {"max": 0}
     # 计算人品值
     random.seed(int(qq) + int(time.time() / 86400))
@@ -29,25 +29,25 @@ async def getJrrp(qq: str):
         json.dump(data, open("data/jrrp.users.json", "w"))
     # 生成提示文本
     if luck == 100:
-        return _lang.text("jrrp.num.100",[luck],qq)
+        return _lang.text("jrrp.num.100", [luck], qq)
     elif luck == 99:
-        return _lang.text("jrrp.num.99",[luck],qq)
+        return _lang.text("jrrp.num.99", [luck], qq)
     elif 85 <= luck < 99:
-        return _lang.text("jrrp.num.85-99",[luck],qq)
+        return _lang.text("jrrp.num.85-99", [luck], qq)
     elif 60 <= luck < 85:
-        return _lang.text("jrrp.num.60-85",[luck],qq)
+        return _lang.text("jrrp.num.60-85", [luck], qq)
     elif 45 <= luck < 60:
-        return _lang.text("jrrp.num.45-60",[luck],qq)
+        return _lang.text("jrrp.num.45-60", [luck], qq)
     elif 30 <= luck < 45:
-        return _lang.text("jrrp.num.30-45",[luck],qq)
+        return _lang.text("jrrp.num.30-45", [luck], qq)
     elif 15 <= luck < 30:
-        return _lang.text("jrrp.num.15-30",[luck],qq)
+        return _lang.text("jrrp.num.15-30", [luck], qq)
     elif 0 < luck < 15:
-        return _lang.text("jrrp.num.0-15",[luck],qq)
+        return _lang.text("jrrp.num.0-15", [luck], qq)
     elif luck == 0:
-        return _lang.text("jrrp.num.0",[luck],qq)
+        return _lang.text("jrrp.num.0", [luck], qq)
     else:
-        return _lang.text("jrrp.num.else",[luck],qq)
+        return _lang.text("jrrp.num.else", [luck], qq)
 
 
 @jrrp.handle()
@@ -59,12 +59,12 @@ async def jrrpHandle(
         argument = message.extract_plain_text().split(" ")
         if argument[0] == "":
             await jrrp.finish(
-                message=_lang.text('jrrp.today',[await getJrrp(event.get_user_id())],event.get_user_id()),
+                message=_lang.text('jrrp.today', [await getJrrp(event.get_user_id())], event.get_user_id()),
                 at_sender=True)
         elif argument[0] == "rank" or argument[0] == "今日排名":
             # 限时开启
             if time.localtime().tm_hour < 17:
-                await jrrp.finish(_lang.text("jrrp.rank_time",[],event.get_user_id()))
+                await jrrp.finish(_lang.text("jrrp.rank_time", [], event.get_user_id()))
             # 开始计算
             if argument.__len__() >= 2:
                 count = int(argument[1])
@@ -115,19 +115,19 @@ async def jrrpHandle(
                 # 增加length
                 length += 1
             # 生成文本
-            text = _lang.text("jrrp.group",[],event.get_user_id())
+            text = _lang.text("jrrp.group", [], event.get_user_id())
             for user in jrrpRank[:count]:
                 text += f"{user['rank']}. {user['username']}: {user['jrrp']}\n"
             text += "-" * 20
             text += f"\n{myRank}. {(await bot.get_stranger_info(user_id=qq))['nickname']}: {myJrrp}"
             await jrrp.finish(text)
         else:
-            await jrrp.finish(_lang.text("jrrp.other",[argument[0],await getJrrp(argument[0])],event.get_user_id()))
+            await jrrp.finish(_lang.text("jrrp.other", [argument[0], await getJrrp(argument[0])], event.get_user_id()))
 
     except FinishedException:
         raise FinishedException()
     except ValueError:
-        await jrrp.finish(_lang.text("jrrp.error",[],event.get_user_id()), at_sender=True)
+        await jrrp.finish(_lang.text("jrrp.error", [], event.get_user_id()), at_sender=True)
     except Exception:
         await _error.report(traceback.format_exc(), jrrp)
 

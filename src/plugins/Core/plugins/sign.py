@@ -25,7 +25,10 @@ async def signrankHandle(bot: Bot,
     args = args.extract_plain_text().split(" ")
     if not args[0] == "rank":
         return
-    rank = _lang.text("sign.rank_title", [time_to_next_day],event.get_user_id())
+    rank = _lang.text(
+        "sign.rank_title",
+        [time_to_next_day],
+        event.get_user_id())
     try:
         with open("data/sign.rank.json", "r") as f:
             sign_rank_data = json.load(f)
@@ -34,9 +37,9 @@ async def signrankHandle(bot: Bot,
     except BaseException:
         sign_rank_data = {"day": int(time.time() / 86400), "rank": []}
     if not sign_rank_data["rank"]:
-        await signrank.finish(_lang.text("sign.rank_empty", [],event.get_user_id()))
+        await signrank.finish(_lang.text("sign.rank_empty", [], event.get_user_id()))
     num = 0
-    me = _lang.text("sign.rank_me",[],event.get_user_id())
+    me = _lang.text("sign.rank_me", [], event.get_user_id())
     for i in sign_rank_data["rank"]:
         num += 1
         rank += f"{str(num)}. {(await bot.get_stranger_info(user_id=i['qq']))['nickname']}（{i['time']}）\n"
@@ -75,7 +78,7 @@ async def signHandle(bot: Bot, event: GroupMessageEvent):
                 }
             # 修改数据
             if latestSign[userID] == int(time.time() / 86400):
-                await sign.finish(_lang.text("sign.cannot",[time_to_next_day],event.get_user_id()), at_sender=True)
+                await sign.finish(_lang.text("sign.cannot", [time_to_next_day], event.get_user_id()), at_sender=True)
             if latestSign[userID] - int(time.time() / 86400) == -1:
                 signDay[userID] += 1
             else:

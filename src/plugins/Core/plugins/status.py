@@ -90,7 +90,7 @@ def pyver():
 
 
 @status.handle()
-async def statusHandle(bot: Bot, event: MessageEvent,message: Message = CommandArg()):
+async def statusHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg()):
     try:
         initData = json.load(open("data/init.json", encoding="utf-8"))
         argument = message.extract_plain_text()
@@ -123,7 +123,7 @@ async def statusHandle(bot: Bot, event: MessageEvent,message: Message = CommandA
         elif argument in ["host"]:
             await status.finish(f"{user()}@{hostname()}")
         else:
-            await status.finish(_lang.text("status.error",[argument],event.get_user_id()))
+            await status.finish(_lang.text("status.error", [argument], event.get_user_id()))
 
     except FinishedException:
         raise FinishedException()

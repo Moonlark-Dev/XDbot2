@@ -17,7 +17,7 @@ linuxkernelnews = on_command("linuxkernelnews", aliases={"lkn"})
 
 
 @linuxkernelnews.handle()
-async def linuxkernelnewsHandle(bot: Bot,event: MessageEvent):
+async def linuxkernelnewsHandle(bot: Bot, event: MessageEvent):
     try:
         async with httpx.AsyncClient() as client:
             req = await client.get("https://www.kernel.org/feeds/kdist.xml")

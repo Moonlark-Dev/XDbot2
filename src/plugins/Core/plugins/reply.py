@@ -170,7 +170,7 @@ async def imageSaverHandle(
 
                     json.dump(data, open("data/reply.images.json", "w"))
                     await asyncio.sleep(random.random() / 2)
-                    await imageSaver.send(_lang.text("reply.good_image",[],event.get_user_id()))
+                    await imageSaver.send(_lang.text("reply.good_image", [], event.get_user_id()))
                     latestSend = time.time()
                 elif isMeme and random.random() <= 0.10:      # 概率：10%
                     data = json.load(
@@ -188,7 +188,7 @@ async def imageSaverHandle(
                         group_id=ctrlGroup
                     )
                     await asyncio.sleep(random.random() / 2)
-                    await imageSaver.send(_lang.text("reply.good_image",[],event.get_user_id()))
+                    await imageSaver.send(_lang.text("reply.good_image", [], event.get_user_id()))
 
                     json.dump(data, open("data/reply.images.json", "w"))
                     latestSend = time.time()

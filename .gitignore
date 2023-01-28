@@ -1,5 +1,6 @@
 logsndatanconfig.*nvenvnnode_modules
 venv
+.idea/
 .env
 .mypy_cache
 __pycache__

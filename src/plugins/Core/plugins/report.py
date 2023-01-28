@@ -6,4 +6,4 @@ report = on_command("report", aliases={"反馈"})
 
 @report.handle()
 async def handle(event: MessageEvent):
-    await report.finish(_lang.text("report.github",[],event.get_user_id()), at_sender=True)
+    await report.finish(_lang.text("report.github", [], event.get_user_id()), at_sender=True)

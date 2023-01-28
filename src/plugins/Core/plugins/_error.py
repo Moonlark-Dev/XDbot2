@@ -18,4 +18,4 @@ async def report(err: str, matcher: any = None):
     if matcher is not None:
         await matcher.send(_lang.text("_error.failed"), at_sender=True)
         if random.randint(1, 4) == 1:
-            await matcher.finish(_lang.text("_error.github",["https://github.com/This-is-XiaoDeng/XDbot2/issues/new?assignees=&labels=%C2%B7+Bug&template=bug.yml"]))
+            await matcher.finish(_lang.text("_error.github", ["https://github.com/This-is-XiaoDeng/XDbot2/issues/new?assignees=&labels=%C2%B7+Bug&template=bug.yml"]))

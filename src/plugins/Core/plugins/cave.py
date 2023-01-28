@@ -109,7 +109,7 @@ async def cave_handle(bot: Bot,
                 group_id=ctrlGroup)
             # 写入数据
             json.dump(data, open("data/cave.data.json", "w", encoding="utf-8"))
-            await cave.finish(_lang.text("cave.added",[{data['count'] - 1}],event.get_user_id()))
+            await cave.finish(_lang.text("cave.added", [{data['count'] - 1}], event.get_user_id()))
 
         elif argument[0] in ["-g", "查询"]:
             caveData = data["data"][argument[1]]
@@ -129,14 +129,14 @@ async def cave_handle(bot: Bot,
 {text}
 ——{senderData['nickname']}"""))
         elif argument[0] in ["-d", "data", "数据"]:
-            await cave.send(_lang.text("cave.data",[],event.get_user_id()))
+            await cave.send(_lang.text("cave.data", [], event.get_user_id()))
             count = data['count']
             canReadCount = len(data['data'].keys())
-            await cave.finish(_lang.text("cave.data_finish",[count,canReadCount],event.get_user_id()))
+            await cave.finish(_lang.text("cave.data_finish", [count, canReadCount], event.get_user_id()))
 
     except FinishedException:
         raise FinishedException()
     except KeyError as e:
-        await cave.finish(_lang.text("cave.notfound",[e],event.get_user_id()))
+        await cave.finish(_lang.text("cave.notfound", [e], event.get_user_id()))
     except Exception:
         await _error.report(traceback.format_exc(), cave)

@@ -129,7 +129,7 @@ async def ruleHandle(
             if not r.startswith("_") and r.endswith(".json"):
                 ruleData = json.load(
                     open(os.path.join("rules", r), encoding="utf-8"))
-                logger.info(_lang.text("rule.run",[ruleData['规则名']]))
+                logger.info(_lang.text("rule.run", [ruleData['规则名']]))
                 await runRule(bot, event, argument, ruleData['执行'], rule)
 
         # except FinishedException:
@@ -151,7 +151,7 @@ async def funcHandle(
         if command in commands.keys():
             await runRule(bot, event, argv, commands[command], func)
         else:
-            await func.finish(_lang.text("rule.error",[command],event.get_user_id()))
+            await func.finish(_lang.text("rule.error", [command], event.get_user_id()))
 
     except FinishedException:
         raise FinishedException()

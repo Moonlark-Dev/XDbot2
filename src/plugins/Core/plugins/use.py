@@ -25,17 +25,17 @@ async def useHandle(
                 event.get_user_id(), argument)), at_sender=True)
 
     except _userCtrl.ItemCanNotRemove:
-        await use.finish(_lang.text("use.cannot",[],event.get_user_id()))
+        await use.finish(_lang.text("use.cannot", [], event.get_user_id()))
     except FinishedException:
         raise FinishedException()
     except IndexError:
-        await use.finish(_lang.text("use.notfound",[],event.get_user_id()))
+        await use.finish(_lang.text("use.notfound", [], event.get_user_id()))
     except Exception:
         await bot.send_group_msg(
             message=traceback.format_exc(),
             group_id=ctrlGroup
         )
-        await use.finish(_lang.text("use.error",[],event.get_user_id()))
+        await use.finish(_lang.text("use.error", [], event.get_user_id()))
 
 # [HELPSTART]
 # !Usage 1 use <背包物品ID>

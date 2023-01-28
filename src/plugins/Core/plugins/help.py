@@ -22,7 +22,7 @@ async def helpHandle(bot: Bot, event: MessageEvent, message: Message = CommandAr
             reply = f"{_lang.text('help.name',[],event.get_user_id())} —— XDbot2\n"
             for key in list(commands.keys()):
                 reply += f"[√] {key}：{commands[key]['msg']}\n"
-            reply += _lang.text('help.command',[],event.get_user_id())
+            reply += _lang.text('help.command', [], event.get_user_id())
         elif argument == "list":
             for key in list(commands.keys()):
                 for u in commands[key]["usage"]:

@@ -23,7 +23,7 @@ async def shopHandle(
         shopData = json.load(open("data/shop.items.json", encoding="utf-8"))
         argument = message.extract_plain_text().split(" ")
         if argument[0] == "":
-            text = _lang.text("shop.name",[],event.get_user_id())
+            text = _lang.text("shop.name", [], event.get_user_id())
             for item in list(shopData.keys()):
                 text += f"{item}. {shopData[item]['name']} ({shopData[item]['price']} vi)\n"
             await shop.finish(Message(text))
@@ -51,19 +51,19 @@ async def shopHandle(
             # 检查是否符合购买条件
             if _userCtrl.getCountOfItem(
                     event.get_user_id(), "0") < itemData["price"]:
-                await shop.finish(_lang.text("shop.poor",[],event.get_user_id()), at_sender=True)
+                await shop.finish(_lang.text("shop.poor", [], event.get_user_id()), at_sender=True)
             if "maxBuy" in list(itemData.keys()):
                 if "bought" in list(itemData.keys()):
                     if event.get_user_id() in list(itemData["bought"].keys()):
                         if itemData["bought"][event.get_user_id()
                                               ] >= itemData["maxBuy"]:
-                            await shop.finish(_lang.text("shop.out_of_max",[itemData["maxBuy"]],event.get_user_id()), at_sender=True)
+                            await shop.finish(_lang.text("shop.out_of_max", [itemData["maxBuy"]], event.get_user_id()), at_sender=True)
                         else:
                             itemData["bought"][event.get_user_id()] += 1
                     else:
                         itemData["bought"][event.get_user_id()] = 1
             if count > itemData["count"]:
-                await shop.finish(_lang.text("shop.not_enough",[],event.get_user_id()), at_sender=True)
+                await shop.finish(_lang.text("shop.not_enough", [], event.get_user_id()), at_sender=True)
             # 购买
             if _userCtrl.removeItemsByID(
                     event.get_user_id(), "0", itemData["price"] * count):
@@ -91,9 +91,9 @@ async def shopHandle(
                         "data/shop.items.json",
                         "w",
                         encoding="utf-8"))
-                await shop.finish(_lang.text("shop.buy_success",[],event.get_user_id()), at_sender=True)
+                await shop.finish(_lang.text("shop.buy_success", [], event.get_user_id()), at_sender=True)
             else:
-                await shop.finish(_lang.text("shop.buy_failed",[],event.get_user_id()), at_sender=True)
+                await shop.finish(_lang.text("shop.buy_failed", [], event.get_user_id()), at_sender=True)
 
         elif argument[0] == "sell" or argument[0] == "卖出":
             bagData = json.load(open("data/etm.bag.json", encoding="utf-8"))
@@ -108,9 +108,9 @@ async def shopHandle(
                     "Sell"
                 )
             except _userCtrl.NotHaveEnoughItem:
-                await shop.finish(_lang.text("shop.sell_not_enough",[],event.get_user_id()))
+                await shop.finish(_lang.text("shop.sell_not_enough", [], event.get_user_id()))
             except _userCtrl.ItemCanNotRemove:
-                await shop.finish(_lang.text("shop.sell_cannot_remove",[],event.get_user_id()))
+                await shop.finish(_lang.text("shop.sell_cannot_remove", [], event.get_user_id()))
             itemData = {
                 "name": item["data"]["displayName"] or items[item["id"]]["name"],
                 "info": item["data"]["information"] or items[item["id"]]["info"],
@@ -133,14 +133,16 @@ async def shopHandle(
             json.dump(shopData, open(
                 "data/shop.items.json", "w", encoding="utf-8"))
             await bot.send_group_msg(
-                message=_lang.text("shop.sell_success1",[length,itemData],event.get_user_id()),
+                message=_lang.text(
+                    "shop.sell_success1", [
+                        length, itemData], event.get_user_id()),
                 group_id=ctrlGroup)
-            await shop.finish(_lang.text("shop.sell_success2",[length],event.get_user_id()), at_sender=True)
+            await shop.finish(_lang.text("shop.sell_success2", [length], event.get_user_id()), at_sender=True)
 
     except FinishedException:
         raise FinishedException()
     except KeyError:
-        await shop.finish(_lang.text("shop.key_error",[],event.get_user_id()))
+        await shop.finish(_lang.text("shop.key_error", [], event.get_user_id()))
     except Exception:
         await _error.report(traceback.format_exc(), shop)
 

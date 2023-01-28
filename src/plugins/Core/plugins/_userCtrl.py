@@ -161,15 +161,15 @@ def useItem(userID: str, pos: int):
             return _lang.text("_userCtrl.dice.20")
         elif 18 <= num <= 19:
             addItem(userID, "0", 20, {})
-            return _lang.text("_userCtrl.dice.18-19",[num])
+            return _lang.text("_userCtrl.dice.18-19", [num])
         elif 15 <= num <= 17:
             addItem(userID, "0", 10, {})
-            return _lang.text("_userCtrl.dice.15-17",[num])
+            return _lang.text("_userCtrl.dice.15-17", [num])
         elif 10 <= num <= 14:
             addItem(userID, "0", 5, {})
-            return _lang.text("_userCtrl.dice.10-14",[num])
+            return _lang.text("_userCtrl.dice.10-14", [num])
         elif 2 <= num <= 9:
-            return _lang.text("_userCtrl.dice.2-9",[num])
+            return _lang.text("_userCtrl.dice.2-9", [num])
         elif num == 1:
             removeItemsByID_allowBelowZero(userID, "0", 50, itemData={})
             return _lang.text("_userCtrl.dice.1")

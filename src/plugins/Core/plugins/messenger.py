@@ -30,7 +30,7 @@ async def messengerHandle(
         argument = str(message)
         # 处理信息
         if argument == "":
-            await messenger.finish(_lang.text("messenger.usage",[],event.get_user_id()))
+            await messenger.finish(_lang.text("messenger.usage", [], event.get_user_id()))
         else:
             qq = argument.split("\n")[0]
             text1 = argument.split("\n")[1:]
@@ -53,7 +53,7 @@ async def messengerHandle(
                 f"{_lang.text('messenger.new',[],event.get_user_id())}"
                 f"RECV: {qq}\nSENDER: {sender['user_id']}\nTEXT: {text}"
             ), group_id=ctrlGroup)
-            await messenger.finish(_lang.text("messenger.success",[],event.get_user_id()), at_sender=True)
+            await messenger.finish(_lang.text("messenger.success", [], event.get_user_id()), at_sender=True)
 
     except FinishedException:
         raise FinishedException()
@@ -61,7 +61,7 @@ async def messengerHandle(
         await bot.send_group_msg(
             message=traceback.format_exc(),
             group_id=ctrlGroup)
-        await messenger.finish(_lang.text("messenger.error",[],event.get_user_id()))
+        await messenger.finish(_lang.text("messenger.error", [], event.get_user_id()))
 
 
 @msgSender.handle()
@@ -77,7 +77,11 @@ async def msgSenderHandle(
         for msg in data:
             if msg["recv"] == event.get_user_id():
                 await msgSender.send(
-                    _lang.text("messenger.send",[msg["sender"]["nickname"],msg["sender"]["user_id"],msg["text"]],event.get_user_id()),
+                    _lang.text("messenger.send",
+                               [msg["sender"]["nickname"],
+                                msg["sender"]["user_id"],
+                                   msg["text"]],
+                               event.get_user_id()),
                     at_sender=True
                 )
                 data.pop(length)

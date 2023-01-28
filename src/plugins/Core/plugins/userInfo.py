@@ -32,13 +32,14 @@ async def userInfoHandle(bot: Bot, event: MessageEvent):
             bar += "  "
         # VIP
         if data['vip']['level'] is None:
-            vip = _lang.text("userInfo.no_vip",[],event.get_user_id())
+            vip = _lang.text("userInfo.no_vip", [], event.get_user_id())
             endTime = "???"
         else:
             vip = "VIP" + "+" * data['vip']['level'] + \
                 f" ({data['vip']['level']})"
             if data['vip']["endTime"] is None:
-                endTime = _lang.text("userInfo.per_vip",[],event.get_user_id())
+                endTime = _lang.text(
+                    "userInfo.per_vip", [], event.get_user_id())
             else:
                 endTime = time.strftime(
                     "%Y-%m-%d",
@@ -62,4 +63,4 @@ async def userInfoHandle(bot: Bot, event: MessageEvent):
             message=traceback.format_exc(),
             group_id=ctrlGroup
         )
-        await userInfo.finish(_lang.text("userInfo.error",[],event.get_user_id()))
+        await userInfo.finish(_lang.text("userInfo.error", [], event.get_user_id()))
