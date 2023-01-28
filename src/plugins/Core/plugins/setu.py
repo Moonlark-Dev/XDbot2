@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from nonebot import on_command
+from nonebot import on_command, get_app
 from nonebot.adapters.onebot.v11.message import MessageSegment
 from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot.adapters.onebot.v11 import Message
@@ -9,6 +9,7 @@ from nonebot.adapters.onebot.v11.event import MessageEvent
 from nonebot.exception import FinishedException, ActionFailed
 from nonebot.params import CommandArg
 from . import _error
+from fastapi.responses import Response
 import asyncio
 import traceback
 import httpx
@@ -19,8 +20,19 @@ import time
 
 setu = on_command("setu", aliases={"涩图", "st-r"})
 latest_send = time.time()
+app = get_app()
 config = json.load(open("data/setu.config.json"))
 allow_r18 = json.load(open("data/setu.allow.json"))["r18"]
+
+
+@app.get("/setu", response_class=Response)
+async def get_latest_image() -> bytes | str:
+    try:
+        with open(f"data/setu.image.{latest_ext}", "rb") as f:
+            image = f.read()
+        return image
+    except FileNotFoundError:
+        return "错误：未找到图片缓存"
 
 
 async def delete_msg(bot: Bot, message: int) -> None:
@@ -33,7 +45,7 @@ async def delete_msg(bot: Bot, message: int) -> None:
 
 @setu.handle()
 async def setu_handler(bot: Bot, event: MessageEvent, message: Message = CommandArg()) -> None:
-    global latest_send
+    global latest_send, latest_ext
     try:
         # 冷却
         if time.time() - latest_send <= config["sleep"]:
@@ -61,7 +73,10 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
             await setu.send(f"API发生错误：{data['error']}")
 
         # 分析数据
-        data = data['data'][0]
+        try:
+            data = data['data'][0]
+        except IndexError:
+            await setu.finish("错误：查找失败！（本次不计入冷却）", at_sender=True)
         img_url = data['urls']['original']
 
         # 下载图片
@@ -69,6 +84,7 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
             req = await client.get(img_url)
             with open(f"data/setu.image.{data['ext']}", "wb") as f:
                 f.write(req.read())
+        latest_ext = data["ext"]
         image_path = os.path.abspath(f"data/setu.image.{data['ext']}")
 
         # 生成文本
@@ -82,15 +98,20 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
 
         # 发送文本
         try:
-            message_id = (
-                await bot.send_group_msg(
-                    group_id=int(event.get_session_id().split("_")[1]),
-                    message=msg))["message_id"]
-        except IndexError:
-            message_id = (
-                await bot.send_private_msg(
-                    user_id=int(event.get_user_id()),
-                    message=msg))["message_id"]
+            try:
+                message_id = (
+                    await bot.send_group_msg(
+                        group_id=int(event.get_session_id().split("_")[1]),
+                        message=msg))["message_id"]
+            except IndexError:
+                message_id = (
+                    await bot.send_private_msg(
+                        user_id=int(event.get_user_id()),
+                        message=msg))["message_id"]
+        except ActionFailed:
+            await setu.finish((
+                f"错误：图片发送失败！（本次不计入冷却）\n"
+                f"https://xdbot2.thisisxd.top/setu"))
 
         # 启动删除任务
         asyncio.create_task(delete_msg(bot, message_id))
@@ -107,8 +128,6 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
     except httpx.ConnectTimeout:
         await _error.report("警告：一个请求超时！")
         await setu.finish("错误：请求超时，请稍候重试！（本次不计入冷却）")
-    except ActionFailed:
-        await setu.finish(f"错误：图片（P{data['pid']}）发送失败！（本次不计入冷却）")
     except FinishedException:
         raise FinishedException()
     except Exception:
