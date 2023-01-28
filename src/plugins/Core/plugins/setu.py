@@ -27,13 +27,8 @@ allow_r18 = json.load(open("data/setu.allow.json"))["r18"]
 
 
 @app.get("/setu", response_class=FileResponse)
-async def get_latest_image() -> bytes | str:
-    try:
-        with open(f"data/setu.image.{latest_ext}", "rb") as f:
-            image = f.read()
-        return image
-    except FileNotFoundError:
-        return "错误：未找到图片缓存"
+async def get_latest_image() -> str:
+    return f"data/setu.image.{latest_ext}"
 
 
 async def delete_msg(bot: Bot, message: int) -> None:
