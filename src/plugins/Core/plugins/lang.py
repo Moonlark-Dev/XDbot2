@@ -18,6 +18,7 @@ async def lang_handle(bot: Bot,
             _lang_user[event.get_user_id()] = args
             with open("data/lang.users.json", "w") as f:
                 json.dump(_lang_user, f)
+            _lang.reload()
             await lang.finish(_lang.text("lang.success",[args],event.get_user_id()))
         else:
             await lang.finish(_lang.text("lang.notfound",[args],event.get_user_id()))
