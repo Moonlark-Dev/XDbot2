@@ -1,6 +1,7 @@
 import json
 import traceback
 from . import _error
+from . import _lang
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, Message
 from nonebot.exception import FinishedException
@@ -22,17 +23,17 @@ async def shopHandle(
         shopData = json.load(open("data/shop.items.json", encoding="utf-8"))
         argument = message.extract_plain_text().split(" ")
         if argument[0] == "":
-            text = "XDbot2 道具商城：\n"
+            text = _lang.text("shop.name",[],event.get_user_id())
             for item in list(shopData.keys()):
                 text += f"{item}. {shopData[item]['name']} ({shopData[item]['price']} vi)\n"
             await shop.finish(Message(text))
         elif argument[0] == "view" or argument[0] == "查看":
             item = shopData[argument[1]]
-            text = f"""+-----「商品信息」-----+
+            text = f"""+-----「{_lang.text('shop.info_title',[],event.get_user_id())}」-----+
 \t「{item['name']}」
-  存货量：{item['count']}
-  售价：{item['price']} vi
-  卖家：{item['seller']['nickname']}({item['seller']['user_id']})
+  {_lang.text('shop.info_num',[],event.get_user_id())}{item['count']}
+  {_lang.text('shop.info_price',[],event.get_user_id())}{item['price']} vi
+  {_lang.text('shop.info_seller',[],event.get_user_id())}{item['seller']['nickname']}({item['seller']['user_id']})
   -----------------------
   {item['info']}
 +-------------------------+"""
@@ -50,19 +51,19 @@ async def shopHandle(
             # 检查是否符合购买条件
             if _userCtrl.getCountOfItem(
                     event.get_user_id(), "0") < itemData["price"]:
-                await shop.finish("怒小臣直言，阁下好像没钱了……", at_sender=True)
+                await shop.finish(_lang.text("shop.poor",[],event.get_user_id()), at_sender=True)
             if "maxBuy" in list(itemData.keys()):
                 if "bought" in list(itemData.keys()):
                     if event.get_user_id() in list(itemData["bought"].keys()):
                         if itemData["bought"][event.get_user_id()
                                               ] >= itemData["maxBuy"]:
-                            await shop.finish(f"不是吧，你怎么上当了 {itemData['maxBuy']} 次", at_sender=True)
+                            await shop.finish(_lang.text("shop.out_of_max",[itemData["maxBuy"]],event.get_user_id()), at_sender=True)
                         else:
                             itemData["bought"][event.get_user_id()] += 1
                     else:
                         itemData["bought"][event.get_user_id()] = 1
             if count > itemData["count"]:
-                await shop.finish("库存不足！", at_sender=True)
+                await shop.finish(_lang.text("shop.not_enough",[],event.get_user_id()), at_sender=True)
             # 购买
             if _userCtrl.removeItemsByID(
                     event.get_user_id(), "0", itemData["price"] * count):
@@ -90,9 +91,9 @@ async def shopHandle(
                         "data/shop.items.json",
                         "w",
                         encoding="utf-8"))
-                await shop.finish("好耶，又上当一个！", at_sender=True)
+                await shop.finish(_lang.text("shop.buy_success",[],event.get_user_id()), at_sender=True)
             else:
-                await shop.finish("阁下真的没钱了！！", at_sender=True)
+                await shop.finish(_lang.text("shop.buy_failed",[],event.get_user_id()), at_sender=True)
 
         elif argument[0] == "sell" or argument[0] == "卖出":
             bagData = json.load(open("data/etm.bag.json", encoding="utf-8"))
@@ -107,9 +108,9 @@ async def shopHandle(
                     "Sell"
                 )
             except _userCtrl.NotHaveEnoughItem:
-                await shop.finish("没货了怎么办……在线等挺急的")
+                await shop.finish(_lang.text("shop.sell_not_enough",[],event.get_user_id()))
             except _userCtrl.ItemCanNotRemove:
-                await shop.finish("买不了，根本买不了！！！！！！！！！！！")
+                await shop.finish(_lang.text("shop.sell_cannot_remove",[],event.get_user_id()))
             itemData = {
                 "name": item["data"]["displayName"] or items[item["id"]]["name"],
                 "info": item["data"]["information"] or items[item["id"]]["info"],
@@ -132,14 +133,14 @@ async def shopHandle(
             json.dump(shopData, open(
                 "data/shop.items.json", "w", encoding="utf-8"))
             await bot.send_group_msg(
-                message=f"「道具商店新上架（#{length}）」\n{itemData}",
+                message=_lang.text("shop.sell_success1",[length,itemData],event.get_user_id()),
                 group_id=ctrlGroup)
-            await shop.finish(f"上架成功，ID：#{length}", at_sender=True)
+            await shop.finish(_lang.text("shop.sell_success2",[length],event.get_user_id()), at_sender=True)
 
     except FinishedException:
         raise FinishedException()
     except KeyError:
-        await shop.finish("阁下，您的眼光犀利到一眼就看到了不存在的物品……诶，我是不是说错话了")
+        await shop.finish(_lang.text("shop.key_error",[],event.get_user_id()))
     except Exception:
         await _error.report(traceback.format_exc(), shop)
 

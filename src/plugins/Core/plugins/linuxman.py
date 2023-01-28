@@ -7,6 +7,7 @@ from nonebot import on_command
 from nonebot.exception import ActionFailed
 import json
 from . import _error
+from . import _lang
 import traceback
 import httpx
 
@@ -24,7 +25,7 @@ async def linuxmanHandle(bot: Bot,
             req = await client.get(f"https://man.archlinux.org/man/{argument}.txt")
             text = req.read().decode("utf-8")
         if req.status_code == 404:
-            await linuxman.finish("找不到手册页怎么办，在线等挺急的qwq")
+            await linuxman.finish(_lang.text("linuxman.error",[],event.get_user_id()))
         try:
             await linuxman.finish(text)
         except ActionFailed:
@@ -51,7 +52,7 @@ async def linuxmanHandle(bot: Bot,
                     messages=msg[nowLen - 99:nowLen],
                     group_id=str(event.group_id)
                 )
-            await linuxman.finish("完成")
+            await linuxman.finish(_lang.text("linuxman.finish",[],event.get_user_id()))
     except FinishedException:
         raise FinishedException()
     except Exception:

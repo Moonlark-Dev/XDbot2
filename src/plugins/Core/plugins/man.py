@@ -2,8 +2,9 @@ import json
 import re
 import traceback
 from . import _error
+from . import _lang
 from nonebot import on_command
-from nonebot.adapters.onebot.v11 import Bot, Message
+from nonebot.adapters.onebot.v11 import Bot, Message, MessageEvent
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
 
@@ -14,6 +15,7 @@ ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 @man.handle()
 async def manHandle(
         bot: Bot,
+        event: MessageEvent,
         message: Message = CommandArg()):
     try:
         argument = message.extract_plain_text()
@@ -59,7 +61,7 @@ async def manHandle(
     except FinishedException:
         raise FinishedException()
     except FileNotFoundError:
-        await man.finish("手……手册找不到， 哼哼哼啊啊啊啊啊啊")
+        await man.finish(_lang.text("man.error",[],event.get_user_id()))
     except Exception:
         await _error.report(traceback.format_exc(), man)
 

@@ -3,6 +3,7 @@ import os
 import os.path
 import traceback
 from . import _error
+from . import _lang
 from nonebot import on_command, on_message
 from nonebot.adapters.onebot.v11 import Bot, Message
 from nonebot.adapters.onebot.v11.event import MessageEvent
@@ -128,7 +129,7 @@ async def ruleHandle(
             if not r.startswith("_") and r.endswith(".json"):
                 ruleData = json.load(
                     open(os.path.join("rules", r), encoding="utf-8"))
-                logger.info(f"正在执行：{ruleData['规则名']}")
+                logger.info(_lang.text("rule.run",[ruleData['规则名']]))
                 await runRule(bot, event, argument, ruleData['执行'], rule)
 
         # except FinishedException:
@@ -150,7 +151,7 @@ async def funcHandle(
         if command in commands.keys():
             await runRule(bot, event, argv, commands[command], func)
         else:
-            await func.finish(f"阁下，小臣找不到{command}命令的撒")
+            await func.finish(_lang.text("rule.error",[command],event.get_user_id()))
 
     except FinishedException:
         raise FinishedException()

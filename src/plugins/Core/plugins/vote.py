@@ -6,6 +6,7 @@ import time
 import traceback
 import re
 
+from . import _lang
 from nonebot_plugin_apscheduler import scheduler
 from nonebot import on_command, require, get_bot
 from nonebot.adapters.onebot.v11 import Message
@@ -79,9 +80,9 @@ async def voteHandle(
             # 添加数据
             data[voteID] = voteData
             # 返回
-            answer = f"投票创建成功！ID: #{voteID}"
+            answer = _lang.text("vote.create_success",[voteID],event.get_user_id())
         elif mode == "list" or mode == "列表" or mode == "":
-            answer = "XDbot2 投票列表：\n"
+            answer = _lang.text("vote.list_title",[],event.get_user_id())
             for key in list(data.keys()):
                 voteData = data[key]
                 if voteData["group"] == event.group_id or voteData["global"]:
@@ -106,32 +107,32 @@ async def voteHandle(
                     if event.get_user_id() not in voteData["users"]:
                         data[argument[0].split(
                             " ")[1]]["users"][event.get_user_id()] = choice
-                        answer = f"已选择：{voteData['choices'][choice]}"
+                        answer = _lang.text("vote.choice",[voteData['choices'][choice]],event.get_user_id())
                     else:
-                        answer = "错误：不能重复投票"
+                        answer = _lang.text("vote.error_repeat",[],event.get_user_id())
                 else:
-                    answer = "错误：权限不足"
+                    answer = _lang.text("vote.error_no_permission",[],event.get_user_id())
             else:
-                answer = "错误：投票已结束"
+                answer = _lang.text("vote.error_end",[],event.get_user_id())
         elif mode == "close" or mode == "结束":
             voteindex = argument[0].split(" ")[1]
             voteData = data[voteindex]
             if voteData['status'] == "进行中":
                 voteData['status'] = "已结束"
-                answer = f"结束了投票{voteindex}"
+                answer = _lang.text("vote.end",[voteindex],event.get_user_id())
             else:
-                answer = f"错误：投票{voteindex}已结束"
+                answer = _lang.text("vote.ended",[voteindex],event.get_user_id())
         elif mode == "delete" or mode == "删除":
             voteindex = argument[0].split(" ")[1]
             data.pop(voteindex)
-            answer = f"投票{voteindex}已删除"
+            answer = _lang.text("vote.delete",[voteindex],event.get_user_id())
         json.dump(data, open("data/vote.list.json", "w", encoding="utf-8"))
         await vote.finish(str(answer))
 
     except FinishedException:
         raise FinishedException()
     except IndexError:
-        await vote.finish("投票不存在")
+        await vote.finish(_lang.text("vote.notfound",[],event.get_user_id()))
     except Exception:
         await bot.send_group_msg(
             message=traceback.format_exc(),
@@ -148,14 +149,14 @@ async def reloadVote():
         if voteData["status"] == "进行中":
             if time.time() >= voteData["endTime"]:
                 await bot.send_group_msg(
-                    message=f"投票「{voteData['title']}」已结束\n使用 /vote view {voteData['id']} 查看结果",
+                    message=_lang.text("vote.time_end",[voteData['title'],voteData['id']]),
                     group_id=voteData["group"]
                 )
                 data[key]["status"] = "已结束"
             # 3600s，一小时
             elif int(voteData["endTime"] - time.time()) <= 3600 and "msg" not in voteData.keys():
                 await bot.send_group_msg(
-                    message=f"投票「{voteData['title']}」将在 1 小时后截止",
+                    message=_lang.text("vote.time_1h_end",[voteData['title']]),
                     group_id=voteData["group"]
                 )
                 data[key]["msg"] = True

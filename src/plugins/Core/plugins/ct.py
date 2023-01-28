@@ -3,6 +3,7 @@ import math
 import os.path
 import traceback
 from . import _error
+from . import _lang
 from nonebot import on_command, on_message
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.adapters.onebot.v11.bot import Bot
@@ -55,7 +56,7 @@ async def ctHandle(
             length = 0
             myRank = math.inf
             myQQ = event.get_user_id()
-            myCount = "暂无数据"
+            myCount = _lang.text("ct.nodata",[],event.get_user_id())
             nowCount = math.inf
             temp0 = 1
             for user in users:
@@ -73,7 +74,7 @@ async def ctHandle(
                 # 增加循环次数
                 length += 1
             # 合成文本
-            text = "发言排名 —— 全局\n"
+            text = _lang.text("ct.rank",["全局"],event.get_user_id())
             for user in users[:15]:
                 text += f"{user['rank']}. {(await bot.get_stranger_info(user_id=user['user']))['nickname']}: {user['count']}\n"
             text += "-" * 25
@@ -111,7 +112,7 @@ async def ctHandle(
             length = 0
             myRank = math.inf
             myQQ = event.get_user_id()
-            myCount = "暂无数据"
+            myCount = _lang.text("ct.nodata",[],event.get_user_id())
             nowCount = math.inf
             temp0 = 1
             for user in users:
@@ -129,7 +130,7 @@ async def ctHandle(
                 # 增加循环次数
                 length += 1
             # 合成文本
-            text = f"发言排名 —— {groupID}\n"
+            text = _lang.text("ct.rank",[groupID],event.get_user_id())
             for user in users[:15]:
                 text += f"{user['rank']}. {(await bot.get_stranger_info(user_id=user['user']))['nickname']}: {user['count']}\n"
             text += "-" * 25
@@ -137,7 +138,7 @@ async def ctHandle(
             # 反馈结果
             await ct.finish(text)
         else:
-            await ct.finish("""Usage：ct [group]""")
+            await ct.finish(_lang.text("ct.usage",[],event.get_user_id()))
 
     except FinishedException:
         raise FinishedException()

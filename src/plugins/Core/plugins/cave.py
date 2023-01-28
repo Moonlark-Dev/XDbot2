@@ -6,6 +6,7 @@ import time
 import traceback
 import marshal
 from . import _error
+from . import _lang
 import httpx
 from nonebot import on_command, get_app
 from nonebot.adapters.onebot.v11 import (Bot, Message, MessageEvent)
@@ -87,7 +88,7 @@ async def cave_handle(bot: Bot,
                 senderData = await bot.get_stranger_info(
                     user_id=caveData["sender"])
             await cave.finish(
-                Message(f"""回声洞——（{caveData['id']}）
+                Message(f"""{_lang.text("cave.name",[],event.get_user_id())}——（{caveData['id']}）
 {text}
 ——{senderData['nickname']}"""))
 
@@ -102,13 +103,13 @@ async def cave_handle(bot: Bot,
             data["count"] += 1
             # 发送通知
             await bot.send_group_msg(message=Message(
-                (f"「回声洞新投稿（{data['count'] - 1}）」\n"
+                (f"{_lang.text('cave.new',[data['count']-1])}"
                  f"{event.get_session_id()}\n \n"
                  f"{str(message)[argument[0].__len__():].strip()}")),
                 group_id=ctrlGroup)
             # 写入数据
             json.dump(data, open("data/cave.data.json", "w", encoding="utf-8"))
-            await cave.finish(f"回声洞（{data['count'] - 1}）已添加")
+            await cave.finish(_lang.text("cave.added",[{data['count'] - 1}],event.get_user_id()))
 
         elif argument[0] in ["-g", "查询"]:
             caveData = data["data"][argument[1]]
@@ -124,18 +125,18 @@ async def cave_handle(bot: Bot,
                 senderData = await bot.get_stranger_info(
                     user_id=caveData["sender"])
             await cave.finish(
-                Message(f"""回声洞——（{caveData['id']}）
+                Message(f"""{_lang.text("cave.name",[],event.get_user_id())}——（{caveData['id']}）
 {text}
 ——{senderData['nickname']}"""))
         elif argument[0] in ["-d", "data", "数据"]:
-            await cave.send("请阁下等候，小臣还在收集数据")
+            await cave.send(_lang.text("cave.data",[],event.get_user_id()))
             count = data['count']
             canReadCount = len(data['data'].keys())
-            await cave.finish(f"总数：{count}\n有效：{canReadCount}")
+            await cave.finish(_lang.text("cave.data_finish",[count,canReadCount],event.get_user_id()))
 
     except FinishedException:
         raise FinishedException()
     except KeyError as e:
-        await cave.finish(f"回声洞（{e}）不存在")
+        await cave.finish(_lang.text("cave.notfound",[e],event.get_user_id()))
     except Exception:
         await _error.report(traceback.format_exc(), cave)

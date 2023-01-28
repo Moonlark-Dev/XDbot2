@@ -8,6 +8,7 @@ import re
 import time
 import traceback
 from . import _error
+from . import _lang
 from nonebot import on_message
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.adapters.onebot.v11.bot import Bot
@@ -161,15 +162,15 @@ async def imageSaverHandle(
                     await bot.send_group_msg(
                         message=Message((
                             f"{imageCQ}\n"
-                            f"使用 /su img re pass {imageID} [组] 通过\n"
-                            f"使用 /su img re rm {imageID} 删除\n"
+                            f"{_lang.text('reply.pass',[imageID])}"
+                            f"{_lang.text('reply.rm',[imageID])}"
                             f"{event.get_session_id()}")),
                         group_id=ctrlGroup
                     )
 
                     json.dump(data, open("data/reply.images.json", "w"))
                     await asyncio.sleep(random.random() / 2)
-                    await imageSaver.send("好图，悄悄收走阁下不会怪罪于我吧")
+                    await imageSaver.send(_lang.text("reply.good_image",[],event.get_user_id()))
                     latestSend = time.time()
                 elif isMeme and random.random() <= 0.10:      # 概率：10%
                     data = json.load(
@@ -181,13 +182,13 @@ async def imageSaverHandle(
                     await bot.send_group_msg(
                         message=Message((
                             f"{imageCQ}\n"
-                            f"使用 /su img re pass {imageID} [组] 通过\n"
-                            f"使用 /su img re rm {imageID} 删除\n"
+                            f"{_lang.text('reply.pass',[imageID])}"
+                            f"{_lang.text('reply.rm',[imageID])}"
                             f"{event.get_session_id()}")),
                         group_id=ctrlGroup
                     )
                     await asyncio.sleep(random.random() / 2)
-                    await imageSaver.send("好图，我的了")
+                    await imageSaver.send(_lang.text("reply.good_image",[],event.get_user_id()))
 
                     json.dump(data, open("data/reply.images.json", "w"))
                     latestSend = time.time()

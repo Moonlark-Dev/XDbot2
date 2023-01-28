@@ -9,6 +9,7 @@ from nonebot.adapters.onebot.v11.event import MessageEvent
 from nonebot.exception import FinishedException, ActionFailed
 from nonebot.params import CommandArg
 from . import _error
+from . import _lang
 from fastapi.responses import FileResponse
 import asyncio
 import traceback
@@ -47,8 +48,8 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
     try:
         # 冷却
         if time.time() - latest_send <= config["sleep"]:
-            await setu.finish(f"冷却中，剩余{config['sleep'] - (time.time() - latest_send)}s")
-        await setu.send("阁下忍住，别急啊！")
+            await setu.finish(_lang.text("setu.cd", [config["sleep"] - (time.time() - latest_send)], event.user_id()))
+        await setu.send(_lang.text("setu.cd2",[],event.get_user_id()))
 
         # 收集信息
         argument = message.extract_plain_text().split(" ")
@@ -59,7 +60,7 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
                 if allow_r18:
                     r18 = 1
                 else:
-                    await setu.finish("R18放不出来，怎么想我都放不出来的！")
+                    await setu.finish(_lang.text("setu.no_r18",[],event.get_user_id()))
             else:
                 tags += f"&tag={argv}"
 
@@ -68,13 +69,13 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
             req = await client.get(f"https://api.lolicon.app/setu/v2?r18={r18}{tags}")
             data = json.loads(req.read())
         if data["error"]:
-            await setu.send(f"API发生错误：{data['error']}")
+            await setu.send(_lang.text("setu.api_error",[data['error']],event.get_user_id()))
 
         # 分析数据
         try:
             data = data['data'][0]
         except IndexError:
-            await setu.finish("哎呦，好像搞砸了呢……", at_sender=True)
+            await setu.finish(_lang.text("setu.index_error",[],event.get_user_id()), at_sender=True)
         img_url = data['urls']['original']
 
         # 下载图片
@@ -87,9 +88,9 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
         # 生成文本
         msg = MessageSegment.image(f"file://{image_path}")
         msg += data["title"]
-        msg += f' (P{data["pid"]})'
-        msg += f"\n作者：{data['author']}"
-        msg += f"\n[消息将在{config['delete_sleep']}s后撤回]"
+        msg += _lang.text("setu.msg1",[data['pid']],event.get_user_id())
+        msg += _lang.text("setu.msg2", [data['author']], event.get_user_id())
+        msg += _lang.text("setu.msg3", [config['delete_sleep']], event.get_user_id())
         msg = Message(msg)
         # pid = copy.deepcopy(data["pid"])
 
@@ -107,7 +108,7 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
                         message=msg))["message_id"]
         except ActionFailed:
             await setu.finish((
-                f"搞……搞砸了……希望阁下不要怪罪于我……\n"
+                f"{_lang.text('setu.action_failed',[],event.get_user_id())}"
                 f"https://xdbot2.thisisxd.top/setu"))
 
         # 启动删除任务
@@ -123,8 +124,8 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
         json.dump(data, open("data/setu.count.json", "w"))
 
     except httpx.ConnectTimeout:
-        await _error.report("警告：一个请求超时！")
-        await setu.finish("你是一个一个请求超时啊啊啊")
+        await _error.report(_lang.text("setu.timeout1"))
+        await setu.finish(_lang.text("setu.timeout2",[],event.get_user_id()))
     except FinishedException:
         raise FinishedException()
     except Exception:

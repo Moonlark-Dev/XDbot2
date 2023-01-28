@@ -1,6 +1,7 @@
 import json
 import time
 from . import _error
+from . import _lang
 import traceback
 from nonebot import require
 from nonebot.log import logger
@@ -76,7 +77,7 @@ require("nonebot_plugin_apscheduler")
 async def checkReloaded():
     latest = json.load(open("data/autosell.latest.json", encoding="utf-8"))
     if latest["mday"] != time.localtime().tm_mday:
-        logger.info("才……才不是因为你才刷新商品的呢")
+        logger.info(_lang.text("autosell.log"))
         try:
             await reloadSell()
         except BaseException:

@@ -8,6 +8,7 @@ from nonebot import on_command
 import time
 import traceback
 import json
+from . import _lang
 
 userInfo = on_command(
     "user-info",
@@ -31,13 +32,13 @@ async def userInfoHandle(bot: Bot, event: MessageEvent):
             bar += "  "
         # VIP
         if data['vip']['level'] is None:
-            vip = "未开通"
+            vip = _lang.text("userInfo.no_vip",[],event.get_user_id())
             endTime = "???"
         else:
             vip = "VIP" + "+" * data['vip']['level'] + \
                 f" ({data['vip']['level']})"
             if data['vip']["endTime"] is None:
-                endTime = "永久"
+                endTime = _lang.text("userInfo.per_vip",[],event.get_user_id())
             else:
                 endTime = time.strftime(
                     "%Y-%m-%d",
@@ -45,12 +46,12 @@ async def userInfoHandle(bot: Bot, event: MessageEvent):
                         data['vip']['endTime']))
 
         reply = (
-            "+-----「用户信息」-----+\n"
+            f"+-----「{_lang.text('userInfo.title',[],event.get_user_id())}」-----+\n"
             f"  {(await bot.get_stranger_info(user_id=event.get_user_id()))['nickname']}({event.get_user_id()})\n \n"
-            f"  等级：Lv{data['level']}（{data['exp']} / {data['level'] ** 2}）\n"
+            f"  {_lang.text('userInfo.level',[],event.get_user_id())}Lv{data['level']}（{data['exp']} / {data['level'] ** 2}）\n"
             f"    [{bar}]\n"
-            f"  会员：{vip}\n"
-            f"    到期时间：{endTime}\n"
+            f"  {_lang.text('userInfo.vip',[],event.get_user_id())}{vip}\n"
+            f"    {_lang.text('userInfo.endtime',[],event.get_user_id())}{endTime}\n"
             "+-------------------------+")
         await userInfo.finish(reply)
 
@@ -61,4 +62,4 @@ async def userInfoHandle(bot: Bot, event: MessageEvent):
             message=traceback.format_exc(),
             group_id=ctrlGroup
         )
-        await userInfo.finish("处理失败")
+        await userInfo.finish(_lang.text("userInfo.error",[],event.get_user_id()))
