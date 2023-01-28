@@ -26,9 +26,11 @@ config = json.load(open("data/setu.config.json"))
 allow_r18 = json.load(open("data/setu.allow.json"))["r18"]
 
 
-@app.get("/setu", response_class=FileResponse)
-async def get_latest_image() -> str:
-    return image_path
+@app.get("/setu")
+async def get_latest_image() -> FileResponse:
+    return FileResponse(
+        path=image_path
+    )
 
 
 async def delete_msg(bot: Bot, message: int) -> None:
