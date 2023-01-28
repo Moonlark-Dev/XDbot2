@@ -21,6 +21,7 @@ import time
 setu = on_command("setu", aliases={"涩图", "st-r"})
 latest_send = time.time()
 app = get_app()
+latest_ext = ""
 config = json.load(open("data/setu.config.json"))
 allow_r18 = json.load(open("data/setu.allow.json"))["r18"]
 
