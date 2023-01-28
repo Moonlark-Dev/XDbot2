@@ -10,7 +10,7 @@ print(f"当前更新脚本版本标签：{oldVersion}")
 
 print("正在拉取仓库 ...")
 print("--- GIT 输出 ---")
-print(os.popen("git pull").read().replace("\n", "\n [I] GIT: "))
+print(os.popen("git pull --force").read().replace("\n", "\n [I] GIT: "))
 print("--- 运行结束 ---")
 
 with open("XDbot2_Update.py", encoding="utf-8") as f:
