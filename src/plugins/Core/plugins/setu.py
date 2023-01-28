@@ -21,14 +21,14 @@ import time
 setu = on_command("setu", aliases={"涩图", "st-r"})
 latest_send = time.time()
 app = get_app()
-latest_ext = ""
+image_path = ""
 config = json.load(open("data/setu.config.json"))
 allow_r18 = json.load(open("data/setu.allow.json"))["r18"]
 
 
 @app.get("/setu", response_class=FileResponse)
 async def get_latest_image() -> str:
-    return f"data/setu.image.{latest_ext}"
+    return image_path
 
 
 async def delete_msg(bot: Bot, message: int) -> None:
@@ -41,7 +41,7 @@ async def delete_msg(bot: Bot, message: int) -> None:
 
 @setu.handle()
 async def setu_handler(bot: Bot, event: MessageEvent, message: Message = CommandArg()) -> None:
-    global latest_send, latest_ext
+    global latest_send, image_path
     try:
         # 冷却
         if time.time() - latest_send <= config["sleep"]:
@@ -80,7 +80,6 @@ async def setu_handler(bot: Bot, event: MessageEvent, message: Message = Command
             req = await client.get(img_url)
             with open(f"data/setu.image.{data['ext']}", "wb") as f:
                 f.write(req.read())
-        latest_ext = data["ext"]
         image_path = os.path.abspath(f"data/setu.image.{data['ext']}")
 
         # 生成文本
