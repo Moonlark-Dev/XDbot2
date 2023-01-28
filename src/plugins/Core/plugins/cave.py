@@ -113,7 +113,7 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
             # 写入数据
             json.dump(data, open("data/cave.data.json", "w", encoding="utf-8"))
             await cave.finish(
-                _lang.text("cave.added", [{data["count"] - 1}], event.get_user_id())
+                _lang.text("cave.added", [data["count"] - 1], event.get_user_id())
             )
 
         elif argument[0] in ["-g", "查询"]:
