@@ -18,10 +18,7 @@ globalConfig = json.load(open("data/init.json", encoding="utf-8"))["config"]
 
 
 @ct.handle()
-async def ctHandle(
-        bot: Bot,
-        event: GroupMessageEvent,
-        message: Message = CommandArg()):
+async def ctHandle(bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()):
     try:
         argument = message.extract_plain_text().split(" ")
         groupID = event.get_session_id().split("_")[1]
@@ -33,24 +30,13 @@ async def ctHandle(
                 length = 0
                 for user in users:
                     if data[key] >= user["count"]:
-                        users.insert(
-                            length,
-                            {
-                                "user": key,
-                                "count": data[key]
-                            }
-                        )
+                        users.insert(length, {"user": key, "count": data[key]})
                         inserted = True
                         break
                     length += 1
                 # 如果用户是目前倒数
                 if not inserted:
-                    users += [
-                        {
-                            "user": key,
-                            "count": data[key]
-                        }
-                    ]
+                    users += [{"user": key, "count": data[key]}]
             # 生成排名
             nowRank = 0
             length = 0
@@ -68,7 +54,7 @@ async def ctHandle(
                     temp0 += 1
                 users[length]["rank"] = nowRank
                 # 判断是不是自己
-                if user['user'] == myQQ:
+                if user["user"] == myQQ:
                     myRank = nowRank
                     myCount = nowCount
                 # 增加循环次数
@@ -89,24 +75,13 @@ async def ctHandle(
                 length = 0
                 for user in users:
                     if data[key] >= user["count"]:
-                        users.insert(
-                            length,
-                            {
-                                "user": key,
-                                "count": data[key]
-                            }
-                        )
+                        users.insert(length, {"user": key, "count": data[key]})
                         inserted = True
                         break
                     length += 1
                 # 如果用户是目前倒数
                 if not inserted:
-                    users += [
-                        {
-                            "user": key,
-                            "count": data[key]
-                        }
-                    ]
+                    users += [{"user": key, "count": data[key]}]
             # 生成排名
             nowRank = 0
             length = 0
@@ -124,7 +99,7 @@ async def ctHandle(
                     temp0 += 1
                 users[length]["rank"] = nowRank
                 # 判断是不是自己
-                if user['user'] == myQQ:
+                if user["user"] == myQQ:
                     myRank = nowRank
                     myCount = nowCount
                 # 增加循环次数
@@ -147,9 +122,7 @@ async def ctHandle(
 
 
 @ctRecorder.handle()
-async def ctRecorderHandle(
-        bot: Bot,
-        event: GroupMessageEvent):
+async def ctRecorderHandle(bot: Bot, event: GroupMessageEvent):
     try:
         # 忽略命令
         for start in globalConfig["command_start"]:
@@ -180,6 +153,7 @@ async def ctRecorderHandle(
 
     except Exception:
         await _error.report(traceback.format_exc())
+
 
 # [HELPSTART]
 # !Usage 1 ct

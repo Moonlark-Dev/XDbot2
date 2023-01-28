@@ -14,19 +14,26 @@ ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 
 
 @bag.handle()
-async def bagHandle(bot: Bot,
-                    event: GroupMessageEvent,
-                    message: Message = CommandArg()):
+async def bagHandle(
+    bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()
+):
     try:
         argument = message.extract_plain_text().split(" ")
         bagData = json.load(open("data/etm.bag.json", encoding="utf-8"))
         itemData = json.load(open("data/etm.items.json", encoding="utf-8"))
         if argument[0] == "":
-            text = _lang.text("bag.get", [(await bot.get_stranger_info(user_id=event.get_user_id()))['nickname']], event.get_user_id())
+            text = _lang.text(
+                "bag.get",
+                [
+                    (await bot.get_stranger_info(user_id=event.get_user_id()))[
+                        "nickname"
+                    ]
+                ],
+                event.get_user_id(),
+            )
             length = 0
             for item in bagData[event.get_user_id()]:
-                name = item["data"]["displayName"] or itemData[
-                    item["id"]]["name"]
+                name = item["data"]["displayName"] or itemData[item["id"]]["name"]
                 text += f" {length}. {name} x{item['count']}\n"
                 length += 1
             await bag.finish(text)
@@ -34,15 +41,21 @@ async def bagHandle(bot: Bot,
             item = bagData[event.get_user_id()][int(argument[1])]
             name = item["data"]["displayName"] or itemData[item["id"]]["name"]
             info = item["data"]["information"] or itemData[item["id"]]["info"]
-            await bag.finish(_lang.text("bag.item", [name, item['count'], info, item['data']], event.get_user_id()))
+            await bag.finish(
+                _lang.text(
+                    "bag.item",
+                    [name, item["count"], info, item["data"]],
+                    event.get_user_id(),
+                )
+            )
         elif argument[0] == "drop" or argument[0] == "丢弃":
             try:
                 _userCtrl.removeItemsFromBag(
                     userID=event.get_user_id(),
                     itemPos=int(argument[1]),
-                    count=bagData[event.get_user_id()][int(
-                        argument[1])]["count"],
-                    removeType="Drop")
+                    count=bagData[event.get_user_id()][int(argument[1])]["count"],
+                    removeType="Drop",
+                )
             except _userCtrl.ItemCanNotRemove:
                 await bag.finish(_lang.text("bag.cannot_drop", [], event.get_user_id()))
             await bag.finish(_lang.text("bag.finish", [], event.get_user_id()))

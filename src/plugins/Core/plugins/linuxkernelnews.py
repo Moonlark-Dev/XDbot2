@@ -1,4 +1,5 @@
 from nonebot.adapters.onebot.v11.bot import Bot
+
 # from nonebot.adapters.onebot.v11.event import MessageEvent
 # from nonebot.adapters.onebot.v11 import Message
 # from nonebot.params import CommandArg
@@ -6,7 +7,7 @@ from . import _error
 from . import _lang
 from nonebot.exception import FinishedException
 from nonebot import on_command
-from nonebot.adapters.onebot.v11 import (Bot, Message, MessageEvent)
+from nonebot.adapters.onebot.v11 import Bot, Message, MessageEvent
 import json
 import traceback
 import re
@@ -23,7 +24,8 @@ async def linuxkernelnewsHandle(bot: Bot, event: MessageEvent):
             req = await client.get("https://www.kernel.org/feeds/kdist.xml")
             data = req.read().decode("utf-8")
         data = re.findall(
-            r'https://cdn.kernel.org/pub/linux/kernel/.*/linux-.*.tar.xz"', data)
+            r'https://cdn.kernel.org/pub/linux/kernel/.*/linux-.*.tar.xz"', data
+        )
         kernels = ""
         for i in range(len(data)):
             kernels += f"{i+1}. {data[i][:-1].replace('cdn.kernel.org/pub','mirrors.ustc.edu.cn/kernel.org')}\n"
@@ -34,6 +36,7 @@ async def linuxkernelnewsHandle(bot: Bot, event: MessageEvent):
         raise FinishedException()
     except Exception:
         await _error.report(traceback.format_exc(), linuxkernelnews)
+
 
 # [HELPSTART] Version: 2
 # Command: lkn

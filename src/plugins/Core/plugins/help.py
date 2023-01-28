@@ -22,7 +22,7 @@ async def helpHandle(bot: Bot, event: MessageEvent, message: Message = CommandAr
             reply = f"{_lang.text('help.name',[],event.get_user_id())} —— XDbot2\n"
             for key in list(commands.keys()):
                 reply += f"[√] {key}：{commands[key]['msg']}\n"
-            reply += _lang.text('help.command', [], event.get_user_id())
+            reply += _lang.text("help.command", [], event.get_user_id())
         elif argument == "list":
             for key in list(commands.keys()):
                 for u in commands[key]["usage"]:
@@ -30,7 +30,7 @@ async def helpHandle(bot: Bot, event: MessageEvent, message: Message = CommandAr
         else:
             usage = ""
             length = 1
-            for u in commands[argument]['usage']:
+            for u in commands[argument]["usage"]:
                 usage += f"  {length}. {u}\n"
                 length += 1
             reply = (
@@ -45,6 +45,7 @@ async def helpHandle(bot: Bot, event: MessageEvent, message: Message = CommandAr
         raise FinishedException()
     except Exception:
         await _error.report(traceback.format_exc(), help)
+
 
 # [HELPSTART] Version: 2
 # Command: help

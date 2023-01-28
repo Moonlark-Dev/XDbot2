@@ -60,8 +60,8 @@ async def pie():
         data = json.load(open("data/sixcount.data.json"))
         start_time = time.strftime(
             "%Y-%m-%d %H:%M:%S",
-            time.localtime(json.load(
-                open("data/sixcount.starttime.json"))["time"]))
+            time.localtime(json.load(open("data/sixcount.starttime.json"))["time"]),
+        )
 
         user_data = []
         bots = get_bots()
@@ -69,20 +69,21 @@ async def pie():
         user_list = list(data.keys())
 
         for i in range(len(user_list)):
-            user_data.append((
-                (await bot.get_stranger_info(user_id=user_list[i]))['nickname'],
-                data[user_list[i]]))
+            user_data.append(
+                (
+                    (await bot.get_stranger_info(user_id=user_list[i]))["nickname"],
+                    data[user_list[i]],
+                )
+            )
 
-        file_path = ((Pie(init_opts=opts.InitOpts(bg_color='rgba(255,255,255,1)'))
-                      .add("", user_data)
-                      .set_global_opts(
-            title_opts=opts.TitleOpts(
-                title="6",
-                subtitle=start_time + " 至今"))
-            .set_series_opts(
-            label_opts=opts.LabelOpts(
-                formatter="{b}: {c}")))
-            .render(path="data/sixcount.render.ro.html"))
+        file_path = (
+            Pie(init_opts=opts.InitOpts(bg_color="rgba(255,255,255,1)"))
+            .add("", user_data)
+            .set_global_opts(
+                title_opts=opts.TitleOpts(title="6", subtitle=start_time + " 至今")
+            )
+            .set_series_opts(label_opts=opts.LabelOpts(formatter="{b}: {c}"))
+        ).render(path="data/sixcount.render.ro.html")
 
         with open(file_path, encoding="utf-8") as f:
             html = f.read()

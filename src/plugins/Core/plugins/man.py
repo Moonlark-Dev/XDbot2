@@ -13,10 +13,7 @@ ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 
 
 @man.handle()
-async def manHandle(
-        bot: Bot,
-        event: MessageEvent,
-        message: Message = CommandArg()):
+async def manHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg()):
     try:
         argument = message.extract_plain_text()
         if argument == "":
@@ -31,9 +28,9 @@ async def manHandle(
             # 发送
             await man.finish(
                 text.replace("\n", " \n")
-                    .replace("#", "  ")
-                    .replace("`", " ")
-                    .replace(">", "  ")
+                .replace("#", "  ")
+                .replace("`", " ")
+                .replace(">", "  ")
             )
         else:
             command = re.search(r"[A-Za-z]+", argument)
@@ -53,9 +50,7 @@ async def manHandle(
                     break
             # 发送
             await man.finish(
-                text.replace("\n", " \n")
-                    .replace("#", " ")
-                    .replace("`", " ")
+                text.replace("\n", " \n").replace("#", " ").replace("`", " ")
             )
 
     except FinishedException:
@@ -64,6 +59,7 @@ async def manHandle(
         await man.finish(_lang.text("man.error", [], event.get_user_id()))
     except Exception:
         await _error.report(traceback.format_exc(), man)
+
 
 # [HELPSTART] Version: 2
 # Command: man

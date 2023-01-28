@@ -13,10 +13,7 @@ latestReload = json.load(open("data/autosell.latest.json", encoding="utf-8"))
 
 
 async def reloadSell():
-    shopData = json.load(
-        open(
-            "data/shop.items.json",
-            encoding="utf-8"))
+    shopData = json.load(open("data/shop.items.json", encoding="utf-8"))
     # 删除原来的
     temp0 = shopData.keys()
     for item in list(temp0):
@@ -24,10 +21,7 @@ async def reloadSell():
             if shopData[item]["from"] == "autosell":
                 shopData.pop(item)
     # 加上新的
-    sellData = json.load(
-        open(
-            "data/autosell.items.json",
-            encoding="utf-8"))
+    sellData = json.load(open("data/autosell.items.json", encoding="utf-8"))
     items = json.load(open("data/etm.items.json", encoding="utf-8"))
     for item in sellData:
         length = 0
@@ -42,18 +36,14 @@ async def reloadSell():
                 shopData[str(length)] = {
                     "name": items[item["id"]]["name"],
                     "info": items[item["id"]]["info"],
-                    "item": {
-                        "id": item["id"],
-                        "count": 1,
-                        "data": item["data"]
-                    },
+                    "item": {"id": item["id"], "count": 1, "data": item["data"]},
                     "count": item["count"],
                     "price": item["price"],
                     "from": "autosell",
                     "seller": {
                         "nickname": s_nickname,
                         "user_id": s_user_id,
-                    }
+                    },
                 }
                 try:
                     shopData[str(length)]["maxBuy"] = int(item["maxBuy"])
@@ -61,12 +51,9 @@ async def reloadSell():
                     pass
                 break
             length += 1
-        json.dump(
-            shopData,
-            open(
-                "data/shop.items.json",
-                "w",
-                encoding="utf-8"))
+        json.dump(shopData, open("data/shop.items.json", "w", encoding="utf-8"))
+
+
 # await asyncio.sleep(60)
 
 
@@ -84,9 +71,4 @@ async def checkReloaded():
             await _error.report(traceback.format_exc())
         else:
             latest["mday"] = time.localtime().tm_mday
-            json.dump(
-                latest,
-                open(
-                    "data/autosell.latest.json",
-                    "w",
-                    encoding="utf-8"))
+            json.dump(latest, open("data/autosell.latest.json", "w", encoding="utf-8"))
