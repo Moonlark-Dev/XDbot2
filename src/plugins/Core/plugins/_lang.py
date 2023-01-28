@@ -20,17 +20,25 @@ def reload():
         _lang_dict[_lang_file.replace(".json", "")] = _lang_index
 
 
-def text(key: str, _format: list = [], user: str = "default"):
+def text(key: str, _format: list = [], user: str = "default", params: dict = {}):
     try:
         lang = _lang_user[user]
     except KeyError:
         lang = "zh_fzz"
+    if lang == "debug":
+        return f"<{key}>"
     try:
         value = _lang_dict[lang][key]
     except BaseException:
-        value = f"<本地化键缺失 {lang}.json → {key}>"
+        try:
+            value = _lang_dict["zh_fzz"][key]
+        except BaseException:
+            return f"<本地化键缺失 {lang}.json {key}>"
     for i in _format:
         value = value.replace("{}", str(i), 1)
+    if params:
+        for i in list(params.keys()):
+            value = value.replace("${" + i + "}", params[i])
     return str(value)
 
 
