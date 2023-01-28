@@ -1,6 +1,7 @@
 import json
 import traceback
 from . import _error
+from . import _lang
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, Message
 from nonebot.exception import FinishedException
@@ -21,7 +22,7 @@ async def bagHandle(bot: Bot,
         bagData = json.load(open("data/etm.bag.json", encoding="utf-8"))
         itemData = json.load(open("data/etm.items.json", encoding="utf-8"))
         if argument[0] == "":
-            text = f"「{(await bot.get_stranger_info(user_id=event.get_user_id()))['nickname']}的背包」\n"
+            text = _lang.text("bag.get",[(await bot.get_stranger_info(user_id=event.get_user_id()))['nickname']],event.get_user_id())
             length = 0
             for item in bagData[event.get_user_id()]:
                 name = item["data"]["displayName"] or itemData[
@@ -33,11 +34,7 @@ async def bagHandle(bot: Bot,
             item = bagData[event.get_user_id()][int(argument[1])]
             name = item["data"]["displayName"] or itemData[item["id"]]["name"]
             info = item["data"]["information"] or itemData[item["id"]]["info"]
-            await bag.finish(f"""「{name}」
-阁下当前拥有：{item['count']}
-{info}
-\t
-{item['data']}""")
+            await bag.finish(_lang.text("bag.item",[name,item['count'],info,item['data']],event.get_user_id()))
         elif argument[0] == "drop" or argument[0] == "丢弃":
             try:
                 _userCtrl.removeItemsFromBag(
@@ -47,15 +44,15 @@ async def bagHandle(bot: Bot,
                         argument[1])]["count"],
                     removeType="Drop")
             except _userCtrl.ItemCanNotRemove:
-                await bag.finish("物品被标记为：无法丢弃")
-            await bag.finish("完成")
+                await bag.finish(_lang.text("bag.cannot_drop",[],event.get_user_id()))
+            await bag.finish(_lang.text("bag.finish",[],event.get_user_id()))
 
     except FinishedException:
         raise FinishedException()
     except KeyError:
-        await bag.finish("你的背包是空的哦～")
+        await bag.finish(_lang.text("bag.empty",[],event.get_user_id()))
     except IndexError:
-        await bag.finish("你没有这个物品，才不是因为找不到呢～")
+        await bag.finish(_lang.text("bag.notfound",[],event.get_user_id()))
     except Exception:
         await _error.report(traceback.format_exc(), bag)
 

@@ -1,6 +1,6 @@
 import json
 from random import randint, random
-
+from . import _lang
 items = json.load(open("data/etm.items.json", encoding="utf-8"))
 defaultItemData = {
     "displayName": None,
@@ -152,31 +152,31 @@ def useItem(userID: str, pos: int):
         if vipLevel:
             count *= 1 + (vipLevel / 75 * 2)
         addItem(userID, "0", int(count), dict())
-        return f"你获得了：\n1. VimCoin x{int(count)}"
+        return f"{_lang.text('_userCtrl.get')}\n1. VimCoin x{int(count)}"
     elif item["id"] == "3":
         # 20面骰子
         num = randint(1, 20)
         if num == 20:
             addItem(userID, "0", 50, {})
-            return "买了一颗二十面骰，掷出了 20，大成功，获得了 50vi！"
+            return _lang.text("_userCtrl.dice.20")
         elif 18 <= num <= 19:
             addItem(userID, "0", 20, {})
-            return f"买了一颗二十面骰，掷出了 {num}，运气绝佳，获得了 20vi！"
+            return _lang.text("_userCtrl.dice.18-19",[num])
         elif 15 <= num <= 17:
             addItem(userID, "0", 10, {})
-            return f"买了一颗二十面骰，掷出了 {num}，运气不错，获得了 10vi！"
+            return _lang.text("_userCtrl.dice.15-17",[num])
         elif 10 <= num <= 14:
             addItem(userID, "0", 5, {})
-            return f"买了一颗二十面骰，掷出了 {num}，拿回了自己的 5vi！"
+            return _lang.text("_userCtrl.dice.10-14",[num])
         elif 2 <= num <= 9:
-            return f"买了一颗二十面骰，掷出了 {num}，一无所获……"
+            return _lang.text("_userCtrl.dice.2-9",[num])
         elif num == 1:
             removeItemsByID_allowBelowZero(userID, "0", 50, itemData={})
-            return f"买了一颗二十面骰，掷出了 {num}，大失败，倾家荡产，丢失了 50vi！"
+            return _lang.text("_userCtrl.dice.1")
 
     else:
         addItem(userID, item["id"], 1, item["data"])
-        return "你在尝试着什么……"
+        return _lang.text("_userCtrl.cannot_use")
 
 
 def addExp(userID: str, exp: int):

@@ -7,6 +7,7 @@ from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
 
 from . import _userCtrl
+from . import _lang
 
 use = on_command("use", aliases={"使用"})
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
@@ -24,17 +25,17 @@ async def useHandle(
                 event.get_user_id(), argument)), at_sender=True)
 
     except _userCtrl.ItemCanNotRemove:
-        await use.finish("阁下，这个物品用不了的撒")
+        await use.finish(_lang.text("use.cannot",[],event.get_user_id()))
     except FinishedException:
         raise FinishedException()
     except IndexError:
-        await use.finish("小臣找不到这个物品")
+        await use.finish(_lang.text("use.notfound",[],event.get_user_id()))
     except Exception:
         await bot.send_group_msg(
             message=traceback.format_exc(),
             group_id=ctrlGroup
         )
-        await use.finish("淦，出错了踏马的")
+        await use.finish(_lang.text("use.error",[],event.get_user_id()))
 
 # [HELPSTART]
 # !Usage 1 use <背包物品ID>

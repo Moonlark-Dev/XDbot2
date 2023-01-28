@@ -1,7 +1,9 @@
 from nonebot import on_command
+from nonebot.adapters.onebot.v11 import MessageEvent
+from . import _lang
 report = on_command("report", aliases={"反馈"})
 
 
 @report.handle()
-async def handle():
-    await report.finish("如果阁下发现了不得了的事情，千万不要去Github提交issue哦！！https://github.com/This-is-XiaoDeng/XDbot2/issues", at_sender=True)
+async def handle(event: MessageEvent):
+    await report.finish(_lang.text("report.github",[],event.get_user_id()), at_sender=True)

@@ -1,6 +1,7 @@
 import json
 import traceback
 from . import _error
+from . import _lang
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.adapters.onebot.v11.bot import Bot
@@ -41,7 +42,7 @@ async def fakenodeHandle(
             group_id=group
         )
         await bot.send_group_msg(
-            message=f"「新建伪转发」\n用户：{event.get_user_id()}\n \n{msg}",
+            message=_lang.text("fakenode.new", [event.get_user_id(), msg]),
             group_id=ctrlGroup
         )
         await bot.call_api(

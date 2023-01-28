@@ -1,8 +1,9 @@
 from . import _error
+from . import _lang
 import json
 import traceback
 from nonebot import on_command
-from nonebot.adapters.onebot.v11 import Bot, Message
+from nonebot.adapters.onebot.v11 import Bot, Message, MessageEvent
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
 
@@ -12,16 +13,16 @@ help = on_command("help", aliases={"帮助"})
 
 
 @help.handle()
-async def helpHandle(bot: Bot, message: Message = CommandArg()):
+async def helpHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg()):
     try:
         argument = message.extract_plain_text()
         reply = ""
         commands = json.load(open("data/help.json", encoding="utf-8"))
         if argument == "":
-            reply = "命令列表 —— XDbot2\n"
+            reply = f"{_lang.text('help.name',[],event.get_user_id())} —— XDbot2\n"
             for key in list(commands.keys()):
                 reply += f"[√] {key}：{commands[key]['msg']}\n"
-            reply += "使用 /help <命令> 获取更多信息"
+            reply += _lang.text('help.command',[],event.get_user_id())
         elif argument == "list":
             for key in list(commands.keys()):
                 for u in commands[key]["usage"]:
@@ -33,13 +34,13 @@ async def helpHandle(bot: Bot, message: Message = CommandArg()):
                 usage += f"  {length}. {u}\n"
                 length += 1
             reply = (
-                f"\n说明：{commands[argument]['info']}\n"
+                f"{_lang.text('help.info',[commands[argument]['info']],event.get_user_id())}"
                 # f"来源：{commands[argument]['from']}\n"
-                f"用法（{length - 1}）：\n{usage}"
+                f"{_lang.text('help.usage',[length-1,usage],event.get_user_id())}"
             )
         await help.finish(reply)
     except KeyError as e:
-        await help.finish(f"未知指令：{e}")
+        await help.finish(_lang.text("help.unknown", [e], event.get_user_id()))
     except FinishedException:
         raise FinishedException()
     except Exception:

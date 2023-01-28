@@ -3,6 +3,7 @@ import random
 import time
 import traceback
 from . import _error
+from . import _lang
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.adapters.onebot.v11.bot import Bot
@@ -17,39 +18,36 @@ ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 async def getJrrp(qq: str):
     data = json.load(open("data/jrrp.users.json"))
     if qq not in data.keys():
-        await jrrp.send((
-            "免责声明：\n"
-            "人品所计算的结果并非与您有联系\n"
-            "本插件所造成的一切损失请自己承担w！"), at_sender=True)
+        await jrrp.send(_lang.text("jrrp.notice",[],qq), at_sender=True)
         data[qq] = {"max": 0}
     # 计算人品值
     random.seed(int(qq) + int(time.time() / 86400))
     luck = random.randint(0, 100)
     if luck > data[qq]["max"]:
-        await jrrp.send(Message(f"[CQ:at,qq={qq}] 个人最高记录已刷新！"))
+        await jrrp.send(Message(f"[CQ:at,qq={qq}] {_lang.text('jrrp.new_record',[],qq)}"))
         data[qq]["max"] = luck
         json.dump(data, open("data/jrrp.users.json", "w"))
     # 生成提示文本
     if luck == 100:
-        return "100,哎呦你干嘛"
+        return _lang.text("jrrp.num.100",[luck],qq)
     elif luck == 99:
-        return "99！（可惜不是100, 小声bb）"
+        return _lang.text("jrrp.num.99",[luck],qq)
     elif 85 <= luck < 99:
-        return f"{luck}，阁下好棒棒！~"
+        return _lang.text("jrrp.num.85-99",[luck],qq)
     elif 60 <= luck < 85:
-        return f"{luck}，还行啦还行啦~"
+        return _lang.text("jrrp.num.60-85",[luck],qq)
     elif 45 <= luck < 60:
-        return f"{luck}"
+        return _lang.text("jrrp.num.45-60",[luck],qq)
     elif 30 <= luck < 45:
-        return f"{luck}，……"
+        return _lang.text("jrrp.num.30-45",[luck],qq)
     elif 15 <= luck < 30:
-        return f"{luck}，呜哇——"
+        return _lang.text("jrrp.num.15-30",[luck],qq)
     elif 0 < luck < 15:
-        return f"{luck}，呜哇——（没错，是百分制）"
+        return _lang.text("jrrp.num.0-15",[luck],qq)
     elif luck == 0:
-        return f"{luck}！0！0！！！！！"
+        return _lang.text("jrrp.num.0",[luck],qq)
     else:
-        return f"{luck}"
+        return _lang.text("jrrp.num.else",[luck],qq)
 
 
 @jrrp.handle()
@@ -61,12 +59,12 @@ async def jrrpHandle(
         argument = message.extract_plain_text().split(" ")
         if argument[0] == "":
             await jrrp.finish(
-                message=f"你今天的人品值是：{await getJrrp(event.get_user_id())}",
+                message=_lang.text('jrrp.today',[await getJrrp(event.get_user_id())],event.get_user_id()),
                 at_sender=True)
         elif argument[0] == "rank" or argument[0] == "今日排名":
             # 限时开启
             if time.localtime().tm_hour < 17:
-                await jrrp.finish("人品排名将在每天服务器时间 17:00 准时开启")
+                await jrrp.finish(_lang.text("jrrp.rank_time",[],event.get_user_id()))
             # 开始计算
             if argument.__len__() >= 2:
                 count = int(argument[1])
@@ -117,19 +115,19 @@ async def jrrpHandle(
                 # 增加length
                 length += 1
             # 生成文本
-            text = "今日人品群排名：\n"
+            text = _lang.text("jrrp.group",[],event.get_user_id())
             for user in jrrpRank[:count]:
                 text += f"{user['rank']}. {user['username']}: {user['jrrp']}\n"
             text += "-" * 20
             text += f"\n{myRank}. {(await bot.get_stranger_info(user_id=qq))['nickname']}: {myJrrp}"
             await jrrp.finish(text)
         else:
-            await jrrp.finish(f"{argument[0]}今天的人品值是：{await getJrrp(argument[0])}")
+            await jrrp.finish(_lang.text("jrrp.other",[argument[0],await getJrrp(argument[0])],event.get_user_id()))
 
     except FinishedException:
         raise FinishedException()
     except ValueError:
-        await jrrp.finish("无效参数", at_sender=True)
+        await jrrp.finish(_lang.text("jrrp.error",[],event.get_user_id()), at_sender=True)
     except Exception:
         await _error.report(traceback.format_exc(), jrrp)
 

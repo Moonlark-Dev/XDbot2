@@ -3,6 +3,7 @@ import traceback
 import random
 import time
 from . import _error
+from . import _lang
 from nonebot import on_keyword, on_command
 from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, Message
 from nonebot.exception import FinishedException
@@ -24,7 +25,7 @@ async def signrankHandle(bot: Bot,
     args = args.extract_plain_text().split(" ")
     if not args[0] == "rank":
         return
-    rank = "今日签到榜：（剩余" + time_to_next_day + "）\n"
+    rank = _lang.text("sign.rank_title", [time_to_next_day],event.get_user_id())
     try:
         with open("data/sign.rank.json", "r") as f:
             sign_rank_data = json.load(f)
@@ -33,9 +34,9 @@ async def signrankHandle(bot: Bot,
     except BaseException:
         sign_rank_data = {"day": int(time.time() / 86400), "rank": []}
     if not sign_rank_data["rank"]:
-        await signrank.finish("今天还没有人签到！")
+        await signrank.finish(_lang.text("sign.rank_empty", [],event.get_user_id()))
     num = 0
-    me = "阁下快去签到！"
+    me = _lang.text("sign.rank_me",[],event.get_user_id())
     for i in sign_rank_data["rank"]:
         num += 1
         rank += f"{str(num)}. {(await bot.get_stranger_info(user_id=i['qq']))['nickname']}（{i['time']}）\n"
@@ -74,7 +75,7 @@ async def signHandle(bot: Bot, event: GroupMessageEvent):
                 }
             # 修改数据
             if latestSign[userID] == int(time.time() / 86400):
-                await sign.finish(f"阁下已经签到过了啊！{time_to_next_day} 后可再次签到", at_sender=True)
+                await sign.finish(_lang.text("sign.cannot",[time_to_next_day],event.get_user_id()), at_sender=True)
             if latestSign[userID] - int(time.time() / 86400) == -1:
                 signDay[userID] += 1
             else:
@@ -124,11 +125,11 @@ async def signHandle(bot: Bot, event: GroupMessageEvent):
                 json.dump(sign_rank_data, f)
             # 反馈结果
             await sign.finish(f"""+-----------------------------+
-\t签到成功！
+\t{_lang.text('sign.success',[],event.get_user_id())}
  「VimCoin」：{oldCoinCount} -> {oldCoinCount + addCoin} (+{addCoin})
- 「经验」：{userData[userID]['exp']} -> {userData[userID]['exp'] + addExp} (+{addExp})
-    您已连续签到{signDay[userID]}天
-    您是今天第{len(sign_rank_data['rank'])}个签到的
+ 「{_lang.text('sign.exp',[],event.get_user_id())}」：{userData[userID]['exp']} -> {userData[userID]['exp'] + addExp} (+{addExp})
+    {_lang.text("sign.days",[signDay[userID]],event.get_user_id())}
+    {_lang.text("sign.count",[len(sign_rank_data['rank'])],event.get_user_id())}
 +-----------------------------+""")
 
     except FinishedException:

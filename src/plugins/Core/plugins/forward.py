@@ -1,6 +1,7 @@
 import json
 import traceback
 from . import _error
+from . import _lang
 from nonebot import on_message
 from nonebot.adapters.onebot.v11 import (Bot, GroupMessageEvent, Message,
                                          PrivateMessageEvent)
@@ -17,8 +18,8 @@ async def privateForwardHandle(
     try:
         await bot.send_group_msg(
             message=Message(
-                f"""「私聊信息转发」
-用户：{(await bot.get_stranger_info(user_id=event.get_user_id()))['nickname']} ({event.get_user_id()})
+                f"""{_lang.text("forward.private")}
+{_lang.text("forward._user")}{(await bot.get_stranger_info(user_id=event.get_user_id()))['nickname']} ({event.get_user_id()})
 {event.get_message()}"""),
             group_id=ctrlGroup
         )
@@ -36,9 +37,9 @@ async def groupForwardHandle(
         if event.get_session_id().split("_")[1] in forwardData:
             await bot.send_group_msg(
                 message=Message(
-                    f"""「群消息转发」
-群聊：{event.get_session_id().split('_')[1]}
-用户：{(await bot.get_stranger_info(user_id=event.get_user_id()))['nickname']} ({event.get_user_id()})
+                    f"""{_lang.text("forward.group")}
+{_lang.text("forward._group")}{event.get_session_id().split('_')[1]}
+{_lang.text("forward._user")}{(await bot.get_stranger_info(user_id=event.get_user_id()))['nickname']} ({event.get_user_id()})
 {event.get_message()}"""),
                 group_id=ctrlGroup
             )

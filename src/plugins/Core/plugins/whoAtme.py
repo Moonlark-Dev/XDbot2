@@ -9,6 +9,7 @@ import json
 import traceback
 import time
 import re
+from . import _lang
 
 whoAtme = on_command(
     "whoAtMe",
@@ -39,9 +40,9 @@ async def whoAtmd(
             {
                 "type": "node",
                 "data": {
-                    "name": "XDBOT2 温馨提示",
+                    "name": _lang.text("whoAtme.notice",[],event.get_user_id()),
                     "uin": (await bot.get_login_info())["user_id"],
-                    "content": "阁下, 为了方便阅读，请从下往上读呦～（越近排序越靠前）\nXDBOT2 最多为每个用户单个群聊保存98条消息"
+                    "content": _lang.text("whoAtme.title",[],event.get_user_id())
                 }
             }
         ]
@@ -71,7 +72,7 @@ async def whoAtmd(
             otherAtCount += len(otherGroup)
         # 结束处理
         if otherAtCount:
-            await whoAtme.send(f"还有{otherAtCount}位用户（在{otherGroupCount}个群中）@了你")
+            await whoAtme.send(_lang.text("whoAtme.other",[otherAtCount,otherGroupCount],event.get_user_id()))
         json.dump(data, open("data/whoAtme.data.json", "w", encoding="utf-8"))
         await whoAtme.finish()
 
@@ -81,7 +82,7 @@ async def whoAtmd(
         await bot.send_group_msg(
             message=traceback.format_exc(),
             group_id=ctrlGroup)
-        await whoAtme.finish("阁下失败了……")
+        await whoAtme.finish(_lang.text("whoAtme.error",[],event.get_user_id()))
 
 
 @whoAtmeWriter.handle()
