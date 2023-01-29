@@ -14,6 +14,16 @@ from nonebot.params import CommandArg
 jrrp = on_command("jrrp")
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 
+async def getQQID(msgs: GroupMessageEvent):
+    msg = json.loads(msgs.json())
+    atcount = msg.count("at")
+    if atcount == 0:
+        return 0
+    elif atcount == 1:
+        return msg["at"][0].data["qq"]
+    else:
+        return 0
+    
 
 async def getJrrp(qq: str):
     data = json.load(open("data/jrrp.users.json"))
