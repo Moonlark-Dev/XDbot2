@@ -125,12 +125,7 @@ async def ruleHandle(bot: Bot, event: MessageEvent):
         argument = event.get_plaintext()
         for r in rules:
             if not r.startswith("_") and r.endswith(".json"):
-                ruleData = json.load(
-                    open(
-                        os.path.join(
-                            "rules",
-                            r),
-                        encoding="utf-8"))
+                ruleData = json.load(open(os.path.join("rules", r), encoding="utf-8"))
                 logger.info(_lang.text("rule.run", [ruleData["规则名"]]))
                 await runRule(bot, event, argument, ruleData["执行"], rule)
 

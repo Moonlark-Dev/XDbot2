@@ -36,24 +36,19 @@ async def guess_handle(bot: Bot, event: MessageEvent, message: Message = Command
             try:
                 num = int(args[0])
             except ValueError:
-                reply += _lang.text("guess.error_command",
-                                    [], event.get_user_id())
+                reply += _lang.text("guess.error_command", [], event.get_user_id())
                 await guess.finish(reply, at_sender=True)
             if not status:
-                reply += _lang.text("guess.not_playing",
-                                    [], event.get_user_id())
+                reply += _lang.text("guess.not_playing", [], event.get_user_id())
                 await guess.finish(reply, at_sender=True)
             if num > 100 or num < 0:
-                reply += _lang.text("guess.error_number",
-                                    [], event.get_user_id())
+                reply += _lang.text("guess.error_number", [], event.get_user_id())
                 await guess.finish(reply, at_sender=True)
             if num > number:
-                reply += _lang.text("guess.too_large",
-                                    [args[0]], event.get_user_id())
+                reply += _lang.text("guess.too_large", [args[0]], event.get_user_id())
                 await guess.finish(reply, at_sender=True)
             if num < number:
-                reply += _lang.text("guess.too_small",
-                                    [args[0]], event.get_user_id())
+                reply += _lang.text("guess.too_small", [args[0]], event.get_user_id())
                 await guess.finish(reply, at_sender=True)
             if num == number:
                 reply += _lang.text(

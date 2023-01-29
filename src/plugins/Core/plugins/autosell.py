@@ -51,12 +51,7 @@ async def reloadSell():
                     pass
                 break
             length += 1
-        json.dump(
-            shopData,
-            open(
-                "data/shop.items.json",
-                "w",
-                encoding="utf-8"))
+        json.dump(shopData, open("data/shop.items.json", "w", encoding="utf-8"))
 
 
 # await asyncio.sleep(60)
@@ -76,9 +71,4 @@ async def checkReloaded():
             await _error.report(traceback.format_exc())
         else:
             latest["mday"] = time.localtime().tm_mday
-            json.dump(
-                latest,
-                open(
-                    "data/autosell.latest.json",
-                    "w",
-                    encoding="utf-8"))
+            json.dump(latest, open("data/autosell.latest.json", "w", encoding="utf-8"))

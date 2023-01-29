@@ -60,8 +60,7 @@ def removeItemsFromBag(
     json.dump(userData, open("data/etm.bag.json", "w", encoding="utf-8"))
 
 
-def removeItemsByID(userID: str, itemID: str, itemCount: int,
-                    removeType: str = "Use"):
+def removeItemsByID(userID: str, itemID: str, itemCount: int, removeType: str = "Use"):
     userData = json.load(open("data/etm.bag.json", encoding="utf-8"))
     if userID not in userData.keys():
         userData[userID] = []
@@ -72,21 +71,11 @@ def removeItemsByID(userID: str, itemID: str, itemCount: int,
         if item["id"] == itemID and item["data"][f"can{removeType}"]:
             if item["count"] > count:
                 userData[userID][length]["count"] -= count
-                json.dump(
-                    userData,
-                    open(
-                        "data/etm.bag.json",
-                        "w",
-                        encoding="utf-8"))
+                json.dump(userData, open("data/etm.bag.json", "w", encoding="utf-8"))
                 return True
             elif item["count"] == count:
                 userData[userID].pop(length)
-                json.dump(
-                    userData,
-                    open(
-                        "data/etm.bag.json",
-                        "w",
-                        encoding="utf-8"))
+                json.dump(userData, open("data/etm.bag.json", "w", encoding="utf-8"))
                 return True
             else:
                 count -= userData[userID].pop(length)["count"]
@@ -113,21 +102,11 @@ def removeItemsByID_allowBelowZero(
         if item["id"] == itemID and item["data"][f"can{removeType}"]:
             if item["count"] != count:
                 userData[userID][length]["count"] -= count
-                json.dump(
-                    userData,
-                    open(
-                        "data/etm.bag.json",
-                        "w",
-                        encoding="utf-8"))
+                json.dump(userData, open("data/etm.bag.json", "w", encoding="utf-8"))
                 return True
             elif item["count"] == count:
                 userData[userID].pop(length)
-                json.dump(
-                    userData,
-                    open(
-                        "data/etm.bag.json",
-                        "w",
-                        encoding="utf-8"))
+                json.dump(userData, open("data/etm.bag.json", "w", encoding="utf-8"))
                 return True
         length += 1
     addItem(userID, itemID, 0 - itemCount, itemData)

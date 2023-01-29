@@ -79,9 +79,7 @@ async def setu_handler(
             data = json.loads(req.read())
         if data["error"]:
             await setu.send(
-                _lang.text(
-                    "setu.api_error", [
-                        data["error"]], event.get_user_id())
+                _lang.text("setu.api_error", [data["error"]], event.get_user_id())
             )
 
         # 分析数据
@@ -105,9 +103,7 @@ async def setu_handler(
         msg += data["title"]
         msg += _lang.text("setu.msg1", [data["pid"]], event.get_user_id())
         msg += _lang.text("setu.msg2", [data["author"]], event.get_user_id())
-        msg += _lang.text("setu.msg3",
-                          [config["delete_sleep"]],
-                          event.get_user_id())
+        msg += _lang.text("setu.msg3", [config["delete_sleep"]], event.get_user_id())
         msg = Message(msg)
         # pid = copy.deepcopy(data["pid"])
 

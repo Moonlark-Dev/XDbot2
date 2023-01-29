@@ -49,7 +49,7 @@ async def linuxmanHandle(
                 nowLen += 99
                 await bot.call_api(
                     api="send_group_forward_msg",
-                    messages=msg[nowLen - 99: nowLen],
+                    messages=msg[nowLen - 99 : nowLen],
                     group_id=str(event.group_id),
                 )
             await linuxman.finish(

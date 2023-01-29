@@ -79,10 +79,7 @@ async def voteHandle(
             # 添加数据
             data[voteID] = voteData
             # 返回
-            answer = _lang.text(
-                "vote.create_success",
-                [voteID],
-                event.get_user_id())
+            answer = _lang.text("vote.create_success", [voteID], event.get_user_id())
         elif mode == "list" or mode == "列表" or mode == "":
             answer = _lang.text("vote.list_title", [], event.get_user_id())
             for key in list(data.keys()):
@@ -130,18 +127,13 @@ async def voteHandle(
             voteData = data[voteindex]
             if voteData["status"] == "进行中":
                 voteData["status"] = "已结束"
-                answer = _lang.text(
-                    "vote.end", [voteindex], event.get_user_id())
+                answer = _lang.text("vote.end", [voteindex], event.get_user_id())
             else:
-                answer = _lang.text(
-                    "vote.ended", [voteindex], event.get_user_id())
+                answer = _lang.text("vote.ended", [voteindex], event.get_user_id())
         elif mode == "delete" or mode == "删除":
             voteindex = argument[0].split(" ")[1]
             data.pop(voteindex)
-            answer = _lang.text(
-                "vote.delete",
-                [voteindex],
-                event.get_user_id())
+            answer = _lang.text("vote.delete", [voteindex], event.get_user_id())
         json.dump(data, open("data/vote.list.json", "w", encoding="utf-8"))
         await vote.finish(str(answer))
 
@@ -174,9 +166,7 @@ async def reloadVote():
                 and "msg" not in voteData.keys()
             ):
                 await bot.send_group_msg(
-                    message=_lang.text(
-                        "vote.time_1h_end", [
-                            voteData["title"]]),
+                    message=_lang.text("vote.time_1h_end", [voteData["title"]]),
                     group_id=voteData["group"],
                 )
                 data[key]["msg"] = True
