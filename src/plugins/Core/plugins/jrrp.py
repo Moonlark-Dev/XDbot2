@@ -144,10 +144,14 @@ async def jrrpHandle(
             text += f"\n{myRank}. {(await bot.get_stranger_info(user_id=qq))['nickname']}: {myJrrp}"
             await jrrp.finish(text)
         else:
+            qq = argument[0]
+            at_qq = getQQID(event)
+            if at_qq != 0:
+                qq = at_qq
             await jrrp.finish(
                 _lang.text(
                     "jrrp.other",
-                    [argument[0], await getJrrp(argument[0])],
+                    [qq, await getJrrp(qq)],
                     event.get_user_id(),
                 )
             )
