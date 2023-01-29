@@ -2,7 +2,7 @@
   "lang.empty": "请使用 {} 设置语言喵~",
   "lang.success": "成功设置语言为 {} 喵~",
   "lang.notfound": "语言 {} 不存在喵~",
-  "lang.list": "可用语言：\n{} 喵~",
+  "lang.list": "可用语言：\n{} \n喵~",
   "_error.failed": "处理失败了 喵~",
   "_error.github": "建议前往：{} 提交一个 Issue 反馈该问题喵~",
   "_userCtrl.get": "您获得了：",
