@@ -107,7 +107,7 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
                     # 开始广播
                     for group in groupList:
                         await bots[multiAccoutData[group]].send_group_msg(
-                            message=Message(f"【超级广播】\n{text}"), group_id=group
+                            message=Message(f"【超级广播】\n{su_notice_cache}"), group_id=group
                         )
                     su_notice_cache = ""
                 else:
