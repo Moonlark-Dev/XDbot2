@@ -16,11 +16,16 @@ def reload():
     _lang_files = os.listdir("src/plugins/Core/lang")
     _lang_dict = {}
     for _lang_file in _lang_files:
-        _lang_index = json.load(open("src/plugins/Core/lang" + os.sep + _lang_file))
+        _lang_index = json.load(
+            open(
+                "src/plugins/Core/lang" +
+                os.sep +
+                _lang_file))
         _lang_dict[_lang_file.replace(".json", "")] = _lang_index
 
 
-def text(key: str, _format: list = [], user: str = "default", params: dict = {}):
+def text(key: str, _format: list = [],
+         user: str = "default", params: dict = {}):
     try:
         lang = _lang_user[user]
     except KeyError:

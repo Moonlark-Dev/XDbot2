@@ -10,7 +10,13 @@ import traceback
 import json
 from . import _lang
 
-userInfo = on_command("user-info", aliases={"userinfo", "info", "爷的信息", "userInfo"})
+userInfo = on_command(
+    "user-info",
+    aliases={
+        "userinfo",
+        "info",
+        "爷的信息",
+        "userInfo"})
 ctrlGroup = json.load(open("data/ctrl.json"))["control"]
 
 
@@ -29,9 +35,11 @@ async def userInfoHandle(bot: Bot, event: MessageEvent):
             vip = _lang.text("userInfo.no_vip", [], event.get_user_id())
             endTime = "???"
         else:
-            vip = "VIP" + "+" * data["vip"]["level"] + f" ({data['vip']['level']})"
+            vip = "VIP" + "+" * data["vip"]["level"] + \
+                f" ({data['vip']['level']})"
             if data["vip"]["endTime"] is None:
-                endTime = _lang.text("userInfo.per_vip", [], event.get_user_id())
+                endTime = _lang.text(
+                    "userInfo.per_vip", [], event.get_user_id())
             else:
                 endTime = time.strftime(
                     "%Y-%m-%d", time.localtime(data["vip"]["endTime"])

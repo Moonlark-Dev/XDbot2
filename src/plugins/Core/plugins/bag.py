@@ -53,7 +53,8 @@ async def bagHandle(
                 _userCtrl.removeItemsFromBag(
                     userID=event.get_user_id(),
                     itemPos=int(argument[1]),
-                    count=bagData[event.get_user_id()][int(argument[1])]["count"],
+                    count=bagData[event.get_user_id()][int(
+                        argument[1])]["count"],
                     removeType="Drop",
                 )
             except _userCtrl.ItemCanNotRemove:
