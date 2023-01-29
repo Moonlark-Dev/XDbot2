@@ -10,7 +10,9 @@ ctrlGroup = json.load(open("data/ctrl.json"))["control"]
 
 
 async def report(err: str, matcher: any = None):
-    bot = get_bots()[json.load(open("data/su.multiaccoutdata.ro.json"))[ctrlGroup]]
+    bot = get_bots()[
+        json.load(
+            open("data/su.multiaccoutdata.ro.json"))[ctrlGroup]]
     await bot.send_group_msg(message=err, group_id=ctrlGroup)
     if matcher is not None:
         await matcher.send(_lang.text("_error.failed"), at_sender=True)
