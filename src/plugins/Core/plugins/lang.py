@@ -27,7 +27,7 @@ async def lang_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
         elif args == "list":
             ls = os.listdir("src/plugins/Core/lang")
             for i in range(len(ls)):
-                ls.replace(".json", "")
+                ls[i] = ls[i].replace(".json", "")
             await lang.finish(
                 _lang.text("lang.list", [" ".join(ls)], event.get_user_id())
             )
