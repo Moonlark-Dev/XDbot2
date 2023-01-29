@@ -24,7 +24,7 @@ blackListData = json.load(open("data/su.blackList.json"))
 multiAccoutData = {}
 bots = []
 driver = get_driver()
-
+su_notice_cache = ""
 
 def reloadBlackList():
     global blackListData
@@ -98,14 +98,29 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
                 Message(message.extract_plain_text()[argument[0].__len__() + 1 :])
             )
         elif argument[0] == "notice" or argument[0] == "超级广播" or argument[0] == "广播":
+            global su_notice_cache
             text = str(message)[argument[0].__len__() + 1 :]
-            groupList = list(multiAccoutData.keys())
-            bots = get_bots()
-            # 开始广播
-            for group in groupList:
-                await bots[multiAccoutData[group]].send_group_msg(
-                    message=Message(f"【超级广播】\n{text}"), group_id=group
-                )
+            if text == "submit":
+                if su_notice_cache != "":
+                    groupList = list(multiAccoutData.keys())
+                    bots = get_bots()
+                    # 开始广播
+                    for group in groupList:
+                        await bots[multiAccoutData[group]].send_group_msg(
+                            message=Message(f"【超级广播】\n{text}"), group_id=group
+                        )
+                    su_notice_cache = ""
+                else:
+                    await su.finish("请先使用 /su notice <context> 设定超级广播内容")
+            elif text == "drop":
+                su_notice_cache = ""
+                await su.finish("超级广播内容已清除")
+            elif text == "get":
+                await su.finish(su_notice_cache)
+            else:
+                su_notice_cache = text
+                await su.finish("超级广播内容已设定")
+
         elif argument[0] == "config" or argument[0] == "配置":
             if argument[1] == "get" or argument[1] == "获取":
                 await su.send(
