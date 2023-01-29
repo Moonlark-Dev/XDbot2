@@ -27,7 +27,10 @@ async def signrankHandle(
     args = args.extract_plain_text().split(" ")
     if not args[0] == "rank":
         return
-    rank = _lang.text("sign.rank_title", [time_to_next_day], event.get_user_id())
+    rank = _lang.text(
+        "sign.rank_title",
+        [time_to_next_day],
+        event.get_user_id())
     try:
         with open("data/sign.rank.json", "r") as f:
             sign_rank_data = json.load(f)
@@ -56,9 +59,18 @@ async def signHandle(bot: Bot, event: GroupMessageEvent):
     )
     try:
         if event.get_plaintext().__len__() <= 5:
-            latestSign = json.load(open("data/sign.latestTime.json", encoding="utf-8"))
-            signDay = json.load(open("data/sign.signDay.json", encoding="utf-8"))
-            userData = json.load(open("data/etm.userData.json", encoding="utf-8"))
+            latestSign = json.load(
+                open(
+                    "data/sign.latestTime.json",
+                    encoding="utf-8"))
+            signDay = json.load(
+                open(
+                    "data/sign.signDay.json",
+                    encoding="utf-8"))
+            userData = json.load(
+                open(
+                    "data/etm.userData.json",
+                    encoding="utf-8"))
             userID = event.get_user_id()
             # 检查数据是否存在
             if userID not in list(latestSign.keys()):
@@ -74,7 +86,10 @@ async def signHandle(bot: Bot, event: GroupMessageEvent):
             # 修改数据
             if latestSign[userID] == int(time.time() / 86400):
                 await sign.finish(
-                    _lang.text("sign.cannot", [time_to_next_day], event.get_user_id()),
+                    _lang.text(
+                        "sign.cannot",
+                        [time_to_next_day],
+                        event.get_user_id()),
                     at_sender=True,
                 )
             if latestSign[userID] - int(time.time() / 86400) == -1:
@@ -105,9 +120,15 @@ async def signHandle(bot: Bot, event: GroupMessageEvent):
             _userCtrl.addItem(userID, "0", addCoin, dict())
             _userCtrl.addExp(userID, addExp)
             # 保存数据
-            json.dump(signDay, open("data/sign.signDay.json", "w", encoding="utf-8"))
             json.dump(
-                latestSign, open("data/sign.latestTime.json", "w", encoding="utf-8")
+                signDay,
+                open(
+                    "data/sign.signDay.json",
+                    "w",
+                    encoding="utf-8"))
+            json.dump(
+                latestSign, open(
+                    "data/sign.latestTime.json", "w", encoding="utf-8")
             )
             try:
                 with open("data/sign.rank.json", "r") as f:

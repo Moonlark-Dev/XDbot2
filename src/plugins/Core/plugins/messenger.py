@@ -23,7 +23,10 @@ async def messengerHandle(
 ):
     try:
         # logger.debug(message)
-        data = json.load(open("data/messenger.messageList.json", encoding="utf-8"))
+        data = json.load(
+            open(
+                "data/messenger.messageList.json",
+                encoding="utf-8"))
         argument = str(message)
         # 处理信息
         if argument == "":
@@ -41,7 +44,10 @@ async def messengerHandle(
             data += [{"recv": qq, "text": text, "sender": sender}]
             json.dump(
                 data,
-                open("data/messenger.messageList.json", mode="w", encoding="utf-8"),
+                open(
+                    "data/messenger.messageList.json",
+                    mode="w",
+                    encoding="utf-8"),
             )
             await bot.send_group_msg(
                 message=(
@@ -64,7 +70,10 @@ async def messengerHandle(
 @msgSender.handle()
 async def msgSenderHandle(bot: Bot, event: GroupMessageEvent):
     try:
-        data = json.load(open("data/messenger.messageList.json", encoding="utf-8"))
+        data = json.load(
+            open(
+                "data/messenger.messageList.json",
+                encoding="utf-8"))
         length = 0
         for msg in data:
             if msg["recv"] == event.get_user_id():
@@ -82,7 +91,12 @@ async def msgSenderHandle(bot: Bot, event: GroupMessageEvent):
                 )
                 data.pop(length)
             length += 1
-        json.dump(data, open("data/messenger.messageList.json", "w", encoding="utf-8"))
+        json.dump(
+            data,
+            open(
+                "data/messenger.messageList.json",
+                "w",
+                encoding="utf-8"))
     except Exception:
         await bot.send_group_msg(message=traceback.format_exc(), group_id=ctrlGroup)
 

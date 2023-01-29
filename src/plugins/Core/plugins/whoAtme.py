@@ -13,7 +13,14 @@ from . import _lang
 
 whoAtme = on_command(
     "whoAtMe",
-    aliases={"whoAtme", "whoatmd", "wam", "谁At我", "又有没妈的At我了？", "哪个傻逼At我", "谁他妈At我"},
+    aliases={
+        "whoAtme",
+        "whoatmd",
+        "wam",
+        "谁At我",
+        "又有没妈的At我了？",
+        "哪个傻逼At我",
+        "谁他妈At我"},
 )
 whoAtmeWriter = on_message()
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
@@ -94,7 +101,12 @@ async def whoAtmdWriterHandle(bot: Bot, event: GroupMessageEvent):
                     data[qq][str(event.group_id)] = [msgID]
                 except Exception:
                     data[qq] = {str(event.group_id): [msgID]}
-            json.dump(data, open("data/whoAtme.data.json", "w", encoding="utf-8"))
+            json.dump(
+                data,
+                open(
+                    "data/whoAtme.data.json",
+                    "w",
+                    encoding="utf-8"))
 
     except Exception:
         await bot.send_group_msg(message=traceback.format_exc(), group_id=ctrlGroup)

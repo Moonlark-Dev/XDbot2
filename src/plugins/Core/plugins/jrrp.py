@@ -25,7 +25,8 @@ async def getQQID(msgs: GroupMessageEvent):
         return msg["at"][0].data["qq"]
     else:
         return 0
-""" 
+"""
+
 
 async def getJrrp(qq: str):
     data = json.load(open("data/jrrp.users.json"))

@@ -42,7 +42,8 @@ async def downloadImages(message: str):
     if cqStart == -1:
         return message
     else:
-        url = message[message.find("url=", cqStart) + 4 : message.find("]", cqStart)]
+        url = message[message.find("url=", cqStart) +
+                      4: message.find("]", cqStart)]
         imageID = str(time.time())
         async with httpx.AsyncClient() as client:
             response = await client.get(url)
@@ -50,7 +51,8 @@ async def downloadImages(message: str):
                 f.write(response.read())
         return await downloadImages(
             message.replace(
-                message[cqStart : message.find("]", cqStart)], f"[[Img:{imageID}]]"
+                message[cqStart: message.find(
+                    "]", cqStart)], f"[[Img:{imageID}]]"
             )
         )
 
@@ -60,7 +62,7 @@ def parseCave(text: str):
     if imageIDStart == -1:
         return text
     else:
-        imageID = text[imageIDStart + 6 : text.find("]]]", imageIDStart)]
+        imageID = text[imageIDStart + 6: text.find("]]]", imageIDStart)]
         imagePath = os.path.join(path, "data", "caveImages", f"{imageID}.png")
         imageCQ = f"[CQ:image,file=file://{imagePath}]"
         return parseCave(text.replace(f"[[Img:{imageID}]]]", str(imageCQ)))
@@ -92,7 +94,7 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
             )
 
         elif argument[0] in ["add", "-a", "添加"]:
-            text = await downloadImages(str(message)[argument[0].__len__() :].strip())
+            text = await downloadImages(str(message)[argument[0].__len__():].strip())
             data["data"][data["count"]] = {
                 "id": data["count"],
                 "text": text,
@@ -113,7 +115,9 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
             # 写入数据
             json.dump(data, open("data/cave.data.json", "w", encoding="utf-8"))
             await cave.finish(
-                _lang.text("cave.added", [data["count"] - 1], event.get_user_id())
+                _lang.text(
+                    "cave.added", [
+                        data["count"] - 1], event.get_user_id())
             )
 
         elif argument[0] in ["-g", "查询"]:
@@ -141,7 +145,8 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
             canReadCount = len(data["data"].keys())
             await cave.finish(
                 _lang.text(
-                    "cave.data_finish", [count, canReadCount], event.get_user_id()
+                    "cave.data_finish", [
+                        count, canReadCount], event.get_user_id()
                 )
             )
 

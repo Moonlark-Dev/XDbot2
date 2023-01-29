@@ -60,7 +60,9 @@ async def pie():
         data = json.load(open("data/sixcount.data.json"))
         start_time = time.strftime(
             "%Y-%m-%d %H:%M:%S",
-            time.localtime(json.load(open("data/sixcount.starttime.json"))["time"]),
+            time.localtime(
+                json.load(
+                    open("data/sixcount.starttime.json"))["time"]),
         )
 
         user_data = []
@@ -80,7 +82,8 @@ async def pie():
             Pie(init_opts=opts.InitOpts(bg_color="rgba(255,255,255,1)"))
             .add("", user_data)
             .set_global_opts(
-                title_opts=opts.TitleOpts(title="6", subtitle=start_time + " 至今")
+                title_opts=opts.TitleOpts(
+                    title="6", subtitle=start_time + " 至今")
             )
             .set_series_opts(label_opts=opts.LabelOpts(formatter="{b}: {c}"))
         ).render(path="data/sixcount.render.ro.html")
