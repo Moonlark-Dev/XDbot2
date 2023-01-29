@@ -39,7 +39,7 @@
   "guess.playing": "有正在进行中的游戏，请等待结束再发起",
   "guess.start": "游戏已开始，请使用 /guess <number> 参与，数字为0~100的整数",
   "guess.error_command": "无效命令",
-  "guess.error_number": "无效命令",
+  "guess.error_number": "无效数字",
   "guess.not_playing": "并没有进行中的游戏，阁下可以试试 /guess start ",
   "guess.too_large": "{} 太大了",
   "guess.too_small": "{} 太小了",
