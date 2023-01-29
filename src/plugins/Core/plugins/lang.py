@@ -29,7 +29,7 @@ async def lang_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
             for i in range(len(ls)):
                 ls[i] = ls[i].replace(".json", "")
             await lang.finish(
-                _lang.text("lang.list", [" ".join(ls)], event.get_user_id())
+                _lang.text("lang.list", ["\n".join(ls)], event.get_user_id())
             )
         else:
             await lang.finish(_lang.text("lang.notfound", [args], event.get_user_id()))
