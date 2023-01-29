@@ -1,5 +1,7 @@
 <!--Logo位-->
 
+**简体中文** | [English](https://github.com/This-is-XiaoDeng/XDbot2/blob/master/README_en.md)
+
 # IT Craft XDbot2
 
 简单、多功能QQBot，基于 Nonebot2+OnebotV11
