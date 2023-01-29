@@ -14,6 +14,8 @@ from nonebot.params import CommandArg
 jrrp = on_command("jrrp")
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 
+"""
+实验性的，炸了当场reset
 async def getQQID(msgs: GroupMessageEvent):
     msg = json.loads(msgs.json())
     atcount = msg.count("at")
@@ -23,7 +25,7 @@ async def getQQID(msgs: GroupMessageEvent):
         return msg["at"][0].data["qq"]
     else:
         return 0
-    
+""" 
 
 async def getJrrp(qq: str):
     data = json.load(open("data/jrrp.users.json"))
@@ -67,7 +69,7 @@ async def jrrpHandle(
     bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()
 ):
     try:
-        argument = message.extract_plain_text().split(" ")
+        argument = str(message).split(" ")
         if argument[0] == "":
             await jrrp.finish(
                 message=_lang.text(
@@ -88,7 +90,7 @@ async def jrrpHandle(
                 count = 10
             # 群成员列表
             userList = await bot.get_group_member_list(
-                group_id=event.get_session_id().split("_")[1]
+                group_id=int(event.get_session_id().split("_")[1])
             )
             # 计算排名
             jrrpRank = []
@@ -141,13 +143,11 @@ async def jrrpHandle(
             for user in jrrpRank[:count]:
                 text += f"{user['rank']}. {user['username']}: {user['jrrp']}\n"
             text += "-" * 20
-            text += f"\n{myRank}. {(await bot.get_stranger_info(user_id=qq))['nickname']}: {myJrrp}"
+            text += f"\n{myRank}. {(await bot.get_stranger_info(user_id=int(qq)))['nickname']}: {myJrrp}"
             await jrrp.finish(text)
         else:
             qq = argument[0]
-            at_qq = getQQID(event)
-            if at_qq != 0:
-                qq = at_qq
+            qq = qq.replace("[CQ:at,qq=", "").replace("]", "")
             await jrrp.finish(
                 _lang.text(
                     "jrrp.other",
