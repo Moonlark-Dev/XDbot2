@@ -53,7 +53,7 @@ async def setu_handler(
                 _lang.text(
                     "setu.cd",
                     [config["sleep"] - (time.time() - latest_send)],
-                    event.user_id(),
+                    event.get_user_id(),
                 )
             )
         await setu.send(_lang.text("setu.cd2", [], event.get_user_id()))
