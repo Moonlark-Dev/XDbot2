@@ -82,7 +82,7 @@
   "rule.run": "正在执行：{}",
   "rule.error": " {} 命令没找到（ᗜ ˰ ᗜ）",
   "setu.cd": "冷却中，剩余 {}s",
-  "setu.cd2": "冲nm冲",
+  "setu.cd2": "Loading ...",
   "setu.no_r18": "想要r18？v XD 10个 qq号",
   "setu.api_error": "API发生错误：{}",
   "setu.index_error": "哎呦，好像搞砸了呢……",

@@ -82,7 +82,7 @@
   "rule.run": "正在执行：{}",
   "rule.error": "阁下，小臣找不到 {} 命令的撒",
   "setu.cd": "冷却中，剩余 {}s",
-  "setu.cd2": "阁下忍住，别急啊！",
+  "setu.cd2": "少女祈祷中 ...",
   "setu.no_r18": "R18放不出来，怎么想我都放不出来的！",
   "setu.api_error": "API发生错误：{}",
   "setu.index_error": "哎呦，好像搞砸了呢……",
