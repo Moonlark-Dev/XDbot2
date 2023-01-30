@@ -15,7 +15,7 @@ whoAtme = on_command(
     "whoAtMe",
     aliases={
         "whoAtme",
-        "whoatmd",
+        "whoatme",
         "wam",
         "谁At我",
         "又有没妈的At我了？",
