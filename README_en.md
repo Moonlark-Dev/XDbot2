@@ -1,14 +1,6 @@
-<!--Logo-->
-
 [简体中文](https://github.com/This-is-XiaoDeng/XDbot2) | **English**
 
-![](https://socialify.git.ci/This-is-XiaoDeng/XDbot2/image?description=1&forks=1&issues=1&language=1&logo=https://avatars.githubusercontent.com/u/121707950&name=1&owner=1&pulls=1&stargazers=1&theme=Light)
-
-# IT Craft XDbot2
-
-Simple and multifunctional QQ Bot, based on Nonebot2 + OnebotV11
- 
------
+![](https://socialify.git.ci/This-is-XiaoDeng/XDbot2/image?description=1&forks=1&issues=1&language=1&logo=https://www.thisisxd.top/img/XDbot2.png&name=1&owner=1&pulls=1&stargazers=1&theme=Light)
 
 ## Introduction
 
