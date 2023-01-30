@@ -49,7 +49,7 @@
   "help.info": "说明：{}",
   "help.usage": "用法（{}）：\n{}",
   "help.unknown": "未知指令：{}",
-  "jrrp.notice": "免责声明：\n人品计算仅娱乐，与您无关\n本插件所造成的一切损失请自己承担喵~（真会有吗）！",
+  "jrrp.notice": "免责声明：\n人品计算仅娱乐，与您无关\n本插件所造成的一切损失请自己承担！",
   "jrrp.new_record": "个人最高记录已刷新",
   "jrrp.num.100": "{},运气太好了",
   "jrrp.num.99": "{}（血压飙升）",
@@ -145,7 +145,7 @@
   "vote.notfound": "投票不存在",
   "vote.time_end": "投票「{}」已结束\n使用 /vote view {} 查看结果",
   "vote.time_1h_end": "投票「{}」将在 1 小时后截止",
-  "whoAtme.notice": "XDBot2 温馨提升",
+  "whoAtme.notice": "XDBot2 温馨提示",
   "whoAtme.title": "请从下往上读（越近排序越靠前）\nXDBOT2 最多为每个用户单个群聊保存98条消息",
   "whoAtme.other": "还有{}位用户（在{}个群中）@了你",
   "whoAtme.error": "指令执行失败"
