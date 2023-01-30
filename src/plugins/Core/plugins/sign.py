@@ -2,6 +2,8 @@ import json
 import traceback
 import random
 import time
+from . import _error
+from . import _lang
 from nonebot import on_keyword, on_command
 from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, Message
 from nonebot.exception import FinishedException
@@ -11,16 +13,24 @@ from . import _userCtrl
 sign = on_keyword({"sign", "签到"})
 signrank = on_command("sign", aliases={"签到"})
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
+time_to_next_day_format = "%H:%M'%S''"  # 下次可签到时间输出格式，你要是看着不顺眼在这里改
 
 
 @signrank.handle()
-async def signrankHandle(bot: Bot,
-                         event: GroupMessageEvent,
-                         args: Message = CommandArg()):
+async def signrankHandle(
+    bot: Bot, event: GroupMessageEvent, args: Message = CommandArg()
+):
+    time_to_next_day = time.strftime(
+        time_to_next_day_format,
+        time.gmtime(int((int(time.time() / 86400) + 1) * 86400 - time.time())),
+    )
     args = args.extract_plain_text().split(" ")
     if not args[0] == "rank":
         return
-    rank = "今日签到排行榜：\n"
+    rank = _lang.text(
+        "sign.rank_title",
+        [time_to_next_day],
+        event.get_user_id())
     try:
         with open("data/sign.rank.json", "r") as f:
             sign_rank_data = json.load(f)
@@ -29,9 +39,9 @@ async def signrankHandle(bot: Bot,
     except BaseException:
         sign_rank_data = {"day": int(time.time() / 86400), "rank": []}
     if not sign_rank_data["rank"]:
-        await signrank.finish("今天还没有人签到！")
+        await signrank.finish(_lang.text("sign.rank_empty", [], event.get_user_id()))
     num = 0
-    me = "你今天还没有签到！"
+    me = _lang.text("sign.rank_me", [], event.get_user_id())
     for i in sign_rank_data["rank"]:
         num += 1
         rank += f"{str(num)}. {(await bot.get_stranger_info(user_id=i['qq']))['nickname']}（{i['time']}）\n"
@@ -43,14 +53,24 @@ async def signrankHandle(bot: Bot,
 
 @sign.handle()
 async def signHandle(bot: Bot, event: GroupMessageEvent):
+    time_to_next_day = time.strftime(
+        time_to_next_day_format,
+        time.gmtime(int((int(time.time() / 86400) + 1) * 86400 - time.time())),
+    )
     try:
         if event.get_plaintext().__len__() <= 5:
             latestSign = json.load(
-                open("data/sign.latestTime.json", encoding="utf-8"))
+                open(
+                    "data/sign.latestTime.json",
+                    encoding="utf-8"))
             signDay = json.load(
-                open("data/sign.signDay.json", encoding="utf-8"))
+                open(
+                    "data/sign.signDay.json",
+                    encoding="utf-8"))
             userData = json.load(
-                open("data/etm.userData.json", encoding="utf-8"))
+                open(
+                    "data/etm.userData.json",
+                    encoding="utf-8"))
             userID = event.get_user_id()
             # 检查数据是否存在
             if userID not in list(latestSign.keys()):
@@ -61,15 +81,17 @@ async def signHandle(bot: Bot, event: GroupMessageEvent):
                 userData[userID] = {
                     "level": 1,
                     "exp": 0,
-                    "vip": {
-                        "buyTime": None,
-                        "name": None,
-                        "level": None
-                    }
+                    "vip": {"endTime": None, "level": None},
                 }
             # 修改数据
             if latestSign[userID] == int(time.time() / 86400):
-                await sign.finish("您已经签到过了", at_sender=True)
+                await sign.finish(
+                    _lang.text(
+                        "sign.cannot",
+                        [time_to_next_day],
+                        event.get_user_id()),
+                    at_sender=True,
+                )
             if latestSign[userID] - int(time.time() / 86400) == -1:
                 signDay[userID] += 1
             else:
@@ -98,10 +120,16 @@ async def signHandle(bot: Bot, event: GroupMessageEvent):
             _userCtrl.addItem(userID, "0", addCoin, dict())
             _userCtrl.addExp(userID, addExp)
             # 保存数据
-            json.dump(signDay,
-                      open("data/sign.signDay.json", "w", encoding="utf-8"))
-            json.dump(latestSign,
-                      open("data/sign.latestTime.json", "w", encoding="utf-8"))
+            json.dump(
+                signDay,
+                open(
+                    "data/sign.signDay.json",
+                    "w",
+                    encoding="utf-8"))
+            json.dump(
+                latestSign, open(
+                    "data/sign.latestTime.json", "w", encoding="utf-8")
+            )
             try:
                 with open("data/sign.rank.json", "r") as f:
                     sign_rank_data = json.load(f)
@@ -109,29 +137,29 @@ async def signHandle(bot: Bot, event: GroupMessageEvent):
                         raise FileNotFoundError
             except BaseException:
                 sign_rank_data = {"day": int(time.time() / 86400), "rank": []}
-            sign_rank_data["rank"].append({
-                "qq":
-                int(event.get_user_id()),
-                "time":
-                time.strftime("%H:%M:%S", time.localtime())
-            })
+            sign_rank_data["rank"].append(
+                {
+                    "qq": int(event.get_user_id()),
+                    "time": time.strftime("%H:%M:%S", time.localtime()),
+                }
+            )
             with open("data/sign.rank.json", "w") as f:
                 json.dump(sign_rank_data, f)
             # 反馈结果
-            await sign.finish(f"""+-----------------------------+
-\t签到成功！
+            await sign.finish(
+                f"""+-----------------------------+
+\t{_lang.text('sign.success',[],event.get_user_id())}
  「VimCoin」：{oldCoinCount} -> {oldCoinCount + addCoin} (+{addCoin})
- 「经验」：{userData[userID]['exp']} -> {userData[userID]['exp'] + addExp} (+{addExp})
-    您已连续签到{signDay[userID]}天
-    您是今天第{len(sign_rank_data['rank'])}个签到的
-+-----------------------------+""")
+ 「{_lang.text('sign.exp',[],event.get_user_id())}」：{userData[userID]['exp']} -> {userData[userID]['exp'] + addExp} (+{addExp})
+    {_lang.text("sign.days",[signDay[userID]],event.get_user_id())}
+    {_lang.text("sign.count",[len(sign_rank_data['rank'])],event.get_user_id())}
++-----------------------------+"""
+            )
 
     except FinishedException:
         raise FinishedException()
     except Exception:
-        await bot.send_group_msg(message=traceback.format_exc(),
-                                 group_id=ctrlGroup)
-        await sign.finish("处理失败")
+        await _error.report(traceback.format_exc(), sign)
 
 
 # [HELPSTART]

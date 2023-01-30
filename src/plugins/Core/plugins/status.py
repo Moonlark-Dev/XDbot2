@@ -1,10 +1,11 @@
 from nonebot.adapters.onebot.v11.bot import Bot
-from nonebot.adapters.onebot.v11 import Message
+from nonebot.adapters.onebot.v11 import Message, MessageEvent
 from nonebot.params import CommandArg
 from nonebot import on_command
 from nonebot.exception import FinishedException
 import psutil
-import os
+from . import _error
+from . import _lang
 import traceback
 import json
 import getpass
@@ -62,9 +63,9 @@ def format_time(seconds):
 
 def uptime():
     try:
-        seconds = int(float(open("/proc/uptime").read().split(' ')[0]))
+        seconds = int(float(open("/proc/uptime").read().split(" ")[0]))
     except BaseException:
-        return 'Unknown'
+        return "Unknown"
     return format_time(seconds)
 
 
@@ -89,21 +90,24 @@ def pyver():
 
 
 @status.handle()
-async def statusHandle(bot: Bot, message: Message = CommandArg()):
+async def statusHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg()):
     try:
         initData = json.load(open("data/init.json", encoding="utf-8"))
         argument = message.extract_plain_text()
         if argument == "":
-            await status.finish(f"""系统状态：
-CPU：{cpu_percent()}% {cpu_freq()}
-内存：{mem_used()}GiB / {mem_total()}GiB ({mem_percent()}%)
-交换内存：{swap_used()}GiB / {swap_total()}GiB
-运行时间：{format_time(int(time.time() - initData['time']))}
-开机时间：{uptime()}
-Python版本：{pyver()}""")
+            await status.finish(
+                f"""{_lang.text("status.title",[],event.get_user_id())}
+{_lang.text("status.cpu",[],event.get_user_id())}{cpu_percent()}% {cpu_freq()}
+{_lang.text("status.ram",[],event.get_user_id())}{mem_used()}GiB / {mem_total()}GiB ({mem_percent()}%)
+{_lang.text("status.swap",[],event.get_user_id())}{swap_used()}GiB / {swap_total()}GiB
+{_lang.text("status.run",[],event.get_user_id())}{format_time(int(time.time() - initData['time']))}
+{_lang.text("status.boot",[],event.get_user_id())}{uptime()}
+{_lang.text("status.py",[],event.get_user_id())}{pyver()}"""
+            )
         elif argument == "cpu":
             await status.finish(
-                f"CPU：{cpu_percent()}%（{cpu_freq()} x{cpu_count()}）")
+                f"{_lang.text('status.cpu',[],event.get_user_id())}{cpu_percent()}%（{cpu_freq()} x{cpu_count()}）"
+            )
         elif argument in ["mem", "内存"]:
             bar = ""
             for _ in range(int(mem_percent() / 10)):
@@ -111,11 +115,11 @@ Python版本：{pyver()}""")
             for _ in range(10 - int(mem_percent() / 10)):
                 bar += "  "
             await status.finish(
-                f"内存：{mem_used()}GiB / {mem_total()}GiB ({mem_percent()}%) [{bar}]"
+                f"{_lang.text('status.ram',[],event.get_user_id())}{mem_used()}GiB / {mem_total()}GiB ({mem_percent()}%) [{bar}]"
             )
         elif argument in ["swap", "交换内存"]:
             await status.finish(
-                f"交换内存：{swap_used()}GiB / {swap_total()}GiB ({swap_percent()}%)"
+                f"{_lang.text('status.swap',[],event.get_user_id())}{swap_used()}GiB / {swap_total()}GiB ({swap_percent()}%)"
             )
         elif argument in ["system", "系统"]:
             await status.finish(osData())
@@ -123,14 +127,13 @@ Python版本：{pyver()}""")
             await status.finish(f"{user()}@{hostname()}")
         else:
             await status.finish(
-                f"无效参数：{argument}\n可用值：cpu、mem、swap、system、host（可留空）")
+                _lang.text("status.error", [argument], event.get_user_id())
+            )
 
     except FinishedException:
         raise FinishedException()
     except Exception:
-        await bot.send_group_msg(message=traceback.format_exc(),
-                                 group_id=ctrlGroup)
-        await status.finish("处理失败")
+        await _error.report(traceback.format_exc())
 
 
 # [HELPSTART] Version: 2

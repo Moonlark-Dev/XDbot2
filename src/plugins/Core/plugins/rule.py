@@ -2,7 +2,8 @@ import json
 import os
 import os.path
 import traceback
-
+from . import _error
+from . import _lang
 from nonebot import on_command, on_message
 from nonebot.adapters.onebot.v11 import Bot, Message
 from nonebot.adapters.onebot.v11.event import MessageEvent
@@ -17,12 +18,7 @@ local = {}
 func = on_command("function", aliases={"func", "调用"})
 
 
-async def runRule(
-        bot: Bot,
-        event: MessageEvent,
-        argument: str,
-        code: any,
-        handle: any):
+async def runRule(bot: Bot, event: MessageEvent, argument: str, code: any, handle: any):
     global local, commands
     if isinstance(code, list):
         for c in code:
@@ -34,13 +30,18 @@ async def runRule(
                 elif "否则" in c.keys():
                     await runRule(bot, event, argument, c["否则"], handle)
             elif c["调用"] == "发送消息":
-                await handle.send(Message(await runRule(bot, event, argument, c["消息"], handle)))
+                await handle.send(
+                    Message(await runRule(bot, event, argument, c["消息"], handle))
+                )
             elif c["调用"] == "执行":
                 exec(c["代码"])  # , __locals=locals())
             elif c["调用"] == "发送控制中心消息":
                 await bot.send_group_msg(
-                    message=Message(await runRule(bot, event, argument, c["消息"], handle)),
-                    group_id=ctrlGroup)
+                    message=Message(
+                        await runRule(bot, event, argument, c["消息"], handle)
+                    ),
+                    group_id=ctrlGroup,
+                )
             elif c["调用"] == "取变量":
                 return local[c["变量名"]]
             elif c["调用"] == "设置变量":
@@ -114,9 +115,7 @@ def runRuleSync(code: any):
 
 
 @rule.handle()
-async def ruleHandle(
-        bot: Bot,
-        event: MessageEvent):
+async def ruleHandle(bot: Bot, event: MessageEvent):
     try:
         # logger.info("nmslnmslnmsl")
         # 将rules路径修改为`rules/*`同时忽略`_`开头和非`.json`结尾的文件
@@ -127,24 +126,22 @@ async def ruleHandle(
         for r in rules:
             if not r.startswith("_") and r.endswith(".json"):
                 ruleData = json.load(
-                    open(os.path.join("rules", r), encoding="utf-8"))
-                logger.info(f"正在执行：{ruleData['规则名']}")
-                await runRule(bot, event, argument, ruleData['执行'], rule)
+                    open(
+                        os.path.join(
+                            "rules",
+                            r),
+                        encoding="utf-8"))
+                logger.info(_lang.text("rule.run", [ruleData["规则名"]]))
+                await runRule(bot, event, argument, ruleData["执行"], rule)
 
         # except FinishedException:
         # raise FinishedException()
     except Exception:
-        await bot.send_group_msg(
-            message=traceback.format_exc(),
-            group_id=ctrlGroup
-        )
+        await _error.report(traceback.format_exc())
 
 
 @func.handle()
-async def funcHandle(
-        bot: Bot,
-        event: MessageEvent,
-        message: Message = CommandArg()):
+async def funcHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg()):
     try:
         argument = message.extract_plain_text()
         command = argument.split(" ")[0]
@@ -153,16 +150,12 @@ async def funcHandle(
         if command in commands.keys():
             await runRule(bot, event, argv, commands[command], func)
         else:
-            await func.finish(f"找不到指令：{command}")
+            await func.finish(_lang.text("rule.error", [command], event.get_user_id()))
 
     except FinishedException:
         raise FinishedException()
     except Exception:
-        await bot.send_group_msg(
-            message=traceback.format_exc(),
-            group_id=ctrlGroup
-        )
-        await func.finish("处理失败")
+        await _error.report(traceback.format_exc(), func)
 
 
 # 预处理
@@ -171,8 +164,7 @@ logger.info(rules)
 imported = []
 for r in rules:
     if not r.startswith("_") and r.endswith(".json"):
-        ruleData = json.load(
-            open(os.path.join("rules", r), encoding="utf-8"))
+        ruleData = json.load(open(os.path.join("rules", r), encoding="utf-8"))
         # 导入模块
         if "导入" in ruleData.keys():
             for m in ruleData["导入"]:

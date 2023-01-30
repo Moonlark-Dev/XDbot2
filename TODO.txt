@@ -20,7 +20,3 @@
 
 /hijack（权限：ALL，{抢劫}）
 	/hijack {QQ|@QQ}
-
-/whoAtme（权限：ALL，{谁tm@我}）
-  /whoAtme <消息ID>
-

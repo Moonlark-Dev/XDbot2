@@ -2,7 +2,8 @@ import json
 import math
 import os.path
 import traceback
-
+from . import _error
+from . import _lang
 from nonebot import on_command, on_message
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.adapters.onebot.v11.bot import Bot
@@ -17,10 +18,7 @@ globalConfig = json.load(open("data/init.json", encoding="utf-8"))["config"]
 
 
 @ct.handle()
-async def ctHandle(
-        bot: Bot,
-        event: GroupMessageEvent,
-        message: Message = CommandArg()):
+async def ctHandle(bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()):
     try:
         argument = message.extract_plain_text().split(" ")
         groupID = event.get_session_id().split("_")[1]
@@ -32,30 +30,19 @@ async def ctHandle(
                 length = 0
                 for user in users:
                     if data[key] >= user["count"]:
-                        users.insert(
-                            length,
-                            {
-                                "user": key,
-                                "count": data[key]
-                            }
-                        )
+                        users.insert(length, {"user": key, "count": data[key]})
                         inserted = True
                         break
                     length += 1
                 # 如果用户是目前倒数
                 if not inserted:
-                    users += [
-                        {
-                            "user": key,
-                            "count": data[key]
-                        }
-                    ]
+                    users += [{"user": key, "count": data[key]}]
             # 生成排名
             nowRank = 0
             length = 0
             myRank = math.inf
             myQQ = event.get_user_id()
-            myCount = "暂无数据"
+            myCount = _lang.text("ct.nodata", [], event.get_user_id())
             nowCount = math.inf
             temp0 = 1
             for user in users:
@@ -67,13 +54,13 @@ async def ctHandle(
                     temp0 += 1
                 users[length]["rank"] = nowRank
                 # 判断是不是自己
-                if user['user'] == myQQ:
+                if user["user"] == myQQ:
                     myRank = nowRank
                     myCount = nowCount
                 # 增加循环次数
                 length += 1
             # 合成文本
-            text = "发言排名 —— 全局\n"
+            text = _lang.text("ct.rank", ["全局"], event.get_user_id())
             for user in users[:15]:
                 text += f"{user['rank']}. {(await bot.get_stranger_info(user_id=user['user']))['nickname']}: {user['count']}\n"
             text += "-" * 25
@@ -88,30 +75,19 @@ async def ctHandle(
                 length = 0
                 for user in users:
                     if data[key] >= user["count"]:
-                        users.insert(
-                            length,
-                            {
-                                "user": key,
-                                "count": data[key]
-                            }
-                        )
+                        users.insert(length, {"user": key, "count": data[key]})
                         inserted = True
                         break
                     length += 1
                 # 如果用户是目前倒数
                 if not inserted:
-                    users += [
-                        {
-                            "user": key,
-                            "count": data[key]
-                        }
-                    ]
+                    users += [{"user": key, "count": data[key]}]
             # 生成排名
             nowRank = 0
             length = 0
             myRank = math.inf
             myQQ = event.get_user_id()
-            myCount = "暂无数据"
+            myCount = _lang.text("ct.nodata", [], event.get_user_id())
             nowCount = math.inf
             temp0 = 1
             for user in users:
@@ -123,13 +99,13 @@ async def ctHandle(
                     temp0 += 1
                 users[length]["rank"] = nowRank
                 # 判断是不是自己
-                if user['user'] == myQQ:
+                if user["user"] == myQQ:
                     myRank = nowRank
                     myCount = nowCount
                 # 增加循环次数
                 length += 1
             # 合成文本
-            text = f"发言排名 —— {groupID}\n"
+            text = _lang.text("ct.rank", [groupID], event.get_user_id())
             for user in users[:15]:
                 text += f"{user['rank']}. {(await bot.get_stranger_info(user_id=user['user']))['nickname']}: {user['count']}\n"
             text += "-" * 25
@@ -137,21 +113,16 @@ async def ctHandle(
             # 反馈结果
             await ct.finish(text)
         else:
-            await ct.finish("""Usage：ct [group]""")
+            await ct.finish(_lang.text("ct.usage", [], event.get_user_id()))
 
     except FinishedException:
         raise FinishedException()
     except Exception:
-        await bot.send_group_msg(
-            message=traceback.format_exc(),
-            group_id=ctrlGroup)
-        await ct.finish("处理失败")
+        await _error.report(traceback.format_exc())
 
 
 @ctRecorder.handle()
-async def ctRecorderHandle(
-        bot: Bot,
-        event: GroupMessageEvent):
+async def ctRecorderHandle(bot: Bot, event: GroupMessageEvent):
     try:
         # 忽略命令
         for start in globalConfig["command_start"]:
@@ -161,6 +132,8 @@ async def ctRecorderHandle(
         globalData = json.load(open("data/ct.globalData.json"))
         group = event.get_session_id().split("_")[1]
         userID = event.get_user_id()
+        if userID == "1226383994":
+            userID = "2558938020"
         if os.path.isfile(f"data/ct.{group}.json"):
             groupData = json.load(open(f"data/ct.{group}.json"))
         else:
@@ -179,10 +152,8 @@ async def ctRecorderHandle(
         json.dump(groupData, open(f"data/ct.{group}.json", "w"))
 
     except Exception:
-        await bot.send_group_msg(
-            message=traceback.format_exc(),
-            group_id=ctrlGroup
-        )
+        await _error.report(traceback.format_exc())
+
 
 # [HELPSTART]
 # !Usage 1 ct

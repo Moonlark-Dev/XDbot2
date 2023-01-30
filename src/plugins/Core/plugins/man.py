@@ -1,9 +1,10 @@
 import json
 import re
 import traceback
-
+from . import _error
+from . import _lang
 from nonebot import on_command
-from nonebot.adapters.onebot.v11 import Bot, Message
+from nonebot.adapters.onebot.v11 import Bot, Message, MessageEvent
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
 
@@ -12,9 +13,7 @@ ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 
 
 @man.handle()
-async def manHandle(
-        bot: Bot,
-        message: Message = CommandArg()):
+async def manHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg()):
     try:
         argument = message.extract_plain_text()
         if argument == "":
@@ -29,9 +28,9 @@ async def manHandle(
             # 发送
             await man.finish(
                 text.replace("\n", " \n")
-                    .replace("#", "  ")
-                    .replace("`", " ")
-                    .replace(">", "  ")
+                .replace("#", "  ")
+                .replace("`", " ")
+                .replace(">", "  ")
             )
         else:
             command = re.search(r"[A-Za-z]+", argument)
@@ -51,20 +50,16 @@ async def manHandle(
                     break
             # 发送
             await man.finish(
-                text.replace("\n", " \n")
-                    .replace("#", " ")
-                    .replace("`", " ")
+                text.replace("\n", " \n").replace("#", " ").replace("`", " ")
             )
 
     except FinishedException:
         raise FinishedException()
     except FileNotFoundError:
-        await man.finish("对应手册页不存在")
+        await man.finish(_lang.text("man.error", [], event.get_user_id()))
     except Exception:
-        await bot.send_group_msg(
-            message=traceback.format_exc(),
-            group_id=ctrlGroup)
-        await man.finish("处理失败")
+        await _error.report(traceback.format_exc(), man)
+
 
 # [HELPSTART] Version: 2
 # Command: man

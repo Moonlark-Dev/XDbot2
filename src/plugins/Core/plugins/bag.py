@@ -1,6 +1,7 @@
 import json
 import traceback
-
+from . import _error
+from . import _lang
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, Message
 from nonebot.exception import FinishedException
@@ -13,31 +14,40 @@ ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 
 
 @bag.handle()
-async def bagHandle(bot: Bot,
-                    event: GroupMessageEvent,
-                    message: Message = CommandArg()):
+async def bagHandle(
+    bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()
+):
     try:
         argument = message.extract_plain_text().split(" ")
         bagData = json.load(open("data/etm.bag.json", encoding="utf-8"))
         itemData = json.load(open("data/etm.items.json", encoding="utf-8"))
         if argument[0] == "":
-            text = f"「{(await bot.get_stranger_info(user_id=event.get_user_id()))['nickname']}的背包」\n"
+            text = _lang.text(
+                "bag.get",
+                [
+                    (await bot.get_stranger_info(user_id=event.get_user_id()))[
+                        "nickname"
+                    ]
+                ],
+                event.get_user_id(),
+            )
             length = 0
             for item in bagData[event.get_user_id()]:
-                name = item["data"]["displayName"] or itemData[
-                    item["id"]]["name"]
+                name = item["data"]["displayName"] or itemData[item["id"]]["name"]
                 text += f" {length}. {name} x{item['count']}\n"
                 length += 1
             await bag.finish(text)
-        elif argument[0] == "view" or argument[0] == "查看":
+        elif argument[0] == "view" or argument[0] == "看看":
             item = bagData[event.get_user_id()][int(argument[1])]
             name = item["data"]["displayName"] or itemData[item["id"]]["name"]
             info = item["data"]["information"] or itemData[item["id"]]["info"]
-            await bag.finish(f"""「{name}」
-当前拥有：{item['count']}
-{info}
-\t
-{item['data']}""")
+            await bag.finish(
+                _lang.text(
+                    "bag.item",
+                    [name, item["count"], info, item["data"]],
+                    event.get_user_id(),
+                )
+            )
         elif argument[0] == "drop" or argument[0] == "丢弃":
             try:
                 _userCtrl.removeItemsFromBag(
@@ -45,21 +55,20 @@ async def bagHandle(bot: Bot,
                     itemPos=int(argument[1]),
                     count=bagData[event.get_user_id()][int(
                         argument[1])]["count"],
-                    removeType="Drop")
+                    removeType="Drop",
+                )
             except _userCtrl.ItemCanNotRemove:
-                await bag.finish("物品被标记为：无法丢弃")
-            await bag.finish("完成")
+                await bag.finish(_lang.text("bag.cannot_drop", [], event.get_user_id()))
+            await bag.finish(_lang.text("bag.finish", [], event.get_user_id()))
 
     except FinishedException:
         raise FinishedException()
     except KeyError:
-        await bag.finish("错误：背包为空")
+        await bag.finish(_lang.text("bag.empty", [], event.get_user_id()))
     except IndexError:
-        await bag.finish("错误：找不到物品")
+        await bag.finish(_lang.text("bag.notfound", [], event.get_user_id()))
     except Exception:
-        await bot.send_group_msg(message=traceback.format_exc(),
-                                 group_id=ctrlGroup)
-        await bag.finish("处理失败")
+        await _error.report(traceback.format_exc(), bag)
 
 
 # [HELPSTART] Version: 2

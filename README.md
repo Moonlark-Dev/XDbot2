@@ -1,5 +1,9 @@
 <!--Logo位-->
 
+**简体中文** | [English](https://github.com/This-is-XiaoDeng/XDbot2/blob/master/README_en.md)
+
+![](https://socialify.git.ci/This-is-XiaoDeng/XDbot2/image?description=1&forks=1&issues=1&language=1&logo=https://avatars.githubusercontent.com/u/121707950&name=1&owner=1&pulls=1&stargazers=1&theme=Light)
+
 # IT Craft XDbot2
 
 简单、多功能QQBot，基于 Nonebot2+OnebotV11

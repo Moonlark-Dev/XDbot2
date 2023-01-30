@@ -1,11 +1,12 @@
 from pydantic import BaseSettings
 import json
+import time
 
 
 class Config(BaseSettings):
     # Your Config Here
     # 版本常量
-    VERSION = "v2.1.28-beta"
+    VERSION = "2.3.51"
     # 控制中心
     CONTROL_GROUP = "598443695"
 
@@ -16,6 +17,12 @@ class Config(BaseSettings):
     ]
     # 数据文件命名规则：子插件.数据名.json
     FILES = [
+        {
+            "path": "data/setu.allow.json",
+            "text": json.dumps({
+                "r18": False
+            })
+        },
         {
             "path": "data/jrrp.users.json",
             "text": "{}"
@@ -153,6 +160,28 @@ class Config(BaseSettings):
         },
         {
             "path": "data/whoAtme.data.json",
+            "text": "{}"
+        },
+        {
+            "path": "data/sixcount.data.json",
+            "text": "{}"
+        },
+        {
+            "path": "data/sixcount.starttime.json",
+            "text": json.dumps({
+                "time": time.time()
+            })
+        },
+        {
+            "path": "data/setu.config.json",
+            "text": json.dumps({
+                "sleep": 45,
+                "delete_sleep": 25,
+                "proxies": "http://127.0.0.1:7890"
+            })
+        },
+        {
+            "path": "data/setu.count.json",
             "text": "{}"
         }
         # ,

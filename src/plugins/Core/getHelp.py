@@ -1,51 +1,49 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# import re
-# import json
 import os.path
-# from nonebot.log import logger
 
 
-def getPluginHelp(pluginName: str, module: any):
+def get_plugin_help(plugin_name: str, module: any) -> dict:
     """
     查找插件帮助
     优先级：注释>commandHelp变量
     """
-    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "plugins", f"{pluginName}.py"), encoding="utf-8") as f:
-        pluginFile = f.read()
-    commandHelp = dict()
+    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "plugins", f"{plugin_name}.py"), encoding="utf-8") as f:
+        plugin_file = f.read()
+    command_help = dict()
     # 正则表达式出问题了所以用find
-    start = pluginFile.find("# [HELPSTART]")
+    start = plugin_file.find("# [HELPSTART]")
     # 注释写法
     if start != -1:
         # 采集数据
-        lines = pluginFile[start:pluginFile.find("# [HELPEND]", start)]
+        lines = plugin_file[start:plugin_file.find("# [HELPEND]", start)]
         lines = lines.replace("# ", "").replace("#", "").split("\n")
         if lines[0].find("Version: 2") != -1:
-            helpVersion = 2
+            help_version = 2
         else:
-            helpVersion = 1
+            help_version = 1
         # 版本2
-        if helpVersion == 2:
-            nowCommand = ""
+        if help_version == 2:
+            now_command = ""
             for line in lines[1:]:
-                l = line.split(":")
+                line_splited = line.split(":")
                 # 统一Strip
-                for i in range(len(l)):
-                    l[i] = l[i].strip()
+                for i in range(len(line_splited)):
+                    line_splited[i] = line_splited[i].strip()
                 # 解析
-                if l[0] in ["Command", "命令"]:
-                    nowCommand = l[1]
-                    commandHelp[nowCommand] = {"usage": []}
-                elif l[0] in ["Usage", "用法"]:
-                    commandHelp[nowCommand]["usage"].append(
-                        l[1].replace(r"\n", "\n"))
-                elif l[0] in ["Info", "描述"]:
-                    commandHelp[nowCommand]["info"] = l[1].replace(r"\n", "\n")
-                elif l[0] in ["Msg", "概述"]:
-                    commandHelp[nowCommand]["msg"] = l[1]
-        elif helpVersion == 1:
+                if line_splited[0] in ["Command", "命令"]:
+                    now_command = line_splited[1]
+                    command_help[now_command] = {"usage": []}
+                elif line_splited[0] in ["Usage", "用法"]:
+                    command_help[now_command]["usage"].append(
+                        line_splited[1].replace(r"\n", "\n"))
+                elif line_splited[0] in ["Info", "描述"]:
+                    command_help[now_command]["info"] = line_splited[1].replace(
+                        r"\n", "\n")
+                elif line_splited[0] in ["Msg", "概述"]:
+                    command_help[now_command]["msg"] = line_splited[1]
+        elif help_version == 1:
             commands = dict()
             # print(lines[1:])
             for line in lines[1:]:
@@ -64,24 +62,24 @@ def getPluginHelp(pluginName: str, module: any):
             for key in list(commands.keys()):
                 command = commands[key]
                 commandName = command["usage"][0].split(" ")[0]
-                commandHelp[commandName] = command
+                command_help[commandName] = command
                 if "usage" in command.keys():
-                    commandHelp[commandName]["usage"] = command["usage"]
+                    command_help[commandName]["usage"] = command["usage"]
                 if "info" in command.keys():
-                    commandHelp[commandName]["info"] = command["info"]
+                    command_help[commandName]["info"] = command["info"]
     else:
-        commandHelp = module.commandHelp.copy()
+        command_help = module.commandHelp.copy()
     # 处理CommandHelp
-    for key in list(commandHelp.keys()):
-        if "name" not in commandHelp[key].keys():
-            commandHelp[key]["name"] = str(key)
-        if "usage" not in commandHelp[key].keys():
-            commandHelp[key]["usage"] = [key]
-        if "info" not in commandHelp[key].keys():
-            commandHelp[key]["info"] = "无指令描述"
-        if "msg" not in commandHelp[key].keys():
-            commandHelp[key]["msg"] = commandHelp[key]["info"]
-        if "from" not in commandHelp[key].keys():
-            commandHelp[key]["from"] = pluginName
+    for key in list(command_help.keys()):
+        if "name" not in command_help[key].keys():
+            command_help[key]["name"] = str(key)
+        if "usage" not in command_help[key].keys():
+            command_help[key]["usage"] = [key]
+        if "info" not in command_help[key].keys():
+            command_help[key]["info"] = "无指令描述"
+        if "msg" not in command_help[key].keys():
+            command_help[key]["msg"] = command_help[key]["info"]
+        if "from" not in command_help[key].keys():
+            command_help[key]["from"] = plugin_name
     # 返回
-    return commandHelp
+    return command_help
