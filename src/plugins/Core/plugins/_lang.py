@@ -29,14 +29,14 @@ def text(key: str, _format: list = [],
     try:
         lang = _lang_user[user]
     except KeyError:
-        lang = "zh_fzz"
+        lang = "zh_hans"
     if lang == "debug":
         return f"<{key}>"
     try:
         value = _lang_dict[lang][key]
     except BaseException:
         try:
-            value = _lang_dict["zh_fzz"][key]
+            value = _lang_dict["zh_hans"][key]
         except BaseException:
             return f"<本地化键缺失 {lang}.json {key}>"
     for i in _format:
