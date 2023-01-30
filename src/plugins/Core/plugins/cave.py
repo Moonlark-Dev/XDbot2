@@ -120,7 +120,7 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                         data["count"] - 1], event.get_user_id())
             )
 
-        elif argument[0] in ["-g", "查询"]:
+        elif argument[0] in ["-g", "查询", "view"]:
             caveData = data["data"][argument[1]]
             text = parseCave(caveData["text"])
             # senderData = await bot.get_stranger_info(user_id=caveData["sender"]
@@ -140,7 +140,7 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                 )
             )
         elif argument[0] in ["-d", "data", "数据"]:
-            await cave.send(_lang.text("cave.data", [], event.get_user_id()))
+            await cave.send(_lang.text("cave.data_collecting", [], event.get_user_id()))
             count = data["count"]
             canReadCount = len(data["data"].keys())
             await cave.finish(
