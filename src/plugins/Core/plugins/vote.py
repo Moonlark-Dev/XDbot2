@@ -5,7 +5,7 @@ import json
 import time
 import traceback
 import re
-
+from . import _error
 from . import _lang
 from nonebot_plugin_apscheduler import scheduler
 from nonebot import on_command, require, get_bot
@@ -150,15 +150,15 @@ async def voteHandle(
     except IndexError:
         await vote.finish(_lang.text("vote.notfound", [], event.get_user_id()))
     except Exception:
-        await bot.send_group_msg(message=traceback.format_exc(), group_id=ctrlGroup)
+        await _error.report(traceback.format_exc(), vote)
 
 
-@scheduler.scheduled_job("cron", minute="*/1", id="reloadVote")
 async def reloadVote():
     data = json.load(open("data/vote.list.json", encoding="utf-8"))
+    accouts = json.load(open("data/su.multiaccoutdata.ro.json"))
     for key in list(data.keys()):
         voteData = data[key]
-        bot = get_bot(str(voteData["bot"]))
+        bot = get_bot(accouts[str(voteData["group"])])
         if voteData["status"] == "进行中":
             if time.time() >= voteData["endTime"]:
                 await bot.send_group_msg(
@@ -182,6 +182,13 @@ async def reloadVote():
                 data[key]["msg"] = True
     json.dump(data, open("data/vote.list.json", "w", encoding="utf-8"))
 
+
+@scheduler.scheduled_job("cron", minute="*/1", id="reloadVote")
+async def reload_task():
+    try:
+        await reloadVote()
+    except Exception:
+        await _error.report(traceback.format_exc())
 
 # [HELPSTART]
 # !Usage 1 vote
