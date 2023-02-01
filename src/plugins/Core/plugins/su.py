@@ -1,4 +1,5 @@
 from nonebot.adapters.onebot.v11 import MessageEvent, Message, GroupMessageEvent
+from nonebot.adapters.onebot.v11.event import GroupRequestEvent
 from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot import on_command, get_bots, on_type, get_driver
 from nonebot.exception import FinishedException, IgnoredException
@@ -22,6 +23,7 @@ su = on_command("su", aliases={"超管", "superuser"}, permission=SUPERUSER)
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 blackListData = json.load(open("data/su.blackList.json"))
 multiAccoutData = {}
+group_request = on_type(GroupRequestEvent)
 bots = []
 driver = get_driver()
 su_notice_cache = ""
@@ -479,6 +481,25 @@ async def multiAccoutManager(bot: Bot, event: GroupMessageEvent):
         raise IgnoredException(e)
     except Exception:
         await bot.send_group_msg(message=traceback.format_exc(), group_id=ctrlGroup)
+
+
+@group_request.handle()
+async def group_request_handle(
+        bot: Bot,
+        event: GroupRequestEvent):
+    try:
+        if event.sub_type == "invite":
+            await bot.send_group_msg(
+                message=(
+                    "「被邀请加群」"
+                    f"群号：{event.group_id}"
+                    f"用户：{event.user_id}"),
+                group_id=ctrlGroup)
+            await event.approve(bot)
+
+
+    except BaseException:
+        await _error.report(traceback.format_exc())
 
 
 # [HELPSTART] Version: 2
