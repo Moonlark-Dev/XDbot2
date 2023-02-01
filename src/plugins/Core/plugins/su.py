@@ -361,7 +361,7 @@ async def suHandle(bot: Bot, message: Message = CommandArg()):
                 os.remove(f"rules/{argument[2]}.json")
         elif argument[0] in ["update", "检查更新"]:
             await su.send("正在运行更新程序，请稍候 ...")
-            os.system("python update.py")
+            os.system("python3 update.py")
             await su.send("运行完成！")
         elif argument[0] in ["img", "图库"]:
             data = json.load(open("data/reply.images.json", encoding="utf-8"))
