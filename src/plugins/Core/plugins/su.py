@@ -491,12 +491,12 @@ async def group_request_handle(
         if event.sub_type == "invite":
             await bot.send_group_msg(
                 message=(
-                    "「被邀请加群」"
-                    f"群号：{event.group_id}"
+                    "「被邀请加群」\n"
+                    f"群号：{event.group_id}\n"
                     f"用户：{event.user_id}"),
                 group_id=ctrlGroup)
             await event.approve(bot)
-
+            await reloadMuiltData()
 
     except BaseException:
         await _error.report(traceback.format_exc())
