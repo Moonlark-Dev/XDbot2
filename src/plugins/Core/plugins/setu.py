@@ -56,6 +56,7 @@ async def setu_handler(
                     event.get_user_id(),
                 )
             )
+        latest_send = time.time()
         await setu.send(_lang.text("setu.cd2", [], event.get_user_id()))
 
         # 收集信息
@@ -135,7 +136,6 @@ async def setu_handler(
 
         # 启动删除任务
         asyncio.create_task(delete_msg(bot, message_id))
-        latest_send = time.time()
 
         # 修改调用数据
         data = json.load(open("data/setu.count.json"))
@@ -147,7 +147,9 @@ async def setu_handler(
 
     except httpx.ConnectTimeout:
         await _error.report(_lang.text("setu.timeout1"))
+        latest_send -= config["sleep"]
         await setu.finish(_lang.text("setu.timeout2", [], event.get_user_id()))
+
     except FinishedException:
         raise FinishedException()
     except Exception:
