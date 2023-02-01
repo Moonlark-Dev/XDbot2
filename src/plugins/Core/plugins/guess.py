@@ -1,4 +1,5 @@
 from nonebot import on_command
+from nonebot.exception import FinishedException
 from nonebot.adapters.onebot.v11 import Bot, Message, MessageEvent
 from nonebot.params import CommandArg
 import os
@@ -69,5 +70,7 @@ async def guess_handle(bot: Bot, event: MessageEvent, message: Message = Command
                 status = False
                 number = -1
                 await guess.finish(reply)
+    except FinishedException:
+        raise FinishedException()
     except BaseException:
         await _error.report(traceback.format_exc(), guess)
