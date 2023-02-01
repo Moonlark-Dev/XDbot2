@@ -61,7 +61,7 @@ async def setu_handler(
 
         # 收集信息
         argument = message.extract_plain_text().split(" ")
-        r18 = 0
+        r18 = 2
         tags = ""
         for argv in argument:
             if argv == "r18":
