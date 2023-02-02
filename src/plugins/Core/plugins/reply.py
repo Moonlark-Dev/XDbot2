@@ -9,17 +9,22 @@ import time
 import traceback
 from . import _error
 from . import _lang
-from nonebot import on_message
+from nonebot import on_message, on_type
+from nonebot.rule import to_me
+from nonebot.adapters.onebot.v11.event import PokeNotifyEvent
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot.adapters.onebot.v11.event import GroupMessageEvent
 
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 repetition = on_message()
+on_poke = on_type(PokeNotifyEvent, rule=to_me())
 repetitionCache = dict()
 imageSaver = on_message()
 imageSender = on_message()
 latestSend = time.time()
+on_tome_msg = on_message(rule=to_me())
+random_send = on_message()
 dictionary = {
     "poke": [
         "?",
@@ -34,18 +39,42 @@ dictionary = {
         "（拍桌）你是不是有病啊？",
         "（脸红）啊……不可以",
     ],
-    "to_me": ["?", "¿", "喵？", "a？", "（窥屏.jpg）", "喵喵喵？"],
+    "to_me": ["?", "¿", "喵？", "a？", "（窥屏.jpg）", "喵喵喵？", "(?"],
     "primary": ["（窥屏.jpg）", "az……"],
     "tips": [
         "你知道吗：XDbot的生日是2022/06/28",
         "你知道吗：不你不知道",
         "你知道吗：想不出来了如果可以的话给个issue帮着写点把qaq（https://github.com/This-is-XiaoDeng/XDbot2",
-    ],
+        "你知道吗：xxtg其实是sb！（大雾",
+        "你知道吗：你可以直接把XDbot拉进其他群聊（自动同意）"        
+    ]
 }
 
 
+@random_send.handle()
+async def random_send_handle():
+    if time.time() - latestSend >= 600:
+        if random.random() <= 0.15:
+            await random_send.send(random.choice(dictionary["primary"]))
+            latestSend = time.time()
+
+@on_tome_msg.handle()
+async def to_me_msg_handle():
+    if random.random() <= 0.75:
+        # 使用 finish 可能会影响 XDbot 继续处理
+        await on_tome_msg.send(random.choice(dictionary["to_me"]))
+
+
+@on_poke.handle()
+async def poke_handle():
+    if random.random() <= 0.75:
+        await on_poke.finish(random.choice(dictionary["poke"]))
+
+
+
+
 @repetition.handle()
-async def repetitionHandle(bot: Bot, event: GroupMessageEvent):
+async def repetitionHandle(event: GroupMessageEvent):
     try:
         global latestSend
         # 检查冷却
@@ -93,7 +122,7 @@ async def repetitionHandle(bot: Bot, event: GroupMessageEvent):
 
 
 @imageSender.handle()
-async def imageSenderHandle(bot: Bot):
+async def imageSenderHandle():
     try:
         global latestSend
         if time.time() - latestSend > 90:
