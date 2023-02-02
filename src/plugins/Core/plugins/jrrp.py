@@ -82,7 +82,7 @@ async def jrrpHandle(
             )
         elif argument[0] == "rank" or argument[0] == "今日排名":
             # 限时开启
-            if time.localtime().tm_hour < 17:
+            if time.localtime().tm_hour < 16:
                 await jrrp.finish(_lang.text("jrrp.rank_time", [], event.get_user_id()))
             # 开始计算
             if argument.__len__() >= 2:

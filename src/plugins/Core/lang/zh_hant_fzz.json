@@ -62,7 +62,7 @@
   "jrrp.num.0": "{}！0！0！！！！！",
   "jrrp.num.else": "{}",
   "jrrp.today": "你今天的人品值是：{}",
-  "jrrp.rank_time": "人品排名將在每天服務器時間 17:00 準時開啟",
+  "jrrp.rank_time": "人品排名將在每天服務器時間 16:00 準時開啟",
   "jrrp.group": "今日人品群排名：\n",
   "jrrp.other": "{}今天的人品值是：{}",
   "jrrp.error": "無效參數",

@@ -62,7 +62,7 @@
   "jrrp.num.0": "{}!0!0!!!!!",
   "jrrp.num.else": "{}",
   "jrrp.today": "Your character value today is: {}",
-  "jrrp.rank_time": "Character ranking will be opened at 17:00 server time every day on time",
+  "jrrp.rank_time": "Character ranking will be opened at 16:00 server time every day on time",
   "jrrp.group": "Today's Personality Group Ranking:\n",
   "jrrp.other": "{} Today's character value is:{}",
   "jrrp.error": "Invalid parameters",

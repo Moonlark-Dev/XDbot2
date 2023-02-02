@@ -62,7 +62,7 @@
   "jrrp.num.0": "{}，另一种的运气太好了",
   "jrrp.num.else": "{}",
   "jrrp.today": "你今天的人品值是：{}",
-  "jrrp.rank_time": "人品排名将在每天服务器时间 17:00 准时开启",
+  "jrrp.rank_time": "人品排名将在每天服务器时间 16:00 准时开启",
   "jrrp.group": "今日人品群排名：\n",
   "jrrp.other": "{}今天的人品值是：{}",
   "jrrp.error": "无效参数",
