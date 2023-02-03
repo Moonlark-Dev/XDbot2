@@ -65,8 +65,8 @@ async def mulitaccout_manager(
         argument = str(message).split(" ")
         qq = event.get_user_id()
         if argument[0] == "set":
-            if argument[1] in accouts[str(event.group_id)]:
-                multiAccoutData[str(event.group_id)] = argument[1]
+            if argument[1] in accouts[event.group_id]:
+                multiAccoutData[event.group_id] = argument[1]
                 json.dump(
                     multiAccoutData, open(
                         "data/su.multiaccoutdata.ro.json", "w"))
@@ -74,7 +74,7 @@ async def mulitaccout_manager(
             else:
                 await accout_manager.finish(_lang.text("su.accout_not_found"), user=qq)
         elif argument[0] == "list":
-            await accout_manager.finish(_lang.text("su.accout_list", [accouts[str(event.group_id)]], qq))
+            await accout_manager.finish(_lang.text("su.accout_list", [accouts[event.group_id]], qq))
 
     except FinishedException:
         raise FinishedException()
