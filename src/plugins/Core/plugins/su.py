@@ -9,6 +9,7 @@ import os
 import time
 from . import _error
 import json
+from . import _lang
 from . import _userCtrl
 from nonebot.message import event_preprocessor
 from nonebot.permission import SUPERUSER
@@ -20,12 +21,14 @@ except ImportError:
     pass
 
 su = on_command("su", aliases={"超管", "superuser"}, permission=SUPERUSER)
+accout_manager = on_command("accout", aliases={"多帐号"})
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 blackListData = json.load(open("data/su.blackList.json"))
 multiAccoutData = {}
 group_request = on_type(GroupRequestEvent)
 bots = []
 driver = get_driver()
+accouts = {}
 su_notice_cache = ""
 
 
@@ -37,16 +40,46 @@ def reloadBlackList():
 @driver.on_bot_connect
 @driver.on_bot_disconnect
 async def reloadMuiltData():
-    global multiAccoutData, bots
+    global multiAccoutData, bots, accouts
     bots = get_bots()
     multiAccoutData = {}
     for key in list(bots.keys()):
         bot = bots[key]
         groups = await bot.get_group_list()
         for group in groups:
+            if group["group_id"] not in accouts.keys():
+                accouts[group["group_id"]] = [key]
+            else:
+                accouts[group["group_id"]].append(key)
             if group["group_id"] not in multiAccoutData.keys():
                 multiAccoutData[group["group_id"]] = key
     json.dump(multiAccoutData, open("data/su.multiaccoutdata.ro.json", "w"))
+
+
+@accout_manager.handle()
+async def mulitaccout_manager(
+        event: GroupMessageEvent,
+        message: Message = CommandArg()):
+    global multiAccoutData
+    try:
+        argument = str(message).split(" ")
+        qq = event.get_user_id()
+        if argument[0] == "set":
+            if argument[1] in accouts[str(event.group_id)]:
+                multiAccoutData[str(event.group_id)] = argument[1]
+                json.dump(
+                    multiAccoutData, open(
+                        "data/su.multiaccoutdata.ro.json", "w"))
+                await accout_manager.finish(_lang.text("su.set_accout_success", [argument[1]], qq))
+            else:
+                await accout_manager.finish(_lang.text("su.accout_not_found"), user=qq)
+        elif argument[0] == "list":
+            await accout_manager.finish(_lang.text("su.accout_list", [accouts[str(event.group_id)]], qq))
+
+    except FinishedException:
+        raise FinishedException()
+    except BaseException:
+        await _error.report(traceback.format_exc(), accout_manager)
 
 
 @su.handle()

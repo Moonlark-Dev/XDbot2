@@ -148,5 +148,8 @@
   "whoAtme.notice": "来自（ᗜ ˰ ᗜ）的提示喵~",
   "whoAtme.title": "请从下往上读喵~（越近排序越靠前）\nXDBOT2 最多为每个用户单个群聊保存98条消息",
   "whoAtme.other": "还有{}位用户（在{}个群中）@了你，喵~",
-  "whoAtme.error": "喵喵喵？（出错了怎么版在线等……"
+  "whoAtme.error": "喵喵喵？（出错了怎么版在线等……",
+  "su.set_accout_success": "成功将响应帐号设为{}，喵~",
+  "su.accout_not_found": "指定的帐号不存在喵……",
+  "su.accout_list": "你群有这些帐号提供切换喵~\n{}"
 }
