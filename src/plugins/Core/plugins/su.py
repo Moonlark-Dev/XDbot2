@@ -42,6 +42,7 @@ def reloadBlackList():
 async def reloadMuiltData():
     global multiAccoutData, bots, accouts
     bots = get_bots()
+    accouts = {}
     multiAccoutData = {}
     for key in list(bots.keys()):
         bot = bots[key]
