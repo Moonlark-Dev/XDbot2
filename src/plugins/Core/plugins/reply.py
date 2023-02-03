@@ -46,7 +46,7 @@ dictionary = {
         "你知道吗：不你不知道",
         "你知道吗：想不出来了如果可以的话给个issue帮着写点把qaq（https://github.com/This-is-XiaoDeng/XDbot2",
         "你知道吗：xxtg其实是sb！（大雾",
-        "你知道吗：你可以直接把XDbot拉进其他群聊（自动同意）"        
+        "你知道吗：你可以直接把XDbot拉进其他群聊（自动同意）"
     ]
 }
 
@@ -57,6 +57,7 @@ async def random_send_handle():
         if random.random() <= 0.15:
             await random_send.send(random.choice(dictionary["primary"]))
             latestSend = time.time()
+
 
 @on_tome_msg.handle()
 async def to_me_msg_handle():
@@ -69,8 +70,6 @@ async def to_me_msg_handle():
 async def poke_handle():
     if random.random() <= 0.75:
         await on_poke.finish(random.choice(dictionary["poke"]))
-
-
 
 
 @repetition.handle()

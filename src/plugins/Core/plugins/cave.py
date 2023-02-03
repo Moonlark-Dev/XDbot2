@@ -25,7 +25,7 @@ commandHelp = {
         "usage": [
             "cave：随机一条回声洞",
             "cave-a <内容>：投稿一条回声洞（见cave(1)）",
-            "cave-g <回声洞ID>：查看置顶回声洞",
+            "cave-g <回声洞ID>：查看指定回声洞",
         ],
     }
 }
@@ -120,7 +120,7 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                         data["count"] - 1], event.get_user_id())
             )
 
-        elif argument[0] in ["-g", "查询", "view"]:
+        elif argument[0] in ["-g", "查询", "view", "show", "查看"]:
             caveData = data["data"][argument[1]]
             text = parseCave(caveData["text"])
             # senderData = await bot.get_stranger_info(user_id=caveData["sender"]
