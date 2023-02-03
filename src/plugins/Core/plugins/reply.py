@@ -7,6 +7,8 @@ import random
 import re
 import time
 import traceback
+
+from pyecharts.charts.composite_charts.grid import Base
 from . import _error
 from . import _lang
 from nonebot import on_message, on_type
@@ -53,23 +55,33 @@ dictionary = {
 
 @random_send.handle()
 async def random_send_handle():
-    if time.time() - latestSend >= 600:
-        if random.random() <= 0.15:
-            await random_send.send(random.choice(dictionary["primary"]))
-            latestSend = time.time()
+    try:
+        global latestSend
+        if time.time() - latestSend >= 600:
+            if random.random() <= 0.15:
+                await random_send.send(random.choice(dictionary["primary"]))
+                latestSend = time.time()
+    except BaseException:
+        await _error.report(traceback.format_exc())
 
 
 @on_tome_msg.handle()
 async def to_me_msg_handle():
-    if random.random() <= 0.75:
-        # 使用 finish 可能会影响 XDbot 继续处理
-        await on_tome_msg.send(random.choice(dictionary["to_me"]))
+    try:
+        if random.random() <= 0.75:
+            # 使用 finish 可能会影响 XDbot 继续处理
+            await on_tome_msg.send(random.choice(dictionary["to_me"]))
+    except BaseException:
+        await _error.report(traceback.format_exc())
 
 
 @on_poke.handle()
 async def poke_handle():
-    if random.random() <= 0.75:
-        await on_poke.finish(random.choice(dictionary["poke"]))
+    try:
+        if random.random() <= 0.75:
+            await on_poke.finish(random.choice(dictionary["poke"]))
+    except BaseException:
+        await _error.report(traceback.format_exc())
 
 
 @repetition.handle()
