@@ -1,0 +1,156 @@
+{
+  "lang.empty"："言語設定には{}を使用してください"。
+  "lang.success"："言語の設定に成功しました{}"。
+  "lang.notfound":「言語{}が存在しない」。
+  "lang.list": "利用可能な言語: \n{}",
+  "_error.failed": "処理に失敗しました",
+  "_error.github": "Suggest to go to: {} to submit an Issue to feedback on this issue",
+  "_userCtrl.get": "取得しました:",
+  "_userCtrl.dice.20": "20面ダイスを買って20を出したら大成功、50viをゲット!
+  "_userCtrl.dice.18-19": "20面ダイスを買って{}を振ったら、大吉で20viが出た!
+  "_userCtrl.dice.15-17": "20面ダイスを買って{}を振って10viが出た!
+  "_userCtrl.dice.10-14": "20面ダイスを買って{}を振り、5viを取り戻しました！": "20面ダイスを買って{}を振り、5viを取り戻しました。
+  "_userCtrl.dice.2-9": "20面ダイスを買って{}を振って何も出なかった・・・・・・",
+  "_userCtrl.dice.1": "20面ダイスを買って、1を振り、大失敗、全てを失い、50viを失った！": "20面ダイスを買って、1を振り、大失敗、全てを失い、50viを失った。
+  "_userCtrl.cancel_use": "試さないでください、うまくいきません",
+  "autosell.log": "自動補充がオンになっています", 
+  "bag.get"："{}のバックパック"Ⅻ",
+  "bag.item": ""{}"現在所有しているアイテム：{}n{} }",
+  "bag.cancel_drop": "アイテムは、"ドロップできません "と表示されます。
+  "bag.finish"："終了しました"。
+  "bag.empty": 「見るなよ、空っぽだ」。
+  "bag.notfound"：「何を探しているんだ？
+  "cave.name": "Echo Cave",
+  "cave.new": ""Echo Cave New Submission ({})" \n,
+  "cave.added": "エコーケイブ({})が追加されました",
+  "cave.data_collecting"："collecting data ing"。
+  "cave.data_finish": "Total: {}n valid: {}",
+  "cave.notfound": "エコー洞窟({})は存在しません。", "cave.notfound": "エコー洞窟({})は存在しません。
+  "ct.nodata": "現時点ではデータがありません",
+  「ct.rank": "スピーチランキング--{}n",
+  "ct.usage": "Usage: ct [グループ]",
+  "fakenode.new": ""New pseudo-forward" \n users: {}n \n{}"",
+  "forward.private": ""プライベートチャットメッセージの転送""です。
+  "forward._user"："ユーザー："。
+  "forward.group"："グループメッセージ転送"。
+  "forward._group"："グループチャット："。
+  "guess.prefix": "【数字当てクイズ】",
+  "guess.command": "/guess startを使用してゲームを開始します",
+  "guess.playing": "再生中です、お待ちください",
+  "guess.start": "ゲームが始まりました、参加するには /guess <number> を使ってください、番号は0から100までの整数です",
+  "guess.error_command": "無効なコマンド",
+  "guess.error_number": "無効な番号",
+  "guess.not_playing": "ゲームが開始されていません、ゲームを開始するには/guess startを使用してください",
+  "guess.too_large": "{}が大きすぎる"。
+  "guess.too_small": "{}が小さすぎる"。
+  "guess.end": "{} 当ててみてください{}! ゲームオーバー」。
+  "help.name"："コマンドの一覧"。
+  "help.command":「詳しい情報は/help <command>を使用してください」。
+  "help.info": "Description: {}",
+  "help.usage": "使用法({}): \n{}",
+  "help.unknown": "不明なコマンド: {}",
+  "jrrp.notice": "免責事項： \n 人格計算は娯楽であり、お客様とは一切関係ありません ￭ このプラグインによって生じた損失は、すべてお客様ご自身でご負担ください！" ,
+  "jrrp.new_record": "個人最高記録が更新されました",
+  "jrrp.num.100":"{},great luck",
+  "jrrp.num.99": "{}(血圧スパイク)",
+  "jrrp.num.85-99": "{}, not bad",
+  "jrrp.num.60-85": "{}, not bad",
+  "jrrp.num.45-60": "{}",
+  "jrrp.num.30-45": "{}, ..................................................」とある。
+  "jrrp.num.15-30": "{}, woo-woo -",
+  "jrrp.num.0-15": "{}、もう1つは運が悪くない"。
+  "jrrp.num.0":"{}, もうひとつは運が良すぎる",
+  "jrrp.num.else": "{}",
+  "jrrp.today": "今日のあなたの文字値は: {}"です。
+  "jrrp.rank_time": "キャラクターランキングは毎日サーバー時間16:00にオープンします",
+  "jrrp.group": "今日のキャラクターグループランキング: \n",
+  "jrrp.other": "{}本日の文字値は：{}",
+  "jrrp.error"："無効なパラメータ"。
+  "linuxkernelnews.new": "最新の利用可能なカーネル:",
+  "linuxman.error": "No",
+  "linuxman.finish": "終了しました",
+  "man.error"："マニュアルが見つかりません"。
+  "messenger.usage": "Usage: messenger <receiver QQ>n<content>"。
+  "messenger.new": "[messenger]: new messenger \n",
+  "messenger.success": "手紙の送信に成功しました！" ,
+  "messenger.error"："コマンドの実行に失敗しました",
+  "messenger.send": "メール送信: {}({})}"↵。
+  "reply.good_image": "良い画像です、私のものです",
+  "reply.pass": "Use /su img re pass {} [group] via \n",
+  "reply.rm": "Use /su img re rm {} to remove \n",
+  "report.github": "Please submit Issue to XDBot at https://github.com/This-is-XiaoDeng/XDbot2/issues"（XDBotにIssueを提出してください。
+  "rule.run":「実行中：{}」。
+  "rule.error"："{}ルールが3で見つかりませんでした",
+  "setu.cd": "冷却、残り{}秒",
+  "setu.cd2"："Loading "です。
+  "setu.no_r18": "現時点ではR18でSupertubesは有効ではありません",
+  "setu.api_error": "APIエラーが発生しました: {}",
+  "setu.index_error"："読み込みに失敗しました",
+  "setu.msg1": " (P{})",
+  "setu.msg2": "\n Author: {}",
+  "setu.msg3"：" \n[Message will be withdrawn after {}s]",
+  "setu.action_failed"："実行に失敗しました"㊧。
+  "setu.timeout1": "警告: リクエストがタイムアウトしました！" ,
+  "setu.timeout2"："リクエストタイムアウト",
+  "shop.name"："XDbot2小道具モール： \n",
+  "shop.info_title": "商品情報",
+  "shop.info_num": "在庫数:",
+  "shop.info_price": "販売価格:",
+  "shop.info_seller": "Seller:",
+  "shop.poor"："通貨不足 "です。
+  "shop.out_of_max": "購入限度額{}を超えました",
+  "shop.not_enough": "商品不足",
+  "shop.buy_success": "buy_success "です。
+  "shop.buy_failed": "購入に失敗しました",
+  "shop.sell_not_enough": "商品は売り切れです",
+  "shop.sell_cannot_remove": "販売できません",
+  "shop.sell_success1": ""プロップショップの新商品 (#{})" \n{}",
+  "shop.sell_success2": "棚上げ成功、ID: #{}",
+  "shop.key_error": "アイテムが存在しません",
+  "sign.rank_title": "本日のサインインリスト:(残り{})Ⅾ",
+  "sign.rank_empty"："誰もサインインしていない",
+  "sign.rank_me": "あなたはまだサインインしていません",
+  "sign.cancel": "既にサインインした後に再度サインインすることができます{}"。
+  "sign.success"："サインインに成功しました",
+  "sign.exp"："experience "です。
+  "sign.days": "{}番目にサインインした日",
+  "sign.count": "あなたは今日サインインした{}番目の人です" ,
+  "status.title"："システムステータス：",
+  "status.cpu"："CPU："。
+  "status.ram"："Memory："。
+  "status.swap"："スワップメモリー："。
+  "status.run"："Runtime: "です。
+  "status.boot"："起動時間：" ,
+  "status.py": "Pythonバージョン:",
+  "status.error": "Invalid arguments: {}n available values: cpu, mem, swap, system, host (can be left blank) "無効な引数です。
+  "use.cannot"："Unavailable "である。
+  "use.notfound"："アイテムが存在しない",
+  "use.error": "使用に失敗しました",
+  "userInfo.no_vip"："VIPが有効でない"。
+  "userInfo.per_vip"："Permanent "です。
+  "userInfo.title"："ユーザー情報",
+  "userInfo.level": "レベル:" ,
+  "userInfo.vip"："メンバー：",
+  "userInfo.endtime"："有効期限：",
+  "userInfo.error"："処理に失敗しました"。
+  "vote.create_success": "投票作成成功！ ID: #{}",
+  "vote.list_title": "XDbot2 Poll list: \n",
+  "vote.choice": "Selected: {}",
+  "vote.error_repeat": "エラー: 投票を繰り返すことができません",
+  "vote.error_no_permission": "エラー: パーミッション不足",
+  "vote.error_end": "エラー：投票が終了しました",
+  "vote.end": "投票{}を終了しました",
+  "vote.ended": "error: vote{} has ended",
+  "vote.deleted": "投票{}は削除されました",
+  "vote.notfound": "投票が存在しません",
+  "vote.time_end": "投票「{}」は終了しました。" "結果を見るには/vote view {}を使用してください。
+  "vote.time_1h_end": "投票"{}は1時間で締め切られます。", "vote.time_1h_end": "投票"{}は1時間で締め切られます。
+  "whoAtme.notice"："XDBot2ウォームチップ"。
+  "whoAtme.title": "下から上へお読みください（上に近いほど） \nXDBOT2 は、1つのグループチャットで1ユーザーにつき最大98メッセージを保存します",
+  "whoAtme.other": "あなたに@した他のユーザー({}グループ)がいます",
+  "whoAtme.error"："コマンドの実行に失敗しました",
+  "su.set_accout_success": "このグループ応答アカウントの設定に成功しました: {}",
+  "su.accout_not_found": "アカウントが存在しません!" ,
+  "su.accout_list": "このグループで利用可能なアカウント: {}"
+}
+
