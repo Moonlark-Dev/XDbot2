@@ -21,7 +21,7 @@ async def random_give_handle(event: GroupMessageEvent):
             length = 1
 
             if random.random() <= 0.15:
-                add_coin = random.randint(0, 20)
+                add_coin = random.randint(0, 23)
                 _userCtrl.addItem(event.get_user_id(), "0", add_coin, {})
                 reply += f"\n {length}. VimCoin x{add_coin}"
                 send_reply = True
@@ -33,7 +33,7 @@ async def random_give_handle(event: GroupMessageEvent):
                 send_reply = True
                 length += 1
             else:
-                _userCtrl.addExp(event.get_user_id(), random.randint(0, 15))
+                _userCtrl.addExp(event.get_user_id(), random.randint(0, 13))
             if random.random() <= 0.05:
                 add_role = random.randint(0, 3)
                 _userCtrl.addItem(event.get_user_id(), "3", add_role, {})
