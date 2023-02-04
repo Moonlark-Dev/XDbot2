@@ -15,19 +15,19 @@ latest = time()
 async def random_give_handle(event: GroupMessageEvent):
     global latest
     try:
-        if time() - latest >= 60 and random.random() <= 0.15:
+        if time() - latest >= 180 and random.random() <= 0.15:
             reply = _lang.text("random_give.reply", [], event.get_user_id())
             send_reply = False
             length = 1
 
-            if random.random() <= 0.25:
-                add_coin = random.randint(0, 25)
+            if random.random() <= 0.15:
+                add_coin = random.randint(0, 20)
                 _userCtrl.addItem(event.get_user_id(), "0", add_coin, {})
                 reply += f"\n {length}. VimCoin x{add_coin}"
                 send_reply = True
                 length += 1
-            if random.random() <= 0.15:
-                add_exp = random.randint(10, 50)
+            if random.random() <= 0.10:
+                add_exp = random.randint(10, 45)
                 _userCtrl.addExp(event.get_user_id(), add_exp)
                 reply += f"\n {length}. 经验 x{add_exp}"
                 send_reply = True
