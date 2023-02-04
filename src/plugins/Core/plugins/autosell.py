@@ -37,6 +37,7 @@ async def reloadSell():
                     "name": items[item["id"]]["name"],
                     "info": items[item["id"]]["info"],
                     "item": {"id": item["id"], "count": 1, "data": item["data"]},
+                    "bought": {},
                     "count": item["count"],
                     "price": item["price"],
                     "from": "autosell",
