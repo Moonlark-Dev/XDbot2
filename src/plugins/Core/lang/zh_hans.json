@@ -151,5 +151,6 @@
   "whoAtme.error": "指令执行失败",
   "su.set_accout_success": "成功将本群响应帐号设为：{}",
   "su.accout_not_found": "帐号不存在！",
-  "su.accout_list": "本群可用帐号：{}"
+  "su.accout_list": "本群可用帐号：{}",
+  "random_give.reply": "[随机掉落] 您获得了："
 }
