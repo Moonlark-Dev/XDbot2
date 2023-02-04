@@ -36,7 +36,7 @@ async def random_give_handle(event: GroupMessageEvent):
                 _userCtrl.addExp(event.get_user_id(), random.randint(0, 15))
             if random.random() <= 0.05:
                 add_role = random.randint(0, 3)
-                _userCtrl.addItem(event.get_user_id(), "1", add_role, {})
+                _userCtrl.addItem(event.get_user_id(), "3", add_role, {})
                 reply += f"\n {length}. 二十面骰 x{add_role}"
                 send_reply = True
                 length += 1
