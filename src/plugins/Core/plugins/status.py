@@ -55,7 +55,7 @@ def swap_percent():
 
 def format_time(seconds):
     d = int(seconds / 86400)
-    h = int(seconds / 3600) % 60
+    h = int(seconds / 3600) % 24
     m = int(seconds / 60) % 60
     s = seconds % 60
     return f"{d}d {h}:{m}:{s}"
