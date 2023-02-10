@@ -63,6 +63,10 @@ class Config(BaseSettings):
             "text": "{}"
         },
         {
+            "path": "data/su.priority_accout.json",
+            "text": "{\"accouts\":[]}"
+            }
+        {
             "path": "data/etm.items.json",
             "text": json.dumps({
                 "0": {

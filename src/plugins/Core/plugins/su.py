@@ -27,6 +27,7 @@ blackListData = json.load(open("data/su.blackList.json"))
 multiAccoutData = {}
 group_request = on_type(GroupRequestEvent)
 bots = []
+priority_accout = json.load(open("data/su.priority_accout.json"))
 driver = get_driver()
 accouts = {}
 su_notice_cache = ""
@@ -53,6 +54,8 @@ async def reloadMuiltData():
             else:
                 accouts[group["group_id"]].append(key)
             if group["group_id"] not in multiAccoutData.keys():
+                multiAccoutData[group["group_id"]] = key
+            elif key in priority_accout["accouts"]:
                 multiAccoutData[group["group_id"]] = key
     json.dump(multiAccoutData, open("data/su.multiaccoutdata.ro.json", "w"))
 
