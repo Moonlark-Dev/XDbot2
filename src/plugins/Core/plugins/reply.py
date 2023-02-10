@@ -49,7 +49,7 @@ dictionary = {
         "XDbot的生日是2022/06/28！",
         "不你不知道",
         "https://github.com/This-is-XiaoDeng/XDbot2",
-        "xxtg其实是sb！（大雾",
+        "xd其实是sb！（大雾",
         "你知道吗：你可以直接把XDbot拉进其他群聊（自动同意）",
         "你知道吗：XDbot2项目发起者（XD）现在还在到处化缘"
     ]
