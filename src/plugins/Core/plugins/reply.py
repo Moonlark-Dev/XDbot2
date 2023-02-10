@@ -8,7 +8,7 @@ import re
 import time
 import traceback
 
-from pyecharts.charts.composite_charts.grid import Base
+from nonebot.exception import FinishedException
 from . import _error
 from . import _lang
 from nonebot import on_message, on_type
@@ -20,6 +20,7 @@ from nonebot.adapters.onebot.v11.event import GroupMessageEvent
 
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 repetition = on_message()
+send_tips = on_message()
 on_poke = on_type(PokeNotifyEvent, rule=to_me())
 repetitionCache = dict()
 imageSaver = on_message()
@@ -37,20 +38,36 @@ dictionary = {
         "撒？",
         "哈？",
         "哎呦你干嘛（？",
-        "（被撅）哼哼哼啊啊啊啊啊啊啊啊",
+        "（被撅力）哼哼哼啊啊啊啊啊啊啊啊（悲",
         "（拍桌）你是不是有病啊？",
         "（脸红）啊……不可以",
+        "杰哥不要！（？"
     ],
     "to_me": ["?", "¿", "喵？", "a？", "（窥屏.jpg）", "喵喵喵？", "(?"],
-    "primary": ["（窥屏.jpg）", "az……"],
+    "primary": ["（窥屏.jpg）", "az……", "hmm"],
     "tips": [
-        "你知道吗：XDbot的生日是2022/06/28",
-        "你知道吗：不你不知道",
-        "你知道吗：想不出来了如果可以的话给个issue帮着写点把qaq（https://github.com/This-is-XiaoDeng/XDbot2",
-        "你知道吗：xxtg其实是sb！（大雾",
-        "你知道吗：你可以直接把XDbot拉进其他群聊（自动同意）"
+        "XDbot的生日是2022/06/28！",
+        "不你不知道",
+        "https://github.com/This-is-XiaoDeng/XDbot2",
+        "xxtg其实是sb！（大雾",
+        "你知道吗：你可以直接把XDbot拉进其他群聊（自动同意）",
+        "你知道吗：XDbot2项目发起者（XD）现在还在到处化缘"
     ]
 }
+
+
+@send_tips.handle()
+async def send_tips_handle():
+    try:
+        global latestSend
+        if time.time() - latestSend >= 60:
+            if random.random() <= 0.01:
+                await send_tips.finish(f"【XDbot小贴士】\n{random.choice(dictionary['tips'])}")
+                latestSend = time.time()
+    except FinishedException:
+        raise FinishedException()
+    except BaseException:
+        await _error.report(traceback.format_exc())
 
 
 @random_send.handle()
@@ -80,6 +97,8 @@ async def poke_handle():
     try:
         if random.random() <= 0.75:
             await on_poke.finish(random.choice(dictionary["poke"]))
+    except FinishedException:
+        raise FinishedException()
     except BaseException:
         await _error.report(traceback.format_exc())
 
