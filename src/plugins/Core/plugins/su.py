@@ -84,6 +84,64 @@ async def mulitaccout_manager(
         raise FinishedException()
     except BaseException:
         await _error.report(traceback.format_exc(), accout_manager)
+def new_su_log_match(match):
+    if not os.path.exists("data/su.log.json"):
+        return ["暂未记录任何日志"]
+    logs = json.load(open("data/su.log.json", encoding="utf-8"))
+    reply = []
+    for i in range(len(match)):
+        m = match[i]
+        if m.startswith("-Y"):
+            m = m[2:]
+            for l in logs:
+                if l["time"]["Y"] != m:
+                    logs.remove(l)
+        elif m.startswith("-M"):
+            m = m[2:]
+            for l in logs:
+                if l["time"]["M"] != m:
+                    logs.remove(l)
+        elif m.startswith("-D"):
+            m = m[2:]
+            for l in logs:
+                if l["time"]["D"] != m:
+                    logs.remove(l)
+        elif m.startswith("-h"):
+            m = m[2:]
+            for l in logs:
+                if l["time"]["h"] != m:
+                    logs.remove(l)
+        elif m.startswith("-m"):
+            m = m[2:]
+            for l in logs:
+                if l["time"]["m"] != m:
+                    logs.remove(l)
+        elif m.startswith("-s"):
+            m = m[2:]
+            for l in logs:
+                if l["time"]["s"] != m:
+                    logs.remove(l)
+        elif m.startswith("-u"):
+            m = m[2:]
+            for l in logs:
+                if l["user"]["id"] != m:
+                    logs.remove(l)
+        elif m.startswith("-g"):
+            m = m[2:]
+            for l in logs:
+                if l["user"]["group"] != m:
+                    logs.remove(l)
+        elif m.startswith("-c"):
+            m = m[2:].replace("^"," ")
+            for l in logs:
+                if l["command"].find(m) == -1:
+                    logs.remove(l)
+    for i in logs:
+        reply.append(f"{i['time']['Y']}/{i['time']['M']}/{i['time']['D']} - {i['time']['h']}:{i['time']['m']}:{i['time']['s']} - {i['user']['name']}({i['user']['id']}) - {i['command']}")
+    if not reply:
+        reply.append("查询结果为空")
+    return reply
+
 
 def su_log_match(match,pf=""):
     if not os.path.exists("data/su.log.json"):
@@ -146,7 +204,7 @@ def su_log_match(match,pf=""):
 async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg()):
     try: # 记录审核日志
         log_msg = str(message)
-        if not log_msg.split(" ")[0] in ["log","日志","审核日志","查看日志"]:
+        if not log_msg.split(" ")[0] in ["log","日志","审核日志","查看日志","*log"]:
             if not os.path.exists("data/su.log.json"):
                 json.dump([], open("data/su.log.json", "w"))
             log = json.load(open("data/su.log.json"))
@@ -591,6 +649,11 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
             elif argn > 2:
                 if argument[1] in ["match", "匹配"]:
                     reply += su_log_match(argument)
+            await su.send(reply)
+        elif argument[0] in ["*log"]:
+            argument.pop(0)
+            reply = "XDbot2 审核日志 - 查询 "+" ".join(argument)+"\n"
+            reply += "\n".join(new_su_log_match(argument))
             await su.send(reply)
 
         # 反馈
