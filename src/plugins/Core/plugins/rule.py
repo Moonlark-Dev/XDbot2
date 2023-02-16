@@ -46,7 +46,7 @@ async def set_local(name, value, namespace):
     local_name = local[-1]
     locals[local_namespace][local_name] = await run_rule(value, namespace)
 
-async def invoke(name, arguments, matcher = None, namespace):
+async def invoke(name, arguments, matcher, namespace):
     # 内置函数
     if name == "send":
         await matcher.send(await run_rule(arguments, namespace))

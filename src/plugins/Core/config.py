@@ -13,7 +13,8 @@ class Config(BaseSettings):
     # 初始化
     DIRECTORIES = [
         "data",
-        "data/caveImages"
+        "data/caveImages",
+        "data/rules"
     ]
     # 数据文件命名规则：子插件.数据名.json
     FILES = [
