@@ -120,6 +120,8 @@ async def func_command_handler(event: MessageEvent, message: Message = CommandAr
         command = argv[0].split(":")[1]
         namespace = argv[0].split(":")[0]
 
+        logger.info(commands)
+
         length = 0
         for arg in argv[1:]:
             command_args[commands[namespace][command]
