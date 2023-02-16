@@ -103,7 +103,7 @@ async def init_rules():
             rule_list.pop(rule)
     rules = rule_list
     logger.info(rules)
-    for rule in rules:
+    for rule in list(rules.values()):
         await run_rule(rule["src"], rule["info"]["namespace_id"])
 
 @func_command.handle()
