@@ -37,6 +37,7 @@ def get_local(name, namespace):
     local_name = local[-1]
     return locals[local_namespace][local_name]
 
+
 async def set_local(name, value, namespace):
     local = name.split(":")
     if len(local) == 1:      # 不含 namespace
@@ -46,6 +47,7 @@ async def set_local(name, value, namespace):
     local_name = local[-1]
     locals[local_namespace][local_name] = await run_rule(value, namespace)
 
+
 async def invoke(name, arguments, matcher, namespace):
     # 内置函数
     if name == "send":
@@ -53,7 +55,8 @@ async def invoke(name, arguments, matcher, namespace):
     elif name == "finish":
         await matcher.finish()
 
-async def run_rule(src, namespace, matcher = None):
+
+async def run_rule(src, namespace, matcher=None):
     rule = rules[namespace]
     if type(src) == list:
         for operate in src:
@@ -83,6 +86,7 @@ async def run_rule(src, namespace, matcher = None):
     else:
         return src
 
+
 @get_driver().on_startup
 async def init_rules():
     global rules
@@ -104,7 +108,9 @@ async def init_rules():
     rules = rule_list
     logger.info(rules)
     for rule in list(rules.values()):
+        logger.info(rule["src"])
         await run_rule(rule["src"], rule["info"]["namespace_id"])
+
 
 @func_command.handle()
 async def func_command_handler(event: MessageEvent, message: Message = CommandArg()):
@@ -116,7 +122,8 @@ async def func_command_handler(event: MessageEvent, message: Message = CommandAr
 
         length = 0
         for arg in argv[1:]:
-            command_args[commands[namespace][command]["arguments"][length]["name"]] = arg
+            command_args[commands[namespace][command]
+                         ["arguments"][length]["name"]] = arg
             length += 1
         for arg in commands[namespace][command]["arguments"][length:]:
             if arg["optional"]:
@@ -130,10 +137,8 @@ async def func_command_handler(event: MessageEvent, message: Message = CommandAr
             await set_local(f"event:{key}", event.dict()[key], namespace)
 
         await run_rule(commands[namespace][command]["execute"], func_command, namespace)
-        
 
     except FinishedException:
         raise FinishedException()
     except BaseException:
         await _error.report(traceback.format_exc(), func_command)
-
