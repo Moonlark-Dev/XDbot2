@@ -102,8 +102,9 @@ async def init_rules():
         ) or "info" not in rule_list[rule].keys():
             rule_list.pop(rule)
     rules = rule_list
-    for rule in rule_list:
-        await run_rule(rule["src"], rule["info"]["namespace"])
+    logger.info(rules)
+    for rule in rules:
+        await run_rule(rule["src"], rule["info"]["namespace_id"])
 
 @func_command.handle()
 async def func_command_handler(event: MessageEvent, message: Message = CommandArg()):
