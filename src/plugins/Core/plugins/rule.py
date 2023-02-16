@@ -85,9 +85,12 @@ async def run_rule(src, namespace, matcher = None):
 
 @get_driver().on_startup
 async def init_rules():
+    global rules
     file_list = os.listdir("data/rules")
     rule_list = {}
     for filename in file_list:
+        if filename[:-4] not in rule_list.keys():
+            rule_list[filename[:-4]] = {}
         if filename.endswith(".xrc"):
             rule_list[filename[:-4]]["src"] = json.load(
                 open(os.path.join("./data/rules", filename), encoding="utf-8"))
@@ -98,6 +101,7 @@ async def init_rules():
         if "src" not in rule_list[rule].keys(
         ) or "info" not in rule_list[rule].keys():
             rule_list.pop(rule)
+    rules = rule_list
     for rule in rule_list:
         await run_rule(rule["src"], rule["info"]["namespace"])
 
