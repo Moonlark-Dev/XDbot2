@@ -1,4 +1,4 @@
-from loguru import Message
+from nonebot.adapters.onebot.v11 import Message
 from nonebot import on_command, get_driver
 from nonebot.adapters.onebot.v11 import MessageEvent
 from nonebot.exception import FinishedException
