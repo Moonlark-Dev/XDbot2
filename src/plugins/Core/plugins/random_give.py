@@ -44,12 +44,10 @@ async def random_give_handle(event: GroupMessageEvent):
             if send_reply:
                 await random_give.send(reply, at_sender=True)
             latest = time()
-        
+
         else:
             if random.random() <= 0.15:
                 _userCtrl.addExp(event.get_user_id(), random.randint(0, 3))
-            
 
     except BaseException:
         await _error.report(traceback.format_exc())
-

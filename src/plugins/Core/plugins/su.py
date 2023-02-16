@@ -84,6 +84,8 @@ async def mulitaccout_manager(
         raise FinishedException()
     except BaseException:
         await _error.report(traceback.format_exc(), accout_manager)
+
+
 def new_su_log_match(match):
     if not os.path.exists("data/su.log.json"):
         return ["暂未记录任何日志"]
@@ -132,7 +134,7 @@ def new_su_log_match(match):
                 if l["user"]["group"] != m:
                     logs.remove(l)
         elif m.startswith("-c"):
-            m = m[2:].replace("^"," ")
+            m = m[2:].replace("^", " ")
             for l in logs:
                 if l["command"].find(m) == -1:
                     logs.remove(l)
@@ -143,7 +145,7 @@ def new_su_log_match(match):
     return reply
 
 
-def su_log_match(match,pf=""):
+def su_log_match(match, pf=""):
     if not os.path.exists("data/su.log.json"):
         return "暂未记录任何日志"
     logs = json.load(open("data/su.log.json", encoding="utf-8"))
@@ -197,36 +199,39 @@ def su_log_match(match,pf=""):
         return reply
     reply += f"{pf}{tY}/{tM}/{tD} {th}:{tm}:{ts}\n"
     for i in logs:
-        if i["time"]["Y"] == tY and i["time"]["M"] == tM and i["time"]["D"] == tD and i["time"]["h"] == th and i["time"]["m"] == tm and i["time"]["s"] == ts:
+        if i["time"]["Y"] == tY and i["time"]["M"] == tM and i["time"]["D"] == tD and i[
+                "time"]["h"] == th and i["time"]["m"] == tm and i["time"]["s"] == ts:
             reply += f"{i['user']['name']}({i['user']['id']}) - {i['command']}\n"
     return reply
+
+
 @su.handle()
 async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg()):
-    try: # 记录审核日志
+    try:  # 记录审核日志
         log_msg = str(message)
-        if not log_msg.split(" ")[0] in ["log","日志","审核日志","查看日志","*log"]:
+        if not log_msg.split(" ")[0] in ["log", "日志", "审核日志", "查看日志", "*log"]:
             if not os.path.exists("data/su.log.json"):
                 json.dump([], open("data/su.log.json", "w"))
             log = json.load(open("data/su.log.json"))
             log_time = time.localtime()
             log.append({
-                "user":{
-                    "id":event.get_user_id(),
-                    "name":(await bot.get_stranger_info(user_id=int(event.get_user_id())))["nickname"],
-                    "group":event.get_session_id().split("_")[1]
+                "user": {
+                    "id": event.get_user_id(),
+                    "name": (await bot.get_stranger_info(user_id=int(event.get_user_id())))["nickname"],
+                    "group": event.get_session_id().split("_")[1]
                 },
-                "time":{
-                    "Y":time.strftime("%Y", log_time),
-                    "M":time.strftime("%m", log_time),
-                    "D":time.strftime("%d", log_time),
-                    "h":time.strftime("%H", log_time),
-                    "m":time.strftime("%M", log_time),
-                    "s":time.strftime("%S", log_time)
+                "time": {
+                    "Y": time.strftime("%Y", log_time),
+                    "M": time.strftime("%m", log_time),
+                    "D": time.strftime("%d", log_time),
+                    "h": time.strftime("%H", log_time),
+                    "m": time.strftime("%M", log_time),
+                    "s": time.strftime("%S", log_time)
                 },
-                "command":log_msg
+                "command": log_msg
             })
             json.dump(log, open("data/su.log.json", "w"))
-    except:
+    except BaseException:
         print("[WARN] 记录su审核日志失败")
     try:
         argument = str(message).split(" ")
@@ -622,7 +627,7 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                         f"[CQ:image,file=file://{os.abspath('./data/screenshot.png')}]"
                     )
                 )
-        elif argument[0] in ["log","日志","审核日志","查看日志"]:
+        elif argument[0] in ["log", "日志", "审核日志", "查看日志"]:
             argn = len(argument)
             reply = "XDbot2 审核日志 - "
             _log_time = time.localtime()
@@ -635,15 +640,29 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                 "s": time.strftime("%S", _log_time)
             }
             if argn == 1:
-                reply += su_log_match(["","",log_time["Y"],log_time["M"],log_time["D"]],"今日 ")
+                reply += su_log_match(["",
+                                       "",
+                                       log_time["Y"],
+                                       log_time["M"],
+                                       log_time["D"]],
+                                      "今日 ")
             elif argn == 2:
-                if argument[1] in ["day","今日","本日","日","d","D"]:
-                    reply += su_log_match(["","",log_time["Y"],log_time["M"],log_time["D"]], "今日 ")
-                elif argument[1] in ["month", "本月","月","m","M"]:
-                    reply += su_log_match(["","",log_time["Y"],log_time["M"]], "本月 ")
+                if argument[1] in ["day", "今日", "本日", "日", "d", "D"]:
+                    reply += su_log_match(["",
+                                           "",
+                                           log_time["Y"],
+                                           log_time["M"],
+                                           log_time["D"]],
+                                          "今日 ")
+                elif argument[1] in ["month", "本月", "月", "m", "M"]:
+                    reply += su_log_match(["",
+                                           "",
+                                           log_time["Y"],
+                                           log_time["M"]],
+                                          "本月 ")
                 elif argument[1] in ["all", "所有", "全部", "a", "A"]:
                     # ********** xd我建议你过来写个合并转发 reply是全部文本(建议按行数分割) **********
-                    reply += su_log_match(["",""],"全部 ")
+                    reply += su_log_match(["", ""], "全部 ")
                 else:
                     reply += "指定的查询参数无效"
             elif argn > 2:
@@ -652,7 +671,7 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
             await su.send(reply)
         elif argument[0] in ["*log"]:
             argument.pop(0)
-            reply = "XDbot2 审核日志 - 查询 "+" ".join(argument)+"\n"
+            reply = "XDbot2 审核日志 - 查询 " + " ".join(argument) + "\n"
             reply += "\n".join(new_su_log_match(argument))
             await su.send(reply)
 
