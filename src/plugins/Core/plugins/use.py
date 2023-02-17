@@ -38,7 +38,7 @@ async def useHandle(
                     "type": "node",
                     "data": {
                         "uin": str(user_info["user_id"]),
-                        "name": user_info["name"],
+                        "name": user_info["nickname"],
                         "content": _userCtrl.useItem(event.get_user_id(), int(argument[0]))
                     }
                 })
