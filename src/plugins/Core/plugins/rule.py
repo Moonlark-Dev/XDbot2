@@ -119,17 +119,18 @@ async def func_command_handler(event: MessageEvent, message: Message = CommandAr
     try:
         argv = str(message).split(" ")
         command_args = {}
-        command = argv[0].split(":")[1]
-        namespace = argv[0].split(":")[0]
+        command = argv[0]
+        #namespace = argv[0].split(":")[0]
+        namespace = commands[command]["namespace"]
 
         logger.info(commands)
 
         length = 0
         for arg in argv[1:]:
-            command_args[commands[namespace][command]
+            command_args[commands[command]
                          ["arguments"][length]["name"]] = arg
             length += 1
-        for arg in commands[namespace][command]["arguments"][length:]:
+        for arg in commands[command]["arguments"][length:]:
             if arg["optional"]:
                 command_args[arg["name"]] = arg["default"]
             else:
@@ -140,7 +141,7 @@ async def func_command_handler(event: MessageEvent, message: Message = CommandAr
         for key in list(event.dict().keys()):
             await set_local(f"event:{key}", event.dict()[key], namespace)
 
-        await run_rule(commands[namespace][command]["execute"], func_command, namespace)
+        await run_rule(commands[command]["execute"], func_command, namespace)
 
     except FinishedException:
         raise FinishedException()
