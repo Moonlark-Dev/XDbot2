@@ -71,14 +71,14 @@ async def run_rule(src, namespace, matcher=None):
                     operate["run"]
                 )
             elif call == "if":
-                if await run_rule(operate["condition"], namespace):
-                    await run_rule(operate["run"], namespace)
+                if await run_rule(operate["condition"], namespace, matcher):
+                    await run_rule(operate["run"], namespace, matcher)
                 else:
-                    await run_rule(operate["else"], namespace)
+                    await run_rule(operate["else"], namespace, matcher)
             elif call == "is":
-                return await run_rule(operate["a"], namespace) == (await run_rule(operate["b"], namespace))
+                return await run_rule(operate["a"], namespace, matcher) == (await run_rule(operate["b"], namespace, matcher))
             elif call == "add":
-                return await run_rule(operate["a"], namespace) + (await run_rule(operate["b"], namespace))
+                return await run_rule(operate["a"], namespace, matcher) + (await run_rule(operate["b"], namespace, matcher))
             elif call == "get_var":
                 return get_local(operate["name"], namespace)
             elif call == "set":
