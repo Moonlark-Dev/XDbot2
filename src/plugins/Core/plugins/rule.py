@@ -143,7 +143,7 @@ async def func_command_handler(event: MessageEvent, message: Message = CommandAr
         for key in list(event.dict().keys()):
             await set_local(f"event:{key}", event.dict()[key], namespace)
 
-        await run_rule(commands[command]["execute"], func_command, namespace)
+        await run_rule(commands[command]["execute"],  namespace, func_command)
 
     except FinishedException:
         raise FinishedException()
