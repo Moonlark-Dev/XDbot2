@@ -18,10 +18,16 @@ async def useHandle(
     bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()
 ):
     try:
-        argument = int(message.extract_plain_text())
-        await use.finish(
-            Message(_userCtrl.useItem(event.get_user_id(), argument)), at_sender=True
-        )
+        argument = message.extract_plain_text().split(" ")
+        if len(argument)==1:
+            await use.finish(
+                Message(_userCtrl.useItem(event.get_user_id(), int(argument[0]))), at_sender=True
+            )
+        elif len(argument)==2:
+            for i in range(int(argument[1])):
+                await use.finish(
+                    Message(_userCtrl.useItem(event.get_user_id(), int(argument[0]))), at_sender=True
+                )
 
     except _userCtrl.ItemCanNotRemove:
         await use.finish(_lang.text("use.cannot", [], event.get_user_id()))
