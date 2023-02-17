@@ -6,7 +6,9 @@ from nonebot.log import logger
 from . import _error
 import os
 import os.path
+import threading
 import json
+from .rule_compiler import compiler
 import traceback
 
 from nonebot.params import CommandArg
@@ -149,3 +151,27 @@ async def func_command_handler(event: MessageEvent, message: Message = CommandAr
         raise FinishedException()
     except BaseException:
         await _error.report(traceback.format_exc(), func_command)
+
+@rule_command.handle()
+async def rule_handler(event: MessageEvent, message: Message = CommandArg()):
+    try:
+        argument = str(message).split("\n")[0].split(" ")
+        if argument[0] in ["build", "编译"]:
+            if json.load(open(os.path.join("./data/rules", f"{argument[1]}.info.json")))["user_id"] == event.get_user_id():
+                threading.Thread(target=lambda: compiler.build(f"./data/rules/{argument[1]}")).start()
+            else:
+                await func_command.send("错误：无权限")
+        elif argument[0] in ["create", "创建"]:
+            json.dump({"user_id": event.get_user_id()}, open(os.path.join("./data/rules", f"{argument[1]}.info.json"), "w"))
+        elif argument[0] in ["edit", "编辑"]:
+            if json.load(open(os.path.join("./data/rules", f"{argument[1]}.info.json")))["user_id"] == event.get_user_id():
+                with open(os.path.join("./data/rules", f"{argument[1]}.xr"), "w") as f:
+                    f.write("\n".join(str(message).split("\n")[1:]))
+
+            
+
+
+    except FinishedException:
+        raise FinishedException()
+    except BaseException:
+        await _error.report(traceback.format_exc(), rule_command)
