@@ -1,4 +1,4 @@
-import lexer
+from . import lexer
 import json
 import rich
 

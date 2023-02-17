@@ -21,5 +21,5 @@ def codegen(ast: list, path: str = "./helloworld") -> None:
     xri["build_time"] = time.time()
     xri["compiler_version"] = compiler_version
 
-    json.dump(xri, open(f"{path}.xri", "w", encoding="utf-8"))#, indent=4)
-    json.dump(xrc, open(f"{path}.xrc", "w", encoding="utf-8"))#, indent=4)
+    json.dump(xri, open(f"{path}.xri", "w", encoding="utf-8"))  # , indent=4)
+    json.dump(xrc, open(f"{path}.xrc", "w", encoding="utf-8"))  # , indent=4)

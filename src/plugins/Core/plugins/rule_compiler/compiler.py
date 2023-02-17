@@ -1,7 +1,7 @@
-import lexer
+from . import lexer
 import sys
-import parser
-import visitor
+from . import parser
+from . import visitor
 
 
 def build(path: str, to_path: str = "./") -> None:
