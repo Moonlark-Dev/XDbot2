@@ -46,12 +46,10 @@ dictionary = {
     "to_me": ["?", "¿", "喵？", "a？", "（窥屏.jpg）", "喵喵喵？", "(?"],
     "primary": ["（窥屏.jpg）", "az……", "hmm"],
     "tips": [
-        "XDbot的生日是2022/06/28！",
-        "不你不知道",
+        "XDbot的生日是2022/06/28！（到时候记得祝XDbot生日快乐！",
+        "你知道吗：不你不知道",
         "https://github.com/This-is-XiaoDeng/XDbot2",
-        "xd其实是sb！（大雾",
-        "你知道吗：你可以直接把XDbot拉进其他群聊（自动同意）",
-        "你知道吗：XDbot2项目发起者（XD）现在还在到处化缘"
+        "XD在线化缘.jpg"
     ]
 }
 
@@ -62,7 +60,7 @@ async def send_tips_handle():
         global latestSend
         if time.time() - latestSend >= 60:
             if random.random() <= 0.01:
-                await send_tips.finish(f"【XDbot小贴士】\n{random.choice(dictionary['tips'])}")
+                await send_tips.send(f"【XDbot小贴士】\n{random.choice(dictionary['tips'])}")
                 latestSend = time.time()
     except FinishedException:
         raise FinishedException()
