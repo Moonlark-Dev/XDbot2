@@ -10,7 +10,7 @@ report = on_command("report", aliases={"反馈"})
 @report.handle()
 async def handle(event: MessageEvent, message: Message = CommandArg()):
     await _error.report(("「新反馈」\n"
-        f"{message}\n"
-        f"{event.get_session_id()}\n"))
+                         f"{message}\n"
+                         f"{event.get_session_id()}\n"))
     await report.finish(
         _lang.text("report.github", [], event.get_user_id()), at_sender=True)
