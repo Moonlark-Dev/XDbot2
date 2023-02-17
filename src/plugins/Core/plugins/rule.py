@@ -155,7 +155,7 @@ async def func_command_handler(event: MessageEvent, message: Message = CommandAr
 @rule_command.handle()
 async def rule_handler(event: MessageEvent, message: Message = CommandArg()):
     try:
-        argument = str(message).split(" ")
+        argument = str(message).split("\n")[0].split(" ")
         if argument[0] in ["build", "编译"]:
             if json.load(open(os.path.join("./data/rules", f"{argument[1]}.info.json")))["user_id"] == event.get_user_id():
                 threading.Thread(target=lambda: compiler.build(f"./data/rules/{argument[1]}")).start()
