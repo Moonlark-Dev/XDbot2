@@ -1,6 +1,5 @@
 import json
 import traceback
-
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, Message
 from nonebot.exception import FinishedException
@@ -23,13 +22,6 @@ async def useHandle(
             await use.finish(
                 Message(_userCtrl.useItem(event.get_user_id(), int(argument[0]))), at_sender=True
             )
-            """
-        elif len(argument)==2:
-            for _ in range(int(argument[1])):
-                await use.finish(
-                    Message(_userCtrl.useItem(event.get_user_id(), int(argument[0]))), at_sender=True
-                )
-            """
         elif len(argument) == 2:
             node_msg = []
             user_info = await bot.get_login_info()
@@ -44,7 +36,7 @@ async def useHandle(
                         }
                     })
                 except _userCtrl.NotHaveEnoughItem:
-                    await use.send(_lang.text("use.notenough"))
+                    await use.send(_lang.text("use.notenough", [], event.get_user_id()))
                 except BaseException:
                     await _error.report(traceback.format_exc())
             await bot.call_api(
@@ -55,11 +47,12 @@ async def useHandle(
         await use.finish(_lang.text("use.cannot", [], event.get_user_id()))
     except FinishedException:
         raise FinishedException()
+    except _userCtrl.NotHaveEnoughItem:
+        await use.finish(_lang.text("use.notenough", [], event.get_user_id()))
     except IndexError:
         await use.finish(_lang.text("use.notfound", [], event.get_user_id()))
-    except Exception:
-        await bot.send_group_msg(message=traceback.format_exc(), group_id=ctrlGroup)
-        await use.finish(_lang.text("use.error", [], event.get_user_id()))
+    except BaseException:
+        await _error.report(traceback.format_exc())
 
 
 # [HELPSTART]
