@@ -5,7 +5,7 @@ from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, Message
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
-
+from . import _error
 from . import _userCtrl
 from . import _lang
 
@@ -19,16 +19,33 @@ async def useHandle(
 ):
     try:
         argument = message.extract_plain_text().split(" ")
-        if len(argument)==1:
+        if len(argument) == 1:
             await use.finish(
                 Message(_userCtrl.useItem(event.get_user_id(), int(argument[0]))), at_sender=True
             )
+            """
         elif len(argument)==2:
-            for i in range(int(argument[1])):
+            for _ in range(int(argument[1])):
                 await use.finish(
                     Message(_userCtrl.useItem(event.get_user_id(), int(argument[0]))), at_sender=True
                 )
-
+            """
+        elif len(argument) == 2:
+            node_msg = []
+            user_info = await bot.get_login_info()
+            for _ in range(int(argument[1])):
+                node_msg.append({
+                    "type": "node",
+                    "data": {
+                        "uin": str(user_info["user_id"]),
+                        "name": user_info["name"],
+                        "content": _userCtrl.useItem(event.get_user_id(), int(argument[0]))
+                    }
+                })
+            await bot.call_api(
+                api="send_group_forward_msg",
+                messages=node_msg,
+                group_id=str(event.group_id))
     except _userCtrl.ItemCanNotRemove:
         await use.finish(_lang.text("use.cannot", [], event.get_user_id()))
     except FinishedException:
