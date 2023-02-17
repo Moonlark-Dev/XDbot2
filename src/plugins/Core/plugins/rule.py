@@ -45,6 +45,8 @@ async def set_local(name, value, namespace):
     else:
         local_namespace = local[0]
     local_name = local[-1]
+    if local_namespace not in locals.keys():
+        locals[local_namespace] = {}
     locals[local_namespace][local_name] = await run_rule(value, namespace)
 
 
