@@ -16,7 +16,7 @@ async def report(err: str, matcher: any = None):
     await bot.send_group_msg(message=err, group_id=ctrlGroup)
     if matcher is not None:
         await matcher.send(_lang.text("_error.failed"), at_sender=True)
-        if random.randint(1, 4) == 1:
+        if random.random() <= 0.35:
             await matcher.finish(
                 _lang.text(
                     "_error.github",
