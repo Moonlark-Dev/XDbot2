@@ -34,14 +34,19 @@ async def useHandle(
             node_msg = []
             user_info = await bot.get_login_info()
             for _ in range(int(argument[1])):
-                node_msg.append({
-                    "type": "node",
-                    "data": {
-                        "uin": str(user_info["user_id"]),
-                        "name": user_info["nickname"],
-                        "content": _userCtrl.useItem(event.get_user_id(), int(argument[0]))
-                    }
-                })
+                try:
+                    node_msg.append({
+                        "type": "node",
+                        "data": {
+                            "uin": str(user_info["user_id"]),
+                            "name": user_info["nickname"],
+                            "content": _userCtrl.useItem(event.get_user_id(), int(argument[0]))
+                        }
+                    })
+                except _userCtrl.NotHaveEnoughItem:
+                    await use.send(_lang.text("use.notenough"))
+                except BaseException:
+                    await _error.report(traceback.format_exc())
             await bot.call_api(
                 api="send_group_forward_msg",
                 messages=node_msg,
@@ -58,6 +63,6 @@ async def useHandle(
 
 
 # [HELPSTART]
-# !Usage 1 use <背包物品ID>
+# !Usage 1 use <背包物品ID> [数量]
 # !Info 1 使用物品
 # [HELPEND]

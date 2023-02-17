@@ -124,6 +124,7 @@
   "status.py": "Python版本：",
   "status.error": "无效参数：{}\n可用值：cpu、mem、swap、system、host（可留空）",
   "use.cannot": "无法使用",
+  "use.notenough": "物品数量不足",
   "use.notfound": "物品不存在",
   "use.error": "使用失败",
   "userInfo.no_vip": "未开通VIP",
