@@ -105,7 +105,9 @@ async def init_rules():
         if "src" not in rule_list[rule].keys(
         ) or "info" not in rule_list[rule].keys():
             rule_list.pop(rule)
-    rules = rule_list
+    # rules = rule_list
+    for rule in list(rule_list.values()):
+        rules[rule["info"]["namespace_id"]] = rule.copy()
     logger.info(rules)
     for rule in list(rules.values()):
         logger.info(rule["src"])
