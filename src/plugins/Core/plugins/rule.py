@@ -198,3 +198,17 @@ async def rule_handler(event: MessageEvent, message: Message = CommandArg()):
         raise FinishedException()
     except BaseException:
         await _error.report(traceback.format_exc(), rule_command)
+
+# [HELPSTART] Version: 2
+# Command: function
+# Usage: function <命令> [参数...]
+# Info: 调用规则命令
+# Command: rule
+# Usage: rule create <name>：创建规则
+# Usage: rule edit <name>\n<code>：编辑规则源码
+# Usage: rule build <name>：编译规则
+# Usage: rule reload：重载规则
+# Usage: rule get <name>：查看规则源码
+# Info: XDbot2 规则相关操作
+# Msg: 规则操作
+# [HELPEND]
