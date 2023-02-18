@@ -153,5 +153,10 @@
   "su.set_accout_success": "成功将本群响应帐号设为：{}",
   "su.accout_not_found": "帐号不存在！",
   "su.accout_list": "本群可用帐号：{}",
-  "random_give.reply": "[随机掉落] 您获得了："
+  "random_give.reply": "[随机掉落] 您获得了：",
+  "rule.needargv": "缺少参数：{}",
+  "rule.noprimission": "错误：权限不足",
+  "rule.created": "规则 {} 已创建！",
+  "rule.finish": "完成！",
+  "rule.list": "活动的规则：\n{}"
 }
