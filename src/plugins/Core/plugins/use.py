@@ -37,8 +37,10 @@ async def useHandle(
                     })
                 except _userCtrl.NotHaveEnoughItem:
                     await use.send(_lang.text("use.notenough", [], event.get_user_id()))
+                    break
                 except BaseException:
                     await _error.report(traceback.format_exc())
+                    break
             await bot.call_api(
                 api="send_group_forward_msg",
                 messages=node_msg,
