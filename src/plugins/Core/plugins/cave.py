@@ -93,6 +93,46 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                 )
             )
 
+        elif argument[0] in ["query", "-q", "查询"]:
+            start_id = int(argument[1])
+            end_id = int(argument[2])
+            node_message = []
+            user_info = await bot.get_login_info()
+
+            keys = data.keys()
+            for id in range(start_id, end_id):
+                if str(id) in keys:
+                    caveData = data[str(id)]
+
+                    text = parseCave(caveData["text"])
+                    if isinstance(caveData["sender"], dict):
+                        if caveData["sender"]["type"] == "nickname":
+                            senderData = {
+                                "nickname": caveData["sender"]["name"]}
+                        else:
+                            senderData = {"nickname": "未知"}
+                    else:
+                        senderData = await bot.get_stranger_info(user_id=caveData["sender"])
+                    cave_text = (
+                        f"{_lang.text("cave.name",[],event.get_user_id())}——（{caveData['id']}）\n"
+                        f"{text}\n"
+                        f"——{senderData['nickname']}\n"
+                    )
+
+                    node_message.append({
+                        "type": "node",
+                        "data": {
+                            "uin": int(user_info["user_id"]),
+                            "nickname": user_info["nickname"],
+                            "content": cave_text
+                        }
+                    })
+            await bot.call_api(
+                api="send_group_forward_msg",
+                messages=node_message,
+                group_id=str(event.get_session_id().split("_")[1])
+            )
+
         elif argument[0] in ["add", "-a", "添加"]:
             text = await downloadImages(str(message)[argument[0].__len__():].strip())
             data["data"][data["count"]] = {

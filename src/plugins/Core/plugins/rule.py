@@ -193,9 +193,6 @@ async def rule_handler(event: MessageEvent, message: Message = CommandArg()):
         elif argument[0] in ["get", "view", "查看"]:
             with open(os.path.join("./data/rules", f"{argument[1]}.xr")) as f:
                 await rule_command.finish(f.read())
-        
-
-
 
     except FinishedException:
         raise FinishedException()
