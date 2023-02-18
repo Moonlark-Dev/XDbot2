@@ -85,7 +85,7 @@ async def shopHandle(
             ):
                 _userCtrl.addItem(
                     event.get_user_id(
-                    ), itemData["item"]["id"], count, itemData["item"]
+                    ), itemData["item"]["id"], count, itemData["item"]["data"]
                 )
                 _userCtrl.addItem(
                     itemData["seller"]["user_id"], "0", itemData["price"] * count, {}
