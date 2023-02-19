@@ -100,10 +100,10 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
             node_message = []
             user_info = await bot.get_login_info()
 
-            keys = data.keys()
+            keys = data["data"].keys()
             for id in range(start_id, end_id):
                 if str(id) in keys:
-                    caveData = data[str(id)]
+                    caveData = data["data"][str(id)]
 
                     text = parseCave(caveData["text"])
                     if isinstance(caveData["sender"], dict):
