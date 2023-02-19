@@ -115,7 +115,7 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                     else:
                         senderData = await bot.get_stranger_info(user_id=caveData["sender"])
                     cave_text = (
-                        f"{_lang.text("cave.name",[],event.get_user_id())}——（{caveData['id']}）\n"
+                        f"{_lang.text('cave.name',[],event.get_user_id())}——（{caveData['id']}）\n"
                         f"{text}\n"
                         f"——{senderData['nickname']}\n"
                     )
