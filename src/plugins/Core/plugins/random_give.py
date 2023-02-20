@@ -21,13 +21,13 @@ async def random_give_handle(event: GroupMessageEvent):
             length = 1
 
             if random.random() <= 0.10:
-                add_coin = random.randint(0, 23)
+                add_coin = random.randint(1, 23)
                 _userCtrl.addItem(event.get_user_id(), "0", add_coin, {})
                 reply += f"\n {length}. VimCoin x{add_coin}"
                 send_reply = True
                 length += 1
             if random.random() <= 0.07:
-                add_exp = random.randint(0, 40)
+                add_exp = random.randint(1, 40)
                 _userCtrl.addExp(event.get_user_id(), add_exp)
                 reply += f"\n {length}. 经验 x{add_exp}"
                 send_reply = True
@@ -35,7 +35,7 @@ async def random_give_handle(event: GroupMessageEvent):
             else:
                 _userCtrl.addExp(event.get_user_id(), random.randint(0, 13))
             if random.random() <= 0.05:
-                add_role = random.randint(0, 3)
+                add_role = random.randint(1, 3)
                 _userCtrl.addItem(event.get_user_id(), "3", add_role, {})
                 reply += f"\n {length}. 二十面骰 x{add_role}"
                 send_reply = True
