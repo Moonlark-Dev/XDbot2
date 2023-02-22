@@ -51,8 +51,8 @@ async def messengerHandle(
             )
             await bot.send_group_msg(
                 message=(
-                    f"{_lang.text('messenger.new',[],event.get_user_id())}"
-                    f"RECV: {qq}\nSENDER: {sender['user_id']}\nTEXT: {text}"
+                    "[信鸽] 收到新任务："
+                    f"收件：{qq}\n发件：{sender['user_id']}\n内容：{text}"
                 ),
                 group_id=ctrlGroup,
             )
@@ -63,8 +63,7 @@ async def messengerHandle(
     except FinishedException:
         raise FinishedException()
     except Exception:
-        await bot.send_group_msg(message=traceback.format_exc(), group_id=ctrlGroup)
-        await messenger.finish(_lang.text("messenger.error", [], event.get_user_id()))
+        await _error.report(traceback.format_exc(), messenger)
 
 
 @msgSender.handle()
@@ -98,12 +97,12 @@ async def msgSenderHandle(bot: Bot, event: GroupMessageEvent):
                 "w",
                 encoding="utf-8"))
     except Exception:
-        await bot.send_group_msg(message=traceback.format_exc(), group_id=ctrlGroup)
+        await _error.report(traceback.format_exc())
 
 
 # [HELPSTART] Version: 2
 # Command: messenger
-# Info: 信使，让XDbot帮你带话
-# Msg: XDbot2 信使
+# Info: 信鸽
+# Msg: 信鸽
 # Usage: messenger <收信人>\n<内容>
 # [HELPEND]
