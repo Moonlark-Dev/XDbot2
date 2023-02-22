@@ -34,12 +34,8 @@ async def messengerHandle(
                 _lang.text("messenger.usage", [], event.get_user_id())
             )
         else:
-            qq = argument.split("\n")[0]
-            text1 = argument.split("\n")[1:]
-            text = ""
-            for t in text1:
-                text += t
-                text += "\n"
+            qq = argument.split("\n")[0].replace("\r", " ")
+            text = "\n".join(argument.split("\n")[1:])
             sender = await bot.get_stranger_info(user_id=event.get_user_id())
             data += [{"recv": qq, "text": text, "sender": sender}]
             json.dump(
