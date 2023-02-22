@@ -158,5 +158,6 @@
   "rule.noprimission": "错误：权限不足",
   "rule.created": "规则 {} 已创建！",
   "rule.finish": "完成！",
-  "rule.list": "活动的规则：\n{}"
+  "rule.list": "活动的规则：\n{}",
+  "report.success": "举报成功，处理结果将使用 Messenger 发送"
 }
