@@ -1,13 +1,7 @@
-# XDbot2 v2.5.60
+# XDbot2 v2.5.75
 
-import json
+import os
 
-print("欢迎使用：XDbot2 v2.5.60")
+print("欢迎使用：XDbot2 v2.5.75")
 
-cavedata = json.load(open("./data/cave.data.json"))
-
-for cave_id in list(cavedata["data"].keys()):
-    if "time" not in cavedata["data"][cave_id].keys():
-        cavedata["data"][cave_id]["time"] = 0.0  
-
-json.dump(cavedata, open("./data/cave.data.json", "w"))
+os.system("pip3 install nonebot_plugin_guild_patch")
