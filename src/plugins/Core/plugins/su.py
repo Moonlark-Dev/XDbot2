@@ -33,6 +33,17 @@ accouts = {}
 su_notice_cache = ""
 
 
+def parseCave(text: str):
+    imageIDStart = text.find("[[Img:")
+    if imageIDStart == -1:
+        return text
+    else:
+        imageID = text[imageIDStart + 6: text.find("]]]", imageIDStart)]
+        imagePath = os.path.join(path, "data", "caveImages", f"{imageID}.png")
+        imageCQ = f"[CQ:image,file=file://{imagePath}]"
+        return parseCave(text.replace(f"[[Img:{imageID}]]]", str(imageCQ)))
+
+
 def reloadBlackList():
     global blackListData
     blackListData = json.load(open("data/su.blackList.json"))
@@ -358,13 +369,19 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
         elif argument[0] == "cave" or argument[0] == "回声洞":
             if argument[1] == "remove" or argument[1] == "移除":
                 data = json.load(open("data/cave.data.json", encoding="utf-8"))
-                data["data"].pop(argument[2])
+                cave_data = data["data"].pop(argument[2])
+                await su.send(Message((
+                    f"回声洞——（{cave_data['id']}）\n"
+                    f"{parseCave(cave_data['text'])}\n"
+                    f"——{await bot.get_stranger_info(user_id=cave_data['sender'])}（{time.strftime('%Y-%m-%d %H:%M:%S', cave_data['time'])}）"
+                )))
                 json.dump(
                     data,
                     open(
                         "data/cave.data.json",
                         "w",
                         encoding="utf-8"))
+                await su.send(f"已删除回声洞（{cave_data['id']}）")
             elif argument[1] in ["add", "添加"]:
                 data = json.load(open("data/cave.data.json", encoding="utf-8"))
                 data["data"][str(data["count"])] = {
@@ -566,11 +583,11 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                         image = data["review"].pop(argument[3])
                         data[group].append(image)
                         await su.send(Message(f"「图片已添加」\n临时ID：{group}{tempID}"))
-                elif argument[2] in ["remove", "删除"]:
+                elif argument[2] in ["remove", "删除", "rm"]:
                     if argument[3] in ["all", "所有", "*"]:
                         data["review"] = dict()
                     else:
-                        data["review"].pop(argument[4])
+                        data["review"].pop(argument[3])
             elif argument[1] in ["添加", "add"]:
                 data[argument[2]].append(argument[3])
             elif argument[1] in ["list", "列表"]:
