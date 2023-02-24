@@ -34,7 +34,7 @@ async def messengerHandle(
                 _lang.text("messenger.usage", [], event.get_user_id())
             )
         else:
-            qq = argument.split("\n")[0].replace("\r", " ").replace("[CQ:at,qq=","").replace("]", "")
+            qq = argument.split("\n")[0].replace("\r", " ").replace("[CQ:at,qq=","").replace("]", "").strip()
             text = "\n".join(argument.split("\n")[1:])
             sender = await bot.get_stranger_info(user_id=event.get_user_id())
             data += [{"recv": qq, "text": text, "sender": sender}]
