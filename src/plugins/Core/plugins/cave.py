@@ -140,6 +140,7 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                 "id": data["count"],
                 "text": text,
                 "sender": event.get_user_id(),
+                "time": time.time()
             }
             data["count"] += 1
             # 发送通知
