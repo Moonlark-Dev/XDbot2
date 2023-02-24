@@ -84,14 +84,19 @@ class Config(BaseSettings):
                     "data": {}
                 },
                 "2": {
-                    "name": "每日VimCoin礼包",
-                    "info": "打开后可获得：\n1. VimCoin x0~50",
+                    "name": "VimCoin礼包",
+                    "info": "来自XDbot某个贡献者的一点小心意\n打开后可获得：\n1. VimCoin x0~50",
                     "data": {}
                 },
                 "3": {
                     "name": "二十面骰",
                     "info": "二十面骰子，致敬LTW3",
                     "data": {}
+                },
+                "4": {
+                    "name": "书与笔",
+                    "info": "致敬 Minecraft",
+                    "data": {"author": None, "text": None, "saved": False, "displayName": "书与笔"}
                 }
             })
         },
