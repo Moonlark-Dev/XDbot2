@@ -15,39 +15,39 @@ latest = time()
 async def random_give_handle(event: GroupMessageEvent):
     global latest
     try:
-        if time() - latest >= 180 and random.random() <= 0.15:
-            reply = _lang.text("random_give.reply", [], event.get_user_id())
+        if time() - latest >= 600 and random.random() <= 0.15:
+            reply = _lang.text("random_give.reply", [f"[CQ:at,qq={event.get_user_id()}]"], event.get_user_id())
             send_reply = False
             length = 1
 
             if random.random() <= 0.10:
-                add_coin = random.randint(1, 23)
+                add_coin = random.randint(5, 20)
                 _userCtrl.addItem(event.get_user_id(), "0", add_coin, {})
                 reply += f"\n {length}. VimCoin x{add_coin}"
                 send_reply = True
                 length += 1
             if random.random() <= 0.07:
-                add_exp = random.randint(1, 40)
+                add_exp = random.randint(15, 20)
                 _userCtrl.addExp(event.get_user_id(), add_exp)
                 reply += f"\n {length}. 经验 x{add_exp}"
                 send_reply = True
                 length += 1
             else:
-                _userCtrl.addExp(event.get_user_id(), random.randint(0, 13))
+                _userCtrl.addExp(event.get_user_id(), random.randint(0, 10))
             if random.random() <= 0.05:
-                add_role = random.randint(1, 3)
+                add_role = random.randint(1, 2)
                 _userCtrl.addItem(event.get_user_id(), "3", add_role, {})
                 reply += f"\n {length}. 二十面骰 x{add_role}"
                 send_reply = True
                 length += 1
 
             if send_reply:
-                await random_give.send(reply, at_sender=True)
+                await random_give.send(reply)
             latest = time()
 
         else:
-            if random.random() <= 0.15:
-                _userCtrl.addExp(event.get_user_id(), random.randint(0, 3))
+            if random.random() <= 0.2:
+                _userCtrl.addExp(event.get_user_id(), random.randint(1, 2))
 
     except BaseException:
         await _error.report(traceback.format_exc())
