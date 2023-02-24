@@ -60,6 +60,20 @@ async def bagHandle(
             except _userCtrl.ItemCanNotRemove:
                 await bag.finish(_lang.text("bag.cannot_drop", [], event.get_user_id()))
             await bag.finish(_lang.text("bag.finish", [], event.get_user_id()))
+        elif argument[0] in ["edit", "编辑"]:
+            item = bagData[event.get_user_id()][int(argument[1])]
+            if item["id"] == "4":
+                if not item["data"]["saved"]:
+                    try:
+                        _userCtrl.removeItemsFromBag(event.get_user_id(), int(argument[1]), 1, "Use")
+                    except _userCtrl.ItemCanNotRemove:
+                        await bag.finish(_lang.text("bag.cannot_use", [], event.get_user_id()))
+                    item["data"]["text"] = "\n".join(str(message).split("\n")[1:])
+                    _userCtrl.addItem(event.get_user_id(), "4", 1, item["data"])
+                    await bag.finish(_lang.text("bag.finish", [], event.get_user_id()))
+                else:
+                    await bag.finish(_lang.text("bag.book_saved", [], event.get_user_id()))
+            await bag.finish(_lang.text("bag.notfound", [], event.get_user_id()))
 
     except FinishedException:
         raise FinishedException()

@@ -159,5 +159,6 @@
   "rule.created": "规则 {} 已创建！",
   "rule.finish": "完成！",
   "rule.list": "活动的规则：\n{}",
-  "report.success": "举报成功！"
+  "report.success": "举报成功！",
+  "bag.book_saved": "错误：书籍已经保存"
 }
