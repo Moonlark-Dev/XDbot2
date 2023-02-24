@@ -373,7 +373,7 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                 await su.send(Message((
                     f"回声洞——（{cave_data['id']}）\n"
                     f"{parseCave(cave_data['text'])}\n"
-                    f"——{await bot.get_stranger_info(user_id=cave_data['sender'])}（{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(cave_data['time']))}）"
+                    f"——{await bot.get_stranger_info(user_id=cave_data['sender'])['nickname']}（{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(cave_data['time']))}）"
                 )))
                 json.dump(
                     data,
