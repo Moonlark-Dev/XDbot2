@@ -1,13 +1,13 @@
-# XDbot2 v2.5.51
+# XDbot2 v2.5.60
 
 import json
 
-print("欢迎使用：XDbot2 v2.5.51-beta")
+print("欢迎使用：XDbot2 v2.5.60")
 
 cavedata = json.load(open("./data/cave.data.json"))
 
 for cave_id in list(cavedata["data"].keys()):
     if "time" not in cavedata["data"][cave_id].keys():
-        cavedata["data"][cave_id] = 0.0
+        cavedata["data"][cave_id]["time"] = 0.0  
 
 json.dump(cavedata, open("./data/cave.data.json", "w"))
