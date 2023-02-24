@@ -15,7 +15,7 @@
   "_userCtrl.cannot_use": "别试了，用不了",
   "autosell.log": "自动补货已开启",
   "bag.get": "「{}的背包」\n",
-  "bag.item": "「{}」\n您当前拥有：{}\n{}\n\n{}",
+  "bag.item": "「{}」\n您当前拥有：{}\n{}",
   "bag.cannot_drop": "物品被标记为：无法丢弃",
   "bag.finish": "完成",
   "bag.empty": "别看了，tm别看了！是空的",

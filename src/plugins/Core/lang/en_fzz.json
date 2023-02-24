@@ -15,7 +15,7 @@
   "_userCtrl.cannot_use": "What are you trying ......",
   "autosell.log": "Only ...... is not because of you to refresh the goods",
   "bag.get": "「{}'s Backpack」\n",
-  "bag.item": "「{}」\nYou currently own: {}\n{}\n\n{}",
+  "bag.item": "「{}」\nYou currently own: {}\n{}",
   "bag.cannot_drop": "Item is marked as: cannotDrop",
   "bag.finish": "Finish",
   "bag.empty": "Your backpack is empty ~",

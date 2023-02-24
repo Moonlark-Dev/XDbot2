@@ -44,7 +44,7 @@ async def bagHandle(
             await bag.finish(
                 _lang.text(
                     "bag.item",
-                    [name, item["count"], info, item["data"]],
+                    [name, item["count"], info],
                     event.get_user_id(),
                 )
             )

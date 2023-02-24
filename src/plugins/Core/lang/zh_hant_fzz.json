@@ -15,7 +15,7 @@
   "_userCtrl.cannot_use": "你在嘗試著什麼……",
   "autosell.log": "才……才不是因為你才刷新商品的呢",
   "bag.get": "「{}的背包」\n",
-  "bag.item": "「{}」\n閣下當前擁有：{}\n{}\n\n{}",
+  "bag.item": "「{}」\n閣下當前擁有：{}\n{}",
   "bag.cannot_drop": "物品被標記為：無法丟棄",
   "bag.finish": "完成",
   "bag.empty": "你的背包是空的哦～",
