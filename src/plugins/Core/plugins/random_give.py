@@ -1,5 +1,5 @@
 from time import time
-from nonebot.adapters.onebot.v11 import GroupMessageEvent
+from nonebot.adapters.onebot.v11 import GroupMessageEvent, Message
 from nonebot import on_message
 from . import _lang
 from . import _error
@@ -42,7 +42,7 @@ async def random_give_handle(event: GroupMessageEvent):
                 length += 1
 
             if send_reply:
-                await random_give.send(reply)
+                await random_give.send(Message(reply))
             latest = time()
 
         else:
