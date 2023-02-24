@@ -84,6 +84,7 @@ async def bagHandle(
                     except _userCtrl.ItemCanNotRemove:
                         await bag.finish(_lang.text("bag.cannot_use", [], event.get_user_id()))
                     item["data"]["saved"] = True
+                    item["data"]["author"] = (await bot.get_stranger_info(user_id=event.get_user_id()))["nickname"]
                     _userCtrl.addItem(event.get_user_id(), "4", 1, item["data"])
                     await bag.finish(_lang.text("bag.finish"))
                 else:
