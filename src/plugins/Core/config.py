@@ -29,6 +29,10 @@ class Config(BaseSettings):
             "text": "{}"
         },
         {
+            "path": "data/cave.comments.json",
+            "text": "{}"
+        },
+        {
             "path": "data/rule.rules.json",
             "text": "[]"
         },

@@ -5,15 +5,17 @@ import random
 import time
 import traceback
 import marshal
+import re
 from . import _error
 from . import _lang
 import httpx
-from nonebot import on_command, get_app
+from nonebot import on_command, get_app, on_message
 from nonebot.adapters.onebot.v11 import Bot, Message, MessageEvent
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
 
 cave = on_command("cave", aliases={"回声洞"})
+cave_comment = on_message()
 ctrlGroup = json.load(open("data/ctrl.json"))["control"]
 path = os.path.abspath(os.path.dirname("."))
 app = get_app()
@@ -30,6 +32,32 @@ commandHelp = {
         ],
     }
 }
+
+
+@cave_comment.handle()
+async def cave_comment_writer(event: MessageEvent):
+    try:
+        reply_message = str(event.reply.message)
+        if re.match(r"回声洞——（(0|[1-9][0-9]*)）\n(.+)\n——(.*)", reply_message):
+            # 懒得写了就这样吧
+            cave_id = re.search(r"回声洞——（[0-9]+）", reply_message)[0].replace("回声洞——（", "").replace("）", "")
+            data = json.load(open("data/cave.comments.json"))
+            if cave_id not in data.keys():
+                data[cave_id] = {"count": 0, "data": {}}
+            data[cave_id]["data"][str(data[cave_id]["count"])] = {
+                "id": data[cave_id]["count"],
+                "text": str(event.get_message()),
+                "sender": event.get_user_id()
+            }
+            data[cave_id]["count"] += 1
+            json.dump(data, open("data/cave.comments.json", "w"))
+            await _error.report(f"「新回声洞评论（{cave_id}#{data[cave_id]['count'] - 1}）」\n{event.get_message()}\n{event.get_session_id()}")
+            await cave_comment.finish(f"评论成功：{cave_id}#{data[cave_id]['count'] - 1}")
+
+    except FinishedException:
+        raise FinishedException()
+    except BaseException:
+        await _error.report(traceback.format_exc())
 
 
 @app.get("/cave/data.json")
