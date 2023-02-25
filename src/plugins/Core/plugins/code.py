@@ -84,3 +84,10 @@ async def code_handler(bot: Bot, event: GroupMessageEvent, message: Message = Co
         raise FinishedException()
     except BaseException:
         await _error.report(traceback.format_exc(), code)
+
+# [HELPSTART] Version: 2
+# Command: code
+# Info: 在线代码运行器
+# Msg: 运行代码
+# Usage: code <language> [-i <stdin>]\n<代码>
+# [HELPEND]
