@@ -17,6 +17,7 @@ from nonebot.params import CommandArg
 cave = on_command("cave", aliases={"回声洞"})
 cave_comment = on_message()
 ctrlGroup = json.load(open("data/ctrl.json"))["control"]
+latest_use = time.time()
 path = os.path.abspath(os.path.dirname("."))
 app = get_app()
 commandHelp = {
@@ -102,9 +103,14 @@ def parseCave(text: str):
 
 @cave.handle()
 async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandArg()):
+    global latest_use
     try:
         data = json.load(open("data/cave.data.json", encoding="utf-8"))
         argument = str(message).split(" ")
+        if argument[0] not in ["add", "添加", "-a"] and time.time() - latest_use < 10:
+            await cave.finish(f"冷却中（{10 - (time.time() - latest_use)}s）", at_sender=True)
+        else:
+            latest_use = time.time
         if argument[0] == "":
             caveList = data["data"].values()
             random.seed(marshal.loads(b"\xe9" + os.urandom(4)))
