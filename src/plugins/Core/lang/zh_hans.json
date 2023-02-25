@@ -160,5 +160,7 @@
   "rule.finish": "完成！",
   "rule.list": "活动的规则：\n{}",
   "report.success": "举报成功！",
-  "bag.book_saved": "错误：书籍已经保存"
+  "bag.book_saved": "错误：书籍已经保存",
+  "code.too_long": "消息过长",
+  "code.delete_warning": "[消息将在60s内撤回]"
 }
