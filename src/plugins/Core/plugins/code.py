@@ -1,7 +1,7 @@
 import traceback
 import httpx
 from nonebot import on_command
-from nonebot.adapters.onebot.v11 import ActionFailed, Bot, Message, GroupMessageEvent
+from nonebot.adapters.onebot.v11 import ActionFailed, Bot, Message, GroupMessageEvent, PrivateMessageEvent
 from nonebot.adapters.onebot.v11.message import MessageSegment
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
@@ -80,6 +80,19 @@ async def code_handler(bot: Bot, event: GroupMessageEvent, message: Message = Co
             await code.finish(_lang.text("code.too_long", [], str(event.user_id)))
         await asyncio.sleep(60)
         await bot.delete_msg(message_id=message_id)
+    except FinishedException:
+        raise FinishedException()
+    except BaseException:
+        await _error.report(traceback.format_exc(), code)
+
+
+@code.handle()
+async def code_private_handler(event: PrivateMessageEvent, message: Message = CommandArg()):
+    try:
+        try:
+            await code.finish(await run_code(message))
+        except ActionFailed:
+            await code.finish(_lang.text("code.too_long", [], str(event.user_id)))
     except FinishedException:
         raise FinishedException()
     except BaseException:
