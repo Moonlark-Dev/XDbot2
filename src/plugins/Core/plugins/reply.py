@@ -175,7 +175,7 @@ async def imageSenderHandle():
                 await asyncio.sleep(random.random() / 2)
                 await imageSender.send(Message(image))
                 latestSend = time.time()
-                if random.random() <= 0.10:  # 清理图库，机率：5% x 5%
+                if random.random() <= 0.25:  # 清理图库，机率：5% x 5%
                     imageData = json.load(
                         open("data/reply.images.json", encoding="utf-8")
                     )
