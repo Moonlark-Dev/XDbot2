@@ -110,7 +110,7 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
         if argument[0] not in ["add", "添加", "-a"] and time.time() - latest_use < 5:
             await cave.finish(f"冷却中（{5 - (time.time() - latest_use)}s）", at_sender=True)
         else:
-            latest_use = time.time
+            latest_use = time.time()
         if argument[0] == "":
             caveList = data["data"].values()
             random.seed(marshal.loads(b"\xe9" + os.urandom(4)))
