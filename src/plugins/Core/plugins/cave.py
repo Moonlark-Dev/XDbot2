@@ -119,8 +119,8 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                 senderData = await bot.get_stranger_info(user_id=caveData["sender"])
             await cave.send(
                 Message((
-                    f"{_lang.text("cave.name",[],event.get_user_id())}——（{caveData['id']}）\n"
-                    f"{text}\n"
+                    f'{_lang.text("cave.name",[],event.get_user_id())}——（{caveData["id"]}）\n'
+                    f'{text}\n'
                     f"——{senderData['nickname']}")))
             # 发送评论
             if event.get_session_id().split("_")[0] == "group":
