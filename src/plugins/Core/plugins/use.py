@@ -20,7 +20,10 @@ async def useHandle(
         argument = message.extract_plain_text().split(" ")
         if len(argument) == 1:
             await use.finish(
-                Message(_userCtrl.useItem(event.get_user_id(), int(argument[0])))
+                Message(
+                    _userCtrl.useItem(
+                        event.get_user_id(), int(
+                            argument[0])))
             )
         elif len(argument) == 2:
             node_msg = []

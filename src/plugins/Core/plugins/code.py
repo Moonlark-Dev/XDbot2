@@ -2,6 +2,7 @@ import traceback
 import httpx
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import ActionFailed, Bot, Message, GroupMessageEvent
+from nonebot.adapters.onebot.v11.message import MessageSegment
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
 import json
@@ -72,9 +73,8 @@ async def code_handler(bot: Bot, event: GroupMessageEvent, message: Message = Co
         reply_message = event.message_id
         try:
             message_id = (await bot.send_group_msg(
-                message=Message((
-                    f"[CQ:reply,id={reply_message}]{await run_code(message)}\n"
-                    f"{_lang.text('code.delete_warning', [], str(event.user_id))}")),
+                message=Message(MessageSegment.reply(id_=reply_message) + MessageSegment.text(await run_code(message))),
+                # f"[CQ:reply,id={reply_message}]{await run_code(message)}\n"
                 group_id=event.group_id))["message_id"]
         except ActionFailed:
             await code.finish(_lang.text("code.too_long", [], str(event.user_id)))

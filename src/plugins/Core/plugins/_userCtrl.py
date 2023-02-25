@@ -184,7 +184,6 @@ def useItem(userID: str, pos: int):
     elif item["id"] == "1":
         # FZSGBall
         return f"很遗憾，球目前还没有女装（他还在逃避这个问题！）——This-is-XiaoDeng"
-        
 
     else:
         addItem(userID, item["id"], 1, item["data"])

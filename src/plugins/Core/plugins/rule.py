@@ -146,7 +146,7 @@ async def func_command_handler(event: MessageEvent, message: Message = CommandAr
         for key in list(event.dict().keys()):
             await set_local(f"event:{key}", event.dict()[key], namespace)
 
-        await run_rule(commands[command]["execute"],  namespace, func_command)
+        await run_rule(commands[command]["execute"], namespace, func_command)
 
     except FinishedException:
         raise FinishedException()
@@ -159,7 +159,8 @@ async def rule_handler(event: MessageEvent, message: Message = CommandArg()):
     try:
         argument = str(message).split("\n")[0].split(" ")
         if argument[0] in ["build", "编译"]:
-            if json.load(open(os.path.join("./data/rules", f"{argument[1]}.info.json")))["user_id"] == event.get_user_id():
+            if json.load(open(os.path.join(
+                    "./data/rules", f"{argument[1]}.info.json")))["user_id"] == event.get_user_id():
                 threading.Thread(target=lambda: compiler.build(
                     f"./data/rules/{argument[1]}")).start()
                 await rule_command.finish(_lang.text("rule.finish", [], event.get_user_id()))
@@ -170,7 +171,8 @@ async def rule_handler(event: MessageEvent, message: Message = CommandArg()):
                 os.path.join("./data/rules", f"{argument[1]}.info.json"), "w"))
             await rule_command.finish(_lang.text("rule.cteated", [], event.get_user_id()))
         elif argument[0] in ["edit", "编辑"]:
-            if json.load(open(os.path.join("./data/rules", f"{argument[1]}.info.json")))["user_id"] == event.get_user_id():
+            if json.load(open(os.path.join(
+                    "./data/rules", f"{argument[1]}.info.json")))["user_id"] == event.get_user_id():
                 with open(os.path.join("./data/rules", f"{argument[1]}.xr"), "w") as f:
                     f.write("\n".join(str(message).split("\n")[1:]))
                 await rule_command.finish(_lang.text("rule.finish", [], event.get_user_id()))
@@ -180,10 +182,12 @@ async def rule_handler(event: MessageEvent, message: Message = CommandArg()):
             await init_rules()
             await rule_command.finish(_lang.text("rule.finish", [], event.get_user_id()))
         elif argument[0] in ["remove", "删除"]:
-            if json.load(open(os.path.join("./data/rules", f"{argument[1]}.info.json")))["user_id"] == event.get_user_id():
+            if json.load(open(os.path.join(
+                    "./data/rules", f"{argument[1]}.info.json")))["user_id"] == event.get_user_id():
                 files = os.listdir("./data/ruleis")
                 for file in files:
-                    if file in [f"{argument[1]}.info.json", f"{argument[1]}.xrc", f"{argument[1]}.xri", f"{argument[1]}.xr"]:
+                    if file in [f"{argument[1]}.info.json", f"{argument[1]}.xrc",
+                                f"{argument[1]}.xri", f"{argument[1]}.xr"]:
                         os.remove(os.path.join("./data/rules", file))
                 await rule_command.finish(_lang.text("rule.finish", [], event.get_user_id()))
             else:

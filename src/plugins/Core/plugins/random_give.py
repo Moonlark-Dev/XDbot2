@@ -16,7 +16,10 @@ async def random_give_handle(event: GroupMessageEvent):
     global latest
     try:
         if time() - latest >= 600 and random.random() <= 0.15:
-            reply = _lang.text("random_give.reply", [f"[CQ:at,qq={event.get_user_id()}]"], event.get_user_id())
+            reply = _lang.text(
+                "random_give.reply",
+                [f"[CQ:at,qq={event.get_user_id()}]"],
+                event.get_user_id())
             send_reply = False
             length = 1
 
