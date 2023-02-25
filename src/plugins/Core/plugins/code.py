@@ -37,7 +37,13 @@ async def run_code(message: Message):
         file_type = file_types[language]
     else:
         file_type = ""
-    src = "\n".join(str(message).split("\n")[1:]).replace("&#91;", "[").replace("&#93;", "]")
+    src = "\n".join(
+        str(message).split("\n")[
+            1:]).replace(
+        "&#91;",
+        "[").replace(
+                "&#93;",
+        "]")
     # 请求数据
     request_data = {
         "files": [
@@ -75,7 +81,7 @@ async def code_handler(bot: Bot, event: GroupMessageEvent, message: Message = Co
                 message=await run_code(message),
                 group_id=event.group_id,
                 auto_escape=True))["message_id"]
-            
+
         except ActionFailed:
             await code.finish(_lang.text("code.too_long", [], str(event.user_id)))
         await asyncio.sleep(60)

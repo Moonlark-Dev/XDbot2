@@ -44,7 +44,13 @@ async def cave_comment_writer(event: MessageEvent):
         reply_message = str(event.reply.message)
         if re.match(r"回声洞——（(0|[1-9][0-9]*)）\n(.+)\n——(.*)", reply_message):
             # 懒得写了就这样吧
-            cave_id = re.search(r"回声洞——（[0-9]+）", reply_message)[0].replace("回声洞——（", "").replace("）", "")
+            cave_id = re.search(
+                r"回声洞——（[0-9]+）",
+                reply_message)[0].replace(
+                "回声洞——（",
+                "").replace(
+                "）",
+                "")
             data = json.load(open("data/cave.comments.json"))
             if cave_id not in data.keys():
                 data[cave_id] = {"count": 0, "data": {}}
@@ -107,7 +113,8 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
     try:
         data = json.load(open("data/cave.data.json", encoding="utf-8"))
         argument = str(message).split(" ")
-        if argument[0] not in ["add", "添加", "-a"] and time.time() - latest_use < 5:
+        if argument[0] not in ["add", "添加", "-a"] and time.time() - \
+                latest_use < 5:
             await cave.finish(f"冷却中（{5 - (time.time() - latest_use)}s）", at_sender=True)
         else:
             latest_use = time.time()
@@ -136,7 +143,7 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                     comments = list(comments[caveData["id"]]["data"].values())
                     node_message = [[]]
                     count = 0
-                    
+
                     while len(comments) > 0:
                         if count <= MAX_NODE_MESSAGE:
                             comment = comments.pop(-1)
@@ -151,7 +158,7 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                         else:
                             node_message.append([])
                             count = 0
-                    
+
                     for node in node_message:
                         await bot.call_api(
                             api="send_group_forward_msg",
@@ -254,7 +261,7 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                     comments = list(comments[caveData["id"]]["data"].values())
                     node_message = [[]]
                     count = 0
-                    
+
                     while len(comments) > 0:
                         if count <= MAX_NODE_MESSAGE:
                             comment = comments.pop(-1)
@@ -269,7 +276,7 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                         else:
                             node_message.append([])
                             count = 0
-                    
+
                     for node in node_message:
                         await bot.call_api(
                             api="send_group_forward_msg",
