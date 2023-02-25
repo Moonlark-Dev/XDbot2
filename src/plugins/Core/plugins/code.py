@@ -30,14 +30,14 @@ async def run_code(message: Message):
     arguments = str(message).split("\n")[0].strip().split(" ")
     language = arguments[0]
     if len(arguments) > 3:
-        stdin = arguments[-1]
+        stdin = arguments[-1].replace("&#91;", "[").replace("&#93;", "]")
     else:
         stdin = ""
     if language in file_types.keys():
         file_type = file_types[language]
     else:
         file_type = ""
-    src = "\n".join(str(message).split("\n")[1:])
+    src = "\n".join(str(message).split("\n")[1:]).replace("&#91;", "[").replace("&#93;", "]")
     # 请求数据
     request_data = {
         "files": [
@@ -70,12 +70,12 @@ async def run_code(message: Message):
 @code.handle()
 async def code_handler(bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()):
     try:
-        reply_message = event.message_id
         try:
             message_id = (await bot.send_group_msg(
-                message=Message(MessageSegment.reply(id_=reply_message) + MessageSegment.text(await run_code(message))),
-                # f"[CQ:reply,id={reply_message}]{await run_code(message)}\n"
-                group_id=event.group_id))["message_id"]
+                message=await run_code(message),
+                group_id=event.group_id,
+                auto_escape=False))["message_id"]
+            
         except ActionFailed:
             await code.finish(_lang.text("code.too_long", [], str(event.user_id)))
         await asyncio.sleep(60)
