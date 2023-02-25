@@ -90,6 +90,8 @@ async def mulitaccout_manager(
                 await accout_manager.finish(_lang.text("su.accout_not_found"), user=qq)
         elif argument[0] == "list":
             await accout_manager.finish(_lang.text("su.accout_list", [accouts[event.group_id]], qq))
+        elif argument[0] == "reload":
+            await reloadMuiltData()
 
     except FinishedException:
         raise FinishedException()
