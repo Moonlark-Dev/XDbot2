@@ -29,7 +29,7 @@ async def run_code(message: Message):
     # 收集信息
     arguments = str(message).split("\n")[0].strip().split(" ")
     language = arguments[0]
-    if len(arguments) > 3:
+    if len(arguments) >= 3:
         stdin = arguments[-1].replace("&#91;", "[").replace("&#93;", "]")
     else:
         stdin = ""
