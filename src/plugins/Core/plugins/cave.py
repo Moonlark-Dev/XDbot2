@@ -32,6 +32,7 @@ commandHelp = {
         ],
     }
 }
+MAX_NODE_MESSAGE = 200
 
 
 @cave_comment.handle()
@@ -116,13 +117,41 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                     senderData = {"nickname": "未知"}
             else:
                 senderData = await bot.get_stranger_info(user_id=caveData["sender"])
-            await cave.finish(
-                Message(
-                    f"""{_lang.text("cave.name",[],event.get_user_id())}——（{caveData['id']}）
-{text}
-——{senderData['nickname']}"""
-                )
-            )
+            await cave.send(
+                Message((
+                    f"{_lang.text("cave.name",[],event.get_user_id())}——（{caveData['id']}）\n"
+                    f"{text}\n"
+                    f"——{senderData['nickname']}")))
+            # 发送评论
+            if event.get_session_id().split("_")[0] == "group":
+                comments = json.load(open("data/cave.comments.json"))
+                if caveData["id"] in comments.keys():
+                    comments = list(comments[caveData["id"]]["data"].values())
+                    node_message = [[]]
+                    count = 0
+                    
+                    while len(comments) > 0:
+                        if count <= MAX_NODE_MESSAGE:
+                            comment = comments.pop(-1)
+                            node_message[-1].append({
+                                "type": "node",
+                                "data": {
+                                    "uin": comment["sender"],
+                                    "nickname": f"来自【{(await bot.get_stranger_info(user_id=comment['sender']))['nickname']}】的评论 - #{comment['id']}",
+                                    "content": comment["text"]
+                                }
+                            })
+                        else:
+                            node_message.append([])
+                            count = 0
+                    
+                    for node in node_message:
+                        await bot.call_api(
+                            api="send_group_forward_msg",
+                            messages=node,
+                            group_id=event.get_session_id().split("_")[1]
+                        )
+            await cave.finish()
 
         elif argument[0] in ["query", "-q", "查询"]:
             start_id = int(argument[1])
