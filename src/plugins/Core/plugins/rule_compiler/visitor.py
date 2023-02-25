@@ -6,8 +6,14 @@ compiler_version = "v2.0.0"
 
 
 def codegen(ast: list, path: str = "./helloworld") -> None:
-    xri = {}
     xrc = []
+    rule_name = path.split("/")[-1]
+    xri = {
+        "name": rule_name,
+        "namespace_id": rule_name,
+        "author": None,
+        "version": "v1.0.0"
+    }
 
     rich.print("-----------------------------------")
     rich.print(ast)
