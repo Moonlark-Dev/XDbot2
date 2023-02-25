@@ -74,7 +74,7 @@ async def code_handler(bot: Bot, event: GroupMessageEvent, message: Message = Co
             message_id = (await bot.send_group_msg(
                 message=await run_code(message),
                 group_id=event.group_id,
-                auto_escape=False))["message_id"]
+                auto_escape=True))["message_id"]
             
         except ActionFailed:
             await code.finish(_lang.text("code.too_long", [], str(event.user_id)))
