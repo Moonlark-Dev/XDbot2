@@ -37,6 +37,8 @@ commandHelp = {
 @cave_comment.handle()
 async def cave_comment_writer(event: MessageEvent):
     try:
+        if not event.reply:
+            await cave_comment.finish()
         reply_message = str(event.reply.message)
         if re.match(r"回声洞——（(0|[1-9][0-9]*)）\n(.+)\n——(.*)", reply_message):
             # 懒得写了就这样吧
