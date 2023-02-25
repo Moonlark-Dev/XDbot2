@@ -34,7 +34,7 @@ async def helpHandle(bot: Bot, event: MessageEvent, message: Message = CommandAr
                 usage += f"  {length}. {u}\n"
                 length += 1
             reply = (
-                f"{_lang.text('help.info',[commands[argument]['info']],event.get_user_id())}"
+                f"{_lang.text('help.info',[commands[argument]['info']],event.get_user_id())}\n"
                 # f"来源：{commands[argument]['from']}\n"
                 f"{_lang.text('help.usage',[length-1,usage],event.get_user_id())}"
             )
