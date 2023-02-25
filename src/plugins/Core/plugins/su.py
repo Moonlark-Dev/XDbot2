@@ -566,7 +566,7 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
             await su.send("正在运行更新程序，请稍候 ...")
             old_branch = os.popen("git log").read().split("\n")[0].split(" ")[1][:8]
             os.system("python3 update.py")
-            await su.send('旧提交：%s\n新提交：%s' % (old_branch, os.popen("git log").read().split("\n")[0].split(" ")[1][8:]))
+            await su.send('旧提交：%s\n新提交：%s' % (old_branch, os.popen("git log").read().split("\n")[0].split(" ")[1][:8]))
         elif argument[0] in ["img", "图库"]:
             data = json.load(open("data/reply.images.json", encoding="utf-8"))
             if argument[1] in ["review", "审核库", "re"]:
