@@ -268,7 +268,7 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                             messages=node,
                             group_id=event.get_session_id().split("_")[1]
                         )
-            await su.finish()
+            await cave.finish()
 
         elif argument[0] in ["-d", "data", "数据"]:
             await cave.send(_lang.text("cave.data_collecting", [], event.get_user_id()))
