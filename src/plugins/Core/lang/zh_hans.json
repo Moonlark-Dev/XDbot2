@@ -162,5 +162,9 @@
   "report.success": "举报成功！",
   "bag.book_saved": "错误：书籍已经保存",
   "code.too_long": "消息过长",
-  "code.delete_warning": "[消息将在60s内撤回]"
+  "code.delete_warning": "[消息将在60s内撤回]",
+  "reply.need_argv": "无效参数！使用「/help reply」获取更多信息喵~",
+  "reply.add_finish": "调教成功！（ID: Reply#{}）",
+  "reply.finish": "完成！",
+  "reply.403": "权限不足！"
 }
