@@ -14,13 +14,16 @@ reply_sender = on_message()
 
 @reply_sender.handle()
 async def reply_sender_handle(event: GroupMessageEvent):
-    data = _.get_list()
-    message = str(event.get_message())
-    user_id = event.get_user_id()
-    for item in list(data.values()):
-        if item["global"] or item["group_id"] == event.group_id or item["user_id"] == user_id:
-            if re.match(message, item["matcher"]):
-                await reply_sender.send(Message(random.choice(item["text"])))
+    try:
+        data = _.get_list()
+        message = str(event.get_message())
+        user_id = event.get_user_id()
+        for item in list(data.values()):
+            if item["global"] or item["group_id"] == event.group_id or item["user_id"] == user_id:
+                if re.match(message, item["matcher"]):
+                    await reply_sender.send(Message(random.choice(item["text"])))
+    except BaseException:
+        await _error.report(traceback.format_exc())
 
 # [HELPSTART] Version: 2
 # Command: reply
