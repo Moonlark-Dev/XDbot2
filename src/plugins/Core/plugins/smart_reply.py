@@ -3,6 +3,7 @@ from nonebot import on_command, on_message
 from nonebot.adapters.onebot.v11 import GroupMessageEvent, Message
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
+import json
 from . import _smart_reply as _
 from . import _lang as lang
 from . import _error
@@ -51,7 +52,9 @@ async def reply_command(event: GroupMessageEvent, message: Message = CommandArg(
             if _.remove_reply(arguments[0], user_id):
                 await reply.finish(lang.text("reply.finish", [], user_id))
             else:
-                await reply.finish(lang.text("403", [], user_id))
+                await reply.finish(lang.text("reply.403", [], user_id))
+        elif arguments[0] == "get":
+            await reply.finish(json.dumps(_.get_list()[arguments[1]]))
             
 
     except IndexError:
