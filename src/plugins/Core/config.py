@@ -29,6 +29,10 @@ class Config(BaseSettings):
             "text": "{}"
         },
         {
+            "path": "data/smart_reply.data.json",
+            "text": "{\"count\":0}"
+        }
+        {
             "path": "data/cave.comments.json",
             "text": "{}"
         },
