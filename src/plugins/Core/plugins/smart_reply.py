@@ -20,7 +20,7 @@ async def reply_sender_handle(event: GroupMessageEvent):
         user_id = event.get_user_id()
         for item in list(data.values()):
             if item["global"] or item["group_id"] == event.group_id or item["user_id"] == user_id:
-                if re.match(message, item["matcher"]):
+                if re.match(item["matcher"], message):
                     await reply_sender.send(Message(random.choice(item["text"])))
     except BaseException:
         await _error.report(traceback.format_exc())
