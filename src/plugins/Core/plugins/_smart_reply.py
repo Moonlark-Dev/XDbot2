@@ -19,7 +19,7 @@ async def create_reply(matcher: str, strings: list[str], group_id: int, user_id:
     await _error.report((
         f"「新调教投稿（#{data['count']}）」\n"
         f"表达式：{matcher}\n"
-        f"文本：{'\n'.join(strings)}"
+        f"文本：{strings}\n"
         f"group_{group_id}_{user_id}"
     ))
     await _error.report((
