@@ -573,7 +573,7 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
             if argument[1] in ["global"]:
                 reply_id = argument[2]
                 smart_reply.global_reply(reply_id)
-            elif argmuent[1] in ["remove", "rm", "删除"]:
+            elif argument[1] in ["remove", "rm", "删除"]:
                 smart_reply.remove_reply(argument[2], event.get_user_id(), True)
         elif argument[0] in ["img", "图库"]:
             data = json.load(open("data/reply.images.json", encoding="utf-8"))
