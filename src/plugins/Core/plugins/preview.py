@@ -7,6 +7,7 @@ from PIL import Image, ImageDraw, ImageFont
 from . import _error
 from playwright.async_api import async_playwright
 import time
+import asyncio
 import os.path
 
 preview = on_command("preview", aliases={"预览网页"})
@@ -26,6 +27,7 @@ async def preview_website(message: Message = CommandArg()):
             browser = await p.chromium.launch()
             page = await browser.new_page()
             await page.goto(str(message))
+            await asyncio.sleep(1)      # 等待页面加载完成，参考 Issue#61
             url = page.url
             await page.screenshot(path=f"data/{file_name}.png", full_page=True)
             await browser.close()
