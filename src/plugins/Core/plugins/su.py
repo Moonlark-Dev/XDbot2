@@ -3,7 +3,9 @@ from nonebot.adapters.onebot.v11.event import GroupRequestEvent
 from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot import on_command, get_bots, on_type, get_driver
 from nonebot.exception import FinishedException, IgnoredException
+from . import _smart_reply as smart_reply
 from nonebot.params import CommandArg
+from . import _messenger as messenger
 import traceback
 import os
 import time
@@ -567,6 +569,12 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
             old_branch = os.popen("git log").read().split("\n")[0].split(" ")[1][:8]
             os.system("python3 update.py")
             await su.send('旧提交：%s\n新提交：%s' % (old_branch, os.popen("git log").read().split("\n")[0].split(" ")[1][:8]))
+        elif argument[0] in ["reply", "调教"]:
+            if argument[1] in ["global"]:
+                reply_id = argument[2]
+                smart_reply.global_reply(reply_id)
+            elif argmuent[1] in ["remove", "rm", "删除"]:
+                smart_reply.remove_reply(argument[2], event.get_user_id(), True)
         elif argument[0] in ["img", "图库"]:
             data = json.load(open("data/reply.images.json", encoding="utf-8"))
             if argument[1] in ["review", "审核库", "re"]:
