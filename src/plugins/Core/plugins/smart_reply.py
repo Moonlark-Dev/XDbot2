@@ -9,21 +9,29 @@ from . import _lang as lang
 from . import _error
 import traceback
 import random
+import time
 
 reply = on_command("reply", aliases={"调教"})
 reply_sender = on_message()
+latest_send = time.time()
 
 
 @reply_sender.handle()
 async def reply_sender_handle(event: GroupMessageEvent):
+    global latest_send
     try:
+        if time.time() - latest_send < 5:
+            await reply_sender.finish()
         data = _.get_list()
         message = str(event.get_message())
         user_id = event.get_user_id()
         for item in list(data.values()):
             if item["global"] or item["group_id"] == event.group_id or item["user_id"] == user_id:
                 if re.match(item["matcher"], message):
-                    await reply_sender.send(Message(random.choice(item["text"])))
+                    latest_send = time.time()
+                    await reply_sender.finish(Message(random.choice(item["text"])))
+    except FinishedException:
+        raise FinishedException()
     except BaseException:
         await _error.report(traceback.format_exc())
 
