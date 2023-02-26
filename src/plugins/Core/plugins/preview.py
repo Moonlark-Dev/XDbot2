@@ -33,7 +33,7 @@ async def preview_website(message: Message = CommandArg()):
         image = Image.open(f"data/{file_name}.png")
         draw = ImageDraw.Draw(image)
         font = ImageFont.load_default()
-        draw.text((0, 0), url, font=font)
+        draw.text((0, 0), url, (0, 0, 0), font=font)
         image.save(f"data/{file_name}.png")
         # 发送图片
         await preview.finish(Message(MessageSegment.image(
