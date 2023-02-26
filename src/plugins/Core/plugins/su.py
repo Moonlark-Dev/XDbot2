@@ -566,7 +566,8 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                 os.remove(f"rules/{argument[2]}.json")
         elif argument[0] in ["update", "检查更新"]:
             await su.send("正在运行更新程序，请稍候 ...")
-            old_branch = os.popen("git log").read().split("\n")[0].split(" ")[1][:8]
+            old_branch = os.popen("git log").read().split("\n")[
+                0].split(" ")[1][:8]
             os.system("python3 update.py")
             await su.send('旧提交：%s\n新提交：%s' % (old_branch, os.popen("git log").read().split("\n")[0].split(" ")[1][:8]))
         elif argument[0] in ["reply", "调教"]:
@@ -574,7 +575,8 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                 reply_id = argument[2]
                 smart_reply.global_reply(reply_id)
             elif argument[1] in ["remove", "rm", "删除"]:
-                smart_reply.remove_reply(argument[2], event.get_user_id(), True)
+                smart_reply.remove_reply(
+                    argument[2], event.get_user_id(), True)
         elif argument[0] in ["img", "图库"]:
             data = json.load(open("data/reply.images.json", encoding="utf-8"))
             if argument[1] in ["review", "审核库", "re"]:

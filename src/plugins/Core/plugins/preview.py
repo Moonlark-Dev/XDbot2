@@ -12,6 +12,7 @@ import os.path
 preview = on_command("preview", aliases={"预览网页"})
 latest_time = time.time()
 
+
 @preview.handle()
 async def preview_website(message: Message = CommandArg()):
     global latest_time
@@ -37,7 +38,6 @@ async def preview_website(message: Message = CommandArg()):
         # 发送图片
         await preview.finish(Message(MessageSegment.image(
             file=f"file://{os.path.abspath(os.path.join('./data', f'{file_name}.png'))}")))
-
 
     except FinishedException:
         raise FinishedException()
