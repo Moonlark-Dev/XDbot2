@@ -60,7 +60,7 @@ async def reply_command(event: GroupMessageEvent, message: Message = CommandArg(
             reply_id = await _.create_reply(matcher, reply_text, event.group_id, user_id)
             await reply.finish(lang.text("reply.add_finish", [str(reply_id)], user_id))
         elif arguments[0] == "remove":
-            if _.remove_reply(arguments[0], user_id):
+            if _.remove_reply(arguments[1], user_id):
                 await reply.finish(lang.text("reply.finish", [], user_id))
             else:
                 await reply.finish(lang.text("reply.403", [], user_id))
