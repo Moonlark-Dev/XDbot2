@@ -148,7 +148,7 @@
   "whoAtme.notice": "XDBOT2 Warm Tips",
   "whoAtme.title": "For your convenience, please read from the bottom to the top (the nearer the top, the higher)\nXDBOT2 will save up to 98 messages for a single group per user",
   "whoAtme.other": "And {} users (in {} groups) have @(at) you",
-  "whoAtme.error": "Execution failed"
+  "whoAtme.error": "Execution failed",
   "su.set_accout_success": "Switched xdbot account for this group: {}",
   "su.accout_not_found": "Illegal account",
   "su.accout_list": "Available accounts{}",
@@ -157,7 +157,7 @@
   "rule.noprimission": "Failed: Permission denied",
   "rule.created": "Rule `{}' created！",
   "rule.finish": "Completed!",
-  "rule.list": Activity rules"：\n{}",
+  "rule.list": "Activity rules:\n{}",
   "report.success": "Reported!",
   "bag.book_saved": "Failure: the book had been saved",
   "code.too_long": "message too long",
