@@ -46,7 +46,7 @@ dictionary = {
     "to_me": ["?", "¿", "喵？", "a？", "（窥屏.jpg）", "喵喵喵？", "(?"],
     "primary": ["（窥屏.jpg）", "az……", "hmm"],
     "tips": [
-        "XDbot的生日是2022/06/28！（到时候记得祝XDbot生日快乐！",
+        "XDbot的生日是2022/06/28！",
         "你知道吗：不你不知道",
         "https://github.com/This-is-XiaoDeng/XDbot2",
         "XD在线化缘.jpg"
@@ -58,7 +58,7 @@ dictionary = {
 async def send_tips_handle():
     try:
         global latestSend
-        if time.time() - latestSend >= 60:
+        if time.time() - latestSend >= 180:
             if random.random() <= 0.01:
                 await send_tips.send(f"【XDbot小贴士】\n{random.choice(dictionary['tips'])}")
                 latestSend = time.time()
