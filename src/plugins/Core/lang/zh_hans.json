@@ -166,5 +166,6 @@
   "reply.need_argv": "无效参数！使用「/help reply」获取更多信息喵~",
   "reply.add_finish": "调教成功！（ID: Reply#{}）",
   "reply.finish": "完成！",
-  "reply.403": "权限不足！"
+  "reply.403": "权限不足！",
+  "reply.not_found": "错误：数据不存在！"
 }

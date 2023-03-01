@@ -67,12 +67,13 @@ async def reply_command(event: GroupMessageEvent, message: Message = CommandArg(
         elif arguments[0] in ["get", "show"]:
             data = _.get_list()[arguments[1]]
             await reply.finish((
-                f"「调教数据（Reply#{arguments[1]}」\n"
+                f"「调教数据（Reply#{arguments[1]}）」\n"
                 f"表达式：{data['user_id']}\n"
                 f"全局：{data['global']}\n"
                 f"文本：{data['text']}"
             ))
-
+    except KeyError:
+        await reply.finish(lang.text("reply.not_found", [], event.get_user_id()))
     except IndexError:
         await reply.finish(lang.text("reply.need_argv", [], event.get_user_id()))
     except FinishedException:
