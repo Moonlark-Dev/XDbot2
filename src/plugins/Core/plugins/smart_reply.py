@@ -65,7 +65,13 @@ async def reply_command(event: GroupMessageEvent, message: Message = CommandArg(
             else:
                 await reply.finish(lang.text("reply.403", [], user_id))
         elif arguments[0] in ["get", "show"]:
-            await reply.finish(json.dumps(_.get_list()[arguments[1]]))
+            data = _.get_list()[arguments[1]]
+            await reply.finish((
+                f"「调教数据（Reply#{arguments[1]}」\n"
+                f"表达式：{data['user_id']}\n"
+                f"全局：{data['global']}\n"
+                f"文本：{data['text']}"
+            ))
 
     except IndexError:
         await reply.finish(lang.text("reply.need_argv", [], event.get_user_id()))
