@@ -168,7 +168,7 @@
   "reply.finish": "完成！",
   "reply.403": "权限不足！",
   "reply.not_found": "错误：数据不存在！",
-  "reply.show_data": "「调教数据（Reply#{}）」\n表达式：{}\n用户：\n全局：{}\n文本：{}",
+  "reply.show_data": "「调教数据（Reply#{}）」\n表达式：{}\n全局：{}\n文本：{}",
   "reply.mydata": "活动的数据：{}",
   "reply.alldata": "活动的数据（当前会话）：{}" 
 }

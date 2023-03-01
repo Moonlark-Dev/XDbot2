@@ -75,7 +75,6 @@ async def reply_command(event: GroupMessageEvent, message: Message = CommandArg(
                 "reply.show_data",
                 [arguments[1],
                  data["matcher"],
-                 data["user_id"],
                  data["global"],
                  data["text"]]))
         elif arguments[0] in ["list", "ls"]:
