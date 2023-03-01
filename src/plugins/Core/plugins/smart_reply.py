@@ -42,6 +42,8 @@ async def reply_sender_handle(event: GroupMessageEvent):
 # Usage: reply
 # Usage: reply remove <ID>
 # Usage: reply get <ID>
+# Usage: reply list
+# Usage: reply all
 # Usage: reply add <正则表达式>\n<回复内容1>\n[回复内容2]\n[...]
 # [HELPEND]
 
@@ -50,6 +52,9 @@ async def reply_sender_handle(event: GroupMessageEvent):
 async def reply_command(event: GroupMessageEvent, message: Message = CommandArg()):
     try:
         msg = str(message).replace("&#91", "[").replace("&#93;", "]")
+        # 防止部分Windows客户端换行为\r\n导致无法正常匹配
+        if msg[-1] == "\r":
+            msg = msg[:-1]
         arguments = msg.split("\n")[0].split(" ")
         user_id = event.get_user_id()
         if arguments[0] == "":
@@ -72,6 +77,23 @@ async def reply_command(event: GroupMessageEvent, message: Message = CommandArg(
                  data["user_id"],
                  data["globa"],
                  data["text"]]))
+        elif arguments[0] in ["list", "ls"]:
+            data = _.get_list()
+            reply_list = []
+            for key in list(data.keys()):
+                if data[key]["user_id"] == user_id:
+                    reply_list.append(f"#{key}")
+            await reply.finish(lang.text("reply.mydata", [" ".join(reply_list)], user_id))
+        elif arguments[0] in ["all"]:
+            data = list(_.get_list().keys())
+            data_list = []
+            for key in list(data.keys()):
+                if data[key]["global"] or data[key]["group_id"] == event.group_id:
+                    data_list.append(f"#{key}")
+            await reply.finish(lang.text("reply.alldata", [" ".join(data_list)], user_id))
+        else:
+            await reply.finish(lang.text("reply.need_argv", [], user_id))
+            
     except KeyError:
         await reply.finish(lang.text("reply.not_found", [], event.get_user_id()))
     except IndexError:
