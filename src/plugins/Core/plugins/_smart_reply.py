@@ -24,10 +24,6 @@ async def create_reply(matcher: str, strings: list[str], group_id: int, user_id:
         f"文本：{strings}\n"
         f"group_{group_id}_{user_id}"
     ))
-    await _error.report((
-        f"使用 /su reply global {data['count']} 设为全局\n"
-        f"使用 /su reply remove {data['count']} 删除"
-    ))
     data["count"] += 1
     json.dump(data, open("data/smart_reply.data.json", "w"))
     return data["count"] - 1
