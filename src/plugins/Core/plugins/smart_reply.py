@@ -75,7 +75,7 @@ async def reply_command(event: GroupMessageEvent, message: Message = CommandArg(
                 "reply.show_data",
                 [arguments[1],
                  data["user_id"],
-                 data["globa"],
+                 data["global"],
                  data["text"]]))
         elif arguments[0] in ["list", "ls"]:
             data = _.get_list()
@@ -85,7 +85,7 @@ async def reply_command(event: GroupMessageEvent, message: Message = CommandArg(
                     reply_list.append(f"#{key}")
             await reply.finish(lang.text("reply.mydata", [" ".join(reply_list)], user_id))
         elif arguments[0] in ["all"]:
-            data = list(_.get_list().keys())
+            data = _.get_list()
             data_list = []
             for key in list(data.keys()):
                 if data[key]["global"] or data[key]["group_id"] == event.group_id:
