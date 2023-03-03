@@ -124,15 +124,18 @@ async def jrrpHandle(
             # 生成rank
             nowRank = 0
             length = 0
+            temp1 = 1
             myRank = None
             myJrrp = -1
             qq = event.get_user_id()
             temp0 = 114514
             for r in jrrpRank:
                 if r["jrrp"] != temp0:
-                    nowRank += 1
+                    nowRank += temp1
+                    temp1 = 0
                     temp0 = r["jrrp"]
                 jrrpRank[length]["rank"] = nowRank
+                temp1 += 1
                 # 检查是不是自己
                 if str(r["user_id"]) == qq:
                     myRank = nowRank
