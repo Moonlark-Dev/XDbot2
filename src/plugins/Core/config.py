@@ -19,6 +19,14 @@ class Config(BaseSettings):
     # 数据文件命名规则：子插件.数据名.json
     FILES = [
         {
+            "path": "data/random_events.disable/json",
+            "text": json.dumps({
+                "send_images": [],
+                "download_images": [],
+                "random_give": []
+            })
+        },
+        {
             "path": "data/setu.allow.json",
             "text": json.dumps({
                 "r18": False

@@ -15,6 +15,8 @@ latest = time()
 async def random_give_handle(event: GroupMessageEvent):
     global latest
     try:
+        if event.group_id in json.load(open("data/random_events.disable.json"))["random_give"]:
+            await random_give.finish()
         if time() - latest >= 600 and random.random() <= 0.15:
             reply = _lang.text(
                 "random_give.reply",
