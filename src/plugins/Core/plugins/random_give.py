@@ -5,6 +5,7 @@ import json
 from . import _lang
 from . import _error
 from . import _userCtrl
+from nonebot.exceptions import FinishedException
 import random
 import traceback
 
@@ -54,6 +55,7 @@ async def random_give_handle(event: GroupMessageEvent):
         else:
             if random.random() <= 0.2:
                 _userCtrl.addExp(event.get_user_id(), random.randint(1, 2))
-
+    except FinishedException:
+        raise FinishedException()
     except BaseException:
         await _error.report(traceback.format_exc())
