@@ -7,7 +7,6 @@ import random
 import re
 import time
 import traceback
-
 from nonebot.exception import FinishedException
 from . import _error
 from . import _lang
@@ -150,10 +149,12 @@ async def repetitionHandle(event: GroupMessageEvent):
 
 
 @imageSender.handle()
-async def imageSenderHandle():
+async def imageSenderHandle(event: GroupMessageEvent):
     try:
         global latestSend
         if time.time() - latestSend > 90:
+            if event.group_id in json.load(open("data/random_events.disable.json"))["send_images"]:
+                await random_give.finish()
             if random.random() <= 0.05:  # 机率：5%
                 images = []
                 # message = event.get_plaintext()
@@ -200,6 +201,8 @@ async def imageSaverHandle(bot: Bot, event: GroupMessageEvent):
     try:
         global latestSend
         if time.time() - latestSend > 60:
+            if event.group_id in json.load(open("data/random_events.disable.json"))["download_images"]:
+                await random_give.finish()
             message = str(event.get_message())
             # await imageSaver.send(message)
             imageCQ = re.match(r"\[CQ:image(.*)\]", message)
