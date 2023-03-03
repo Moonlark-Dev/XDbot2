@@ -1,6 +1,7 @@
 import traceback
+from . import _lang as lang
 from nonebot import on_command
-from nonebot.adapters.onebot.v11 import Message, MessageSegment
+from nonebot.adapters.onebot.v11 import Message, MessageSegment, MessageEvent
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
 from PIL import Image, ImageDraw, ImageFont
@@ -12,21 +13,35 @@ import os.path
 
 preview = on_command("preview", aliases={"预览网页"})
 latest_time = time.time()
+builtin_urls = {
+    "six": "http://127.0.0.1:38192/six",
+    "ban": "http://127.0.0.1:38192/ban/%group_id%",
+    "setu": "http://127.0.0.1:38192/setu"
+}
 
 
 @preview.handle()
-async def preview_website(message: Message = CommandArg()):
+async def preview_website(event: MessageEvent, message: Message = CommandArg()):
     global latest_time
     try:
         if time.time() - latest_time < 15:
             await preview.finish(f"冷却中（{15 - time.time() + latest_time}s）")
         latest_time = time.time()
+        # 解析参数
+        url = str(message)
+        if url in builtin_urls.keys():
+            url = buildin_urls[url]
+            if "%group_id%" in url:
+                try:
+                    url.replace("%group_id%", event.get_session_id().split("_")[1])
+                except IndexError:
+                    await preview.finish(lang.text("preview.only_group", [], event.get_user_id()))
         # 截取网页
         file_name = f"preview.image_{int(time.time())}"
         async with async_playwright() as p:
             browser = await p.chromium.launch()
             page = await browser.new_page()
-            await page.goto(str(message))
+            await page.goto(url)
             await asyncio.sleep(1)      # 等待页面加载完成，参考 Issue#61
             url = page.url
             await page.screenshot(path=f"data/{file_name}.png", full_page=True)
