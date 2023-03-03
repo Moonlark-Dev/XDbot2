@@ -33,7 +33,7 @@ async def preview_website(event: MessageEvent, message: Message = CommandArg()):
             url = builtin_urls[url]
             if "%group_id%" in url:
                 try:
-                    url.replace("%group_id%", event.get_session_id().split("_")[1])
+                    url = url.replace("%group_id%", event.get_session_id().split("_")[1])
                 except IndexError:
                     await preview.finish(lang.text("preview.only_group", [], event.get_user_id()))
         # 截取网页
