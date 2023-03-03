@@ -143,7 +143,7 @@ async def repetitionHandle(event: GroupMessageEvent):
                         repetitionCache.pop(event.group_id)
                     except BaseException:
                         pass
-
+    
     except Exception:
         await _error.report(traceback.format_exc())
 
@@ -192,6 +192,8 @@ async def imageSenderHandle(event: GroupMessageEvent):
                             "data/reply.images.json", "w", encoding="utf-8")
                     )
 
+    except FinishedException:
+        raise FinishedException()
     except Exception:
         await _error.report(traceback.format_exc())
 
@@ -265,5 +267,7 @@ async def imageSaverHandle(bot: Bot, event: GroupMessageEvent):
                     latestSend = time.time()
                 # elif random.random() <= 0.01:
 
+    except FinishedException:
+        raise FinishedException()
     except Exception:
         await _error.report(traceback.format_exc())
