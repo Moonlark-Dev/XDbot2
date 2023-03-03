@@ -154,7 +154,7 @@ async def imageSenderHandle(event: GroupMessageEvent):
         global latestSend
         if time.time() - latestSend > 90:
             if event.group_id in json.load(open("data/random_events.disable.json"))["send_images"]:
-                await random_give.finish()
+                await imageSender.finish()
             if random.random() <= 0.05:  # 机率：5%
                 images = []
                 # message = event.get_plaintext()
@@ -202,7 +202,7 @@ async def imageSaverHandle(bot: Bot, event: GroupMessageEvent):
         global latestSend
         if time.time() - latestSend > 60:
             if event.group_id in json.load(open("data/random_events.disable.json"))["download_images"]:
-                await random_give.finish()
+                await imageSaver.finish()
             message = str(event.get_message())
             # await imageSaver.send(message)
             imageCQ = re.match(r"\[CQ:image(.*)\]", message)
