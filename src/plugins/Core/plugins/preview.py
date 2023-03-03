@@ -30,7 +30,7 @@ async def preview_website(event: MessageEvent, message: Message = CommandArg()):
         # 解析参数
         url = str(message)
         if url in builtin_urls.keys():
-            url = buildin_urls[url]
+            url = builtin_urls[url]
             if "%group_id%" in url:
                 try:
                     url.replace("%group_id%", event.get_session_id().split("_")[1])
