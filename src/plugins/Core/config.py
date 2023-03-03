@@ -19,7 +19,7 @@ class Config(BaseSettings):
     # 数据文件命名规则：子插件.数据名.json
     FILES = [
         {
-            "path": "data/random_events.disable/json",
+            "path": "data/random_events.disable.json",
             "text": json.dumps({
                 "send_images": [],
                 "download_images": [],
