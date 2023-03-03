@@ -12,13 +12,20 @@ import asyncio
 import os.path
 
 preview = on_command("preview", aliases={"预览网页"})
-latest_time = time.time()
+latest_time = time.time() - 15
 builtin_urls = {
     "six": "http://127.0.0.1:38192/six",
     "ban": "http://127.0.0.1:38192/ban/%group_id%",
     "setu": "http://127.0.0.1:38192/setu"
 }
 
+# [HELPSTART] Version: 2
+# Command: preview
+# Usage: preview <url>
+# Usage: preview {six|ban|setu}
+# Msg: 预览网页
+# Info: 预览网页
+# [HELPEND]
 
 @preview.handle()
 async def preview_website(event: MessageEvent, message: Message = CommandArg()):
