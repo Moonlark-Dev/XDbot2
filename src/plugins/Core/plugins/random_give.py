@@ -5,7 +5,7 @@ import json
 from . import _lang
 from . import _error
 from . import _userCtrl
-from nonebot.exceptions import FinishedException
+from nonebot.exception import FinishedException
 import random
 import traceback
 
