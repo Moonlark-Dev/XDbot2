@@ -43,7 +43,7 @@ def parse_package_data(package: str):
 def parse_packages_data(packages: list):
     data = []
     for pkg in packages:
-        data.append(parse_package_data(packages))
+        data.append(parse_package_data(pkg))
     return data
 
 @pacman.handle()
