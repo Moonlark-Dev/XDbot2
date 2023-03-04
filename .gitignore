@@ -8,3 +8,4 @@ __pycache__
 data/
 Dockerfile
 docker-compose.yml
+src/plugins/Core/plugins/chatgpt.py
