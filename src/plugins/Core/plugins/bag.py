@@ -18,7 +18,11 @@ async def bagHandle(
     bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()
 ):
     try:
-        argument = message.extract_plain_text().splitlines()[0].split(" ")
+        argument = message.extract_plain_text().splitlines()
+        if argument == []:
+            argument = [""]
+        else:
+            argument = argument[0].split(" ")
         bagData = json.load(open("data/etm.bag.json", encoding="utf-8"))
         itemData = json.load(open("data/etm.items.json", encoding="utf-8"))
         if argument[0] == "":
