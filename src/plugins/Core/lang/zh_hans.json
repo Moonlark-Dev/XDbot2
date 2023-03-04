@@ -171,5 +171,6 @@
   "reply.show_data": "「调教数据（Reply#{}）」\n表达式：{}\n全局：{}\n文本：{}",
   "reply.mydata": "活动的数据：{}",
   "reply.alldata": "活动的数据（当前会话）：{}",
-  "preview.only_group": "错误：请在群聊使用此功能"
+  "preview.only_group": "错误：请在群聊使用此功能",
+  "setu_rank.title": "随机涩图使用排行："
 }
