@@ -25,6 +25,13 @@ async def send_request(package: str):
 def get_packages_list(html: str):
     return html[html.find("<tbody>") + 7:html.find("</tbody>", html.find("<tbody>"))].replace("<tr>", "").replace("<td>", "").replace("\n", "").replace("</a>", "").split("</tr>")
 
+import re
+
+def process_input(package_input):
+    # 使用正则表达式删除非字母、数字、空格以外的所有字符
+    filtered_input = re.sub(r'[^a-zA-Z0-9\s]+', '', package_input)
+    return filtered_input
+
 def parse_package_data(package: str):
     items = package.split("</td>")
     package_data = []
@@ -56,7 +63,7 @@ async def search_package(message: Message = CommandArg()):
     try:
         packages = parse_packages_data(
             get_packages_list(
-                await send_request(str(message))
+                await send_request(process_input(str((message))))
             )
         )
         for package in packages:
