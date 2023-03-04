@@ -68,3 +68,8 @@ async def handle_first_receive(event: GroupMessageEvent, bot: bot, message: Mess
     await asyncio.sleep(114)
     await bot.delete_msg(message_id=msg['message_id'])
     await vocaloid.finish(f" ")
+    
+# [HELPSTART]
+# !Usage gssearch gssearch <角色名>
+# !Info gssearch 查询角色攻略
+# [HELPEND]
