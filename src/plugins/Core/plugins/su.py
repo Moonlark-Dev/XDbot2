@@ -370,7 +370,7 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
         elif argument[0] == "restart" or argument[0] == "重新启动":
             with open("data/reboot.py", "w") as f:
                 f.write(str(time.time()))
-        elif arguuent[0] == "cave" or argument[0] == "回声洞":
+        elif argument[0] == "cave" or argument[0] == "回声洞":
             if argument[1] in ["comment", "reply", "回复"]:
                 if argument[2] in ["remove", "rm", "删除"]:
                     data = json.load(open("data/cave.comments.json"))
