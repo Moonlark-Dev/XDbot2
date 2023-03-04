@@ -103,7 +103,7 @@ async def bagHandle(
         elif argument[0] in ["rename", "重命名"]:
             _userCtrl.removeItemsByID(event.get_user_id(), "5", 1, )
             bagData[event.get_user_id()][int(argument[1])]["data"]["displayName"] = argument[2]
-            if len(message.splitlines()) >= 2:
+            if len(str(message).splitlines()) >= 2:
                 bagData[event.get_user_id()][int(argument[1])]["data"]["information"] = "\n".join(message.splielines()[1:])
             json.dump(bagData, open("data/etm.bag.json", "w"))
             
