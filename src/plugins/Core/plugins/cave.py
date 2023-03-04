@@ -53,7 +53,7 @@ async def cave_comment_writer(event: MessageEvent):
                 "")
             data = json.load(open("data/cave.comments.json"))
             if cave_id not in data.keys():
-                data[cave_id] = {"count": 0, "data": {}}
+                data[cave_id] = {"count": 1, "data": {}}
             data[cave_id]["data"][str(data[cave_id]["count"])] = {
                 "id": data[cave_id]["count"],
                 "text": str(event.get_message()),
