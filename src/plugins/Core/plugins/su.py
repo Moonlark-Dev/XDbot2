@@ -375,7 +375,7 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                 if argument[2] in ["remove", "rm", "删除"]:
                     data = json.load(open("data/cave.comments.json"))
                     data[argument[3]]["data"].pop(argument[4])
-                    json.dump(open("data/cave.comments.json", "w"))
+                    json.dump(data, open("data/cave.comments.json", "w"))
                     await su.send(f"已删除 Cave{argument[3]}#{argument[4]}")
             elif argument[1] == "remove" or argument[1] == "移除":
                 data = json.load(open("data/cave.data.json", encoding="utf-8"))
