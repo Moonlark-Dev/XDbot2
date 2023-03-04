@@ -26,24 +26,29 @@ def get_packages_list(html: str):
     return html[html.find("<tbody>") + 7:html.find("</tbody>", html.find("<tbody>"))].replace("<tr>", "").replace("<td>", "").replace("\n", "").replace("</a>", "").split("</tr>")
 
 def parse_package_data(package: str):
-    items = package.split("</td>\n")
+    items = package.split("</td>")
     package_data = []
     for item in items:
         package_data.append(item.strip())
-    return {
-        "arch": package_data[0],
-        "repo": package_data[1],
-        "name": package_data[2][package_data[2].find(">")+1:],
-        "ver": package_data[3],
-        "info": package_data[4],
-        "latest_update": package_data[5],
-        "url": "https://archlinux.org" + package_data[2][package_data[2].find("href=\"") + 7:package_data[2].find('"')]
-    }
+    try:
+        return {
+            "arch": package_data[0],
+            "repo": package_data[1],
+            "name": package_data[2][package_data[2].find(">")+1:],
+            "ver": package_data[3],
+            "info": package_data[4],
+            "latest_update": package_data[5],
+            "url": "https://archlinux.org" + package_data[2][package_data[2].find("href=\"") + 7:package_data[2].find('"')]
+        }
+    except IndexError:
+        return None
 
 def parse_packages_data(packages: list):
     data = []
     for pkg in packages:
-        data.append(parse_package_data(pkg))
+        pkgdata = parse_package_data(pkg)
+        if pkgdata:
+            data.append(pkgdata)
     return data
 
 @pacman.handle()
