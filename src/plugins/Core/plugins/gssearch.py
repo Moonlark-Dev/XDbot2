@@ -66,7 +66,8 @@ async def handle_first_receive(event: GroupMessageEvent, bot: bot, message: Mess
     msgb = pic + f"攻略制作:猫冬 https://www.miyoushe.com/ys/accountCenter/postList?id=74019947"
     msg = await gssearch.send(msgb)
 
-# [HELPSTART]
-# !Usage gssearch gssearch <角色名>
-# !Info gssearch 查询角色攻略
-# [HELPEND]
+# [HELPSTART] Version: 2
+# Command: gssearch
+# Info: 查询原神角色攻略(目前只有蒙德)
+# Msg: 查询西风驿站猫冬角色攻略
+# Usage: gssearch <角色名>：查询角色的攻略
