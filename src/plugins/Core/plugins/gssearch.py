@@ -6,7 +6,7 @@ from nonebot.adapters.onebot.v11.message import Message, MessageSegment
 import asyncio
 from nonebot.adapters.onebot.v11.bot import Bot as bot
 
-gssearch = on_command("gssearch", aliases={"原神角色查询", "西风驿站"}, priority=10)
+gssearch = on_command("gssearch", aliases={"原神角色查询", "西风驿站"})
 
 
 @gssearch.handle()
@@ -38,7 +38,7 @@ async def handle_first_receive(event: GroupMessageEvent, bot: bot, message: Mess
         pic = MessageSegment.image(requests.get("https://upload-bbs.miyoushe.com/upload/2022/03/26/74019947/67955823ca97f5d578b62d7489544bce_1343760092805173875.png").content)
     elif str(message) == "班尼特":
         pic = MessageSegment.image(requests.get("https://upload-bbs.miyoushe.com/upload/2022/04/05/74019947/deb7c21f15957f9ea54c4c59d51384c5_6524333797006182492.png").content)
-    elif str(message) == "迪奥娜":
+    elif str (message) == "迪奥娜":
         pic = MessageSegment.image(requests.get("https://upload-bbs.miyoushe.com/upload/2022/04/24/74019947/369cf8b57758d2a3dc1c201208c94a62_4290873316135656553.png\").content)
     elif str(message) == "莫娜":
         pic = MessageSegment.image(requests.get("https://upload-bbs.miyoushe.com/upload/2022/04/18/74019947/e45b3662d49485ad45d1c15c86ee8ff1_6147281555794418997.png").content)
@@ -64,11 +64,8 @@ async def handle_first_receive(event: GroupMessageEvent, bot: bot, message: Mess
     else:
         await gssearch.finish(f"未找到"+message)
     msgb = pic + f"攻略制作:猫冬 https://www.miyoushe.com/ys/accountCenter/postList?id=74019947"
-    msg = await vocaloid.send(msgb)
-    await asyncio.sleep(114)
-    await bot.delete_msg(message_id=msg['message_id'])
-    await vocaloid.finish(f" ")
-    
+    msg = await gssearch.send(msgb)
+
 # [HELPSTART]
 # !Usage gssearch gssearch <角色名>
 # !Info gssearch 查询角色攻略
