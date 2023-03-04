@@ -18,7 +18,7 @@ async def bagHandle(
     bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()
 ):
     try:
-        argument = message.extract_plain_text().split("\n")[0].split(" ")
+        argument = message.extract_plain_text().splitlines()[0].split(" ")
         bagData = json.load(open("data/etm.bag.json", encoding="utf-8"))
         itemData = json.load(open("data/etm.items.json", encoding="utf-8"))
         if argument[0] == "":
@@ -96,8 +96,13 @@ async def bagHandle(
                     await bag.finish(_lang.text("bag.finish"))
                 else:
                     await bag.finish(_lang.text("bag.book_saved", [], event.get_user_id()))
-            else:
-                await bag.finish(_lang.text("bag.notfound", [], event.get_user_id()))
+        elif argument[0] in ["rename", "重命名"]:
+            _userCtrl.removeItemsByID(evnet.get_user_id(), "5", 1, )
+            bagData[event.get_user_id()][int(argument[1])]["data"]["displayName"] = argument[2]
+            if len(message.splitlines()) >= 2:
+                bagData[event.get_user_id()][int(argument[1])]["data"]["information"] = "\n".join(message.splielines()[1:])
+            json.dump(bagData, open("data/etm.bag.json", "w"))
+            
 
     except FinishedException:
         raise FinishedException()

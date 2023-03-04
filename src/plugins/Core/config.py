@@ -111,8 +111,13 @@ class Config(BaseSettings):
                 },
                 "4": {
                     "name": "书与笔",
-                    "info": "致敬 Minecraft",
+                    "info": "致敬 Minecraft，用于书写文本",
                     "data": {"author": None, "text": None, "saved": False, "displayName": "书与笔"}
+                },
+                "5": {
+                    "name": "命名牌",
+                    "info": "用于修改物品显示及简介",
+                    "data": {}
                 }
             })
         },
