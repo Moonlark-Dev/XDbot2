@@ -6,12 +6,19 @@ from nonebot.adapters.onebot.v11 import Adapter as ONEBOT_V11Adapter
 
 # Custom your logger
 #
-# from nonebot.log import logger, default_format
-# logger.add("error.log",
-#            rotation="00:00",
-#            diagnose=False,
-#            level="ERROR",
-#            format=default_format)
+from nonebot.log import logger, default_format
+
+import os
+try:
+    os.mkdir("data")
+except Exception:
+    pass
+
+logger.add("./data/error.log",
+           rotation="00:00",
+           diagnose=False,
+           level="ERROR",
+           format=default_format)
 
 # You can pass some keyword args config to init function
 nonebot.init()

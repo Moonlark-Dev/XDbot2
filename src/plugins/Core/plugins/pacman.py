@@ -68,7 +68,7 @@ async def search_package(message: Message = CommandArg()):
         )
         for package in packages:
             await pacman.send((
-                f"包名：{package['arch']}\n"
+                f"包名：{package['name']}\n"
                 f"版本：{package['ver']}\n"
                 f"架构：{package['arch']}\n"
                 f"简介：{package['info']}\n"
