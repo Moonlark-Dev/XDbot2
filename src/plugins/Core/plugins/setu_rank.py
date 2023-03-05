@@ -29,6 +29,7 @@ async def show_setu_ranking(bot: Bot, event: MessageEvent):
                     ranking.insert(length, {"user": user, "count": count})
                     is_insert = True
                     break
+                length += 1
             if not is_insert:
                 ranking.append({"user": user, "count": count})
         
