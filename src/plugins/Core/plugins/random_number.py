@@ -8,7 +8,7 @@ from . import _error as error
 from . import _lang as lang
 import traceback
 
-random_plugin = on_command('random')
+random_plugin = on_command('random', aliases={"rd", "随机数"})
 
 # [HELPSTART] Version: 2
 # Command: random
