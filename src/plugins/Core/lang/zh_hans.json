@@ -172,5 +172,6 @@
   "reply.mydata": "活动的数据：{}",
   "reply.alldata": "活动的数据（当前会话）：{}",
   "preview.only_group": "错误：请在群聊使用此功能",
-  "setu_rank.title": "随机涩图使用排行："
+  "setu_rank.title": "随机涩图使用排行：",
+  "random_number.argerr": "参数错误！"
 }
