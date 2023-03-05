@@ -43,9 +43,9 @@ def parse_package_data(package: str):
             "repo": package_data[1],
             "name": package_data[2][package_data[2].find(">")+1:],
             "ver": package_data[3],
-            "info": package_data[4],
+            "info": package_data[4][package_data[4].find(">")+1:],
             "latest_update": package_data[5],
-            "url": "https://archlinux.org" + package_data[2][package_data[2].find("href=\"") + 7:package_data[2].find('"')]
+            "url": f"https://archlinux.org/packages/{package_data[1].lower()}/{package_data[0]}/{package_data[2][package_data[2].find('>')+1:]}"
         }
     except IndexError:
         return None
