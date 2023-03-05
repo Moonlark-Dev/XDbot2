@@ -43,7 +43,7 @@ async def handle_first_receive(event: GroupMessageEvent, bot: bot, message: Mess
     
     if str(message) in urls == False:
         await gssearch.finish(f"未找到"+message)
-    msg = await gssearch.send(Message("[CQ:image, url="+urls[str(message)]+"]")+f"攻略制作:猫冬 https://www.miyoushe.com/ys/accountCenter/postList?id=74019947")
+    msg = await gssearch.send(Message("[CQ:image, url="+urls[str(message)]+"]")+f"攻略制作:猫冬\nhttps://www.miyoushe.com/ys/accountCenter/postList?id=74019947")
 
 
 
