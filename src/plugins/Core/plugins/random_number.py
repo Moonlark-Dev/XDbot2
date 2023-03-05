@@ -1,4 +1,5 @@
 import random
+from nonebot.exception import FinishedException
 from nonebot import on_command
 from nonebot.params import CommandArg
 from nonebot.adapters.onebot.v11 import Bot, MessageEvent
@@ -38,5 +39,7 @@ async def random_handle(event: MessageEvent, message: Message = CommandArg()):
                 await random_plugin.finish(lang.text("random_number.argerr", [], event.get_user_id()))
         # 返回结果
         await random_plugin.finish(str(result))
-    except BaseException as e:
+    except FinishedException:
+        raise FinishedException()
+    except BaseException:
         await error.report(traceback.format_exc(), random_plugin)
