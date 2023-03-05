@@ -51,4 +51,3 @@ async def handle_first_receive(event: GroupMessageEvent, bot: bot, message: Mess
 # Command: gssearch
 # Info: 查询原神角色攻略(目前只有蒙德)
 # Msg: 查询西风驿站猫冬角色攻略
-# Usage: gssearch <角色名>
