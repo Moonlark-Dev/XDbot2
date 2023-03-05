@@ -1,4 +1,3 @@
-import httpx
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import GroupMessageEvent
 from nonebot.params import CommandArg
@@ -42,17 +41,12 @@ async def handle_first_receive(event: GroupMessageEvent, bot: bot, message: Mess
     
     #须弥(todo)
     
-    async with httpx.AsyncClient() as client:
-        if str(message) in urls:
-            pic = MessageSegment.image(httpx.get(urls[str(message)]))
-        else:
-            await gssearch.finish(f"未找到"+message)
-    msgb = pic + f"攻略制作:猫冬 https://www.miyoushe.com/ys/accountCenter/postList?id=74019947"
-    msg = await gssearch.send(msgb)
+    if str(message) in urls == False:
+        await gssearch.finish(f"未找到"+message)
+    msg = await gssearch.send(Message(urls[str(message)])+f"攻略制作:猫冬 https://www.miyoushe.com/ys/accountCenter/postList?id=74019947")
 
 
 # [HELPSTART] Version: 2
 # Command: gssearch
 # Info: 查询原神角色攻略(目前只有蒙德)
 # Msg: 查询西风驿站猫冬角色攻略
-# Usage: gssearch <角色名>：查询原神角色<角色名>的攻略
