@@ -1,8 +1,7 @@
-# XDbot2 v2.5.108
+# XDbot2 v2.6.4
 
 import os
 
-print("欢迎使用：XDbot2 v2.5.108")
+print("欢迎使用：XDbot2 v2.6.4")
 
-os.system("pip3 install playwright")
-os.system("playwright install")
+os.system("pip3 install nonebot_plugin_gspanel")
