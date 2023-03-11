@@ -83,7 +83,8 @@ async def pie():
             .add("", user_data)
             .set_global_opts(
                 title_opts=opts.TitleOpts(
-                    title="6", subtitle=start_time + " 至今"))
+                    title="6", subtitle=start_time + " 至今
+            .set_global_opts(legend_opts={})
             .set_series_opts(legend_opts=opts.LegendOpts(is_show=False))
             .set_series_opts(label_opts=opts.LabelOpts(formatter="{b}: {c}"))
         ).render(path="data/sixcount.render.ro.html")
