@@ -112,7 +112,11 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
     global latest_use
     try:
         data = json.load(open("data/cave.data.json", encoding="utf-8"))
-        argument = str(message).split(" ")
+        argument = str(message).splitlines()
+        if len(argument) == 0:
+            argument.append("")
+        else:
+            argument = argument[0].split(" ")
         if argument[0] not in ["add", "添加", "-a"] and time.time() - \
                 latest_use < 3:
             await cave.finish(f"冷却中（{3 - (time.time() - latest_use)}s）", at_sender=True)
