@@ -6,6 +6,7 @@ from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
 from PIL import Image, ImageDraw, ImageFont
 from . import _error
+import os
 from playwright.async_api import async_playwright
 import time
 import asyncio
@@ -60,8 +61,10 @@ async def preview_website(event: MessageEvent, message: Message = CommandArg()):
         draw.text((0, 0), url, (0, 0, 0), font=font)
         image.save(f"data/{file_name}.png")
         # 发送图片
-        await preview.finish(Message(MessageSegment.image(
+        await preview.send(Message(MessageSegment.image(
             file=f"file://{os.path.abspath(os.path.join('./data', f'{file_name}.png'))}")))
+        # 删除图片 (Issue #66)
+        os.remove(os.path.abspath(os.path.join("./data", f"{file_name}.png")))
 
     except FinishedException:
         raise FinishedException()
