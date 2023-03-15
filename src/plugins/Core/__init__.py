@@ -21,7 +21,8 @@ file_list = [
     r"etm\.items\.json",
     r"preview(.*).png",
     r"setu\.(.*)\.(jpg|png)",
-    r"(.*).log"
+    r"(.*).log",
+    r"(.*)\.ro\.(.*)"
 ]
 try:
     for file in files:
