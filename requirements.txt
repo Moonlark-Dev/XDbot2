@@ -1,6 +1,7 @@
 nb-cli
 nonebot_plugin_guild_patch
 nonebot-adapter-onebot
+pillow
 psutil
 pyecharts
 nonebot_plugin_apscheduler

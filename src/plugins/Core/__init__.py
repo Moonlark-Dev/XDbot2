@@ -4,6 +4,7 @@ import os.path
 import time
 
 import sys
+import re
 
 from nonebot import get_driver
 from nonebot.log import logger
@@ -13,11 +14,24 @@ from .config import Config
 from . import getHelp
 import traceback
 
-# 获取配置
+# 清理（Issue #66）
+logger.info("正在清理数据")
+files = os.listdir("./data")
+file_list = [
+    r"etm\.items\.json",
+    r"preview(.*).png",
+    r"setu\.(.*)\.(jpg|png)",
+    r"(.*).log"
+]
 try:
-    os.remove("data/etm.items.json")
+    for file in files:
+        if re.match("|".join(file_list), file):
+            os.remove(os.path.join("./data", file))
+            logger.info(f"已清理 {file}")
 except Exception:
-    pass
+    logger.error(f"清理失败：{traceback.format_exc()}")
+
+# 获取配置
 global_config = get_driver().config
 config = Config.parse_obj(global_config)
 try:
