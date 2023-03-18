@@ -175,5 +175,8 @@
   "reply.alldata": "活动的数据（当前会话）：{}",
   "preview.only_group": "错误：请在群聊使用此功能",
   "setu_rank.title": "随机涩图使用排行：",
-  "random_number.argerr": "参数错误！"
+  "random_number.argerr": "参数错误！",
+  "ger.title": "「当前汇率({})」",
+  "ger.io": "入/出：{}/{}",
+  "ger.er": "汇率：1 vi = {} vim"
 }
