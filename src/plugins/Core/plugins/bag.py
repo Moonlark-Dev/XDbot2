@@ -12,7 +12,7 @@ bag_cmd = on_command("bag", aliases={"我的背包", "背包"})
 async def show_bag(bot: Bot, event: MessageEvent):
     try:
         qq = event.get_user_id()
-        data = bag.get_user_bag()
+        data = bag.get_user_bag(qq)
         nickname = (await bot.get_stranger_info(user_id=qq))["nickname"]
         reply = f"「{nickname}的背包（{len(data)} / 256）」\n"
         length = 0
