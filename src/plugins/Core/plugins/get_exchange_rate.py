@@ -14,8 +14,8 @@ async def handler(event: MessageEvent):
     try:
         qq = event.get_user_id()
         await get_exchange_rate.send("\n".join((
-            lang.text("ger.title", [time.strftime("%H:%M:%S", time.localtime())], qq)
-            lang.text("ger.io", [economy.vimcoin["in"], economy.vimcoin["out"]], qq)
+            lang.text("ger.title", [time.strftime("%H:%M:%S", time.localtime())], qq),
+            lang.text("ger.io", [economy.vimcoin["in"], economy.vimcoin["out"]], qq),
             lang.text("ger.er", [economy.vi2vim(1)], qq)
         )))
 
