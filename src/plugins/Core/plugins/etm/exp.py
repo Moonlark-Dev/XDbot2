@@ -14,7 +14,7 @@ def get_level(exp):
 
 def get_exp(user_id):
     exp = _get_exp(user_id)
-    return get_level(exp) ** 2 - exp
+    return exp - (get_level(exp)-1) ** 2
 
 def get_user_level(user_id):
     return get_level(_get_exp(user_id))
