@@ -22,7 +22,7 @@ async def show_panel(bot: Bot, event: MessageEvent):
         await panel.finish((
             "「用户信息面板」\n"
             f"等级：Lv{level} Exp{data['exp']}\n"
-            f"\t[{'=' * bar_filled}{5 - '  ' * bar_filled}]\n"))
+            f"\t[{'=' * bar_filled}{'  ' * (5 - bar_filled)}]\n"))
 
     except BaseException:
         await error.report(traceback.format_exc())
