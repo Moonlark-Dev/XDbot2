@@ -17,12 +17,12 @@ async def show_panel(bot: Bot, event: MessageEvent):
         nickname = (await bot.get_stranger_info(user_id=qq))["nickname"]
         level = exp.get_user_level(qq)
         level_max_exp = level ** 2
-        bar_filled = int(exp._get_exp(qq) / level_max_exp * 5)
+        bar_filled = int(exp._get_exp(qq) / level_max_exp * 10)
 
         await panel.finish((
             "「用户信息面板」\n"
-            f"等级：Lv{level} Exp{data['exp']}\n"
-            f"\t[{'=' * bar_filled}{'  ' * (5 - bar_filled)}]\n"))
+            f"等级：Lv{level} Exp{int(data['exp'])}\n"
+            f"\t\t[{'=' * bar_filled}{'  ' * (10 - bar_filled)}]\n"))
 
     except BaseException:
         await error.report(traceback.format_exc())
