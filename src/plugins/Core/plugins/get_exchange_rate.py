@@ -22,4 +22,4 @@ async def handler(event: MessageEvent):
 
 
     except BaseException:
-        await error.report(traceback.format_exc(), get_exchange_rate
+        await error.report(traceback.format_exc(), get_exchange_rate)
