@@ -40,6 +40,7 @@ async def sign_handler(event: MessageEvent):
 
             exp.add_exp(qq, add_exp)
             economy.add_vi(qq, add_vi)
+            data["latest"][qq] = date
             now_data = user.get_user_data(qq)
             await sign.send("\n".join((
                 lang.text("sign.success", [], qq),
