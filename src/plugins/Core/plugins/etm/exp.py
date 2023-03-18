@@ -22,7 +22,7 @@ def get_user_level(user_id):
 def add_exp(user_id, count):
     data = user.get_user_data(user_id)
     data["exp"] += count
-    user.change_user_data(data)
+    user.change_user_data(user_id, data)
 
 def _set_exp(user_id, count):
     data = user.get_user_data(user_id)

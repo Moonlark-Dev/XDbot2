@@ -12,7 +12,8 @@ def get_user_data(user_id):
         return json.load(open("data/etm/users.json"))[user_id]
     except KeyError:
         data = RAW_DATA
-        RAW_DATA["user_id"] = user_id
+        data["user_id"] = user_id
+        return data
 
 def change_user_data(user_id, data):
     origin = json.load(open("data/etm/users.json"))

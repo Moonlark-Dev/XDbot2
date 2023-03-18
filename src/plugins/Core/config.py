@@ -20,6 +20,14 @@ class Config(BaseSettings):
     # 数据文件命名规则：子插件.数据名.json
     FILES = [
         {
+            "path": "data/etm/vimcoin.json",
+            "text": json.dumps({
+                "in": 0,
+                "out": 0,
+                "exchange_rate": 1
+            })
+        },
+        {
             "path": "data/etm/achievement.json",
             "text": "{}"
         },

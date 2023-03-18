@@ -9,7 +9,7 @@ import random
 import time
 import json
 
-sign = on_regex(r"签到|(.sign)")
+sign = on_regex(r"^(签到|(.sign))$")
 sign_rank = on_command("sign-rank")
 
 @sign.handle()
@@ -25,7 +25,7 @@ async def sign_handler(event: MessageEvent):
         
         if data["latest"][qq] != date:
             add_vi, add_exp = random.randint(0, 20), random.randint(0, 20)
-            if date["latest"][qq] == date - 1:
+            if data["latest"][qq] == (date - 1):
                 data["days"][qq] += 1
             else:
                 data["days"][qq] = 1
@@ -45,7 +45,7 @@ async def sign_handler(event: MessageEvent):
                 lang.text("sign.success", [], qq),
                 lang.text("sign.hr", [], qq),
                 lang.text("sign.add_exp", [origin_data["exp"], now_data["exp"], add_exp], qq),
-                lang.text("sign.add_vim", [origin_data["vimcoin"], now_data["exp"], add_vi], qq),
+                lang.text("sign.add_vim", [origin_data["vimcoin"], now_data["vimcoin"], add_vi], qq),
                 lang.text("sign.hr", [], qq),
                 lang.text("sign.days", [data["days"][qq]], qq)
             )), at_sender=True)
