@@ -1,7 +1,7 @@
 from .item_basic_data import BASIC_DATA
 from . import economy
 import random
-import achievement
+from . import achievement
 import traceback
 
 
