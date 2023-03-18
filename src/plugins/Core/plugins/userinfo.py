@@ -17,7 +17,7 @@ async def show_panel(bot: Bot, event: MessageEvent):
         nickname = (await bot.get_stranger_info(user_id=qq))["nickname"]
         level = exp.get_user_level(qq)
         level_max_exp = level ** 2
-        bar_filled = exp._get_exp(qq) / level_max_exp * 5
+        bar_filled = round(exp._get_exp(qq) / level_max_exp * 5, 0)
 
         await panel.finish((
             "「用户信息面板」\n"
