@@ -21,10 +21,10 @@ async def show_panel(bot: Bot, event: MessageEvent):
 
         await panel.finish((
             "「用户信息面板」\n"
-            f"{'-'*25}\n"
+            f"{'-'*27}\n"
             f"\t等级：Lv{level} ({int(exp.get_exp(qq))} / {(level+1)**2 - level_max_exp})\n"
             f"\t\t\t\t[{'=' * bar_filled}{'  ' * (10 - bar_filled)}]\n"
-            f"\t余额：{round(data['vimcoin'], 3)}vim ({round(data['vimcoin'] * economy.vimcoin['exchange_rate'], 3)}vi)"))
+            f"\t余额：{round(data['vimcoin'], 2)}vim ({round(data['vimcoin'] * economy.vimcoin['exchange_rate'], 2)}vi)"))
 
     except BaseException:
         await error.report(traceback.format_exc())
