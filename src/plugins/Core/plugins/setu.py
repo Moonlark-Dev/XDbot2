@@ -9,6 +9,7 @@ from nonebot.adapters.onebot.v11.event import MessageEvent
 from nonebot.exception import FinishedException, ActionFailed
 from nonebot.params import CommandArg
 from . import _error
+from .etm import economy
 from . import _lang
 from fastapi.responses import FileResponse
 import asyncio
@@ -56,6 +57,12 @@ async def setu_handler(
                     event.get_user_id(),
                 )
             )
+
+        temp = economy.use_vi(event.get_user_id(), 1)
+        if not temp[0]:
+            await setu.finish("错误：余额不足（需要 1vi）")
+        else:
+            used = temp[1]
         latest_send = time.time()
         await setu.send(_lang.text("setu.cd2", [], event.get_user_id()))
 
@@ -133,6 +140,7 @@ async def setu_handler(
                     f"https://xdbot2.thisisxd.top/setu"
                 )
             )
+            economy.add_vimcoin(used)
 
         # 启动删除任务
         asyncio.create_task(delete_msg(bot, message_id))
@@ -148,11 +156,14 @@ async def setu_handler(
     except httpx.ConnectTimeout:
         await _error.report(_lang.text("setu.timeout1"))
         latest_send -= config["sleep"]
+        economy.add_vimcoin(used)
         await setu.finish(_lang.text("setu.timeout2", [], event.get_user_id()))
 
     except FinishedException:
         raise FinishedException()
     except Exception:
+        try: economy.add_vimcoin(used)
+        except BaseException: pass
         await _error.report(traceback.format_exc(), setu)
 
 

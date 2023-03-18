@@ -25,14 +25,21 @@ def add_vimcoin(user_id, count):
     vimcoin["in"] += count
 
 def use_vimcoin(user_id, count):
-    data = user.get_user_info(user_id)
+    data = user.get_user_data(user_id)
     if data["vimcoin"] >= count:
         data["vimcoin"] -= count
         vimcoin["out"] += count
-    user.change_user_data(user_id, data)
+        user.change_user_data(user_id, data)
+        return True
+    else:
+        return False
 
 def vi2vim(vi):
     return round(vi / vimcoin["exchange_rate"], 3)
     
 def add_vi(user_id, count):
     add_vimcoin(user_id, vi2vim(count))
+
+def use_vi(user_id, vi):
+    used = vi2vim(vi)
+    return use_vimcoin(user_id, used), used
