@@ -24,7 +24,7 @@ async def show_panel(bot: Bot, event: MessageEvent):
             f"{'-'*27}\n"
             f"{nickname}\n"
             f"  等级：Lv{level} ({int(exp.get_exp(qq))} / {(level+1)**2 - level_max_exp})\n"
-            f"        [{'=' * max(bar_filled-1, 0)}>{'  ' * (10 - bar_filled)}]\n"
+            f"        [{'=' * max(bar_filled-1, 0)}>{'  ' * (10 - bar_filled)}] {data['exp']}\n"
             f"  余额：{round(data['vimcoin'], 2)}vim ({round(data['vimcoin'] * economy.vimcoin['exchange_rate'], 2)}vi)\n"
             f"  生命值：{data['health']} / 20"))
 
