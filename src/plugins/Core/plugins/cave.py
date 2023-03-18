@@ -7,6 +7,7 @@ import traceback
 import marshal
 import re
 from . import _error
+from .etm import exp
 from . import _lang
 import httpx
 from nonebot import on_command, get_app, on_message
@@ -62,6 +63,7 @@ async def cave_comment_writer(event: MessageEvent):
             data[cave_id]["count"] += 1
             json.dump(data, open("data/cave.comments.json", "w"))
             await _error.report(f"「新回声洞评论（{cave_id}#{data[cave_id]['count'] - 1}）」\n{event.get_message()}\n{event.get_session_id()}")
+            exp.add_exp(event.get_user_id(), 3)
             await cave_comment.finish(f"评论成功：{cave_id}#{data[cave_id]['count'] - 1}")
 
     except FinishedException:
@@ -212,6 +214,7 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
             )
 
         elif argument[0] in ["add", "-a", "添加"]:
+            exp.add_exp(event.get_user_id(), 6)
             text = await downloadImages(str(message)[argument[0].__len__():].strip())
             data["data"][data["count"]] = {
                 "id": data["count"],

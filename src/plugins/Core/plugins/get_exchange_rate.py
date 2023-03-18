@@ -13,13 +13,13 @@ get_exchange_rate = on_command("getexchangerate", aliases={"ger","获取当前�
 async def handler(event: MessageEvent):
     try:
         qq = event.get_user_id()
-        await get_exchange_rate.send("\n".join((
-            lang.text("ger.title", [time.strftime("%H:%M:%S", time.localtime())], qq)
-            lang.text("ger.io", [economy.vimcoin["in"], economy.vimcoin["out"]], qq)
+        await get_exchange_rate.finish("\n".join((
+            lang.text("ger.title", [time.strftime("%H:%M:%S", time.localtime())], qq),
+            lang.text("ger.io", [economy.vimcoin["in"], economy.vimcoin["out"]], qq),
             lang.text("ger.er", [economy.vi2vim(1)], qq)
         )))
 
 
 
     except BaseException:
-        await error.report(traceback.format_exc(), get_exchange_rate
+        await error.report(traceback.format_exc(), get_exchange_rate)

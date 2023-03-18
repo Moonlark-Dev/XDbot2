@@ -112,7 +112,7 @@
   "sign.rank_me": "您还没有签到",
   "sign.cannot": "已经签到过了 {} 后可再次签到",
   "sign.success": "签到成功！",
-  "sign.hr": "———————————————",
+  "sign.hr": "——————————————",
   "sign.add_exp": "「经验」：{} -> {} (+{})",
   "sign.add_vim": "「VimCoin」：{} -> {} (+{})",
   "sign.days": "连续签到第{}天",
@@ -176,7 +176,7 @@
   "preview.only_group": "错误：请在群聊使用此功能",
   "setu_rank.title": "随机涩图使用排行：",
   "random_number.argerr": "参数错误！",
-  "ger.title": "「当前汇率({})」",
+  "ger.title": "「当前汇率（{}）」",
   "ger.io": "入/出：{}/{}",
   "ger.er": "汇率：1 vi = {} vim"
 }
