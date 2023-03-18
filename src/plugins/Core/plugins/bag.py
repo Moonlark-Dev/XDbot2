@@ -6,9 +6,9 @@ from . import _lang as lang
 from . import _error as error
 import traceback
 
-bag = on_command("bag", aliases={"我的背包", "背包"})
+bag_cmd = on_command("bag", aliases={"我的背包", "背包"})
 
-@bag.handle()
+@bag_cmd.handle()
 async def show_bag(bot: Bot, event: MessageEvent):
     try:
         qq = event.get_user_id()
@@ -19,7 +19,7 @@ async def show_bag(bot: Bot, event: MessageEvent):
         for item in data:
             reply += f"{length}. {item.data['display_name']} x{item.count}\n"
             length += 1
-        await bag.finish(reply)
+        await bag_cmd.finish(reply)
 
     except BaseException:
         await error.report(traceback.format_exc())
