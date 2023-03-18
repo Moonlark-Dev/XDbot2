@@ -46,7 +46,7 @@ def get_user_bag(user_id):
         return bags[user_id]
     except KeyError:
         bags[user_id] = []
-        return None
+        return bags[user_id]
 
 def _add_item(user_id, item):
     bags[user_id].append(item)
