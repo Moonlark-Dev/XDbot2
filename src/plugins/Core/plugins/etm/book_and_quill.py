@@ -20,13 +20,13 @@ class BookAndQuill(Item):
 
     async def use(self, _argv = ""):
         argv = _argv.split(" ")
-        if argv[0] == "write":
+        if argv[0] == "--write":
             if not self.data["saved"]:
                 self.data["data"] = " ".join(argv[1:])
                 return ["已写入"]
             else:
                 return ["错误：书本已被保存"]
-        elif argv[0] == "save":
+        elif argv[0] == "--save":
             if self.data["saved"]:
                 self.data["author"] = self.user_id
                 self.data["saved"] = True
