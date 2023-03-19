@@ -21,7 +21,7 @@ async def show_panel(bot: Bot, event: MessageEvent):
 
         await panel.finish((
             f"{lang.text('userinfo.title', [], qq)}\n"
-            f"{'-'*27}\n"
+            f"——————————————\n"
             f"{nickname}\n"
             f"  {lang.text('userinfo.level', [], qq)}：Lv{level} ({int(exp.get_exp(qq))} / {(level)**2 - (level-1)**2} exp)\n"
             f"        [{'=' * max(bar_filled-1, 0)}>{'  ' * (10 - bar_filled)}]\n"
