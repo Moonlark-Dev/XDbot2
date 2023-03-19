@@ -1,20 +1,22 @@
 from .item_basic_data import BASIC_DATA
+import traceback
 
 
 class Item:
     def __init__(self, count, data, user_id):
-        """建议重写本部分内容"""
         self.count = count
-        self.item_id = "item"
+        self.item_id = "dice"
         self.basic_data = {}
-        self.init(data)
-
-    def init(self, data, ):
+        # 初始化
+        self.init()
         # 设置 NBT
         self.data = BASIC_DATA.copy()
         self.data.update(self.basic_data)
         self.data.update(data)
         self.user_id = user_id
+
+    def init(self):
+        pass
 
     def _use(self):
         pass
@@ -24,7 +26,8 @@ class Item:
             msg = []
             for _ in range(count):
                 try:
-                    msg.append(self._use(self.user_id))
+                    self.count -= 1
+                    msg.append(self._use())
                 except BaseException:
                     msg.append(f"发生错误：{traceback.format_exc()}")
         else:
@@ -52,7 +55,7 @@ class Item:
     def add(self, count, _data = {}):
         data = BASIC_DATA.copy()
         data.update(self.basic_data)
-        data.update(data)
+        data.update(_data)
         if data == self.data:
             return self._add(count)
         
