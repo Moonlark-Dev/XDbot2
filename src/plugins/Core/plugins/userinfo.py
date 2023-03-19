@@ -20,13 +20,13 @@ async def show_panel(bot: Bot, event: MessageEvent):
         bar_filled = int(exp.get_exp(qq) / (level**2-(level-1)**2) * 10)
 
         await panel.finish((
-            "「用户信息面板」\n"
+            f"{lang.text('userinfo.title', [], qq)}\n"
             f"{'-'*27}\n"
             f"{nickname}\n"
-            f"  等级：Lv{level} ({int(exp.get_exp(qq))} / {(level)**2 - (level-1)**2} exp)\n"
+            f"  {lang.text('userinfo.level', [], qq)}：Lv{level} ({int(exp.get_exp(qq))} / {(level)**2 - (level-1)**2} exp)\n"
             f"        [{'=' * max(bar_filled-1, 0)}>{'  ' * (10 - bar_filled)}]\n"
-            f"  余额：{round(data['vimcoin'], 2)}vim ({round(data['vimcoin'] * economy.vimcoin['exchange_rate'], 2)}vi)\n"
-            f"  生命值：{data['health']} / 20"))
+            f"  {lang.text('userinfo.vimcoin', [], qq)}：{round(data['vimcoin'], 2)}vim ({round(data['vimcoin'] * economy.vimcoin['exchange_rate'], 2)}vi)\n"
+            f"  {lang.text('userinfo.health', [], qq)}：{data['health']} / 20"))
 
     except BaseException:
         await error.report(traceback.format_exc())

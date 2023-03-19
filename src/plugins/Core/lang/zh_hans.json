@@ -120,5 +120,10 @@
   "random_number.argerr": "参数错误！",
   "ger.title": "「当前汇率（{}）」",
   "ger.io": "入/出：{}/{}",
-  "ger.er": "汇率：1 vi = {} vim"
+  "ger.er": "汇率：1 vi = {} vim",
+  "setu.poor": "错误：余额不足（需要 1.2vi）",
+  "userinfo.title": "「用户信息面板」",
+  "userinfo.level": "等级",
+  "userinfo.vimcoin": "余额",
+  "userinfo.health": "生命值"
 }

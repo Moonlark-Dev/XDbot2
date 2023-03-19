@@ -60,7 +60,7 @@ async def setu_handler(
 
         temp = economy.use_vi(event.get_user_id(), 1.2)
         if not temp[0]:
-            await setu.finish("错误：余额不足（需要 1.2vi）")
+            await setu.finish(_lang.text("setu.poor", [], event.get_user_id()))
         else:
             used = temp[1]
         latest_send = time.time()
