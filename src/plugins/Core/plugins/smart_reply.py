@@ -53,9 +53,7 @@ async def reply_command(event: GroupMessageEvent, message: Message = CommandArg(
     try:
         msg = str(message).replace("&#91", "[").replace("&#93;", "]")
         # 防止部分Windows客户端换行为\r\n导致无法正常匹配
-        if msg[-1] == "\r":
-            msg = msg[:-1]
-        arguments = msg.split("\n")[0].split(" ")
+        arguments = msg.splitlines()[0].split(" ")
         user_id = event.get_user_id()
         if arguments[0] == "":
             await reply.finish(lang.text("reply.need_argv", [], user_id))
