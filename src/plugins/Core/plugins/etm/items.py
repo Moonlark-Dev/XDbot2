@@ -1,7 +1,9 @@
 from .dice import Dice
+from .book_and_quill import BookAndQuill
 
 ITEMS = {
-    "dice": Dice
+    "dice": Dice,
+    "book_and_quill": BookAndQuill
 }
 
 def json2items(items, user_id = None):

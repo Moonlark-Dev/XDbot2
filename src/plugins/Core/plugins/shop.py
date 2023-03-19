@@ -14,6 +14,11 @@ SHOP_ITEMS = {
         "id": "dice",
         "count": 1,
         "data": {}
+    },
+    "2": {
+        "id": "book_and_quill",
+        "count": 1,
+        "data": {}
     }
 }
 
