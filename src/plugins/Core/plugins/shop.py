@@ -37,6 +37,17 @@ async def shop_handler(event: MessageEvent, message: Message = CommandArg()):
                 f"物品：{item.data['display_name']} ({item.item_id})\n"
                 f"价格：{economy.vi2vim(item.data['price'])}vim ({item.data['price']}vi)\n"
                 f"简介：\n  {item.data['display_message']}"))
+        elif arguments[0] == "buy":
+            item = items.json2items([SHOP_ITEMS[arguments[1]]])[0]
+            if len(arguments) >= 3:
+                count = int(arguments[2])
+            else:
+                count = 1
+            if economy.use_vi(qq, item.data['price'] * count)[0]:
+                bag._add_item(qq, item)
+                await shop.finish("购买成功！\n使用「/bag」查看", at_sender=True)
+            else:
+                await shop.finish("失败：余额不足！", at_sender=True)
                 
 
     except BaseException:
