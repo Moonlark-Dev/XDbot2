@@ -59,4 +59,6 @@ class Item:
         data.update(_data)
         if data == self.data:
             return self._add(count)
+        else:
+            return 0
         
