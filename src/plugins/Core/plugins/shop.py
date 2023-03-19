@@ -24,7 +24,7 @@ async def shop_handler(event: MessageEvent, message: Message = CommandArg()):
         arguments = message.extract_plain_text().split(" ")
         qq = event.get_user_id()
         if arguments[0] == "":
-            reply = f"「系统商店」\n{'-'*30}"
+            reply = f"「系统商店」\n——————————————"
             for item_id, item_dict in list(SHOP_ITEMS.items()):
                 item = items.json2items([item_dict])[0]
                 reply += f"\n{item_id}. {item.data['display_name']} {economy.vi2vim(item.data['price'])}vim"
@@ -33,7 +33,7 @@ async def shop_handler(event: MessageEvent, message: Message = CommandArg()):
             item = items.json2items([SHOP_ITEMS[arguments[1]]])[0]
             await shop.finish((
                 f"「商品信息（#{arguments[1]}）」\n"
-                "——————————————"
+                "——————————————\n"
                 f"物品：{item.data['display_name']} ({item.item_id})\n"
                 f"价格：{economy.vi2vim(item.data['price'])}vim ({item.data['price']}vi)\n"
                 f"简介：\n  {item.data['display_message']}"))
