@@ -15,7 +15,7 @@ async def use_item(event: MessageEvent, message: Message = CommandArg()):
     try:
         qq = event.get_user_id()
         await use_cmd.finish(bag.use_item(
-            qq, int(message.extract_plain_text().split(" ")[0]), 
+            qq, int(message.extract_plain_text().split(" ")[0]), 1,
             " ".join(message.extract_plain_text().split(" ")[1:])))
 
     except BaseException:
