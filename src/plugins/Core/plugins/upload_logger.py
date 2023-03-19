@@ -14,7 +14,7 @@ async def handle(bot: Bot, event: GroupMessageEvent):
         await bot.call_api(
             api="upload_group_file",
             grouo_id=event.group_id,
-            file=f"file://{os.path.abspath('./data/error.log')}",
+            file=f"{os.path.abspath('./data/error.log')}",
             name="error.log"
         )
 
