@@ -27,7 +27,7 @@ class BookAndQuill(Item):
             else:
                 return ["错误：书本已被保存"]
         elif argv[0] == "--save":
-            if self.data["saved"]:
+            if not self.data["saved"]:
                 self.data["author"] = self.user_id
                 self.data["saved"] = True
                 self.data["display_name"] = " ".join(_argv.splitlines()[0].split(" ")[1:])
