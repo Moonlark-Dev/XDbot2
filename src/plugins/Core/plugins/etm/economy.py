@@ -10,6 +10,7 @@ vimcoin = json.load(open("data/etm/vimcoin.json"))
 #    "exchange_rate": 1
 #}
 require("nonebot_plugin_apscheduler")
+class IllegalQuantityException(Exception): pass
 
 @scheduler.scheduled_job("cron", minute="*/1", id="chamgeExchangeRate")
 async def change_exchange_rate():
@@ -18,13 +19,19 @@ async def change_exchange_rate():
     vimcoin["out"] = 0
     json.dump(vimcoin, open("data/etm/vimcoin.json", "w"))
 
-def add_vimcoin(user_id, count):
-    data = user.get_user_data(user_id)
-    data["vimcoin"] += count
-    user.change_user_data(user_id, data)
-    vimcoin["in"] += count
+def _add_vimcoin(user_id, count):
+        data = user.get_user_data(user_id)
+        data["vimcoin"] += count
+        user.change_user_data(user_id, data)
+        vimcoin["in"] += count
 
-def use_vimcoin(user_id, count):
+def add_vimcoin(user_id, count):
+    if count >= 0:
+        _add_vimcoin(user_id, count)
+    else:
+        raise IllegalQuantityException(count)
+
+def _use_vimcoin(user_id, count):
     data = user.get_user_data(user_id)
     if data["vimcoin"] >= count:
         data["vimcoin"] -= count
@@ -34,11 +41,24 @@ def use_vimcoin(user_id, count):
     else:
         return False
 
+def use_vimcoin(user_id, count):
+    if count >= 0:
+        _use_vimcoin(user_id, count)
+    else:
+        raise IllegalQuantityException(count)
+
+
 def vi2vim(vi):
     return round(vi / vimcoin["exchange_rate"], 3)
     
+def _add_vi(user_id, count):
+    _add_vimcoin(user_id, vi2vim(count))
+
 def add_vi(user_id, count):
     add_vimcoin(user_id, vi2vim(count))
+
+def remove_vi(user_id, count):
+    _use_vimcoin(user_id, count)
 
 def use_vi(user_id, vi):
     used = vi2vim(vi)
