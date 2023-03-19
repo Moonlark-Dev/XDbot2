@@ -1,11 +1,12 @@
 from .item_basic_data import BASIC_DATA
 from . import economy
 import random
+from .item import Item
 from . import achievement
 import traceback
 
 
-class Dice:
+class Dice(Item):
     def __init__(self, count, data, user_id):
         self.count = count
         self.item_id = "dice"
@@ -15,11 +16,7 @@ class Dice:
             "maximum_stack": 32,
             "int": None
         }
-        # 设置 NBT
-        self.data = BASIC_DATA.copy()
-        self.data.update(self.basic_data)
-        self.data.update(data)
-        self.user_id = user_id
+        self.init(data)
 
     def _use(self, user_id):
         self.count -= 1
