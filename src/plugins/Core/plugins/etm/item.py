@@ -9,7 +9,7 @@ class Item:
         self.basic_data = {}
         self.init(data)
 
-    def init(self, data):
+    def init(self, data, ):
         # 设置 NBT
         self.data = BASIC_DATA.copy()
         self.data.update(self.basic_data)
