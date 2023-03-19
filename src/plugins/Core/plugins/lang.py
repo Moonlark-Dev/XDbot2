@@ -48,13 +48,13 @@ async def lang_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                 try: author = _lang._lang_dict[lang_name]["lang.author"]
                 except: author = "未知创作者"
 
-                await lang.finish("\n".join(
+                await lang.finish("\n".join((
                     "「语言详细信息」",
                     f"名称：{lang_name}",
                     f"版本：{version}",
                     f"作者：{author}",
                     f"兼容性：{found_key} / {key_length} {found_key / key_length * 100}%"
-                ))
+                )))
 
         else:
             await lang.finish(_lang.text("lang.notfound", [args], event.get_user_id()))
