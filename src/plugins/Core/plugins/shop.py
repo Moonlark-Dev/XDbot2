@@ -21,7 +21,7 @@ SHOP_ITEMS = {
 @shop.handle()
 async def shop_handler(event: MessageEvent, message: Message = CommandArg()):
     try:
-        arguments = message.extract_plain_text().splitlines()[0].split(" ")
+        arguments = message.extract_plain_text().split(" ")
         qq = event.get_user_id()
         if arguments[0] == "":
             reply = f"「系统商店」\n{'-'*30}"
