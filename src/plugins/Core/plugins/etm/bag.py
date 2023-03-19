@@ -13,7 +13,7 @@ def get_bags():
         bags[user] = items.json2items(bag, user)
 get_bags()
 
-@scheduler.scheduled_job("cron", second="*/30", id="save_bags")
+@scheduler.scheduled_job("cron", second="*/15", id="save_bags")
 def save_bags():
     bag_data = {}
     for user_id, bag in list(bags.items()):
