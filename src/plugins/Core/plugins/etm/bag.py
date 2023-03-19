@@ -55,11 +55,15 @@ def _add_item(user_id, item):
         bags[user_id] = [item]
 
 def add_item(user_id, item_id, item_count = 1, item_data = {}):
-    for item in bags[user_id]:
-        if item.item_id == item_id:
-            item_count -= item.add(item_count, item_data)
-    if item_count > 0:
-        _add_item(user_id, items.ITEMS[item_id](item_count, item_data, user_id))
+    try:
+        for item in bags[user_id]:
+            if item.item_id == item_id:
+                item_count -= item.add(item_count, item_data)
+        if item_count > 0:
+            _add_item(user_id, items.ITEMS[item_id](item_count, item_data, user_id))
+    except KeyError:
+        bags[user_id] = []
+        add_item(user_id, item_id, item_count, item_data)
 
 def use_item(user_id, item_pos, count, argv = {}):
     return bags[user_id][item_pos].use(count, argv)
