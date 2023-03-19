@@ -31,7 +31,7 @@ class BookAndQuill(Item):
                 self.data["author"] = self.user_id
                 self.data["saved"] = True
                 self.data["display_name"] = " ".join(_argv.splitlines()[0].split(" ")[1:])
-                self.data["display_message"] = "\n",join(_argv.splitlines()[1:])
+                self.data["display_message"] = "\n".join(_argv.splitlines()[1:])
                 exp.add_exp(self.user_id, 4)
                 return ["保存成功！"]
             else:
