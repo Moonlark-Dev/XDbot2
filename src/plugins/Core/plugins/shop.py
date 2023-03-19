@@ -44,7 +44,7 @@ async def shop_handler(event: MessageEvent, message: Message = CommandArg()):
             else:
                 count = 1
             if economy.use_vi(qq, item.data['price'] * count)[0]:
-                bag._add_item(qq, item)
+                bag.add_item(qq, item.item_id, count, item.data)
                 await shop.finish("购买成功！\n使用「/bag」查看", at_sender=True)
             else:
                 await shop.finish("失败：余额不足！", at_sender=True)

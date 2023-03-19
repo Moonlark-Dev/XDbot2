@@ -49,7 +49,10 @@ def get_user_bag(user_id):
         return bags[user_id]
 
 def _add_item(user_id, item):
-    bags[user_id].append(item)
+    try:
+        bags[user_id].append(item)
+    except KeyError:
+        bags[user_id] = [item]
 
 def add_item(user_id, item_id, item_count = 1, item_data = {}):
     for item in bags[user_id]:
