@@ -54,7 +54,13 @@ dictionary = {
         "「prpr」——XiaoDeng3386（你最好真的在说Pull Request）",
         "404 not found",
         "这里没有tips",
-        "print('Hello, XDbot2!')"
+        "print('Hello, XDbot2!')",
+        "also try Sugar",
+        "also try XTbot",
+        "also try SharkV3",
+        "你可以在「/st-l」查询身边的人使用「/st-r」次数的记录",
+        "你可以在「/preview six」查询身边的人有多能发「6」",
+        "6!"
     ]
 }
 
