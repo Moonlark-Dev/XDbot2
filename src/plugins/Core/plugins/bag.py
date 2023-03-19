@@ -14,12 +14,12 @@ async def show_bag(bot: Bot, event: MessageEvent):
         qq = event.get_user_id()
         data = bag.get_user_bag(qq)
         nickname = (await bot.get_stranger_info(user_id=qq))["nickname"]
-        reply = f"「{nickname}的背包（{len(data)} / 256）」\n"
+        reply = f"「{nickname}的背包（{len(data)} / 256）」"
         length = 0
         for item in data:
-            reply += f"{length}. {item.data['display_name']} x{item.count}\n"
+            reply += f"\n{length}. {item.data['display_name']} x{item.count}"
             length += 1
         await bag_cmd.finish(reply)
 
     except BaseException:
-        await error.report(traceback.format_exc())
+        await error.report(traceback.format_exc(), bag_cmd)

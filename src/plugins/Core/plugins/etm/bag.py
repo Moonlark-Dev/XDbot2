@@ -5,12 +5,13 @@ from nonebot_plugin_apscheduler import scheduler
 from nonebot import require
 
 require("nonebot_plugin_apscheduler")
-bags = {}
+bags = {}# items.json2items(json.load(open("data/etm/bags.json")))
 
 def get_bags():
     data = json.load(open("data/etm/bags.json"))
     for user, bag in list(data.items()):
         bags[user] = items.json2items(bag, user)
+get_bags()
 
 @scheduler.scheduled_job("cron", second="*/30", id="save_bags")
 def save_bags():
