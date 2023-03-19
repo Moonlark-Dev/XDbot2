@@ -59,7 +59,7 @@ async def lang_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                     f"兼容性：{found_key} / {key_length} {round(found_key / key_length * 100)}%"
                 )))
                 if missing_keys:
-                    await lang.finish("缺失的键：" + "、".join(missing_keys))
+                    await lang.finish("缺失的键：" + " ".join(missing_keys))
                 else:
                     await lang.finish()
 
