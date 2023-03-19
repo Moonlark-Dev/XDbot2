@@ -16,7 +16,7 @@ class IllegalQuantityException(Exception): pass
 @scheduler.scheduled_job("cron", minute="*/1", id="chamgeExchangeRate")
 async def change_exchange_rate():
     exchange_rate = vimcoin["exchange_rate"]
-    vimcoin["exchange_rate"] += vimcoin["exchange_rate"] * (vimcoin["out"] - vimcoin["in"]) / 1000
+    vimcoin["exchange_rate"] += vimcoin["exchange_rate"] * (vimcoin["out"] - vimcoin["in"]) / 1250
     vimcoin["in"] = 0
     vimcoin["out"] = 0
     if vimcoin["exchange_rate"] <= 0:
