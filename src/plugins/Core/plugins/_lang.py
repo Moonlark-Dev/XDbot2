@@ -1,5 +1,6 @@
 import json
 import os
+from nonebot.log import logger
 
 
 def reload():
@@ -16,12 +17,15 @@ def reload():
     _lang_files = os.listdir("src/plugins/Core/lang")
     _lang_dict = {}
     for _lang_file in _lang_files:
-        _lang_index = json.load(
-            open(
-                "src/plugins/Core/lang" +
-                os.sep +
-                _lang_file))
-        _lang_dict[_lang_file.replace(".json", "")] = _lang_index
+        try:
+            _lang_index = json.load(
+                open(
+                    "src/plugins/Core/lang" +
+                    os.sep +
+                    _lang_file))
+            _lang_dict[_lang_file.replace(".json", "")] = _lang_index
+        except:
+            logger.warning(f"加载 {_lang_file} 时发生错误，拒绝加载！")
 
 
 def text(key: str, _format: list = [],

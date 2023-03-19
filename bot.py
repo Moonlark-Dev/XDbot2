@@ -17,7 +17,7 @@ except Exception:
 logger.add("./data/error.log",
            rotation="00:00",
            diagnose=False,
-           level="ERROR",
+           level="WARNING",
            format=default_format)
 
 # You can pass some keyword args config to init function
