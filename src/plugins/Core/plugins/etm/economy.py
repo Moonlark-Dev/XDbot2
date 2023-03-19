@@ -43,7 +43,7 @@ def _use_vimcoin(user_id, count):
 
 def use_vimcoin(user_id, count):
     if count >= 0:
-        _use_vimcoin(user_id, count)
+        return _use_vimcoin(user_id, count)
     else:
         raise IllegalQuantityException(count)
 
