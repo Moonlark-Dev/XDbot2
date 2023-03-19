@@ -1,5 +1,6 @@
 {
-  "lang.version": "1.0.0",
+  "lang.version": "v1.0.0",
+  "lang.author": "YifanZhuZhu"
   "lang.empty": "(ᗜ ˰ ᗜ)设置语言： {} ",
   "lang.success": "(ᗜ v ᗜ)语言已设置为： {} ",
   "lang.notfound": "语言 {} 不存在",
