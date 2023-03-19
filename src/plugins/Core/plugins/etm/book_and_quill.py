@@ -11,7 +11,7 @@ class BookAndQuill(Item):
         self.basic_data = {
             "display_name": "书与笔",
             "display_message": "",
-            "price": 6,
+            "price": 6.5,
             "maximum_stack": 1,
             "data": "",
             "author": None,
@@ -30,7 +30,9 @@ class BookAndQuill(Item):
             if self.data["saved"]:
                 self.data["author"] = self.user_id
                 self.data["saved"] = True
-                exp.add_exp(self.user_id, 5)
+                self.data["display_name"] = " ".join(_argv.splitlines()[0].split(" ")[1:])
+                self.data["display_message"] = "\n",join(_argv.splitlines()[1:])
+                exp.add_exp(self.user_id, 4)
                 return ["保存成功！"]
             else:
                 return ["错误：已经保存过了！"]
