@@ -22,7 +22,10 @@ class Item:
         pass
 
     def use(self, args):
-        count = int(args)
+        try:
+            count = int(args)
+        except:
+            count = 1
         if self.count >= count:
             msg = []
             for _ in range(count):
