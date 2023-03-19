@@ -32,7 +32,8 @@ async def shop_handler(event: MessageEvent, message: Message = CommandArg()):
         elif arguments[0] == "view":
             item = items.json2items([SHOP_ITEMS[arguments[1]]])[0]
             await shop.finish((
-                f"「商品信息（#{arguments[1]}）」\n{'-'*30}\n"
+                f"「商品信息（#{arguments[1]}）」\n"
+                "——————————————"
                 f"物品：{item.data['display_name']} ({item.item_id})\n"
                 f"价格：{economy.vi2vim(item.data['price'])}vim ({item.data['price']}vi)\n"
                 f"简介：\n  {item.data['display_message']}"))
