@@ -27,7 +27,7 @@ async def shop_handler(event: MessageEvent, message: Message = CommandArg()):
             reply = f"「系统商店」\n{'-'*30}"
             for item_id, item_dict in list(SHOP_ITEMS.items()):
                 item = items.json2items([item_dict])[0]
-                reply += f"{item_id}. {item.data['display_name']} {economy.vi2vim(item.data['price'])}vim"
+                reply += f"\n{item_id}. {item.data['display_name']} {economy.vi2vim(item.data['price'])}vim"
             await shop.finish(reply)
                 
 
