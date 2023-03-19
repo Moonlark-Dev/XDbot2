@@ -70,7 +70,7 @@ async def send_tips_handle():
     try:
         global latestSend
         if time.time() - latestSend >= 180:
-            if random.random() <= 0.01:
+            if random.random() <= 0.02:
                 await send_tips.send(f"【XDbot小贴士】\n{random.choice(dictionary['tips'])}")
                 latestSend = time.time()
     except FinishedException:
