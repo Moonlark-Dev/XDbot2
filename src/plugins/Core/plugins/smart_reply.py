@@ -74,7 +74,7 @@ async def reply_command(event: GroupMessageEvent, message: Message = CommandArg(
                 [arguments[1],
                  data["matcher"],
                  data["global"],
-                 data["text"]]))
+                 data["text"]], user_id))
         elif arguments[0] in ["list", "ls"]:
             data = _.get_list()
             reply_list = []
