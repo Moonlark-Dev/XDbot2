@@ -16,14 +16,14 @@ async def show_panel(bot: Bot, event: MessageEvent):
         data = user.get_user_data(qq)
         nickname = (await bot.get_stranger_info(user_id=qq))["nickname"]
         level = exp.get_user_level(qq)
-        level_max_exp = level ** 2
+        # level_max_exp = level ** 2
         bar_filled = int(exp.get_exp(qq) / (level**2-(level-1)**2) * 10)
 
         await panel.finish((
             "「用户信息面板」\n"
             f"{'-'*27}\n"
             f"{nickname}\n"
-            f"  等级：Lv{level} ({int(exp.get_exp(qq))} / {(level)**2 - {(level-1)**2} exp)\n"
+            f"  等级：Lv{level} ({int(exp.get_exp(qq))} / {(level)**2 - (level-1)**2} exp)\n"
             f"        [{'=' * max(bar_filled-1, 0)}>{'  ' * (10 - bar_filled)}]\n"
             f"  余额：{round(data['vimcoin'], 2)}vim ({round(data['vimcoin'] * economy.vimcoin['exchange_rate'], 2)}vi)\n"
             f"  生命值：{data['health']} / 20"))
