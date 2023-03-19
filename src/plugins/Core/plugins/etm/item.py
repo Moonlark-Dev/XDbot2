@@ -21,7 +21,8 @@ class Item:
     def _use(self):
         pass
 
-    def use(self, count, _):
+    def use(self, args):
+        count = int(args)
         if self.count >= count:
             msg = []
             for _ in range(count):

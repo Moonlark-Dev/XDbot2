@@ -66,5 +66,5 @@ def add_item(user_id, item_id, item_count = 1, item_data = {}):
         bags[user_id] = []
         add_item(user_id, item_id, item_count, item_data)
 
-def use_item(user_id, item_pos, count, argv = ""):
-    return bags[user_id][item_pos].use(count, argv)
+def use_item(user_id, item_pos, argv = ""):
+    return bags[user_id][item_pos].use(argv)
