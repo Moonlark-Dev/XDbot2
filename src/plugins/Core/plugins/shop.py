@@ -31,10 +31,11 @@ async def shop_handler(event: MessageEvent, message: Message = CommandArg()):
             await shop.finish(reply)
         elif arguments[0] == "view":
             item = items.json2items([SHOP_ITEMS[arguments[1]]])[0]
-            reply = f"「商品信息（#{arguments[1]}）」\n{'-'*30}\n"
-            reply += f"物品：{item.data['display_name']} {item.item_id}"
-            reply += f"价格：{economy.vi2vim(item.data['price'])}vim ({item.data['price']}vi)"
-            reply += f"简介：{item.data['information']}"
+            await shop.finish((
+                f"「商品信息（#{arguments[1]}）」\n{'-'*30}\n"
+                f"物品：{item.data['display_name']} {item.item_id}\n"
+                f"价格：{economy.vi2vim(item.data['price'])}vim ({item.data['price']}vi)\n"
+                f"简介：{item.data['display_message']}"))
                 
 
     except BaseException:
