@@ -13,10 +13,10 @@ async def handle(bot: Bot, event: GroupMessageEvent):
     try:
         await bot.call_api(
             api="upload_group_file",
-            grouo_id=event.group_id,
-            file=f"{os.path.abspath('./data/error.log')}",
+            grouo_id=str(event.group_id),
+            file=os.path.abspath('./data/error.log'),
             name="error.log"
         )
 
     except BaseException:
-        await _error.report(traceback.format_exc())
+        await _error.report(traceback.format_exc(), upload_log)
