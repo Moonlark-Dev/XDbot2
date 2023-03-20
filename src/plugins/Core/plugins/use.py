@@ -14,9 +14,9 @@ use_cmd = on_command("use", aliases={"使用"})
 async def use_item(event: MessageEvent, message: Message = CommandArg()):
     try:
         qq = event.get_user_id()
-        await use_cmd.finish(await bag.use_item(
+        await use_cmd.finish("\n".join(await bag.use_item(
             qq, int(message.extract_plain_text().split(" ")[0]),
-            " ".join(message.extract_plain_text().split(" ")[1:])))
+            " ".join(message.extract_plain_text().split(" ")[1:]))))
 
     except BaseException:
         await error.report(traceback.format_exc(), use_cmd)
