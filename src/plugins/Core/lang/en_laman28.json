@@ -1,6 +1,7 @@
 {
-  "lang.empty": "Use {} to switch languages",
-  "lang.success": "Corrent language using: {}",
+  "lang.version": "23w12a",
+  "lang.empty": "Use {} to switch language",
+  "lang.success": "Current language using: {}",
   "lang.notfound": "Language file {} cannot be found",
   "lang.list": "Available languages:\n{}",
   "_error.failed": "Failed",
