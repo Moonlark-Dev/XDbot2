@@ -7,10 +7,10 @@ def reload():
     global _lang_user
     global _lang_dict
     if os.path.exists("data/lang.users.json"):
-        with open("data/lang.users.json", "r") as f:
+        with open("data/lang.users.json", encoding="utf-8") as f:
             _lang_user = json.load(f)
     else:
-        with open("data/lang.users.json", "w") as f:
+        with open("data/lang.users.json", "w", encoding="utf-8") as f:
             _lang_user = {}
             json.dump(_lang_user, f)
 
@@ -22,7 +22,7 @@ def reload():
                 open(
                     "src/plugins/Core/lang" +
                     os.sep +
-                    _lang_file))
+                    _lang_file, encoding="utf-8"))
             _lang_dict[_lang_file.replace(".json", "")] = _lang_index
         except:
             logger.warning(f"加载 {_lang_file} 时发生错误，拒绝加载！")

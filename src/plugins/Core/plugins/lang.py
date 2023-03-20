@@ -18,10 +18,10 @@ async def lang_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
     else:
         if os.path.exists(
                 f"src/plugins/Core/lang/{args}.json") or args == "debug":
-            with open("data/lang.users.json", "r") as f:
+            with open("data/lang.users.json", encoding="utf-8") as f:
                 _lang_user = json.load(f)
             _lang_user[event.get_user_id()] = args
-            with open("data/lang.users.json", "w") as f:
+            with open("data/lang.users.json", "w", encoding="utf-8") as f:
                 json.dump(_lang_user, f)
             _lang.reload()
             await lang.finish(_lang.text("lang.success", [args], event.get_user_id()))
