@@ -14,7 +14,7 @@ class Dice(Item):
             "int": None
         }
 
-    def _use(self):
+    def on_use(self):
         user_id = self.user_id
         c = self.data["int"] or random.randint(1, 20)
         if c == 20:
