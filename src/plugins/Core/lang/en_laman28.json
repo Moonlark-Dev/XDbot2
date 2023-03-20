@@ -1,5 +1,6 @@
 {
-  "lang.version": "23w12a",
+  "lang.version": "23w12b",
+  "lang.author": "Laman28",
   "lang.empty": "Use {} to switch language",
   "lang.success": "Current language using: {}",
   "lang.notfound": "Language file {} cannot be found",
@@ -20,7 +21,7 @@
   "bag.cannot_drop": "Item is marked as: cannotDrop",
   "bag.finish": "Finished",
   "bag.empty": "Your inventory has nothing ~",
-  "bag.notfound": "You don't have it!",
+  "bag.notfound": "You don't have that!",
   "cave.name": "Echo Cave",
   "cave.new": "「Echo Cave New Content ({})」\n",
   "cave.added": "Echo Cave Addition ({}) has been done",
