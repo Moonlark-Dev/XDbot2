@@ -42,7 +42,8 @@ def text(key: str, _format: list = [],
         try:
             value = _lang_dict["zh_hans"][key]
         except BaseException:
-            return f"<本地化键缺失 {lang}.json {key}>"
+            #return f"<本地化键缺失 {lang}.json {key}>"
+            return key
     for i in _format:
         value = value.replace("{}", str(i), 1)
     if params:
@@ -50,5 +51,8 @@ def text(key: str, _format: list = [],
             value = value.replace("${" + i + "}", params[i])
     return str(value)
 
+def _load_key(langname, key):
+    try: return _lang._lang_dict[langname][key]
+    except: return key
 
 reload()

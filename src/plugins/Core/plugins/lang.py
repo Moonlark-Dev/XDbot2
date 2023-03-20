@@ -46,20 +46,18 @@ async def lang_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                             missing_keys.append(key)
                         key_length += 1
 
-                try: version = _lang._lang_dict[lang_name]["lang.version"]
-                except: version = "v1.0.0"
-                try: author = _lang._lang_dict[lang_name]["lang.author"]
-                except: author = "未知创作者"
+                version = _load_key(lang_name, "lang.version")
+                author = _load_key(lang_name, "lang.author")
 
                 await lang.send("\n".join((
-                    "「语言详细信息」",
-                    f"名称：{lang_name}",
-                    f"版本：{version}",
-                    f"作者：{author}",
-                    f"兼容性：{found_key} / {key_length} {round(found_key / key_length * 100)}%"
+                    f"{_load_key(lang_name, 'lang.text.intro')}",
+                    f"{_load_key(lang_name, 'lang.text.name')}{lang_name}",
+                    f"{_load_key(lang_name, 'lang.text.version')}{version}",
+                    f"{_load_key(lang_name, 'lang.text.author')}{author}",
+                    f"{_load_key(lang_name, 'lang.text.compatibility')}{found_key} / {key_length} {round(found_key / key_length * 100)}%"
                 )))
                 if missing_keys:
-                    await lang.finish("缺失的键：" + " ".join(missing_keys))
+                    await lang.finish(f"{_load_key(lang_name, 'lang.text.keylost')}" + " ".join(missing_keys))
                 else:
                     await lang.finish()
 
