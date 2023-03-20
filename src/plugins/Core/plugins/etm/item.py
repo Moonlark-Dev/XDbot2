@@ -30,8 +30,8 @@ class Item:
             msg = []
             for _ in range(count):
                 try:
-                    self.count -= 1
-                    msg.append(self._use())
+                    self.count = self.count - 1
+                    msg.append(self.on_use())
                 except BaseException:
                     msg.append(f"发生错误：{traceback.format_exc()}")
         else:
