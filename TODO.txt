@@ -1,0 +1,22 @@
+/su（权限：Superuser，{超管|superuser|admin}）
+	/su {gift|礼包}
+		/su {gift|礼包} {create|创建} <礼包码> [<过期时间>]
+		/su {gift|礼包} {add|添加物品} <礼包码> <物品ID> <数量> [<NBT>]
+		/su {gift|礼包} {remove|删除物品} <礼包码> <礼包物品ID>
+		/su {gift|礼包} {list|获取全部物品} <礼包码>
+		/su {gift|礼包} {submit|提交} <礼包码>
+		/su {gift|礼包} {close|关闭} <礼包码>
+		/su {gift|礼包} {all|获取活动礼包} <礼包码>
+
+/code（权限：ALL，{运行代码}）
+	/code <语言> [<-i STDIN>][\n]<code>
+
+/menu（权限：ALL，{菜单}）
+	/menu <分类>
+
+/gift（权限：ALL，{礼包码}）
+	/gift <礼包码>
+	/gift <view|查看> <礼包码>
+
+/hijack（权限：ALL，{抢劫}）
+	/hijack {QQ|@QQ}

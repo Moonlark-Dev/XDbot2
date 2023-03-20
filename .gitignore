@@ -1,0 +1,11 @@
+logsndatanconfig.*nvenvnnode_modules
+venv
+.idea/
+.env
+.mypy_cache
+__pycache__
+.env
+data/
+Dockerfile
+docker-compose.yml
+src/plugins/Core/plugins/chatgpt.py
