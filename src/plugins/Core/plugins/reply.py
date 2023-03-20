@@ -247,7 +247,7 @@ async def imageSaverHandle(bot: Bot, event: GroupMessageEvent):
                         group_id=ctrlGroup,
                     )
 
-                    json.dump(data, open("data/reply.images.json", "w"))
+                    json.dump(data, open("data/reply.images.json", "w", encoding="utf-8"))
                     await asyncio.sleep(random.random() / 2)
                     await imageSaver.send(
                         _lang.text("reply.good_image", [], event.get_user_id())
@@ -276,7 +276,7 @@ async def imageSaverHandle(bot: Bot, event: GroupMessageEvent):
                         _lang.text("reply.good_image", [], event.get_user_id())
                     )
 
-                    json.dump(data, open("data/reply.images.json", "w"))
+                    json.dump(data, open("data/reply.images.json", "w", encoding="utf-8"))
                     latestSend = time.time()
                 # elif random.random() <= 0.01:
 
