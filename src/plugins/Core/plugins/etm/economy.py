@@ -1,4 +1,4 @@
-from . import user
+import user
 from nonebot_plugin_apscheduler import scheduler
 from nonebot import require
 import json
