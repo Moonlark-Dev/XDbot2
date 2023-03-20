@@ -18,7 +18,7 @@ class Item:
     def init(self):
         pass
 
-    def _use(self):
+    def on_use(self):
         pass
 
     def use(self, args):
@@ -28,9 +28,9 @@ class Item:
             count = 1
         if self.count >= count:
             msg = []
-            for _ in range(count):
+            for _ in range(count - 1):
                 try:
-                    self.count = self.count - 1
+                    self.count -= 1
                     msg.append(self.on_use())
                 except BaseException:
                     msg.append(f"发生错误：{traceback.format_exc()}")
