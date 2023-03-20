@@ -1,7 +1,7 @@
-from item_basic_data import BASIC_DATA
-import economy
+from .item_basic_data import BASIC_DATA
+fron . import economy
 import random
-import achievement
+from . import achievement
 import traceback
 
 
@@ -54,7 +54,6 @@ class Dice:
             msg = []
             for _ in range(count - 1):
                 try:
-                    self.count -= 1
                     msg.append(self._use(self.user_id))
                 except BaseException:
                     msg.append(f"发生错误：{traceback.format_exc()}")
