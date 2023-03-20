@@ -25,8 +25,8 @@ setu = on_command("setu", aliases={"涩图", "st-r"})
 latest_send = time.time()
 app = get_app()
 image_path = ""
-config = json.load(open("data/setu.config.json"))
-allow_r18 = json.load(open("data/setu.allow.json"))["r18"]
+config = json.load(open("data/setu.config.json", encoding="utf-8"))
+allow_r18 = json.load(open("data/setu.allow.json", encoding="utf-8"))["r18"]
 
 
 @app.get("/setu")
@@ -146,12 +146,12 @@ async def setu_handler(
         asyncio.create_task(delete_msg(bot, message_id))
 
         # 修改调用数据
-        data = json.load(open("data/setu.count.json"))
+        data = json.load(open("data/setu.count.json", encoding="utf-8"))
         try:
             data[event.get_user_id()] += 1
         except KeyError:
             data[event.get_user_id()] = 1
-        json.dump(data, open("data/setu.count.json", "w"))
+        json.dump(data, open("data/setu.count.json", "w", encoding="utf-8"))
 
     except httpx.ConnectTimeout:
         await _error.report(_lang.text("setu.timeout1"))

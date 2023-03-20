@@ -25,11 +25,11 @@ except ImportError:
 su = on_command("su", aliases={"超管", "superuser"}, permission=SUPERUSER)
 accout_manager = on_command("accout", aliases={"多帐号"})
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
-blackListData = json.load(open("data/su.blackList.json"))
+blackListData = json.load(open("data/su.blackList.json", encoding="utf-8"))
 multiAccoutData = {}
 group_request = on_type(GroupRequestEvent)
 bots = []
-priority_accout = json.load(open("data/su.priority_accout.json"))
+priority_accout = json.load(open("data/su.priority_accout.json", encoding="utf-8"))
 driver = get_driver()
 accouts = {}
 su_notice_cache = ""
@@ -41,14 +41,14 @@ def parseCave(text: str):
         return text
     else:
         imageID = text[imageIDStart + 6: text.find("]]]", imageIDStart)]
-        imagePath = os.path.join(path, "data", "caveImages", f"{imageID}.png")
+        imagePath = os.path.join(os.path.abspath("."), "data", "caveImages", f"{imageID}.png")
         imageCQ = f"[CQ:image,file=file://{imagePath}]"
         return parseCave(text.replace(f"[[Img:{imageID}]]]", str(imageCQ)))
 
 
 def reloadBlackList():
     global blackListData
-    blackListData = json.load(open("data/su.blackList.json"))
+    blackListData = json.load(open("data/su.blackList.json", encoding="utf-8"))
 
 
 @driver.on_bot_connect
@@ -70,7 +70,7 @@ async def reloadMuiltData():
                 multiAccoutData[group["group_id"]] = key
             elif key in priority_accout["accouts"]:
                 multiAccoutData[group["group_id"]] = key
-    json.dump(multiAccoutData, open("data/su.multiaccoutdata.ro.json", "w"))
+    json.dump(multiAccoutData, open("data/su.multiaccoutdata.ro.json", "w", encoding="utf-8"))
 
 
 @accout_manager.handle()
@@ -86,7 +86,7 @@ async def mulitaccout_manager(
                 multiAccoutData[event.group_id] = argument[1]
                 json.dump(
                     multiAccoutData, open(
-                        "data/su.multiaccoutdata.ro.json", "w"))
+                        "data/su.multiaccoutdata.ro.json", "w", encoding="utf-8"))
                 await accout_manager.finish(_lang.text("su.set_accout_success", [argument[1]], qq))
             else:
                 await accout_manager.finish(_lang.text("su.accout_not_found"), user=qq)
@@ -226,8 +226,8 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
         log_msg = str(message)
         if not log_msg.split(" ")[0] in ["log", "日志", "审核日志", "查看日志", "*log"]:
             if not os.path.exists("data/su.log.json"):
-                json.dump([], open("data/su.log.json", "w"))
-            log = json.load(open("data/su.log.json"))
+                json.dump([], open("data/su.log.json", "w", encoding="utf-8"))
+            log = json.load(open("data/su.log.json", encoding="utf-8"))
             log_time = time.localtime()
             log.append({
                 "user": {
@@ -245,13 +245,13 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                 },
                 "command": log_msg
             })
-            json.dump(log, open("data/su.log.json", "w"))
+            json.dump(log, open("data/su.log.json", "w", encoding="utf-8"))
     except BaseException:
         print("[WARN] 记录su审核日志失败")
     try:
         argument = str(message).split(" ")
         if argument[0] == "ban" or argument[0] == "封禁":
-            data = json.load(open("data/su.blackList.json"))
+            data = json.load(open("data/su.blackList.json", encoding="utf-8"))
             if argument[1] not in data:
                 data += [argument[1]]
                 await su.send(f"已封禁{argument[1]}")
@@ -268,10 +268,10 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                     message=f"用户 {username}({argument[1]}) 已被超管封禁：{because}",
                     group_id=group,
                 )
-            json.dump(data, open("data/su.blackList.json", "w"))
+            json.dump(data, open("data/su.blackList.json", "w", encoding="utf-8"))
             reloadBlackList()
         elif argument[0] == "pardon" or argument[0] == "解封" or argument[0] == "unban":
-            data = json.load(open("data/su.blackList.json"))
+            data = json.load(open("data/su.blackList.json", encoding="utf-8"))
             length = 0
             for user in data:
                 if user == argument[1]:
@@ -280,7 +280,7 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                     break
                 else:
                     length += 1
-            json.dump(data, open("data/su.blackList.json", "w"))
+            json.dump(data, open("data/su.blackList.json", "w", encoding="utf-8"))
             reloadBlackList()
         elif argument[0] == "call" or argument[0] == "调用":
             await su.send(
@@ -291,7 +291,7 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                 fileList = os.listdir("data")
                 for file in fileList:
                     if file.startswith("ct."):
-                        json.dump(dict(), open(f"data/{file}", "w"))
+                        json.dump(dict(), open(f"data/{file}", "w", encoding="utf-8"))
                         await su.send(f"已重置：{file}")
         elif argument[0] == "echo" or argument[0] == "调试输出":
             await su.send(
@@ -373,9 +373,9 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
         elif argument[0] == "cave" or argument[0] == "回声洞":
             if argument[1] in ["comment", "reply", "回复"]:
                 if argument[2] in ["remove", "rm", "删除"]:
-                    data = json.load(open("data/cave.comments.json"))
+                    data = json.load(open("data/cave.comments.json", encoding="utf-8"))
                     data[argument[3]]["data"].pop(argument[4])
-                    json.dump(data, open("data/cave.comments.json", "w"))
+                    json.dump(data, open("data/cave.comments.json", "w", encoding="utf-8"))
                     await su.send(f"已删除 Cave{argument[3]}#{argument[4]}")
             elif argument[1] == "remove" or argument[1] == "移除":
                 data = json.load(open("data/cave.data.json", encoding="utf-8"))

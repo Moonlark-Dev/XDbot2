@@ -3,7 +3,7 @@ import json
 
 def send_message(text: str, receive: str,
                  sender_nickname: str = "System", sender_id: int = 3457603681):
-    data = json.load(open("data/messenger.messageList.json"))
+    data = json.load(open("data/messenger.messageList.json", encoding="utf-8"))
     data.append({
         "recv": receive,
         "text": text,

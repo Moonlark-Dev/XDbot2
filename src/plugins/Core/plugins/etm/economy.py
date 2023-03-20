@@ -4,7 +4,7 @@ from nonebot import require
 import json
 from nonebot.log import logger
 
-vimcoin = json.load(open("data/etm/vimcoin.json"))
+vimcoin = json.load(open("data/etm/vimcoin.json", encoding="utf-8"))
 #{
 #    "in": 0,
 #    "out": 0,
@@ -22,7 +22,7 @@ async def change_exchange_rate():
     if vimcoin["exchange_rate"] <= 0:
         vimcoin["exchange_rate"] = exchange_rate
         logger.error("更新汇率失败：非法数据（已放弃）")
-    json.dump(vimcoin, open("data/etm/vimcoin.json", "w"))
+    json.dump(vimcoin, open("data/etm/vimcoin.json", "w", encoding="utf-8"))
 
 def _add_vimcoin(user_id, count):
         data = user.get_user_data(user_id)

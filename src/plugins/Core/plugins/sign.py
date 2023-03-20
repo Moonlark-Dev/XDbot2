@@ -15,7 +15,7 @@ sign_rank = on_command("sign-rank")
 @sign.handle()
 async def sign_handler(event: MessageEvent):
     try:
-        data = json.load(open("data/etm/sign.json"))
+        data = json.load(open("data/etm/sign.json", encoding="utf-8"))
         qq = event.get_user_id()
         date = int((time.time() + 28800) / 86400)
         if qq not in data["latest"]:
@@ -50,7 +50,7 @@ async def sign_handler(event: MessageEvent):
                 lang.text("sign.hr", [], qq),
                 lang.text("sign.days", [data["days"][qq]], qq)
             )), at_sender=True)
-            json.dump(data, open("data/etm/sign.json", "w"))
+            json.dump(data, open("data/etm/sign.json", "w", encoding="utf-8"))
 
 
 

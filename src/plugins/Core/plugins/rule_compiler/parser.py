@@ -304,7 +304,7 @@ class Parser:
 
 
 if __name__ == "__main__":
-    with open("./helloworld.xr") as f:
+    with open("./helloworld.xr", encoding="utf-8") as f:
         parser = Parser(lexer.parse(f.read()))
 
 #    import rich

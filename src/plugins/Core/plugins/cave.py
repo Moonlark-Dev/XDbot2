@@ -17,7 +17,7 @@ from nonebot.params import CommandArg
 
 cave = on_command("cave", aliases={"回声洞"})
 cave_comment = on_message()
-ctrlGroup = json.load(open("data/ctrl.json"))["control"]
+ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 latest_use = time.time()
 path = os.path.abspath(os.path.dirname("."))
 app = get_app()
@@ -52,7 +52,7 @@ async def cave_comment_writer(event: MessageEvent):
                 "").replace(
                 "）",
                 "")
-            data = json.load(open("data/cave.comments.json"))
+            data = json.load(open("data/cave.comments.json", encoding="utf-8"))
             if cave_id not in data.keys():
                 data[cave_id] = {"count": 1, "data": {}}
             data[cave_id]["data"][str(data[cave_id]["count"])] = {
@@ -61,7 +61,7 @@ async def cave_comment_writer(event: MessageEvent):
                 "sender": event.get_user_id()
             }
             data[cave_id]["count"] += 1
-            json.dump(data, open("data/cave.comments.json", "w"))
+            json.dump(data, open("data/cave.comments.json", "w", encoding="utf-8"))
             await _error.report(f"「新回声洞评论（{cave_id}#{data[cave_id]['count'] - 1}）」\n{event.get_message()}\n{event.get_session_id()}")
             exp.add_exp(event.get_user_id(), 3)
             await cave_comment.finish(f"评论成功：{cave_id}#{data[cave_id]['count'] - 1}")

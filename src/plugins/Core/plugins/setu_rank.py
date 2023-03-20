@@ -19,7 +19,7 @@ setu_rank = on_command("st-l", aliases={"setu-rank", "随机涩图排行榜"})
 @setu_rank.handle()
 async def show_setu_ranking(bot: Bot, event: MessageEvent):
     try:
-        data = json.load(open("data/setu.count.json"))
+        data = json.load(open("data/setu.count.json", encoding="utf-8"))
         ranking = []
         for user, count in data.items():
             length = 0

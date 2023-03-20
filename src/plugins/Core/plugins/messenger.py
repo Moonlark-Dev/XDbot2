@@ -43,7 +43,7 @@ async def messengerHandle(
                 data,
                 open(
                     "data/messenger.messageList.json",
-                    mode="w",
+                    "w",
                     encoding="utf-8"),
             )
             await bot.send_group_msg(

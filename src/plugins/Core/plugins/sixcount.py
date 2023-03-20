@@ -12,7 +12,7 @@ from nonebot.adapters.onebot.v11.event import MessageEvent
 from nonebot import on_startswith
 from nonebot import get_bots
 
-ctrl_group = json.load(open("data/ctrl.json"))["control"]
+ctrl_group = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 on_six = on_startswith("6")
 app = get_app()
 
@@ -21,7 +21,7 @@ app = get_app()
 async def on_six_handle(event: MessageEvent) -> None:
     """「6」计数器"""
     try:
-        data = json.load(open("data/sixcount.data.json"))
+        data = json.load(open("data/sixcount.data.json", encoding="utf-8"))
         userID = event.get_user_id()
         if userID == "1226383994":
             userID = "2558938020"
@@ -29,7 +29,7 @@ async def on_six_handle(event: MessageEvent) -> None:
             data[userID] += 1
         except KeyError:
             data[userID] = 1
-        json.dump(data, open("data/sixcount.data.json", "w"))
+        json.dump(data, open("data/sixcount.data.json", "w", encoding="utf-8"))
 
     except Exception:
         await _error.report(traceback.format_exc())
@@ -39,7 +39,7 @@ async def on_six_handle(event: MessageEvent) -> None:
 async def get_data() -> dict | None:
     """从Web获取数据"""
     try:
-        return json.load(open("data/sixcount.data.json"))
+        return json.load(open("data/sixcount.data.json", encoding="utf-8"))
     except Exception:
         await _error.report(traceback.format_exc())
 
@@ -48,7 +48,7 @@ async def get_data() -> dict | None:
 async def get_start_time() -> dict | None:
     """从Web获取开始时间"""
     try:
-        return json.load(open("data/sixcount.starttime.json"))
+        return json.load(open("data/sixcount.starttime.json", encoding="utf-8"))
     except Exception:
         await _error.report(traceback.format_exc())
 
@@ -57,12 +57,12 @@ async def get_start_time() -> dict | None:
 async def pie():
     """生成并反回饼图"""
     try:
-        data = json.load(open("data/sixcount.data.json"))
+        data = json.load(open("data/sixcount.data.json", encoding="utf-8"))
         start_time = time.strftime(
             "%Y-%m-%d %H:%M:%S",
             time.localtime(
                 json.load(
-                    open("data/sixcount.starttime.json"))["time"]),
+                    open("data/sixcount.starttime.json", encoding="utf-8"))["time"]),
         )
 
         user_data = []

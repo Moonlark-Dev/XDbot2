@@ -29,7 +29,7 @@ async def getQQID(msgs: GroupMessageEvent):
 
 
 async def getJrrp(qq: str):
-    data = json.load(open("data/jrrp.users.json"))
+    data = json.load(open("data/jrrp.users.json", encoding="utf-8"))
     if qq not in data.keys():
         await jrrp.send(_lang.text("jrrp.notice", [], qq), at_sender=True)
         data[qq] = {"max": 0}
@@ -41,7 +41,7 @@ async def getJrrp(qq: str):
             Message(f"[CQ:at,qq={qq}] {_lang.text('jrrp.new_record',[],qq)}")
         )
         data[qq]["max"] = luck
-        json.dump(data, open("data/jrrp.users.json", "w"))
+        json.dump(data, open("data/jrrp.users.json", "w", encoding="utf-8"))
     # 生成提示文本
     if luck == 100:
         return _lang.text("jrrp.num.100", [luck], qq)

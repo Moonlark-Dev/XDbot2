@@ -87,7 +87,7 @@ def parse(src_code: str) -> list:
 
 
 if __name__ == "__main__":
-    with open("./helloworld.xr") as f:
+    with open("./helloworld.xr", encoding="utf-8") as f:
         result = parse(f.read())
     for token in result:
         print(token)

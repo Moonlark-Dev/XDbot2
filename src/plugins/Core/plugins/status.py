@@ -63,7 +63,7 @@ def format_time(seconds):
 
 def uptime():
     try:
-        seconds = int(float(open("/proc/uptime").read().split(" ")[0]))
+        seconds = int(float(open("/proc/uptime", encoding="utf-8").read().split(" ")[0]))
     except BaseException:
         return "Unknown"
     return format_time(seconds)

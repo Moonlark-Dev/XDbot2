@@ -7,7 +7,7 @@ import random
 from nonebot.log import logger
 from . import _lang
 
-ctrlGroup = json.load(open("data/ctrl.json"))["control"]
+ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 
 
 async def report(err: str, matcher: any = None):
@@ -16,7 +16,7 @@ async def report(err: str, matcher: any = None):
     if "FinishedException" in error:
         return None
     bot = get_bots()[json.load(
-        open("data/su.multiaccoutdata.ro.json"))[ctrlGroup]]
+        open("data/su.multiaccoutdata.ro.json", encoding="utf-8"))[ctrlGroup]]
     await bot.send_group_msg(message=err, group_id=ctrlGroup)
     if "「" in err:
         return None

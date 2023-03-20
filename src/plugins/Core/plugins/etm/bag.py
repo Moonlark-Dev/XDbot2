@@ -5,10 +5,10 @@ from nonebot_plugin_apscheduler import scheduler
 from nonebot import require
 
 require("nonebot_plugin_apscheduler")
-bags = {}# items.json2items(json.load(open("data/etm/bags.json")))
+bags = {}# items.json2items(json.load(open("data/etm/bags.json", encoding="utf-8")))
 
 def get_bags():
-    data = json.load(open("data/etm/bags.json"))
+    data = json.load(open("data/etm/bags.json", encoding="utf-8"))
     for user, bag in list(data.items()):
         bags[user] = items.json2items(bag, user)
 get_bags()
@@ -39,7 +39,7 @@ def save_bags():
                     "count": item.count,
                     "data": nbt.copy()
                 })
-    json.dump(bag_data, open("data/etm/bags.json", "w"))
+    json.dump(bag_data, open("data/etm/bags.json", "w", encoding="utf-8"))
     get_bags()
     
 def get_user_bag(user_id):
