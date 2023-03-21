@@ -24,7 +24,7 @@ async def _(matcher: Matcher, event: MessageEvent, bot: Bot):
     try:
         data = json.load(open("data/sixcount.data.json", encoding="utf-8"))
         sorted_data = sorted(data.items(), key=lambda x: x[1], reverse=True)
-        s = lang.text("sixcount.title", [], event.get_user_id())
+        s = lang.text("sixcount.title", [], event.get_user_id()) + "\n"
         for i in range(10):
             user_id = sorted_data[i][0]
             count = data[user_id]
