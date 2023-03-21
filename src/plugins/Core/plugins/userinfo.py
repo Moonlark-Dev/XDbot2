@@ -29,4 +29,4 @@ async def show_panel(bot: Bot, event: MessageEvent):
             f"  {lang.text('userinfo.health', [], qq)}：{data['health']} / 20"))
 
     except BaseException:
-        await error.report(traceback.format_exc())
+        await error.report(traceback.format_exc(), panel)

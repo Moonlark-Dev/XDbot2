@@ -69,7 +69,7 @@ async def cave_comment_writer(event: MessageEvent):
     except FinishedException:
         raise FinishedException()
     except BaseException:
-        await _error.report(traceback.format_exc())
+        await _error.report(traceback.format_exc(), cave_comment)
 
 
 @app.get("/cave/data.json")
