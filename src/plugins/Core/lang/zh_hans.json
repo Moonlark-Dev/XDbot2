@@ -1,5 +1,12 @@
 {
   "lang.version": "latest",
+  "lang.author": "开发组",
+  "lang.text.intro": "「语言详细信息」",
+  "lang.text.name": "名称：",
+  "lang.text.version": "版本：",
+  "lang.text.author": "维护者：",
+  "lang.text.compatibility": "兼容性：",
+  "lang.text.keylost": "缺失键：",
   "lang.empty": "请使用 {} 设置语言",
   "lang.success": "成功设置语言为 {} ",
   "lang.notfound": "语言 {} 不存在",

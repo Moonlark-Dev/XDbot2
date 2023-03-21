@@ -1,6 +1,12 @@
 {
   "lang.version": "23w12b",
   "lang.author": "Laman28",
+  "lang.text.intro": "[Language details]",
+  "lang.text.name": "Name: ",
+  "lang.text.version": "Version: ",
+  "lang.text.author": "Author: ",
+  "lang.text.compatibility": "Compatibility: ",
+  "lang.text.keylost": "The missing keys: ",
   "lang.empty": "Use {} to switch language",
   "lang.success": "Current language using: {}",
   "lang.notfound": "Language file {} cannot be found",
