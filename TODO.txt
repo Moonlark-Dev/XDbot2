@@ -8,9 +8,6 @@
 		/su {gift|礼包} {close|关闭} <礼包码>
 		/su {gift|礼包} {all|获取活动礼包} <礼包码>
 
-/code（权限：ALL，{运行代码}）
-	/code <语言> [<-i STDIN>][\n]<code>
-
 /menu（权限：ALL，{菜单}）
 	/menu <分类>
 
