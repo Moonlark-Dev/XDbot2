@@ -143,7 +143,7 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                     f"——{senderData['nickname']}")))
             # 发送评论
             if event.get_session_id().split("_")[0] == "group":
-                comments = json.load(open("data/cave.comments.json"))
+                comments = json.load(open("data/cave.comments.json", encoding="utf-8"))
                 caveData["id"] = str(caveData["id"])
                 if caveData["id"] in comments.keys():
                     comments = list(comments[caveData["id"]]["data"].values())
@@ -262,7 +262,7 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                 )
             )
             if event.get_session_id().split("_")[0] == "group":
-                comments = json.load(open("data/cave.comments.json"))
+                comments = json.load(open("data/cave.comments.json", encoding="utf-8"))
                 caveData["id"] = str(caveData["id"])
                 if caveData["id"] in comments.keys():
                     comments = list(comments[caveData["id"]]["data"].values())
