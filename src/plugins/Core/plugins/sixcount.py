@@ -31,8 +31,9 @@ async def _(matcher: Matcher, event: MessageEvent):
         s += "------------------------------\n"
         user_id = event.get_user_id()
         count = data[user_id]
-        s += f"{sorted_data.index(user_id) + 1}. {user_id}: {count}\n"
+        # s += f"{sorted_data.index(user_id) + 1}. {user_id}: {count}\n"
         await matcher.send(s)
+        await matcher.send(json.dumps(sorted_data))
     except Exception:
         await _error.report(traceback.format_exc())
 
