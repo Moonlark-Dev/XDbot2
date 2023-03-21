@@ -52,7 +52,7 @@ def text(key: str, _format: list = [],
     return str(value)
 
 def _load_key(langname, key):
-    try: return _lang._lang_dict[langname][key]
+    try: return _lang_dict[langname][key]
     except: return key
 
 reload()

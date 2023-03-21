@@ -46,18 +46,18 @@ async def lang_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                             missing_keys.append(key)
                         key_length += 1
 
-                version = _load_key(lang_name, "lang.version")
-                author = _load_key(lang_name, "lang.author")
+                version = _lang._load_key(lang_name, "lang.version")
+                author = _lang._load_key(lang_name, "lang.author")
 
                 await lang.send("\n".join((
-                    f"{_load_key(lang_name, 'lang.text.intro')}",
-                    f"{_load_key(lang_name, 'lang.text.name')}{lang_name}",
-                    f"{_load_key(lang_name, 'lang.text.version')}{version}",
-                    f"{_load_key(lang_name, 'lang.text.author')}{author}",
-                    f"{_load_key(lang_name, 'lang.text.compatibility')}{found_key} / {key_length} {round(found_key / key_length * 100)}%"
+                    f"{_lang._load_key(lang_name, 'lang.text.intro')}",
+                    f"{_lang._load_key(lang_name, 'lang.text.name')}{lang_name}",
+                    f"{_lang._load_key(lang_name, 'lang.text.version')}{version}",
+                    f"{_lang._load_key(lang_name, 'lang.text.author')}{author}",
+                    f"{_lang._load_key(lang_name, 'lang.text.compatibility')}{found_key} / {key_length} {round(found_key / key_length * 100)}%"
                 )))
                 if missing_keys:
-                    await lang.finish(f"{_load_key(lang_name, 'lang.text.keylost')}" + " ".join(missing_keys))
+                    await lang.finish(f"{_lang._load_key(lang_name, 'lang.text.keylost')}" + " ".join(missing_keys))
                 else:
                     await lang.finish()
 
