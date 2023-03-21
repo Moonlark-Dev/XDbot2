@@ -18,7 +18,7 @@ on_six = on_startswith("6")
 app = get_app()
 
 
-@on_command("six-r").handle()
+@on_command("6-count").handle()
 async def _(matcher: Matcher, event: MessageEvent):
     try:
         data = json.load(open("data/sixcount.data.json", encoding="utf-8"))
