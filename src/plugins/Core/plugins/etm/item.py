@@ -26,14 +26,15 @@ class Item:
             count = int(args)
         except:
             count = 1
+        
+        msg = []
         if self.count >= count:
-            msg = []
-            for _ in range(count - 1):
+            for _ in range(count):
                 try:
-                    self.count -= 1
                     msg.append(self.on_use())
                 except BaseException:
                     msg.append(f"发生错误：{traceback.format_exc()}")
+            self.count -= count
         else:
             msg = [f"错误：数量不足（拥有 {self.count} 个）"]
         return msg
