@@ -24,16 +24,17 @@ async def _(matcher: Matcher, event: MessageEvent):
         data = json.load(open("data/sixcount.data.json", encoding="utf-8"))
         sorted_data = sorted(data.items(), key=lambda x: x[1], reverse=True)
         s = ""
-        for i in range(5):
+        for i in range(10):
             user_id = sorted_data[i][0]
             count = data[user_id]
             s += f"{i + 1}. {user_id}: {count}\n"
         s += "------------------------------\n"
         user_id = event.get_user_id()
         count = data[user_id]
-        # s += f"{sorted_data.index(user_id) + 1}. {user_id}: {count}\n"
+        for i in sorted_data:
+            if i[0] == user_id:
+                s += f"{sorted_data.index(i) + 1}. {user_id}: {count}\n"
         await matcher.send(s)
-        await matcher.send(json.dumps(sorted_data))
     except Exception:
         await _error.report(traceback.format_exc())
 
