@@ -9,12 +9,32 @@ from pyecharts.render import make_snapshot
 from pyecharts.charts import Pie
 from pyecharts.charts import Bar
 from nonebot.adapters.onebot.v11.event import MessageEvent
-from nonebot import on_startswith
+from nonebot.matcher import Matcher
+from nonebot import on_startswith, on_command
 from nonebot import get_bots
 
 ctrl_group = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 on_six = on_startswith("6")
 app = get_app()
+
+
+@on_command("six-r").handle()
+async def _(matcher: Matcher, event: MessageEvent):
+    try:
+        data = json.load(open("data/sixcount.data.json", encoding="utf-8"))
+        sorted_data = sorted(data.items(), key=lambda x: x[1], reverse=True)
+        s = ""
+        for i in range(5):
+            user_id = sorted_data[i][0]
+            count = data[user_id]
+            s += f"{i + 1}. {user_id}: {count}\n"
+        s += "------------------------------\n"
+        user_id = event.get_user_id()
+        count = data[user_id]
+        s += f"{sorted_data.index(user_id) + 1}. {user_id}: {count}\n"
+        await matcher.send(s)
+    except Exception:
+        await _error.report(traceback.format_exc())
 
 
 @on_six.handle()
@@ -82,9 +102,10 @@ async def pie():
             Pie(init_opts=opts.InitOpts(bg_color="rgba(255,255,255,1)"))
             .add("", user_data)
             .set_global_opts(
-                title_opts=opts.TitleOpts(title="6", subtitle=start_time + " 至今"),
+                title_opts=opts.TitleOpts(
+                    title="6", subtitle=start_time + " 至今"),
                 legend_opts=opts.LegendOpts(is_show=False))
-            
+
             .set_series_opts(label_opts=opts.LabelOpts(formatter="{b}: {c}"))
         ).render(path="data/sixcount.render.ro.html")
 
