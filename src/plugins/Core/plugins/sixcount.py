@@ -1,17 +1,18 @@
 import json
-from nonebot import get_app
-from . import _error
+import time
 import traceback
+
 from fastapi.responses import HTMLResponse
 from pyecharts import options as opts
-import time
-from pyecharts.render import make_snapshot
 from pyecharts.charts import Pie
-from pyecharts.charts import Bar
+
 from nonebot.adapters.onebot.v11 import MessageEvent, Bot
 from nonebot.matcher import Matcher
 from nonebot import on_startswith, on_command
-from nonebot import get_bots
+from nonebot import get_bots, get_app
+
+from . import _lang as lang
+from . import _error
 
 ctrl_group = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 on_six = on_startswith("6")
@@ -23,7 +24,7 @@ async def _(matcher: Matcher, event: MessageEvent, bot: Bot):
     try:
         data = json.load(open("data/sixcount.data.json", encoding="utf-8"))
         sorted_data = sorted(data.items(), key=lambda x: x[1], reverse=True)
-        s = ""
+        s = lang.text("sixcount.title", [], event.get_user_id())
         for i in range(10):
             user_id = sorted_data[i][0]
             count = data[user_id]

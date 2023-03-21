@@ -132,5 +132,6 @@
   "userinfo.title": "「用户信息面板」",
   "userinfo.level": "等级",
   "userinfo.vimcoin": "余额",
-  "userinfo.health": "生命值"
+  "userinfo.health": "生命值",
+  "sixcount.title": "发送「6」排行："
 }
