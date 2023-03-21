@@ -8,7 +8,7 @@ import time
 from pyecharts.render import make_snapshot
 from pyecharts.charts import Pie
 from pyecharts.charts import Bar
-from nonebot.adapters.onebot.v11.event import MessageEvent
+from nonebot.adapters.onebot.v11 import MessageEvent, Bot
 from nonebot.matcher import Matcher
 from nonebot import on_startswith, on_command
 from nonebot import get_bots
@@ -19,7 +19,7 @@ app = get_app()
 
 
 @on_command("6-count").handle()
-async def _(matcher: Matcher, event: MessageEvent):
+async def _(matcher: Matcher, event: MessageEvent, bot: Bot):
     try:
         data = json.load(open("data/sixcount.data.json", encoding="utf-8"))
         sorted_data = sorted(data.items(), key=lambda x: x[1], reverse=True)
@@ -27,16 +27,19 @@ async def _(matcher: Matcher, event: MessageEvent):
         for i in range(10):
             user_id = sorted_data[i][0]
             count = data[user_id]
-            s += f"{i + 1}. {user_id}: {count}\n"
+            nickname = (await bot.get_stranger_info(user_id=int(user_id)))["nickname"]
+            s += f"{i + 1}. {nickname}: {count}\n"
         s += "------------------------------\n"
         user_id = event.get_user_id()
         count = data[user_id]
-        for i in sorted_data:
-            if i[0] == user_id:
-                s += f"{sorted_data.index(i) + 1}. {user_id}: {count}\n"
+        for i in range(len(sorted_data)):
+            if sorted_data[i][0] == user_id:
+                nickname = (await bot.get_stranger_info(user_id=int(user_id)))["nickname"]
+                s += f"{i + 1}. {nickname}: {count}\n"
+                break
         await matcher.send(s)
     except Exception:
-        await _error.report(traceback.format_exc())
+        await _error.report(traceback.format_exc(), matcher)
 
 
 @on_six.handle()
