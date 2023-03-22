@@ -178,7 +178,7 @@
   "reply.finish": "Add operate succeeded",
   "reply.403": "Permission denied!",
   "reply.not_found": "Failure: No such reply",
-  "reply.show_data": "[Reply (Reply#{})]\nExpression: {}\nGlobal: {}\.lang_ {}",
+  "reply.show_data": "[Reply (Reply#{})]\nExpression: {}\nGlobal: {}\nText: {}",
   "reply.mydata": "Activity information: {}",
   "reply.alldata": "Activity information (current session): {}",
   "preview.only_group": "Failure: You should use this in a group",
