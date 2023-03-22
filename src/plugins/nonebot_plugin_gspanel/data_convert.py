@@ -159,7 +159,8 @@ async def calcRelicMark(
         _subPointMark: float = pointMark.get(s["prop"], 0)
         calcSub: float = _subPointMark * s["value"] * 46.6 / 6 / 100
         # 副词条 CSS 样式
-        _awKey = f"{s['prop']}百分比" if s["prop"] in ["生命值", "攻击力", "防御力"] else s["prop"]
+        _awKey = f"{s['prop']}百分比" if s["prop"] in [
+            "生命值", "攻击力", "防御力"] else s["prop"]
         _subAffixWeight: int = affixWeight.get(_awKey, 0)
         subStyleClass = (
             ("great" if _subAffixWeight > 79 else "use") if calcSub else "unuse"
@@ -167,13 +168,14 @@ async def calcRelicMark(
         # [词条名, 词条数值, 词条得分]
         calcSubs.append([subStyleClass, calcSub])
     # 总分对齐系数（百分数），按满分 66 对齐各位置圣遗物的总分
-    calcTotalPct: float = 66 / (maxMark[posIdx]["total"] * 46.6 / 6 / 100) * 100
+    calcTotalPct: float = 66 / \
+        (maxMark[posIdx]["total"] * 46.6 / 6 / 100) * 100
     # 最终圣遗物总分
     _total = calcMain + sum(s[1] for s in calcSubs)
     calcTotal = _total * calcMainPct * calcTotalPct / 10000
     # 强化歪次数
     realAppendPropIdList: List[int] = (
-        relicData["_appendPropIdList"][-(relicLevel // 4) :]
+        relicData["_appendPropIdList"][-(relicLevel // 4):]
         if (relicLevel // 4)
         else []
     )
@@ -356,7 +358,8 @@ async def transFromEnka(avatarInfo: Dict, ts: int = 0) -> Dict:
             # 额外数据处理
             relicData["calc"]["total"] = round(relicData["calc"]["total"], 1)
             relicData.pop("_appendPropIdList")
-            relicSet[relicData["setName"]] = relicSet.get(relicData["setName"], 0) + 1
+            relicSet[relicData["setName"]] = relicSet.get(
+                relicData["setName"], 0) + 1
             res["relics"].append(relicData)
             # 累积圣遗物套装评分和计数器
             relicsMark += relicData["calc"]["total"]
@@ -396,7 +399,8 @@ async def transToTeyvat(avatarsData: List[Dict], uid: str) -> Dict:
         if name == "雷电将军":
             _thunderDmg = fightProp["雷元素伤害加成"]
             _recharge = fightProp["元素充能效率"]
-            fightProp["雷元素伤害加成"] = max(0, _thunderDmg - (_recharge - 100) * 0.4)
+            fightProp["雷元素伤害加成"] = max(
+                0, _thunderDmg - (_recharge - 100) * 0.4)
         if name == "莫娜":
             _waterDmg = fightProp["水元素伤害加成"]
             _recharge = fightProp["元素充能效率"]
@@ -498,7 +502,8 @@ async def simplDamageRes(damage: Dict) -> Dict:
                 dmgDetail["title"],
             )
             if "期望" in str(dmgDetail["value"]) or not dmgDetail.get("expect"):
-                dmgCrit, dmgExp = "-", str(dmgDetail["value"]).replace("期望", "")
+                dmgCrit, dmgExp = "-", str(dmgDetail["value"]
+                                           ).replace("期望", "")
             else:
                 dmgCrit = str(dmgDetail["value"])
                 dmgExp = str(dmgDetail["expect"]).replace("期望", "")
@@ -507,7 +512,8 @@ async def simplDamageRes(damage: Dict) -> Dict:
         # damage["bonus"]: {"0": {}, "2": {}, ...}
         # damage["bonus"]: [{}, {}, ...]
         intro = (
-            damage["bonus"][buff]["intro"] if isinstance(buff, str) else buff["intro"]
+            damage["bonus"][buff]["intro"] if isinstance(
+                buff, str) else buff["intro"]
         )
         buffTitle, buffDetail = intro.split("：")
         if buffTitle not in ["注", "备注"]:
@@ -530,10 +536,12 @@ async def simplFightProp(
 
     # 排列伤害加成
     prefer = (
-        element if affixWeight.get("元素伤害加成", 0) > affixWeight.get("物理伤害加成", 0) else "物"
+        element if affixWeight.get(
+            "元素伤害加成", 0) > affixWeight.get("物理伤害加成", 0) else "物"
     )
     damages = sorted(
-        [{"k": k, "v": v} for k, v in fightProp.items() if str(k).endswith("伤害加成")],
+        [{"k": k, "v": v}
+            for k, v in fightProp.items() if str(k).endswith("伤害加成")],
         key=lambda x: (x["v"], x["k"][0] == prefer),
         reverse=True,
     )
@@ -591,7 +599,8 @@ async def simplTeamDamageRes(raw: Dict, rolesData: Dict) -> Dict:
     pieData, pieColor = [], []
     for x in raw["chart_data"]:
         char, damage = x["name"].split("\n")
-        pieData.append({"char": char, "damage": float(damage.replace("W", ""))})
+        pieData.append(
+            {"char": char, "damage": float(damage.replace("W", ""))})
         pieColor.append(x["label"]["color"])
     pieData = sorted(pieData, key=lambda x: x["damage"], reverse=True)
     # 寻找伤害最高的角色元素属性，跳过绽放等伤害来源

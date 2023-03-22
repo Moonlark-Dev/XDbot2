@@ -22,7 +22,7 @@ async def sign_handler(event: MessageEvent):
             data["latest"][qq] = 0
             data["days"][qq] = 0
         origin_data = user.get_user_data(qq)
-        
+
         if data["latest"][qq] != date:
             add_vi, add_exp = random.randint(0, 20), random.randint(0, 20)
             if data["latest"][qq] == (date - 1):

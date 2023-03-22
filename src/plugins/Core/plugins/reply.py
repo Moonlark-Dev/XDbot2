@@ -156,7 +156,7 @@ async def repetitionHandle(event: GroupMessageEvent):
                         repetitionCache.pop(event.group_id)
                     except BaseException:
                         pass
-    
+
     except Exception:
         await _error.report(traceback.format_exc())
 

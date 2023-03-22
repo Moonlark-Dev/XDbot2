@@ -1,3 +1,4 @@
+from nonebot_plugin_apscheduler import scheduler
 import asyncio
 import random
 import time
@@ -14,7 +15,6 @@ from .config import config_manager, NICKNAME
 from . import web_api, web_page
 
 require('nonebot_plugin_apscheduler')
-from nonebot_plugin_apscheduler import scheduler
 
 __plugin_meta__ = PluginMetadata(
     name='群聊学习',
@@ -46,7 +46,8 @@ learning_chat = on_message(block=False, rule=Rule(ChatRule), permission=GROUP, s
 async def _(event: GroupMessageEvent, answers=Arg('answers')):
     for answer in answers:
         try:
-            logger.info('群聊学习', f'{NICKNAME}将向群<m>{event.group_id}</m>回复<m>"{answer}"</m>')
+            logger.info(
+                '群聊学习', f'{NICKNAME}将向群<m>{event.group_id}</m>回复<m>"{answer}"</m>')
             msg = await learning_chat.send(Message(answer))
             await ChatMessage.create(group_id=event.group_id,
                                      user_id=event.self_id,
@@ -74,7 +75,8 @@ async def speak_up():
     group_id, messages = speak
     for msg in messages:
         try:
-            logger.info('群聊学习', f'{NICKNAME}向群<m>{group_id}</m>主动发言<m>"{msg}"</m>')
+            logger.info(
+                '群聊学习', f'{NICKNAME}向群<m>{group_id}</m>主动发言<m>"{msg}"</m>')
             send_result = await bot.send_group_msg(group_id=group_id, message=Message(msg))
             await ChatMessage.create(group_id=group_id,
                                      user_id=int(bot.self_id),

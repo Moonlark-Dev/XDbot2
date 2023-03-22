@@ -1,3 +1,4 @@
+import re
 from nonebot.adapters.onebot.v11 import Message, MessageEvent
 from nonebot.params import CommandArg
 from nonebot.adapters.onebot.v11.bot import Bot
@@ -8,7 +9,8 @@ from nonebot import on_command
 import traceback
 import httpx
 
-pacman = on_command("archpackage", aliases={"apkg", "pacman", "Linux搜包", "spkg", "pkg"})
+pacman = on_command("archpackage", aliases={
+                    "apkg", "pacman", "Linux搜包", "spkg", "pkg"})
 
 # [HELPSTART] Version: 2
 # Command: pacman
@@ -17,20 +19,22 @@ pacman = on_command("archpackage", aliases={"apkg", "pacman", "Linux搜包", "sp
 # Info: 搜索Linux包
 # [HELPEND]
 
+
 async def send_request(package: str):
     async with httpx.AsyncClient() as client:
         response = await client.get(f"https://archlinux.org/packages/?sort=&q={package}&maintainer=&flagged=")
         return response.read().decode("utf-8")
 
+
 def get_packages_list(html: str):
     return html[html.find("<tbody>") + 7:html.find("</tbody>", html.find("<tbody>"))].replace("<tr>", "").replace("<td>", "").replace("\n", "").replace("</a>", "").split("</tr>")
 
-import re
 
 def process_input(package_input):
     # 使用正则表达式删除非字母、数字、空格以外的所有字符
     filtered_input = re.sub(r'[^a-zA-Z0-9\s]+', '', package_input)
     return filtered_input
+
 
 def parse_package_data(package: str):
     items = package.split("</td>")
@@ -50,6 +54,7 @@ def parse_package_data(package: str):
     except IndexError:
         return None
 
+
 def parse_packages_data(packages: list):
     data = []
     for pkg in packages:
@@ -57,6 +62,7 @@ def parse_packages_data(packages: list):
         if pkgdata:
             data.append(pkgdata)
     return data
+
 
 @pacman.handle()
 async def search_package(message: Message = CommandArg()):
@@ -72,7 +78,7 @@ async def search_package(message: Message = CommandArg()):
                 f"版本：{package['ver']}\n"
                 f"架构：{package['arch']}\n"
                 f"简介：{package['info']}\n"
-#                 f"仓库：{package['repo']}\n"
+                #                 f"仓库：{package['repo']}\n"
                 f"最后更新：{package['latest_update']}\n"
                 f"{package['url']}"
             ))

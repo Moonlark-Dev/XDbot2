@@ -50,8 +50,12 @@ def text(key: str, _format: list = [],
             value = value.replace("${" + i + "}", params[i])
     return str(value)
 
-def _load_key(langname, key, default = None):
-    try: return _lang_dict[langname][key]
-    except: return default if default else key
+
+def _load_key(langname, key, default=None):
+    try:
+        return _lang_dict[langname][key]
+    except:
+        return default if default else key
+
 
 reload()

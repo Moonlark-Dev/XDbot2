@@ -111,12 +111,12 @@ class Config(BaseSettings):
             "path": "data/su.priority_accout.json",
             "text": "{\"accouts\":[]}"
         },
-        
+
         {
             "path": "data/forward.groupList.json",
             "text": "[]"
         },
-        
+
         {
             "path": "data/ban.banData.json",
             "text": "{}"

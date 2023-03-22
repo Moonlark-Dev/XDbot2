@@ -26,7 +26,7 @@ class Item:
             count = int(args)
         except:
             count = 1
-        
+
         msg = []
         if self.count >= count:
             for _ in range(count):
@@ -45,7 +45,7 @@ class Item:
             return True
         else:
             return False
-        
+
     def _add(self, count):
         if self.count + count <= self.data["maximum_stack"]:
             self.count += count
@@ -57,7 +57,7 @@ class Item:
         else:
             return 0
 
-    def add(self, count, _data = {}):
+    def add(self, count, _data={}):
         data = BASIC_DATA.copy()
         data.update(self.basic_data)
         data.update(_data)
@@ -65,4 +65,3 @@ class Item:
             return self._add(count)
         else:
             return 0
-        
