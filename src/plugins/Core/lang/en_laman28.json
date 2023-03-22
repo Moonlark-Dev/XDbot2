@@ -1,12 +1,12 @@
 {
   "lang.version": "23w12b",
   "lang.author": "Laman28",
-  "lang.text.intro": "[Language details]",
-  "lang.text.name": "Name: ",
-  "lang.text.version": "Version: ",
-  "lang.text.author": "Author: ",
-  "lang.text.compatibility": "Compatibility: ",
-  "lang.text.keylost": "The missing keys: ",
+  "lang.intro": "[Language details]",
+  "lang.lang_name": "Name: ",
+  "lang.lang_version": "Version: ",
+  "lang.lang_author": "Author: ",
+  "lang.compatibility": "Compatibility: ",
+  "lang.keylost": "The missing keys: ",
   "lang.empty": "Use {} to switch language",
   "lang.success": "Current language using: {}",
   "lang.notfound": "Language file {} cannot be found",
@@ -178,7 +178,7 @@
   "reply.finish": "Add operate succeeded",
   "reply.403": "Permission denied!",
   "reply.not_found": "Failure: No such reply",
-  "reply.show_data": "[Reply (Reply#{})]\nExpression: {}\nGlobal: {}\nText: {}",
+  "reply.show_data": "[Reply (Reply#{})]\nExpression: {}\nGlobal: {}\.lang_ {}",
   "reply.mydata": "Activity information: {}",
   "reply.alldata": "Activity information (current session): {}",
   "preview.only_group": "Failure: You should use this in a group",
@@ -191,5 +191,8 @@
   "userinfo.title": "[User dashboard]",
   "userinfo.level": "Level",
   "userinfo.vimcoin": "Balance",
-  "userinfo.health": "HP"
+  "userinfo.health": "HP",
+  "sixcount.title": "Ranking of [6-count]",
+  "update.checking": "Checking updates",
+  "update.finish": "Old commit-id: {}\nNew commit-id: {}"
 }
