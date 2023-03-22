@@ -1,7 +1,6 @@
 from nonebot import on_command
 from . import _error
-import nonebot.adapters.onebot.v11.message
-import nonebot.adapters.onebot.v11
+from nonebot.adapters.onebot.v11 import MessageSegment
 import random
 import traceback
 from nonebot.exception import FinishedException
@@ -23,14 +22,7 @@ api_list = [
 @st.handle()
 async def st_handle():
     try:
-        await st.finish(
-            nonebot.adapters.onebot.v11.message.Message(
-                nonebot.adapters.onebot.v11.MessageSegment.image(
-                    random.choice(api_list)
-                )
-            )
-        )
-
+        await st.finish(MessageSegment.image(random.choice(api_list)))
     except FinishedException:
         raise FinishedException()
     except Exception:

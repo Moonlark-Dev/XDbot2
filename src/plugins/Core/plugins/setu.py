@@ -162,8 +162,10 @@ async def setu_handler(
     except FinishedException:
         raise FinishedException()
     except Exception:
-        try: economy.add_vimcoin(used)
-        except BaseException: pass
+        try:
+            economy.add_vimcoin(used)
+        except BaseException:
+            pass
         await _error.report(traceback.format_exc(), setu)
 
 

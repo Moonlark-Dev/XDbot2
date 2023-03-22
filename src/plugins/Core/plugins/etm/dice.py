@@ -20,7 +20,7 @@ class Dice(Item):
         if c == 20:
             economy.add_vi(user_id, 50)
             return "你买了一个二十面骰子，掷出了 20，大成功！获得了 50vi！"
-        elif 18 <= c <= 19 :
+        elif 18 <= c <= 19:
             economy.add_vi(user_id, 20)
             return f"你买了一个二十面骰子，掷出了 {c}，成功！获得了 20vi！"
         elif 15 <= c <= 17:
@@ -41,8 +41,3 @@ class Dice(Item):
         else:
             # 笑死怎么可能掷出来啊（（（
             return f"你买了一个二十面骰子，掷……掷……掷出了……………… {c} ？？？？？？？"
-
- 
-
-    
-        

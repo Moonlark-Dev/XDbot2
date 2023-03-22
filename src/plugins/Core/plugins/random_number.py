@@ -19,6 +19,7 @@ random_plugin = on_command('random', aliases={"rd", "随机数"})
 # Info: 在<start>与<end>之间随机取整数，如果不传入参数，则返回0到1的随机小数；如果只传入<end>参数，则从0~<end>随机取数
 # [HELPEND]
 
+
 @random_plugin.handle()
 async def random_handle(event: MessageEvent, message: Message = CommandArg()):
     try:

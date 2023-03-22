@@ -6,7 +6,8 @@ ITEMS = {
     "book_and_quill": BookAndQuill
 }
 
-def json2items(items, user_id = None):
+
+def json2items(items, user_id=None):
     item_list = []
     for item in items:
         item_list.append((

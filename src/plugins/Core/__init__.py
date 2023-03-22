@@ -39,7 +39,8 @@ try:
 except BaseException:
     disablePlugins = []
 try:
-    disablePlugins += json.load(open("data/init.disabled.json", encoding="utf-8"))
+    disablePlugins += json.load(open("data/init.disabled.json",
+                                encoding="utf-8"))
 except BaseException:
     pass
 

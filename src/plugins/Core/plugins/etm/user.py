@@ -7,6 +7,7 @@ RAW_DATA = {
     "vimcoin": 0
 }
 
+
 def get_user_data(user_id):
     try:
         return json.load(open("data/etm/users.json", encoding="utf-8"))[user_id]
@@ -15,8 +16,8 @@ def get_user_data(user_id):
         data["user_id"] = user_id
         return data
 
+
 def change_user_data(user_id, data):
     origin = json.load(open("data/etm/users.json", encoding="utf-8"))
     origin[user_id] = data
     json.dump(origin, open("data/etm/users.json", "w", encoding="utf-8"))
-

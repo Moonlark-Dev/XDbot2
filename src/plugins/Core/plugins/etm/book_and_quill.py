@@ -6,7 +6,7 @@ from . import exp
 
 
 class BookAndQuill(Item):
-    
+
     def on_register(self):
         self.item_id = "book_and_quill"
         self.basic_data = {
@@ -19,7 +19,7 @@ class BookAndQuill(Item):
             "saved": False
         }
 
-    async def async_use(self, _argv = ""):
+    async def async_use(self, _argv=""):
         argv = _argv.split(" ")
         if argv[0] == "--write":
             if not self.data["saved"]:
@@ -31,8 +31,10 @@ class BookAndQuill(Item):
             if not self.data["saved"]:
                 self.data["author"] = self.user_id
                 self.data["saved"] = True
-                self.data["display_name"] = " ".join(_argv.splitlines()[0].split(" ")[1:])
-                self.data["display_message"] = "\n".join(_argv.splitlines()[1:])
+                self.data["display_name"] = " ".join(
+                    _argv.splitlines()[0].split(" ")[1:])
+                self.data["display_message"] = "\n".join(
+                    _argv.splitlines()[1:])
                 exp.add_exp(self.user_id, 4)
                 return ["保存成功！"]
             else:
@@ -49,8 +51,3 @@ class BookAndQuill(Item):
             )['nickname']
             author = f"{author_nickname} ({self.data['author']})"
             return [f"  {self.data['display_name']}\n作者：{author}\n—————————————\n{self.data['data']}"]
-
- 
-
-    
-        
