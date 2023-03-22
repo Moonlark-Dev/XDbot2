@@ -15,8 +15,9 @@ async def update_xdbot(matcher: Matcher, event: MessageEvent):
             0].split(" ")[1][:7]
         os.system("python3 update.py")
         await matcher.finish(
-            lang.text("update.finish",
-                      [old_commit, os.popen("git log").read().split("\n")[0].split(" ")[1][:7]]),
-            event.get_user_id())
+            lang.text(
+                "update.finish",
+                [old_commit, os.popen("git log").read().split("\n")[0].split(" ")[1][:7]],
+                event.get_user_id()))
     except:
-        await _error.report(traceback.format_exc(), matcher)
+        await error.report(traceback.format_exc(), matcher)
