@@ -24,8 +24,8 @@ def reload():
                     os.sep +
                     _lang_file, encoding="utf-8"))
             _lang_dict[_lang_file.replace(".json", "")] = _lang_index
-        except:
-            logger.warning(f"加载 {_lang_file} 时发生错误，拒绝加载！")
+        except BaseException as e:
+            logger.warning(f"加载 {_lang_file} 时发生错误：{e}")
 
 
 def text(key: str, _format: list = [],
@@ -42,8 +42,7 @@ def text(key: str, _format: list = [],
         try:
             value = _lang_dict["zh_hans"][key]
         except BaseException:
-            #return f"<本地化键缺失 {lang}.json {key}>"
-            return key
+            return f"<本地化键缺失 {key}>"
     for i in _format:
         value = value.replace("{}", str(i), 1)
     if params:
@@ -51,8 +50,8 @@ def text(key: str, _format: list = [],
             value = value.replace("${" + i + "}", params[i])
     return str(value)
 
-def _load_key(langname, key):
+def _load_key(langname, key, default = None):
     try: return _lang_dict[langname][key]
-    except: return key
+    except: return default if default else key
 
 reload()
