@@ -67,8 +67,8 @@ def add_item(user_id, item_id, item_count = 1, item_data = {}):
         add_item(user_id, item_id, item_count, item_data)
 
 async def use_item(user_id, item_pos, argv = ""):
-    ret =  bags[user_id][item_pos].use(argv)
-    if type(ret) == coroutine:
-        return await ret
-    else:
-        return ret
+    try:
+        return bags[user_id][item_pos].use(argv)
+    except NameError:
+        return await bags[user_id][item_pos].async_use(argv)
+    

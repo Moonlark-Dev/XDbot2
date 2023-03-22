@@ -6,7 +6,8 @@ from . import exp
 
 
 class BookAndQuill(Item):
-    def init(self):
+    
+    def on_register(self):
         self.item_id = "book_and_quill"
         self.basic_data = {
             "display_name": "书与笔",
@@ -18,7 +19,7 @@ class BookAndQuill(Item):
             "saved": False
         }
 
-    async def use(self, _argv = ""):
+    async def async_use(self, _argv = ""):
         argv = _argv.split(" ")
         if argv[0] == "--write":
             if not self.data["saved"]:

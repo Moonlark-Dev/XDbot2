@@ -8,17 +8,17 @@ class Item:
         self.item_id = "dice"
         self.basic_data = {}
         # 初始化
-        self.init()
+        self.on_register()
         # 设置 NBT
         self.data = BASIC_DATA.copy()
         self.data.update(self.basic_data)
         self.data.update(data)
         self.user_id = user_id
 
-    def init(self):
+    def on_register(self):
         pass
 
-    def on_use(self):
+    def use_item(self):
         pass
 
     def use(self, args):
@@ -31,7 +31,7 @@ class Item:
         if self.count >= count:
             for _ in range(count):
                 try:
-                    msg.append(self.on_use())
+                    msg.append(self.use_item())
                 except BaseException:
                     msg.append(f"发生错误：{traceback.format_exc()}")
             self.count -= count

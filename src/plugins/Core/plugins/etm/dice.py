@@ -5,7 +5,7 @@ from . import achievement
 
 
 class Dice(Item):
-    def init(self):
+    def on_register(self):
         self.item_id = "dice"
         self.basic_data = {
             "display_name": "二十面骰子",
@@ -14,7 +14,7 @@ class Dice(Item):
             "int": None
         }
 
-    def on_use(self):
+    def use_item(self):
         user_id = self.user_id
         c = self.data["int"] or random.randint(1, 20)
         if c == 20:
