@@ -55,7 +55,7 @@ async def lang_handle(event: MessageEvent, message: Message = CommandArg()):
                     await lang.send("\n".join((
                         _lang.text('lang.intro', [], event.get_user_id()),
                         _lang.text('lang.name', [lang_name], event.get_user_id()),
-                        _lang.text('lang.version', [version], event.get_user_id()),
+                        _lang.text('lang.lang_version', [version], event.get_user_id()),
                         _lang.text('lang.author', [author], event.get_user_id()),
                         _lang.text('lang.compatibility',
                                    [found_key, key_length, round(found_key / key_length * 100)],
@@ -70,7 +70,7 @@ async def lang_handle(event: MessageEvent, message: Message = CommandArg()):
                     )))
                     
                     if missing_keys:
-                        await lang.finish(_lang.text('lang.text.keylost', [" ".join(missing_keys)], event.get_user_id()))
+                        await lang.finish(_lang.text('lang.keylost', [" ".join(missing_keys)], event.get_user_id()))
                     else:
                         await lang.finish()
 

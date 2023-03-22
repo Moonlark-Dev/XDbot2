@@ -2,7 +2,7 @@
   "lang.version": "latest",
   "lang.intro": "「语言详细信息」",
   "lang.name": "名称：{}",
-  "lang.version": "版本：{}",
+  "lang.lang_version": "版本：{}",
   "lang.author": "维护者：{}",
   "lang.compatibility": "兼容性：{} / {} {}%",
   "lang.keylost": "缺失键：{}",
