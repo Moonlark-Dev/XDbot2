@@ -54,9 +54,9 @@ async def lang_handle(event: MessageEvent, message: Message = CommandArg()):
                     
                     await lang.send("\n".join((
                         _lang.text('lang.intro', [], event.get_user_id()),
-                        _lang.text('lang.name', [lang_name], event.get_user_id()),
+                        _lang.text('lang.lang_name', [lang_name], event.get_user_id()),
                         _lang.text('lang.lang_version', [version], event.get_user_id()),
-                        _lang.text('lang.author', [author], event.get_user_id()),
+                        _lang.text('lang.lang_author', [author], event.get_user_id()),
                         _lang.text('lang.compatibility',
                                    [found_key, key_length, round(found_key / key_length * 100)],
                                    event.get_user_id())
