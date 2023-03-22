@@ -191,5 +191,8 @@
   "userinfo.title": "[User dashboard]",
   "userinfo.level": "Level",
   "userinfo.vimcoin": "Balance",
-  "userinfo.health": "HP"
+  "userinfo.health": "HP",
+  "sixcount.title": "Ranking of [6-count]",
+  "update.checking": "Checking updates",
+  "update.finish": "Old commit-id: {}\nNew commit-id: {}"
 }
