@@ -132,5 +132,7 @@
   "userinfo.level": "等级",
   "userinfo.vimcoin": "余额",
   "userinfo.health": "生命值",
-  "sixcount.title": "「6」排行："
+  "sixcount.title": "「6」排行：",
+  "update.checking": "正在检查 XDbot2 更新 ...",
+  "update.finish": "旧提交：{}\n新提交：{}"
 }
