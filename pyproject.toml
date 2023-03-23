@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "XDbot2"
+version = "v2.6.72"
+description = "简单多功能QQbot"
+authors = ["This-is-XiaoDeng", "xxtg666", "chun-awa"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.7.3"
+nonebot2 = "^2.0.0-beta.1"
+
+[tool.poetry.dev-dependencies]
+nb-cli = "^0.6.0"
+
+[tool.nonebot]
+plugins = ["nonebot_plugin_apscheduler", "nonebot_plugin_guild_patch"]
+plugin_dirs = ["src/plugins"]
+
+[build-system]
+requires = ["poetry_core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
