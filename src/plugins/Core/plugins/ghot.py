@@ -14,9 +14,11 @@ async def ghot(bot: Bot, event: GroupMessageEvent, matcher: Matcher):
         # Clean Data
         now_time = time() 
         for group in list(data.keys()):
+            _add = 0
             for l in range(len(data[group])):
                 if now_time - data[group][l] >= 600:
-                    data[group].pop(l)
+                    data[group].pop(l + _add)
+                    _add += 1
         # 排序
         groups = []
         for group in list(data.keys()):
