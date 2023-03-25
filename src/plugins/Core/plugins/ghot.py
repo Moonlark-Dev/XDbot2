@@ -1,7 +1,7 @@
 import json
 from time import time
 from nonebot import on_command, on_message
-from nonebot.adapters.onebot.v11 import GroupMessageEvent
+from nonebot.adapters.onebot.v11 import GroupMessageEvent, Bot
 from nonebot.matcher import Matcher
 from . import _lang as lang
 from . import _error as error
