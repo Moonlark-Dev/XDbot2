@@ -3,7 +3,7 @@ from nonebot_plugin_apscheduler import scheduler
 from nonebot import require
 import json
 from nonebot.log import logger
-from .items import items
+from .items import ITEMS as items
 
 vimcoin = json.load(open("data/etm/vimcoin.json", encoding="utf-8"))
 #{
