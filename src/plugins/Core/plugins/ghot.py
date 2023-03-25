@@ -24,7 +24,7 @@ async def ghot(bot: Bot, event: GroupMessageEvent, matcher: Matcher):
         for group in list(data.keys()):
             hot = len(data[group])
             is_inserted = False
-            for i in range(len(groups)):
+            for i in range(len(group)):
                 if groups[i]["hot"] <= hot:
                     groups.insert(i, {"group": group, "hot": hot})
                     is_inserted = True
