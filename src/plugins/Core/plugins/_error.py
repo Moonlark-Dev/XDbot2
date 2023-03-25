@@ -4,6 +4,7 @@
 import json
 from nonebot import get_bots
 import random
+from nonebot.exception import FinishedException
 from nonebot.log import logger
 from . import _lang
 
@@ -14,7 +15,7 @@ async def report(err: str, matcher: any = None):
     error = err.splitlines()[-1]
     logger.debug(error)
     if "FinishedException" in error:
-        return None
+        raise FinishedException()
     bot = get_bots()[json.load(
         open("data/su.multiaccoutdata.ro.json", encoding="utf-8"))[ctrlGroup]]
     await bot.send_group_msg(message=err, group_id=ctrlGroup)
