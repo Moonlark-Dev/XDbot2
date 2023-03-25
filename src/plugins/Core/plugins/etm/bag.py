@@ -5,6 +5,7 @@ from nonebot_plugin_apscheduler import scheduler
 from nonebot import require
 
 require("nonebot_plugin_apscheduler")
+
 bags = {}# items.json2items(json.load(open("data/etm/bags.json", encoding="utf-8")))
 
 def get_bags():

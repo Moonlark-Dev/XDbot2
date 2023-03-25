@@ -6,6 +6,25 @@ from nonebot.matcher import Matcher
 from . import _lang as lang
 from . import _error as error
 import traceback
+from nonebot_plugin_apscheduler import scheduler
+from nonebot import require
+
+require("nonebot_plugin_apscheduler")
+
+
+@scheduler.scheduled_job("cron", second="*/15", id="update_groups_data")
+async def clean_data():
+    data = json.load(open("data/ghot.data.json", encoding="utf-8"))
+    now_time = time() 
+    for group in list(data.keys()):
+        _add = 0
+        for l in range(len(data[group])):
+            if now_time - data[group][l - _add] >= 600:
+                data[group].pop(l - _add)
+                _add += 1
+    json.dump(data, open("data/ghot.data.json", encoding="utf-8"))
+
+
 
 @on_command("ghot", aliases={"群聊热度"}).handle()
 async def ghot(bot: Bot, event: GroupMessageEvent, matcher: Matcher):
