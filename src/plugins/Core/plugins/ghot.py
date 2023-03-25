@@ -47,8 +47,8 @@ async def ghot(bot: Bot, event: GroupMessageEvent, matcher: Matcher):
         # 输出
         reply = lang.text("ghot.title", [], event.get_user_id())
         for group in groups[:10]:
-            reply += f"{group['rank']}. {(await bot.get_group_info(group_id=group['group']))['group_name']}: {group['hot']}"
-        await matcher.finish(reply)
+            reply += f"{group['rank']}. {(await bot.get_group_info(group_id=group['group']))['group_name']}: {group['hot']}\n"
+        await matcher.finish(reply[:-1])
 
     except BaseException:
         await error.report(traceback.format_exc(), matcher)
