@@ -29,9 +29,9 @@ async def change_exchange_rate():
     for user in list(data.values()):
         all_vimcoin += user["vimcoin"]
     all_vi = all_vimcoin * vimcoin["exchange_rate"]
-    temp = round(all_vi / len(list(data.keys())), 3)
+    temp = all_vi / len(list(data.keys()))
     vi = 500
-    vimcoin["exchange_rate"] += round(temp / vi / 1000, 3)
+    vimcoin["exchange_rate"] -= temp / vi / 1200
     json.dump(vimcoin, open("data/etm/vimcoin.json", "w", encoding="utf-8"))
 
 def _add_vimcoin(user_id, count):
