@@ -22,7 +22,7 @@ async def clean_data():
             if now_time - data[group][l - _add] >= 600:
                 data[group].pop(l - _add)
                 _add += 1
-    json.dump(data, open("data/ghot.data.json", encoding="utf-8"))
+    json.dump(data, open("data/ghot.data.json", "w", encoding="utf-8"))
 
 
 
