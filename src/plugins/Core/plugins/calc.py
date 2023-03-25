@@ -14,7 +14,7 @@ run_sandbox = lua.eval("run_sandbox")
 @on_command("calc", aliases={"计算"}).handle()
 async def run_calc(matcher: Matcher, message: Message = CommandArg()):
     try:
-        await matcher.finish(run_sandbox(str(message)))
+        await matcher.finish(str(run_sandbox(str(message))))
 
     except BaseException:
         await _error.report(traceback.format_exc(), matcher)
