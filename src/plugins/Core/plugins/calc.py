@@ -1,4 +1,4 @@
-from loguru import Message
+from nonebot.adapters.onebot.v11 import Message
 from lupa import LuaRuntime
 from nonebot import on_command
 from nonebot.matcher import Matcher
