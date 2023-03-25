@@ -1,6 +1,6 @@
 from .item_basic_data import BASIC_DATA
 import traceback
-
+from .economy import IllegalQuantityException
 
 class Item:
     def __init__(self, count, data, user_id):
@@ -26,6 +26,9 @@ class Item:
             count = int(args)
         except:
             count = 1
+
+        if count <= 0:
+            raise IllegalQuantityException(count)
         
         msg = []
         if self.count >= count:
