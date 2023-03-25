@@ -8,6 +8,15 @@ import os
 
 lang = on_command("lang", aliases={"语言"})
 
+# [HELPSTART] Version: 2
+# Command: lang
+# Msg: 语言设置
+# Info: 查看、修改或设置本地化语言
+# Usage: lang
+# Usage: lang <lang>
+# Usage: lang list
+# Usage: lang view <lang>
+# [HELPEND]
 
 @lang.handle()
 async def lang_handle(event: MessageEvent, message: Message = CommandArg()):
