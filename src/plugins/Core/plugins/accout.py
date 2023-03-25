@@ -7,7 +7,10 @@ from . import _error
 import traceback
 from .su import su
 
-priority_accout = json.load(open("data/su.priority_accout.json", encoding="utf-8"))
+priority_accout = json.load(
+    open(
+        "data/su.priority_accout.json",
+        encoding="utf-8"))
 accouts = {}
 multiAccoutData = {}
 accout_manager = on_command("accout", aliases={"多帐号"})
@@ -42,7 +45,6 @@ async def get_multiaccout_data(bot: Bot, message: Message = CommandArg()):
         await _error.report(traceback.format_exc(), su)
 
 
-
 @driver.on_bot_connect
 @driver.on_bot_disconnect
 async def reloadMuiltData():
@@ -62,7 +64,12 @@ async def reloadMuiltData():
                 multiAccoutData[group["group_id"]] = key
             elif key in priority_accout["accouts"]:
                 multiAccoutData[group["group_id"]] = key
-    json.dump(multiAccoutData, open("data/su.multiaccoutdata.ro.json", "w", encoding="utf-8"))
+    json.dump(
+        multiAccoutData,
+        open(
+            "data/su.multiaccoutdata.ro.json",
+            "w",
+            encoding="utf-8"))
 
 
 @accout_manager.handle()
@@ -89,4 +96,3 @@ async def mulitaccout_manager(
 
     except BaseException:
         await _error.report(traceback.format_exc(), accout_manager)
-

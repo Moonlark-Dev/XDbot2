@@ -6,6 +6,7 @@ import time
 import json
 import os.path
 
+
 @su.handle()
 async def write_su_logger(bot: Bot, event: MessageEvent, message: Message = CommandArg()):
     log_msg = str(message)
@@ -35,6 +36,3 @@ async def write_su_logger(bot: Bot, event: MessageEvent, message: Message = Comm
             json.dump(log, open("data/su.log.json", "w", encoding="utf-8"))
     except BaseException:
         logger.warning("[WARN] 记录su审核日志失败")
-
-
-

@@ -15,7 +15,7 @@ require("nonebot_plugin_apscheduler")
 @scheduler.scheduled_job("cron", second="*/15", id="update_groups_data")
 async def clean_data():
     data = json.load(open("data/ghot.data.json", encoding="utf-8"))
-    now_time = time() 
+    now_time = time()
     for group in list(data.keys()):
         _add = 0
         for l in range(len(data[group])):
@@ -25,13 +25,12 @@ async def clean_data():
     json.dump(data, open("data/ghot.data.json", "w", encoding="utf-8"))
 
 
-
 @on_command("ghot", aliases={"群聊热度"}).handle()
 async def ghot(bot: Bot, event: GroupMessageEvent, matcher: Matcher):
     try:
         data = json.load(open("data/ghot.data.json", encoding="utf-8"))
         # Clean Data
-        now_time = time() 
+        now_time = time()
         for group in list(data.keys()):
             _add = 0
             for l in range(len(data[group])):
@@ -78,9 +77,6 @@ async def ghot(bot: Bot, event: GroupMessageEvent, matcher: Matcher):
         await error.report(traceback.format_exc(), matcher)
 
 
-
-
-
 @on_message().handle()
 async def ghot_writer(event: GroupMessageEvent):
     try:
@@ -92,6 +88,3 @@ async def ghot_writer(event: GroupMessageEvent):
         json.dump(data, open("data/ghot.data.json", "w", encoding="utf-8"))
     except BaseException:
         await error.report(traceback.format_exc())
-
-
-

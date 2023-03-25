@@ -33,7 +33,12 @@ def remove_reply(reply_id: str, user_id: str, force: bool = False) -> bool:
     data = json.load(open("data/smart_reply.data.json"))
     if data[reply_id]["user_id"] == user_id or force:
         user_id = data.pop(reply_id)["user_id"]
-        json.dump(data, open("data/smart_reply.data.json", "w", encoding="utf-8"))
+        json.dump(
+            data,
+            open(
+                "data/smart_reply.data.json",
+                "w",
+                encoding="utf-8"))
         if force:
             messenger.send_message(f"您提交的 Reply#{reply_id} 已被超管删除！", user_id)
         return True

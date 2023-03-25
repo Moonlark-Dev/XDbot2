@@ -18,4 +18,3 @@ async def run_calc(matcher: Matcher, message: Message = CommandArg()):
 
     except BaseException:
         await _error.report(traceback.format_exc(), matcher)
-

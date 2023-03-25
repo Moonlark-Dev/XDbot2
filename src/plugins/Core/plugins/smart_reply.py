@@ -91,7 +91,7 @@ async def reply_command(event: GroupMessageEvent, message: Message = CommandArg(
             await reply.finish(lang.text("reply.alldata", [" ".join(data_list)], user_id))
         else:
             await reply.finish(lang.text("reply.need_argv", [], user_id))
-            
+
     except KeyError:
         await reply.finish(lang.text("reply.not_found", [], event.get_user_id()))
     except IndexError:

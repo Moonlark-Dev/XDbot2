@@ -12,6 +12,7 @@ import json
 sign = on_regex(r"^(签到|(.sign))$")
 sign_rank = on_command("sign-rank")
 
+
 @sign.handle()
 async def sign_handler(event: MessageEvent):
     try:
@@ -22,7 +23,7 @@ async def sign_handler(event: MessageEvent):
             data["latest"][qq] = 0
             data["days"][qq] = 0
         origin_data = user.get_user_data(qq)
-        
+
         if data["latest"][qq] != date:
             add_vi, add_exp = random.randint(0, 20), random.randint(0, 20)
             if data["latest"][qq] == (date - 1):
@@ -45,14 +46,16 @@ async def sign_handler(event: MessageEvent):
             await sign.send("\n".join((
                 lang.text("sign.success", [], qq),
                 lang.text("sign.hr", [], qq),
-                lang.text("sign.add_exp", [origin_data["exp"], now_data["exp"], add_exp], qq),
-                lang.text("sign.add_vim", [origin_data["vimcoin"], now_data["vimcoin"], add_vi], qq),
+                lang.text(
+                    "sign.add_exp", [
+                        origin_data["exp"], now_data["exp"], add_exp], qq),
+                lang.text(
+                    "sign.add_vim", [
+                        origin_data["vimcoin"], now_data["vimcoin"], add_vi], qq),
                 lang.text("sign.hr", [], qq),
                 lang.text("sign.days", [data["days"][qq]], qq)
             )), at_sender=True)
             json.dump(data, open("data/etm/sign.json", "w", encoding="utf-8"))
-
-
 
     except BaseException:
         await error.report(traceback.format_exc(), sign)

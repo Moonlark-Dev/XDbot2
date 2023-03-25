@@ -74,7 +74,8 @@ async def get_data() -> dict | None:
 async def get_start_time() -> dict | None:
     """从Web获取开始时间"""
     try:
-        return json.load(open("data/sixcount.starttime.json", encoding="utf-8"))
+        return json.load(
+            open("data/sixcount.starttime.json", encoding="utf-8"))
     except Exception:
         await _error.report(traceback.format_exc())
 

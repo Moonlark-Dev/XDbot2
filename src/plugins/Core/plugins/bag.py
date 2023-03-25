@@ -8,6 +8,7 @@ import traceback
 
 bag_cmd = on_command("bag", aliases={"我的背包", "背包"})
 
+
 @bag_cmd.handle()
 async def show_bag(bot: Bot, event: MessageEvent):
     try:

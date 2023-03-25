@@ -156,7 +156,7 @@ async def repetitionHandle(event: GroupMessageEvent):
                         repetitionCache.pop(event.group_id)
                     except BaseException:
                         pass
-    
+
     except Exception:
         await _error.report(traceback.format_exc())
 
@@ -166,7 +166,8 @@ async def imageSenderHandle(event: GroupMessageEvent):
     try:
         global latestSend
         if time.time() - latestSend > 90:
-            if event.group_id in json.load(open("data/random_events.disable.json", encoding="utf-8"))["send_images"]:
+            if event.group_id in json.load(
+                    open("data/random_events.disable.json", encoding="utf-8"))["send_images"]:
                 await imageSender.finish()
             if random.random() <= 0.05:  # 机率：5%
                 images = []
@@ -216,7 +217,8 @@ async def imageSaverHandle(bot: Bot, event: GroupMessageEvent):
     try:
         global latestSend
         if time.time() - latestSend > 60:
-            if event.group_id in json.load(open("data/random_events.disable.json", encoding="utf-8"))["download_images"]:
+            if event.group_id in json.load(
+                    open("data/random_events.disable.json", encoding="utf-8"))["download_images"]:
                 await imageSaver.finish()
             message = str(event.get_message())
             # await imageSaver.send(message)
@@ -247,7 +249,12 @@ async def imageSaverHandle(bot: Bot, event: GroupMessageEvent):
                         group_id=ctrlGroup,
                     )
 
-                    json.dump(data, open("data/reply.images.json", "w", encoding="utf-8"))
+                    json.dump(
+                        data,
+                        open(
+                            "data/reply.images.json",
+                            "w",
+                            encoding="utf-8"))
                     await asyncio.sleep(random.random() / 2)
                     await imageSaver.send(
                         _lang.text("reply.good_image", [], event.get_user_id())
@@ -276,7 +283,12 @@ async def imageSaverHandle(bot: Bot, event: GroupMessageEvent):
                         _lang.text("reply.good_image", [], event.get_user_id())
                     )
 
-                    json.dump(data, open("data/reply.images.json", "w", encoding="utf-8"))
+                    json.dump(
+                        data,
+                        open(
+                            "data/reply.images.json",
+                            "w",
+                            encoding="utf-8"))
                     latestSend = time.time()
                 # elif random.random() <= 0.01:
 

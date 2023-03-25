@@ -10,6 +10,7 @@ import traceback
 
 use_cmd = on_command("use", aliases={"使用"})
 
+
 @use_cmd.handle()
 async def use_item(event: MessageEvent, message: Message = CommandArg()):
     try:

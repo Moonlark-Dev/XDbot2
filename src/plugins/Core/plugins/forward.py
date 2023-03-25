@@ -34,7 +34,10 @@ async def privateForwardHandle(bot: Bot, event: PrivateMessageEvent):
 @groupForward.handle()
 async def groupForwardHandle(bot: Bot, event: GroupMessageEvent):
     try:
-        forwardData = json.load(open("data/forward.groupList.json", encoding="utf-8"))
+        forwardData = json.load(
+            open(
+                "data/forward.groupList.json",
+                encoding="utf-8"))
         if event.get_session_id().split("_")[1] in forwardData:
             await bot.send_group_msg(
                 message=Message(

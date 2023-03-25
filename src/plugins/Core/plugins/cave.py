@@ -61,7 +61,12 @@ async def cave_comment_writer(event: MessageEvent):
                 "sender": event.get_user_id()
             }
             data[cave_id]["count"] += 1
-            json.dump(data, open("data/cave.comments.json", "w", encoding="utf-8"))
+            json.dump(
+                data,
+                open(
+                    "data/cave.comments.json",
+                    "w",
+                    encoding="utf-8"))
             await _error.report(f"「新回声洞评论（{cave_id}#{data[cave_id]['count'] - 1}）」\n{event.get_message()}\n{event.get_session_id()}")
             exp.add_exp(event.get_user_id(), 3)
             await cave_comment.finish(f"评论成功：{cave_id}#{data[cave_id]['count'] - 1}")
@@ -143,7 +148,10 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                     f"——{senderData['nickname']}")))
             # 发送评论
             if event.get_session_id().split("_")[0] == "group":
-                comments = json.load(open("data/cave.comments.json", encoding="utf-8"))
+                comments = json.load(
+                    open(
+                        "data/cave.comments.json",
+                        encoding="utf-8"))
                 caveData["id"] = str(caveData["id"])
                 if caveData["id"] in comments.keys():
                     comments = list(comments[caveData["id"]]["data"].values())
@@ -262,7 +270,10 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                 )
             )
             if event.get_session_id().split("_")[0] == "group":
-                comments = json.load(open("data/cave.comments.json", encoding="utf-8"))
+                comments = json.load(
+                    open(
+                        "data/cave.comments.json",
+                        encoding="utf-8"))
                 caveData["id"] = str(caveData["id"])
                 if caveData["id"] in comments.keys():
                     comments = list(comments[caveData["id"]]["data"].values())

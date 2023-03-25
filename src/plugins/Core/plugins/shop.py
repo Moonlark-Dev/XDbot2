@@ -54,8 +54,6 @@ async def shop_handler(event: MessageEvent, message: Message = CommandArg()):
                 await shop.finish("购买成功！\n使用「/bag」查看", at_sender=True)
             else:
                 await shop.finish("失败：余额不足！", at_sender=True)
-                
 
     except BaseException:
         await error.report(traceback.format_exc(), shop)
-

@@ -155,7 +155,10 @@ async def voteHandle(
 
 async def reloadVote():
     data = json.load(open("data/vote.list.json", encoding="utf-8"))
-    accouts = json.load(open("data/su.multiaccoutdata.ro.json", encoding="utf-8"))
+    accouts = json.load(
+        open(
+            "data/su.multiaccoutdata.ro.json",
+            encoding="utf-8"))
     for key in list(data.keys()):
         voteData = data[key]
         bot = get_bot(accouts[str(voteData["group"])])
