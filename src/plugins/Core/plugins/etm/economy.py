@@ -3,6 +3,7 @@ from nonebot_plugin_apscheduler import scheduler
 from nonebot import require
 import json
 from nonebot.log import logger
+from .items import items
 
 vimcoin = json.load(open("data/etm/vimcoin.json", encoding="utf-8"))
 #{
@@ -15,6 +16,7 @@ class IllegalQuantityException(Exception): pass
 
 @scheduler.scheduled_job("cron", minute="*/1", id="chamgeExchangeRate")
 async def change_exchange_rate():
+    # 一阶段
     exchange_rate = vimcoin["exchange_rate"]
     vimcoin["exchange_rate"] += (vimcoin["out"] - vimcoin["in"]) / 1250
     vimcoin["in"] = 0
@@ -22,6 +24,18 @@ async def change_exchange_rate():
     if vimcoin["exchange_rate"] <= 0:
         vimcoin["exchange_rate"] = exchange_rate
         logger.error("更新汇率失败：非法数据（已放弃）")
+    # 二阶段
+    data = json.load(open("data/etm/users.json", encoding="utf-8"))
+    all_vimcoin = 0
+    for user in list(data.values()):
+        all_vimcoin += user["vimcoin"]
+    all_vi = all_vimcoin * vimcoin["exchange_rate"]
+    temp = round(all_vi / len(list(data.keys())), 3)
+    all_produce_vi = 0
+    for key in list(items.keys()):
+        all_produce_vi += items[key]().data["price"] * 100
+    vi = all_produce_vi / len(list(items.keys()))
+    vimcoin["exchange_rate"] += round(temp / vi / 1000, 3)
     json.dump(vimcoin, open("data/etm/vimcoin.json", "w", encoding="utf-8"))
 
 def _add_vimcoin(user_id, count):
