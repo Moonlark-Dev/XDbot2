@@ -3,7 +3,7 @@ from nonebot import on_command
 from . import _error as error
 from nonebot.adapters.onebot.v11.event import MessageEvent
 from . import _lang as lang
-from .etm import economy, exp, user
+from .etm import economy, exp, user, achievement
 import traceback
 import random
 import time
@@ -56,6 +56,8 @@ async def sign_handler(event: MessageEvent):
                 lang.text("sign.days", [data["days"][qq]], qq)
             )), at_sender=True)
             json.dump(data, open("data/etm/sign.json", "w", encoding="utf-8"))
+            if add_vi == 0:
+                achievement.unlck("+0！", event.get_user_id())
 
     except BaseException:
         await error.report(traceback.format_exc(), sign)

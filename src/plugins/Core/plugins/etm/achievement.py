@@ -22,6 +22,15 @@ ACHIEVEMENTS = {
             "vi": -1,
             "exp": 6
         }
+    },
+    "+0！": {
+        "name": "+0！",
+        "condition": "在每日签到中获得0vi",
+        "need_progress": 1,
+        "award": {
+            "vi": 10,
+            "exp": 12
+        }
     }
 }
 
