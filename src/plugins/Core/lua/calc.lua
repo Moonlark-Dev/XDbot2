@@ -1,8 +1,8 @@
-local loadstring = loadstring or load
+
+local env = {math = math}
 
 function run_sandbox(code)
-  local func, msg = loadstring(code)
-  setfenv(func, {math = math})
-  return func
+  local func, _ = load("return " .. code, nil, "t", env)
+  return func()
 end
-print(run_sandbox([[print(1+1)]]))
+-- print(run_sandbox("1+1"))
