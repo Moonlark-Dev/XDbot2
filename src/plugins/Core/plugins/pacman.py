@@ -21,8 +21,8 @@ pacman = on_command(
 # [HELPSTART] Version: 2
 # Command: pacman
 # Usage: pacman <包名>
-# Msg: 在 archlinux.org/packages 上搜索
-# Info: 搜索Linux包
+# Info: 在 archlinux.org/packages 上搜索
+# Msg: 搜索Linux包
 # [HELPEND]
 
 

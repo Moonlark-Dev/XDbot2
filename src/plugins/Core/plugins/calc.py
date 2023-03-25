@@ -10,6 +10,10 @@ lua = LuaRuntime(unpack_returned_tuples=True)
 lua.require("src.plugins.Core.lua.calc")
 run_sandbox = lua.eval("run_sandbox")
 
+# [HELPSTART]
+# !Usage 1 calc <表达式>
+# !Info 1 计算表达式
+# [HELPEND]
 
 @on_command("calc", aliases={"计算"}).handle()
 async def run_calc(matcher: Matcher, message: Message = CommandArg()):

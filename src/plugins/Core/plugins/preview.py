@@ -24,7 +24,7 @@ builtin_urls = {
 # Command: preview
 # Usage: preview <url>
 # Usage: preview {six|ban|setu}
-# Msg: 预览XDbot2内置或外部网页
+# Msg: 预览XDbot2内置或外部网页（注意：参数需要带上http头）
 # Info: 预览网页
 # [HELPEND]
 

@@ -25,6 +25,10 @@ whoAtme = on_command(
 whoAtmeWriter = on_message()
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 
+# [HELPSTART]
+# !Usage 1 wam
+# !Info 1 谁At我
+# [HELPEND]
 
 @whoAtme.handle()
 async def whoAtmd(bot: Bot, event: GroupMessageEvent):
