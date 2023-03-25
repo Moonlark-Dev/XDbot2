@@ -27,7 +27,7 @@ class Item:
         except:
             count = 1
 
-        if count <= 0:
+        if count <= 0 or count >= 200:
             raise IllegalQuantityException(count)
         
         msg = []
