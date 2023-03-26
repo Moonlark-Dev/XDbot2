@@ -23,12 +23,14 @@ HOUR = 3600
 
 
 def update_stamps(data, filter_time, compress=False):
+    pop_keys = []
     for group_id, stamps in data.items():
         new_stamps = list(filter(lambda x: time() - x < filter_time, stamps))
         if len(new_stamps) == 0:
-            data.pop(group_id)
-            continue
+            pop_keys.append(group_id)
         data[group_id] = len(new_stamps) if compress else new_stamps
+    for group_id in pop_keys:
+        data.pop(group_id)
     return data
 
 
