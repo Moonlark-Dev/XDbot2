@@ -79,11 +79,8 @@ async def _(bot: Bot, event: GroupMessageEvent, matcher: Matcher,
                 break
         await matcher.finish(reply)
 
-    except FinishedException:
-        raise FinishedException()
-
     except BaseException:
-        await error.report(matcher, traceback.format_exc())
+        await error.report(traceback.format_exc(), matcher)
 
 
 @on_message().handle()
