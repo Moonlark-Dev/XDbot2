@@ -32,7 +32,7 @@ async def send_quick_math():
         group = random.choice(groups)
         question = f"{random.randint(0, 100)} {random.choice('+-*/')} {random.randint(1, 100)}"
         answer = eval(question)
-        bot = get_bot(accout_data[group])
+        bot = get_bot(str(accout_data[group]))
         msg_id = (await bot.send_group_msg(
             group_id = group,
             message = f"[QUICK MATH] {question} = ?"))["message_id"]
