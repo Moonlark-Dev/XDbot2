@@ -143,7 +143,7 @@
   "quick_math.enable": "速算已在本群启用",
   "quick_math.disable": "速算已在本群禁用",
   "achi.title_all": "所有成就：",
-  "achi.title_all": "已解锁成就：",
+  "achi.title": "已解锁成就：",
   "achi.info": "「成就详细信息」\n名称：{}\n解锁条件：{}\n解锁进度：{}",
   "achi.locked": "未解锁",
   "achi.unlcked": "已解锁"
