@@ -22,7 +22,7 @@ class Config(BaseSettings):
          {
              "path": "data/quick_math.enabled_groups.json",
              "text": "[]"
-         }
+         },
          {
              "path": "data/ghot.data.json",
              "text": "{}"
