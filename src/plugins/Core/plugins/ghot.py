@@ -1,19 +1,25 @@
 import json
+import traceback
 from time import time
 from datetime import date
+
+from nonebot import require
 from nonebot import on_command, on_message
-from nonebot.adapters.onebot.v11 import GroupMessageEvent, Bot
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
+from nonebot.adapters.onebot.v11 import GroupMessageEvent, Bot, Message
+
+from nonebot_plugin_apscheduler import scheduler
+
 from . import _lang as lang
 from . import _error as error
-import traceback
-from nonebot_plugin_apscheduler import scheduler
-from nonebot import require
+
 
 require("nonebot_plugin_apscheduler")
+
 MINUTE = 60
 HOUR = 3600
+
 
 def update_stamps(data, filter_time):
     for group_id, stamps in data.items():
@@ -32,32 +38,32 @@ async def _():
     json.dump(data, open("data/ghot.stamps.json", "w", encoding="utf-8"))
 
 
-@on_command("hot").handle()
-async def _(bot: Bot, event: GroupMessageEvent, matcher: Matcher, arg=CommandArg()):
+@on_command("ghot", aliases={"群聊热度"}).handle()
+async def _(bot: Bot, event: GroupMessageEvent, matcher: Matcher,
+            arg: Message = CommandArg()):
     arg = str(arg).replace("-", "")
     try:
-        await matcher.send(arg)
         if arg in ["", "m", "min"]:
             reply = lang.text("ghot.10min", [], event.get_user_id())
             data = json.load(open("data/ghot.stamps.json", encoding="utf-8"))
             data = update_stamps(data, 10 * MINUTE)
-            key = lambda x: len(x[1])
+            def key(x): return len(x[1])
 
         elif arg in ["h", "hour"]:
             reply = lang.text("ghot.hour", [], event.get_user_id())
             data = json.load(open("data/ghot.stamps.json", encoding="utf-8"))
             data = update_stamps(data, HOUR)
-            key = lambda x: len(x[1])
+            def key(x): return len(x[1])
 
         elif arg in ["d", "day"]:
             reply = lang.text("ghot.day", [], event.get_user_id())
             data = json.load(open("data/ghot.day.json", encoding="utf-8"))
-            key = lambda x: x[1]
+            def key(x): return x[1]
 
         elif arg in ["t", "total"]:
             reply = lang.text("ghot.total", [], event.get_user_id())
             data = json.load(open("data/ghot.total.json", encoding="utf-8"))
-            key = lambda x: x[1]
+            def key(x): return x[1]
 
         else:
             await matcher.finish()
@@ -79,7 +85,7 @@ async def _(bot: Bot, event: GroupMessageEvent, matcher: Matcher, arg=CommandArg
         await matcher.finish(reply)
 
     except BaseException:
-        await error.report(matcher)
+        await error.report(traceback.format_exc(), matcher)
 
 
 @on_message().handle()
@@ -107,4 +113,14 @@ async def _(event: GroupMessageEvent):
         json.dump(data, open("data/ghot.total.json", "w", encoding="utf-8"))
 
     except BaseException:
-        await error.report()
+        await error.report(traceback.format_exc())
+
+# [HELPSTART] Version: 2
+# Command: ghot
+# Usage: ghot：获取最近10分钟的群聊热度
+# Usage: ghot-h：获取最近1小时的群聊热度
+# Usage: ghot-d：获取今日的群聊热度
+# Usage: ghot-t：获取总计的群聊热度
+# Info: 获取最近10分钟、最近1小时、今日或总计的群聊热度
+# Msg: 获取群聊热度
+# [HELPEND]
