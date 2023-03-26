@@ -25,18 +25,18 @@ async def _(matcher: Matcher, event: MessageEvent, bot: Bot):
         data = json.load(open("data/sixcount.data.json", encoding="utf-8"))
         sorted_data = sorted(data.items(), key=lambda x: x[1], reverse=True)
         s = lang.text("sixcount.title", [], event.get_user_id()) + "\n"
-        for i in range(10):
-            user_id = sorted_data[i][0]
-            count = data[user_id]
+        n = 1
+        for user_id, count in sorted_data[:10]:
             nickname = (await bot.get_stranger_info(user_id=int(user_id)))["nickname"]
-            s += f"{i + 1}. {nickname}: {count}\n"
-        s += "------------------------------\n"
+            s += f"{n}. {nickname}: {count}\n"
+            n += 1
+        s += "-" * 30 + "\n"
         user_id = event.get_user_id()
         count = data[user_id]
         for i in range(len(sorted_data)):
             if sorted_data[i][0] == user_id:
                 nickname = (await bot.get_stranger_info(user_id=int(user_id)))["nickname"]
-                s += f"{i + 1}. {nickname}: {count}\n"
+                s += f"{i + 1}. {nickname}: {count}"
                 break
         await matcher.send(s)
     except Exception:
