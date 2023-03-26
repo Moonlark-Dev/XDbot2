@@ -12,35 +12,24 @@ from nonebot_plugin_apscheduler import scheduler
 from nonebot import require
 
 require("nonebot_plugin_apscheduler")
+MINUTE = 60
+HOUR = 3600
 
-
-def update_10min():
-    data = json.load(open("data/ghot.10min.json", encoding="utf-8"))
+def update_stamps(data, filter_time):
     for group_id, stamps in data.items():
         new_stamps = []
         for stamp in stamps:
-            if time() - stamp < 600:
+            if time() - stamp < filter_time:
                 new_stamps.append(stamp)
         data[group_id] = new_stamps
-    json.dump(data, open("data/ghot.10min.json", "w", encoding="utf-8"))
     return data
-
-
-def update_hour():
-    data = json.load(open("data/ghot.hour.json", encoding="utf-8"))
-    for group_id, stamps in data.items():
-        new_stamps = []
-        for stamp in stamps:
-            if time() - stamp < 600:
-                new_stamps.append(stamp)
-        data[group_id] = new_stamps
-    json.dump(data, open("data/ghot.hour.json", "w", encoding="utf-8"))
 
 
 @scheduler.scheduled_job("cron", second="*/15", id="update_groups_data")
 async def _():
-    update_10min()
-    update_hour()
+    data = json.load(open("data/ghot.stamps.json", encoding="utf-8"))
+    data = update_stamps(data, HOUR)
+    json.dump(data, open("data/ghot.stamps.json", "w", encoding="utf-8"))
 
 
 @on_command("ghot", aliases={"群聊热度"}).handle()
@@ -49,12 +38,14 @@ async def _(bot: Bot, event: GroupMessageEvent, matcher: Matcher,
     try:
         if arg in ["", "m", "min"]:
             reply = lang.text("ghot.10min", [], event.get_user_id())
-            data = update_10min()
+            data = json.load(open("data/ghot.stamps.json", encoding="utf-8"))
+            data = update_stamps(data, 10 * MINUTE)
             key = lambda x: len(x[1])
 
         elif arg in ["h", "hour"]:
             reply = lang.text("ghot.hour", [], event.get_user_id())
-            data = update_hour()
+            data = json.load(open("data/ghot.stamps.json", encoding="utf-8"))
+            data = update_stamps(data, HOUR)
             key = lambda x: len(x[1])
 
         elif arg in ["d", "day"]:
@@ -93,21 +84,12 @@ async def _(bot: Bot, event: GroupMessageEvent, matcher: Matcher,
 @on_message().handle()
 async def _(event: GroupMessageEvent):
     try:
-        # 10min
-        data = json.load(open("data/ghot.10min.json", encoding="utf-8"))
+        data = json.load(open("data/ghot.stamps.json", encoding="utf-8"))
         if str(event.group_id) not in data.keys():
             data[str(event.group_id)] = []
         data[str(event.group_id)].append(time())
-        json.dump(data, open("data/ghot.10min.json", "w", encoding="utf-8"))
+        json.dump(data, open("data/ghot.stamps.json", "w", encoding="utf-8"))
 
-        # hour
-        data = json.load(open("data/ghot.hour.json", encoding="utf-8"))
-        if str(event.group_id) not in data.keys():
-            data[str(event.group_id)] = []
-        data[str(event.group_id)].append(time())
-        json.dump(data, open("data/ghot.hour.json", "w", encoding="utf-8"))
-
-        # day
         data = json.load(open("data/ghot.day.json", encoding="utf-8"))
         if ("date" not in data.keys() or
                 data["date"] != str(date.today())):
@@ -117,7 +99,6 @@ async def _(event: GroupMessageEvent):
         data[str(event.group_id)] += 1
         json.dump(data, open("data/ghot.day.json", "w", encoding="utf-8"))
 
-        # total
         data = json.load(open("data/ghot.total.json", encoding="utf-8"))
         if str(event.group_id) not in data.keys():
             data[str(event.group_id)] = 0
