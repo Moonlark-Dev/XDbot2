@@ -83,7 +83,7 @@ async def _(bot: Bot, event: GroupMessageEvent, matcher: Matcher,
         raise FinishedException()
 
     except BaseException:
-        await error.report(matcher)
+        await error.report(matcher, traceback.format_exc())
 
 
 @on_message().handle()
@@ -111,7 +111,7 @@ async def _(event: GroupMessageEvent):
         json.dump(data, open("data/ghot.total.json", "w", encoding="utf-8"))
 
     except BaseException:
-        await error.report()
+        await error.report(traceback.format_exc())
 
 # [HELPSTART] Version: 2
 # Command: ghot
