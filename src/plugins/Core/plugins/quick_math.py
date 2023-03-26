@@ -15,6 +15,7 @@ require("nonebot_plugin_apscheduler")
 group = None
 answer = None
 
+
 async def delete_msg(bot, message_id):
     global group, answer
     await asyncio.sleep(10)
@@ -27,18 +28,25 @@ async def delete_msg(bot, message_id):
 async def send_quick_math():
     global group, answer
     try:
-        accout_data = json.load(open("data/su.multiaccoutdata.ro.json", encoding="utf-8"))
-        groups = json.load(open("data/quick_math.enabled_groups.json", encoding="utf-8"))
+        accout_data = json.load(
+            open(
+                "data/su.multiaccoutdata.ro.json",
+                encoding="utf-8"))
+        groups = json.load(
+            open(
+                "data/quick_math.enabled_groups.json",
+                encoding="utf-8"))
         group = random.choice(groups)
         question = f"{random.randint(0, 50)} {random.choice('+-*/')} {random.randint(1, 50)}"
         answer = eval(question)
         bot = get_bot(accout_data[str(group)])
         msg_id = (await bot.send_group_msg(
-            group_id = group,
-            message = f"[QUICK MATH] {question} = ?"))["message_id"]
+            group_id=group,
+            message=f"[QUICK MATH] {question} = ?"))["message_id"]
         asyncio.create_task(delete_msg(bot, msg_id))
     except BaseException:
         await error.report(format_exc())
+
 
 @on_message().handle()
 async def quick_math(matcher: Matcher, event: GroupMessageEvent):
@@ -55,25 +63,32 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
                 economy.add_vi(event.get_user_id(), add[0])
                 exp.add_exp(event.get_user_id(), add[1])
                 await matcher.send(lang.text("quick_math.rightanswer", add, event.get_user_id()),
-                                     at_sender=True)
+                                   at_sender=True)
                 group = None
                 answer = None
 
     except BaseException:
         await error.report(format_exc())
 
+
 @on_command("quick-math", aliases={"qm"}).handle()
 async def quick_math_command(matcher: Matcher, event: GroupMessageEvent):
     try:
-        groups = json.load(open("data/quick_math.enabled_groups.json", encoding="utf-8"))
+        groups = json.load(
+            open(
+                "data/quick_math.enabled_groups.json",
+                encoding="utf-8"))
         if event.group_id in groups:
-            groups.pop(groups.index(event.group_id)) 
+            groups.pop(groups.index(event.group_id))
             await matcher.send(lang.text("quick_math.disable", [], event.get_user_id()))
         else:
             groups.append(event.group_id)
             await matcher.send(lang.text("quick_math.enable", [], event.get_user_id()))
-        json.dump(groups, open("data/quick_math.enabled_groups.json", "w", encoding="utf-8"))
+        json.dump(
+            groups,
+            open(
+                "data/quick_math.enabled_groups.json",
+                "w",
+                encoding="utf-8"))
     except BaseException:
         await error.report(format_exc(), matcher)
-        
-

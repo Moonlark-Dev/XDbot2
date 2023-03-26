@@ -75,7 +75,7 @@ async def _(bot: Bot, event: GroupMessageEvent, matcher: Matcher,
         for i in range(len(sorted_data)):
             if sorted_data[i][0] == group_id:
                 group_name = (await bot.get_group_info(group_id=int(group_id)))["group_name"]
-                reply += f"{i + 1}. {group_name}: {count}\n"
+                reply += f"{i + 1}. {group_name}: {count}"
                 break
         await matcher.finish(reply)
 
@@ -112,10 +112,10 @@ async def _(event: GroupMessageEvent):
 
 # [HELPSTART] Version: 2
 # Command: ghot
-# Usage: ghot：获取最近10分钟的群聊热度
-# Usage: ghot-h：获取最近1小时的群聊热度
-# Usage: ghot-d：获取今日的群聊热度
-# Usage: ghot-t：获取总计的群聊热度
+# Usage: ghot
+# Usage: ghot-h
+# Usage: ghot-d
+# Usage: ghot-t
 # Info: 获取最近10分钟、最近1小时、今日或总计的群聊热度
 # Msg: 获取群聊热度
 # [HELPEND]
