@@ -20,6 +20,10 @@ class Config(BaseSettings):
     # 数据文件命名规则：子插件.数据名.json
     FILES = [
          {
+             "path": "data/quick_math.enabled_groups.json",
+             "text": "[]"
+         }
+         {
              "path": "data/ghot.data.json",
              "text": "{}"
          },
