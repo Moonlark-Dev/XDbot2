@@ -135,5 +135,8 @@
   "sixcount.title": "「6」排行：",
   "update.checking": "正在检查 XDbot2 更新 ...",
   "update.finish": "旧提交：{}\n新提交：{}",
-  "ghot.title": "群热度排行（近10分钟）：\n"
+  "ghot.title": "群热度排行（近10分钟）：\n",
+  "quick_math.rightanswer": "回答正确，获得了：\n1. VimCoin x{}\n2. 经验 x{}",
+  "quick_math.enable": "速算已在本群启用",
+  "quick_math.disable": "速算已在本群禁用"
 }
