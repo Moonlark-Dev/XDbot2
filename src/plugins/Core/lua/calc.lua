@@ -1,4 +1,5 @@
-local env = {math = math}
+local env = math
+env.math = math
 
 function run_sandbox(code)
   local func = load("return " .. code, nil, "t", env)
