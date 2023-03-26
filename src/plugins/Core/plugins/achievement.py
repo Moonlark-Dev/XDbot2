@@ -17,7 +17,7 @@ async def show_achievement(matcher: Matcher, event: MessageEvent, message: Messa
             reply = lang.text("achi.title", [], event.get_user_id())
             length = 1
             for item in data:
-                reply += f"\n{length}. {item['name']}"
+                reply += f"\n{length}. {item}"
                 length += 1
             await matcher.finish(reply) 
         elif argv[0] in ["view", "show", "查看"]:
