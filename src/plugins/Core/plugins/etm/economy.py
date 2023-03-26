@@ -13,11 +13,11 @@ vimcoin = json.load(open("data/etm/vimcoin.json", encoding="utf-8"))
 require("nonebot_plugin_apscheduler")
 class IllegalQuantityException(Exception): pass
 
-@scheduler.scheduled_job("cron", minute="*/1", id="chamgeExchangeRate")
+@scheduler.scheduled_job("cron", second="*/15", id="chamgeExchangeRate")
 async def change_exchange_rate():
     # 一阶段
     exchange_rate = vimcoin["exchange_rate"]
-    vimcoin["exchange_rate"] += (vimcoin["out"] - vimcoin["in"]) / 750
+    vimcoin["exchange_rate"] += (vimcoin["out"] - vimcoin["in"]) / 100
     vimcoin["in"] = 0
     vimcoin["out"] = 0
     if vimcoin["exchange_rate"] <= 0:
@@ -32,7 +32,8 @@ async def change_exchange_rate():
     temp = all_vi / len(list(data.keys()))
     vi = 500
     print(all_vi, temp, vi)
-    vimcoin["exchange_rate"] = vimcoin["exchange_rate"] / (temp - vi) / 250 + 1
+    vimcoin["exchange_rate"] = vimcoin["exchange_rate"] / (temp - vi) / 10 + 1
+    vimcoin["exchange_rate"] = exchange_rate * vimcoin["exchange_rate"]
     json.dump(vimcoin, open("data/etm/vimcoin.json", "w", encoding="utf-8"))
 
 def _add_vimcoin(user_id, count):
