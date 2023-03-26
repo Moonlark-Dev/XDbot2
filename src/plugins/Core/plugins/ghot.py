@@ -32,10 +32,11 @@ async def _():
     json.dump(data, open("data/ghot.stamps.json", "w", encoding="utf-8"))
 
 
-@on_command("ghot", aliases={"群聊热度"}).handle()
-async def _(bot: Bot, event: GroupMessageEvent, matcher: Matcher,
-            arg=str(CommandArg()).replace("-", "")):
+@on_command("hot").handle()
+async def _(bot: Bot, event: GroupMessageEvent, matcher: Matcher, arg=CommandArg()):
+    arg = str(arg).replace("-", "")
     try:
+        await matcher.send(arg)
         if arg in ["", "m", "min"]:
             reply = lang.text("ghot.10min", [], event.get_user_id())
             data = json.load(open("data/ghot.stamps.json", encoding="utf-8"))
@@ -59,7 +60,7 @@ async def _(bot: Bot, event: GroupMessageEvent, matcher: Matcher,
             key = lambda x: x[1]
 
         else:
-            matcher.finish()
+            await matcher.finish()
 
         sorted_data = sorted(data.items(), key=key, reverse=True)
         for i in range(min(10, len(sorted_data))):
@@ -78,7 +79,7 @@ async def _(bot: Bot, event: GroupMessageEvent, matcher: Matcher,
         await matcher.finish(reply)
 
     except BaseException:
-        await error.report(traceback.format_exc(), matcher)
+        await error.report(matcher)
 
 
 @on_message().handle()
@@ -106,14 +107,4 @@ async def _(event: GroupMessageEvent):
         json.dump(data, open("data/ghot.total.json", "w", encoding="utf-8"))
 
     except BaseException:
-        await error.report(traceback.format_exc())
-
-# [HELPSTART] Version: 2
-# Command: ghot
-# Usage: ghot：获取最近10分钟的群聊热度
-# Usage: ghot-h：获取最近1小时的群聊热度
-# Usage: ghot-d：获取今日的群聊热度
-# Usage: ghot-t：获取总计的群聊热度
-# Info: 获取最近10分钟、最近1小时、今日或总计的群聊热度
-# Msg: 获取群聊热度
-# [HELPEND]
+        await error.report()
