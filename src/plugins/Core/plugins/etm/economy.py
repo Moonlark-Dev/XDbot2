@@ -17,7 +17,7 @@ class IllegalQuantityException(Exception): pass
 async def change_exchange_rate():
     # 一阶段
     exchange_rate = vimcoin["exchange_rate"]
-    vimcoin["exchange_rate"] += (vimcoin["out"] - vimcoin["in"]) / 2000
+    vimcoin["exchange_rate"] += (vimcoin["out"] - vimcoin["in"]) / 1500
     vimcoin["in"] = 0
     vimcoin["out"] = 0
     if vimcoin["exchange_rate"] <= 0:
