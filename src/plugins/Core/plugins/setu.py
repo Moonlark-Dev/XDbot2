@@ -156,14 +156,14 @@ async def setu_handler(
     except httpx.ConnectTimeout:
         await _error.report(_lang.text("setu.timeout1"))
         latest_send -= config["sleep"]
-        economy.add_vimcoin(used)
+        economy.add_vimcoin(event.get_user_id(), used)
         await setu.finish(_lang.text("setu.timeout2", [], event.get_user_id()))
 
     except FinishedException:
         raise FinishedException()
     except Exception:
         try:
-            economy.add_vimcoin(used)
+            economy.add_vimcoin(event.get_user_id(), used)
         except BaseException:
             pass
         await _error.report(traceback.format_exc(), setu)
