@@ -1,4 +1,6 @@
+from . import _error as error
 import json
+from traceback import format_exc
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Message, MessageEvent
 from nonebot.matcher import Matcher
@@ -37,6 +39,8 @@ async def show_achievement(matcher: Matcher, event: MessageEvent, message: Messa
                 reply += f"\n{length}. {item['name']}"
                 length += 1
             await matcher.finish(reply)
+    except BaseException:
+        await error.report(format_exc(), matcher)
 
 # [HELPSTART] Version: 2
 # Command: achievement
