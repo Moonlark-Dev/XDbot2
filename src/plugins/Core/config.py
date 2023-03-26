@@ -24,7 +24,15 @@ class Config(BaseSettings):
              "text": "[]"
          }
          {
-             "path": "data/ghot.data.json",
+             "path": "data/ghot.stamps.json",
+             "text": "{}"
+         },
+         {
+             "path": "data/ghot.day.json",
+             "text": "{}"
+         },
+         {
+             "path": "data/ghot.total.json",
              "text": "{}"
          },
          {
