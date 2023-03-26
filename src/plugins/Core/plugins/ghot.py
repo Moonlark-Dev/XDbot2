@@ -5,6 +5,7 @@ from datetime import date
 
 from nonebot import require
 from nonebot import on_command, on_message
+from nonebot.exception import FinishedException
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
 from nonebot.adapters.onebot.v11 import GroupMessageEvent, Bot, Message
@@ -21,17 +22,14 @@ MINUTE = 60
 HOUR = 3600
 
 
-def update_stamps(data, filter_time):
+def update_stamps(data, filter_time, compress=False):
     for group_id, stamps in data.items():
-        new_stamps = []
-        for stamp in stamps:
-            if time() - stamp < filter_time:
-                new_stamps.append(stamp)
-        data[group_id] = new_stamps
+        new_stamps = list(filter(lambda x: time() - x < filter_time, stamps))
+        data[group_id] = len(new_stamps) if compress else new_stamps
     return data
 
 
-@scheduler.scheduled_job("cron", second="*/15", id="update_groups_data")
+@scheduler.scheduled_job("cron", minute="*", id="update_stamps")
 async def _():
     data = json.load(open("data/ghot.stamps.json", encoding="utf-8"))
     data = update_stamps(data, HOUR)
@@ -46,37 +44,34 @@ async def _(bot: Bot, event: GroupMessageEvent, matcher: Matcher,
         if arg in ["", "m", "min"]:
             reply = lang.text("ghot.10min", [], event.get_user_id())
             data = json.load(open("data/ghot.stamps.json", encoding="utf-8"))
-            data = update_stamps(data, 10 * MINUTE)
-            def key(x): return len(x[1])
+            data = update_stamps(data, 10 * MINUTE, True)
 
         elif arg in ["h", "hour"]:
             reply = lang.text("ghot.hour", [], event.get_user_id())
             data = json.load(open("data/ghot.stamps.json", encoding="utf-8"))
-            data = update_stamps(data, HOUR)
-            def key(x): return len(x[1])
+            data = update_stamps(data, HOUR, True)
 
         elif arg in ["d", "day"]:
             reply = lang.text("ghot.day", [], event.get_user_id())
             data = json.load(open("data/ghot.day.json", encoding="utf-8"))
-            def key(x): return x[1]
+            data.pop("date")
 
         elif arg in ["t", "total"]:
             reply = lang.text("ghot.total", [], event.get_user_id())
             data = json.load(open("data/ghot.total.json", encoding="utf-8"))
-            def key(x): return x[1]
 
         else:
             await matcher.finish()
 
-        sorted_data = sorted(data.items(), key=key, reverse=True)
-        for i in range(min(10, len(sorted_data))):
-            group_id = sorted_data[i][0]
-            count = sorted_data[group_id]
+        sorted_data = sorted(data.items(), key=lambda x: x[1], reverse=True)
+        n = 1
+        for group_id, count in sorted_data[:10]:
             group_name = (await bot.get_group_info(group_id=int(group_id)))["group_name"]
-            reply += f"{i + 1}. {group_name}: {count}\n"
+            reply += f"{n}. {group_name}: {count}\n"
+            n += 1
         reply += "-" * 30 + "\n"
-        group_id = event.get_user_id()
-        count = sorted_data[group_id]
+        group_id = str(event.group_id)
+        count = data[group_id]
         for i in range(len(sorted_data)):
             if sorted_data[i][0] == group_id:
                 group_name = (await bot.get_group_info(group_id=int(group_id)))["group_name"]
@@ -84,8 +79,11 @@ async def _(bot: Bot, event: GroupMessageEvent, matcher: Matcher,
                 break
         await matcher.finish(reply)
 
+    except FinishedException:
+        raise FinishedException()
+
     except BaseException:
-        await error.report(traceback.format_exc(), matcher)
+        await error.report(matcher)
 
 
 @on_message().handle()
@@ -113,7 +111,7 @@ async def _(event: GroupMessageEvent):
         json.dump(data, open("data/ghot.total.json", "w", encoding="utf-8"))
 
     except BaseException:
-        await error.report(traceback.format_exc())
+        await error.report()
 
 # [HELPSTART] Version: 2
 # Command: ghot
