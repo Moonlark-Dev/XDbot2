@@ -74,7 +74,7 @@ async def msgSenderHandle(bot: Bot, event: GroupMessageEvent):
         for msg in data:
             if msg["recv"] == event.get_user_id():
                 await msgSender.send(
-                    _lang.text(
+                    Message(_lang.text(
                         "messenger.send",
                         [
                             msg["sender"]["nickname"],
@@ -82,7 +82,7 @@ async def msgSenderHandle(bot: Bot, event: GroupMessageEvent):
                             msg["text"],
                         ],
                         event.get_user_id(),
-                    ),
+                    )),
                     at_sender=True,
                 )
                 data.pop(length)
