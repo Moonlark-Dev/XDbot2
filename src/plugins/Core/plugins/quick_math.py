@@ -24,7 +24,7 @@ async def delete_msg(bot, message_id):
         group = None
         answer = None
 
-@scheduler.scheduled_job("cron", minute="*/5", id="send_quick_math")
+@scheduler.scheduled_job("cron", minute="*/4", id="send_quick_math")
 async def send_quick_math():
     global group, answer
     try:
@@ -37,7 +37,7 @@ async def send_quick_math():
                 "data/quick_math.enabled_groups.json",
                 encoding="utf-8"))
         group = random.choice(groups)
-        question = f"{random.randint(0, 50)} {random.choice('+-*/')} {random.randint(1, 50)}"
+        question = f"{random.randint(0, 50)} {random.choice('+-*')} {random.randint(1, 50)}"
         answer = eval(question)
         bot = get_bot(accout_data[str(group)])
         msg_id = (await bot.send_group_msg(
