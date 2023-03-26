@@ -19,7 +19,7 @@ ACHIEVEMENTS = {
         "condition": "在二十面骰子中掷出 -1",
         "need_progress": 1,
         "award": {
-            "vi": -1,
+            "vi": 5,
             "exp": 6
         }
     },
