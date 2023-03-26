@@ -57,7 +57,13 @@ def unlck(name, user_id):
             f"时间：{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}"),
             receive=user_id)
         
-        
+def get_unlck_progress(name, user_id): 
+    user_data = json.load(open("data/etm/achievement_progress.json", encoding="utf-8"))
+    try:
+        return user_data[user_id][name]
+    except KeyError:
+        return None
+
 def increase_unlock_progress(name, user_id, count = 1):
     user_data = json.load(open("data/etm/achievement_progress.json", encoding="utf-8"))
     try:
