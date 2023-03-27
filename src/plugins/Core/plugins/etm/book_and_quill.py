@@ -12,7 +12,7 @@ class BookAndQuill(Item):
         self.basic_data = {
             "display_name": "书与笔",
             "display_message": "",
-            "price": 6.5,
+            "price": 8,
             "maximum_stack": 1,
             "data": "",
             "author": None,

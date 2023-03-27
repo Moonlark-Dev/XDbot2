@@ -4,7 +4,7 @@ from nonebot import require
 import json
 from nonebot.log import logger
 
-vimcoin = json.load(open("data/etm/vimcoin.json", encoding="utf-8"))
+vimcoin = json.load(open("data/etm/vim.json", encoding="utf-8"))
 #{
 #    "in": 0,
 #    "out": 0,
@@ -13,28 +13,24 @@ vimcoin = json.load(open("data/etm/vimcoin.json", encoding="utf-8"))
 require("nonebot_plugin_apscheduler")
 class IllegalQuantityException(Exception): pass
 
+
+@scheduler.scheduled_job("cron", hour="*/1", id="additem")
+async def add_item():
+    vimcoin["item_count"] += 175
+
+
 @scheduler.scheduled_job("cron", second="*/15", id="chamgeExchangeRate")
 async def change_exchange_rate():
-    # 一阶段
-    exchange_rate = vimcoin["exchange_rate"]
-    vimcoin["exchange_rate"] += (vimcoin["out"] - vimcoin["in"]) / 1000
-    vimcoin["in"] = 0
-    vimcoin["out"] = 0
-    if vimcoin["exchange_rate"] <= 0:
-        vimcoin["exchange_rate"] = exchange_rate
-        logger.error("更新汇率失败：非法数据（已放弃）")
-    # 二阶段
-    data = json.load(open("data/etm/users.json", encoding="utf-8"))
-    all_vimcoin = 0
-    for user in list(data.values()):
-        all_vimcoin += user["vimcoin"]
-    all_vi = all_vimcoin * vimcoin["exchange_rate"]
-    temp = all_vi / len(list(data.keys()))
-    vi = 500
-    print(all_vi, temp, vi)
-    vimcoin["exchange_rate"] = vimcoin["exchange_rate"] / (temp - vi) / 25 + 1
-    vimcoin["exchange_rate"] = exchange_rate * vimcoin["exchange_rate"]
-    json.dump(vimcoin, open("data/etm/vimcoin.json", "w", encoding="utf-8"))
+    # 总vi
+    users = json.load(open("data/etm/users.json", encoding="utf-8"))
+    all_vim = 0
+    for user in list(users.values()):
+        all_vim += user["vimcoin"]
+    all_vi = all_vim * vimcoin["exchange_rate"]
+    user_count = len(list(users.keys()))
+    vimcoin["_exchange_rate"] += ((vimcoin["item_count"] / (all_vi/ (user_count))) - 1) / 1000
+    vimcoin["exchange_rate"] = vimcoin["_exchange_rate"] + 0.25
+    json.dump(vimcoin, open("data/etm/vim.json", "w", encoding="utf-8"))
 
 def _add_vimcoin(user_id, count):
         data = user.get_user_data(user_id)

@@ -20,6 +20,16 @@ class Config(BaseSettings):
     # 数据文件命名规则：子插件.数据名.json
     FILES = [
          {
+             "path": "data/etm/vim.json",
+             "text": json.dumps({
+                 "in": 0,
+                 "out": 0,
+                 "exchange_rate": 1,
+                 "_exchange_rate": 0.58,
+                 "item_count": 500
+             })
+         },
+         {
              "path": "data/quick_math.enabled_groups.json",
              "text": "[]"
          },
