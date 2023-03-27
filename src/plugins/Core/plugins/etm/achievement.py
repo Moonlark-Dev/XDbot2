@@ -31,6 +31,15 @@ ACHIEVEMENTS = {
             "vi": 10,
             "exp": 12
         }
+    },
+    "我爱数学": {
+        "name": "我爱数学（还没写完）",
+        "condition": "在速算中正确完成15次",
+        "need_progress": 15,
+        "award": {
+            "vi": 12,
+            "exp": 15
+        }
     }
 }
 
