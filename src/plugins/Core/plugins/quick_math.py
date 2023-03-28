@@ -24,6 +24,7 @@ async def delete_msg(bot, message_id):
         group = None
         answer = None
 
+
 @scheduler.scheduled_job("cron", minute="*/4", id="send_quick_math")
 async def send_quick_math():
     global group, answer

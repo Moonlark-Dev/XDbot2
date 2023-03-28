@@ -30,6 +30,7 @@ ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 # !Info 1 谁At我
 # [HELPEND]
 
+
 @whoAtme.handle()
 async def whoAtmd(bot: Bot, event: GroupMessageEvent):
     try:

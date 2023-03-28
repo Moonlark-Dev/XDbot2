@@ -2,6 +2,7 @@ from .item_basic_data import BASIC_DATA
 import traceback
 from .economy import IllegalQuantityException
 
+
 class Item:
     def __init__(self, count, data, user_id):
         self.count = count
@@ -29,7 +30,7 @@ class Item:
 
         if count <= 0 or count >= 200:
             raise IllegalQuantityException(count)
-        
+
         msg = []
         if self.count >= count:
             for _ in range(count):
@@ -48,7 +49,7 @@ class Item:
             return True
         else:
             return False
-        
+
     def _add(self, count):
         if self.count + count <= self.data["maximum_stack"]:
             self.count += count
@@ -60,7 +61,7 @@ class Item:
         else:
             return 0
 
-    def add(self, count, _data = {}):
+    def add(self, count, _data={}):
         data = BASIC_DATA.copy()
         data.update(self.basic_data)
         data.update(_data)
@@ -68,4 +69,3 @@ class Item:
             return self._add(count)
         else:
             return 0
-        

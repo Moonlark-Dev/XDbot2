@@ -125,50 +125,51 @@ def new_su_log_match(matcher):
             m = m[2:]
             for l in ll:
                 if logs[l]["time"]["Y"] != m:
-                    logs[l]={}
+                    logs[l] = {}
         elif m.startswith("-M"):
             m = m[2:]
             for l in ll:
                 if logs[l]["time"]["M"] != m:
-                    logs[l]={}
+                    logs[l] = {}
         elif m.startswith("-D"):
             m = m[2:]
             for l in ll:
                 if logs[l]["time"]["D"] != m:
-                    logs[l]={}
+                    logs[l] = {}
         elif m.startswith("-h"):
             m = m[2:]
             for l in ll:
                 if logs[l]["time"]["h"] != m:
-                    logs[l]={}
+                    logs[l] = {}
         elif m.startswith("-m"):
             m = m[2:]
             for l in ll:
                 if logs[l]["time"]["m"] != m:
-                    logs[l]={}
+                    logs[l] = {}
         elif m.startswith("-s"):
             m = m[2:]
             for l in ll:
                 if logs[l]["time"]["s"] != m:
-                    logs[l]={}
+                    logs[l] = {}
         elif m.startswith("-u"):
             m = m[2:]
             for l in ll:
                 if logs[l]["user"]["id"] != m:
-                    logs[l]={}
+                    logs[l] = {}
         elif m.startswith("-g"):
             m = m[2:]
             for l in ll:
                 if logs[l]["user"]["group"] != m:
-                    logs[l]={}
+                    logs[l] = {}
         elif m.startswith("-c"):
             m = m[2:].replace("^", " ")
             for l in ll:
                 if logs[l]["command"].find(m) == -1:
-                    logs[l]={}
+                    logs[l] = {}
     for i in logs:
         if i != {}:
-            reply.append(f"{i['time']['Y']}/{i['time']['M']}/{i['time']['D']} - {i['time']['h']}:{i['time']['m']}:{i['time']['s']} - {i['user']['name']}({i['user']['id']}) - {i['command']}")
+            reply.append(
+                f"{i['time']['Y']}/{i['time']['M']}/{i['time']['D']} - {i['time']['h']}:{i['time']['m']}:{i['time']['s']} - {i['user']['name']}({i['user']['id']}) - {i['command']}")
     if not reply:
         reply.append("查询结果为空")
     return reply

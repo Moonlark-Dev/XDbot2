@@ -18,6 +18,7 @@ lang = on_command("lang", aliases={"语言"})
 # Usage: lang view <lang>
 # [HELPEND]
 
+
 @lang.handle()
 async def lang_handle(event: MessageEvent, message: Message = CommandArg()):
     try:
