@@ -8,10 +8,13 @@ repos:
     rev: main
     hooks:
       - id: autopep8
-  - repo: local
+  - repo: https://github.com/pycqa/flake8
+    rev: 6.0.0
     hooks:
-      - id: check-commit-message
-        name: Check commit message
-        entry: bash -c 'if ! grep -qE "^\[(add|update|fix|feature|remove)\]" <<< "$1"; then echo "Invalid commit message"; exit 1; fi' --
-        language: system
-        stages: [commit-msg]
+      - id: flake8
+        additional_dependencies: [Flake8-pyproject]
+  - repo: https://github.com/hadialqattan/pycln
+    rev: v2.1.3
+    hooks:
+      - id: pycln
+        args: [--config, pyproject.toml]
