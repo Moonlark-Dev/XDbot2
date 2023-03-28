@@ -5,7 +5,7 @@
   "lang.lang_name": "Name: {}",
   "lang.lang_version": "Version: {}",
   "lang.lang_author": "Author: {}",
-  "lang.compatibility": "Compatibility: {}",
+  "lang.compatibility": "Compatibility: {}/{} ({}%)",
   "lang.keylost": "The missing keys: {}",
   "lang.empty": "Use {} to switch language",
   "lang.success": "Current language using: {}",
