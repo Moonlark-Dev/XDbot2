@@ -16,7 +16,7 @@ get_exchange_rate = on_command(
 async def handler(event: MessageEvent):
     try:
         qq = event.get_user_id()
-        await get_exchange_rate.finish("\n".join((
+        await get_exchange_rate.send("\n".join((
             lang.text(
                 "ger.title", [
                     time.strftime(
@@ -26,6 +26,7 @@ async def handler(event: MessageEvent):
                     economy.vimcoin["in"], economy.vimcoin["out"]], qq),
             lang.text("ger.er", [economy.vi2vim(1)], qq)
         )))
+        await get_exchange_rate.finish("【XDbot小贴士】\n汇率即将被弃用")
 
     except BaseException:
         await error.report(traceback.format_exc(), get_exchange_rate)
