@@ -124,47 +124,47 @@ def new_su_log_match(matcher):
         if m.startswith("-Y"):
             m = m[2:]
             for l in ll:
-                if l["time"]["Y"] != m:
+                if logs[l]["time"]["Y"] != m:
                     logs[l]={}
         elif m.startswith("-M"):
             m = m[2:]
             for l in ll:
-                if l["time"]["M"] != m:
+                if logs[l]["time"]["M"] != m:
                     logs[l]={}
         elif m.startswith("-D"):
             m = m[2:]
             for l in ll:
-                if l["time"]["D"] != m:
+                if logs[l]["time"]["D"] != m:
                     logs[l]={}
         elif m.startswith("-h"):
             m = m[2:]
             for l in ll:
-                if l["time"]["h"] != m:
+                if logs[l]["time"]["h"] != m:
                     logs[l]={}
         elif m.startswith("-m"):
             m = m[2:]
             for l in ll:
-                if l["time"]["m"] != m:
+                if logs[l]["time"]["m"] != m:
                     logs[l]={}
         elif m.startswith("-s"):
             m = m[2:]
             for l in ll:
-                if l["time"]["s"] != m:
+                if logs[l]["time"]["s"] != m:
                     logs[l]={}
         elif m.startswith("-u"):
             m = m[2:]
             for l in ll:
-                if l["user"]["id"] != m:
+                if logs[l]["user"]["id"] != m:
                     logs[l]={}
         elif m.startswith("-g"):
             m = m[2:]
             for l in ll:
-                if l["user"]["group"] != m:
+                if logs[l]["user"]["group"] != m:
                     logs[l]={}
         elif m.startswith("-c"):
             m = m[2:].replace("^", " ")
             for l in ll:
-                if l["command"].find(m) == -1:
+                if logs[l]["command"].find(m) == -1:
                     logs[l]={}
     for i in logs:
         if i != {}:
