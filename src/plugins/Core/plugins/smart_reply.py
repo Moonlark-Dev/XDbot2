@@ -3,7 +3,6 @@ from nonebot import on_command, on_message
 from nonebot.adapters.onebot.v11 import GroupMessageEvent, Message
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
-import json
 from . import _smart_reply as _
 from . import _lang as lang
 from . import _error

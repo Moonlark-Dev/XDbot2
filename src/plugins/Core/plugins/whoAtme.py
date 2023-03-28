@@ -7,7 +7,6 @@ from nonebot.exception import FinishedException
 from nonebot import on_command, on_message
 import json
 import traceback
-import time
 import re
 from . import _lang
 

@@ -1,5 +1,4 @@
 from . import _error as error
-import json
 from traceback import format_exc
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Message, MessageEvent

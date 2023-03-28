@@ -5,7 +5,6 @@ from nonebot.params import CommandArg
 
 from . import _lang as lang
 from . import _error as error
-import json
 import traceback
 
 shop = on_command("shop", aliases={"系统商店", "systemshop", "ss"})
