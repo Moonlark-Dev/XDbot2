@@ -113,60 +113,62 @@ async def mulitaccout_manager(
         await _error.report(traceback.format_exc(), accout_manager)
 
 
-def new_su_log_match(match):
+def new_su_log_match(matcher):
     if not os.path.exists("data/su.log.json"):
         return ["暂未记录任何日志"]
     logs = json.load(open("data/su.log.json", encoding="utf-8"))
+    ll = range(len(logs))
     reply = []
-    for i in range(len(match)):
-        m = match[i]
+    for i in range(len(matcher)):
+        m = matcher[i]
         if m.startswith("-Y"):
             m = m[2:]
-            for l in logs:
+            for l in ll:
                 if l["time"]["Y"] != m:
-                    logs.remove(l)
+                    logs[l]={}
         elif m.startswith("-M"):
             m = m[2:]
-            for l in logs:
+            for l in ll:
                 if l["time"]["M"] != m:
-                    logs.remove(l)
+                    logs[l]={}
         elif m.startswith("-D"):
             m = m[2:]
-            for l in logs:
+            for l in ll:
                 if l["time"]["D"] != m:
-                    logs.remove(l)
+                    logs[l]={}
         elif m.startswith("-h"):
             m = m[2:]
-            for l in logs:
+            for l in ll:
                 if l["time"]["h"] != m:
-                    logs.remove(l)
+                    logs[l]={}
         elif m.startswith("-m"):
             m = m[2:]
-            for l in logs:
+            for l in ll:
                 if l["time"]["m"] != m:
-                    logs.remove(l)
+                    logs[l]={}
         elif m.startswith("-s"):
             m = m[2:]
-            for l in logs:
+            for l in ll:
                 if l["time"]["s"] != m:
-                    logs.remove(l)
+                    logs[l]={}
         elif m.startswith("-u"):
             m = m[2:]
-            for l in logs:
+            for l in ll:
                 if l["user"]["id"] != m:
-                    logs.remove(l)
+                    logs[l]={}
         elif m.startswith("-g"):
             m = m[2:]
-            for l in logs:
+            for l in ll:
                 if l["user"]["group"] != m:
-                    logs.remove(l)
+                    logs[l]={}
         elif m.startswith("-c"):
             m = m[2:].replace("^", " ")
-            for l in logs:
+            for l in ll:
                 if l["command"].find(m) == -1:
-                    logs.remove(l)
+                    logs[l]={}
     for i in logs:
-        reply.append(f"{i['time']['Y']}/{i['time']['M']}/{i['time']['D']} - {i['time']['h']}:{i['time']['m']}:{i['time']['s']} - {i['user']['name']}({i['user']['id']}) - {i['command']}")
+        if i != {}:
+            reply.append(f"{i['time']['Y']}/{i['time']['M']}/{i['time']['D']} - {i['time']['h']}:{i['time']['m']}:{i['time']['s']} - {i['user']['name']}({i['user']['id']}) - {i['command']}")
     if not reply:
         reply.append("查询结果为空")
     return reply
