@@ -5,4 +5,4 @@ pillow
 psutil
 pyecharts
 nonebot_plugin_apscheduler
-nonebot-plugin-learning-chat
+lupa
