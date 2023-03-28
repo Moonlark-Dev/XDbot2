@@ -22,10 +22,12 @@ chat_config = config_manager.config
 NO_PERMISSION_WORDS = [f'{NICKNAME}就喜欢说这个，哼！', f'你管得着{NICKNAME}吗！']
 ENABLE_WORDS = [f'{NICKNAME}会尝试学你们说怪话！', f'好的呢，让{NICKNAME}学学你们的说话方式~']
 DISABLE_WORDS = [f'好好好，{NICKNAME}不学说话就是了！', f'果面呐噻，{NICKNAME}以后不学了...']
-SORRY_WORDS = [f'{NICKNAME}知道错了...达咩!', f'{NICKNAME}不会再这么说了...', f'果面呐噻,{NICKNAME}说错话了...']
+SORRY_WORDS = [f'{NICKNAME}知道错了...达咩!',
+               f'{NICKNAME}不会再这么说了...', f'果面呐噻,{NICKNAME}说错话了...']
 DOUBT_WORDS = [f'{NICKNAME}有说什么奇怪的话吗？']
 BREAK_REPEAT_WORDS = ['打断复读', '打断！']
-ALL_WORDS = NO_PERMISSION_WORDS + SORRY_WORDS + DOUBT_WORDS + ENABLE_WORDS + DISABLE_WORDS + BREAK_REPEAT_WORDS
+ALL_WORDS = NO_PERMISSION_WORDS + SORRY_WORDS + DOUBT_WORDS + \
+    ENABLE_WORDS + DISABLE_WORDS + BREAK_REPEAT_WORDS
 
 
 class Result(IntEnum):
@@ -123,8 +125,8 @@ class LearningChat:
             for message in messages:
                 # 如果5条内有相关信息，就作为该消息的答案
                 if message.user_id not in self.ban_users and set(self.data.keyword_list) & set(
-                        message.keyword_list) and self.data.keyword_list != message.keyword_list and await self._check_allow(
-                    message):
+                    message.keyword_list) and self.data.keyword_list != message.keyword_list and await self._check_allow(
+                        message):
                     await self._set_answer(message)
                     return Result.Learn
             # 如果没有相关信息
@@ -172,8 +174,8 @@ class LearningChat:
         elif result == Result.Repeat:
             if await ChatMessage.filter(group_id=self.data.group_id,
                                         time__gte=self.data.time - 3600).limit(
-                self.config.repeat_threshold + 5).filter(
-                user_id=self.bot_id, message=self.data.message).exists():
+                    self.config.repeat_threshold + 5).filter(
+                    user_id=self.bot_id, message=self.data.message).exists():
                 # 如果在阈值+5条消息内，bot已经回复过这句话，则跳过
                 log_debug('群聊学习', '➤➤已经复读过了，跳过')
                 return None
@@ -190,7 +192,8 @@ class LearningChat:
                     log_debug('群聊学习', '➤➤达到复读阈值，打断复读！')
                     return [random.choice(BREAK_REPEAT_WORDS)]
                 else:
-                    log_debug('群聊学习', f'➤➤达到复读阈值，复读<m>{messages[0].message}</m>')
+                    log_debug(
+                        '群聊学习', f'➤➤达到复读阈值，复读<m>{messages[0].message}</m>')
                     return [self.data.message]
             return None
         else:
@@ -208,7 +211,8 @@ class LearningChat:
                     range(self.config.answer_threshold - len(self.config.answer_threshold_weights) + 1,
                           self.config.answer_threshold + 1))
 
-                answer_count_threshold = random.choices(answer_choices, weights=self.config.answer_threshold_weights)[0]
+                answer_count_threshold = random.choices(
+                    answer_choices, weights=self.config.answer_threshold_weights)[0]
 
                 if len(self.data.keyword_list) == chat_config.KEYWORDS_SIZE:
                     answer_count_threshold -= 1
@@ -242,7 +246,8 @@ class LearningChat:
 
             # 从候选回复中进行选择
             sum_count = sum(answer.count for answer in candidate_answers)
-            per_list = [answer.count / sum_count * (1 - 1 / answer.count) for answer in candidate_answers]
+            per_list = [answer.count / sum_count *
+                        (1 - 1 / answer.count) for answer in candidate_answers]
 
             per_list.append(1 - sum(per_list))
             answer_dict = tuple(zip(candidate_answers, per_list))
@@ -275,7 +280,8 @@ class LearningChat:
             try:
                 await bot.delete_msg(message_id=last_reply.message_id)
             except ActionFailed:
-                log_info('群聊学习', f'待禁用消息<m>{last_reply.message_id}</m>尝试撤回<r>失败</r>')
+                log_info(
+                    '群聊学习', f'待禁用消息<m>{last_reply.message_id}</m>尝试撤回<r>失败</r>')
         else:
             return False
         if ban_word := await ChatBlackList.filter(keywords=keywords).first():
@@ -289,12 +295,15 @@ class LearningChat:
                 log_info('群聊学习', f'学习词<m>{keywords}</m>将被全局禁用')
                 await ChatAnswer.filter(keywords=keywords).delete()
             else:
-                log_info('群聊学习', f'群<m>{self.data.group_id}</m>禁用了学习词<m>{keywords}</m>')
+                log_info(
+                    '群聊学习', f'群<m>{self.data.group_id}</m>禁用了学习词<m>{keywords}</m>')
                 await ChatAnswer.filter(keywords=keywords, group_id=self.data.group_id).delete()
         else:
             # 没有屏蔽记录，则新建
-            log_info('群聊学习', f'群<m>{self.data.group_id}</m>禁用了学习词<m>{keywords}</m>')
-            ban_word = ChatBlackList(keywords=keywords, ban_group_id=[self.data.group_id])
+            log_info(
+                '群聊学习', f'群<m>{self.data.group_id}</m>禁用了学习词<m>{keywords}</m>')
+            ban_word = ChatBlackList(
+                keywords=keywords, ban_group_id=[self.data.group_id])
             await ChatAnswer.filter(keywords=keywords, group_id=self.data.group_id).delete()
         await ChatContext.filter(keywords=keywords).delete()
         await ban_word.save()
@@ -314,7 +323,8 @@ class LearningChat:
                     log_info('群聊学习', f'学习词<m>{data.keywords}</m>将被全局禁用')
                     await ChatAnswer.filter(keywords=data.keywords).delete()
                 else:
-                    log_info('群聊学习', f'群<m>{data.group_id}</m>禁用了学习词<m>{data.keywords}</m>')
+                    log_info(
+                        '群聊学习', f'群<m>{data.group_id}</m>禁用了学习词<m>{data.keywords}</m>')
                     await ChatAnswer.filter(keywords=data.keywords, group_id=data.group_id).delete()
             else:
                 ban_word.global_ban = True
@@ -323,12 +333,15 @@ class LearningChat:
         else:
             # 没有屏蔽记录，则新建
             if isinstance(data, ChatMessage):
-                log_info('群聊学习', f'群<m>{data.group_id}</m>禁用了学习词<m>{data.keywords}</m>')
-                ban_word = ChatBlackList(keywords=data.keywords, ban_group_id=[data.group_id])
+                log_info(
+                    '群聊学习', f'群<m>{data.group_id}</m>禁用了学习词<m>{data.keywords}</m>')
+                ban_word = ChatBlackList(
+                    keywords=data.keywords, ban_group_id=[data.group_id])
                 await ChatAnswer.filter(keywords=data.keywords, group_id=data.group_id).delete()
             else:
                 log_info('群聊学习', f'学习词<m>{data.keywords}</m>将被全局禁用')
-                ban_word = ChatBlackList(keywords=data.keywords, global_ban=True)
+                ban_word = ChatBlackList(
+                    keywords=data.keywords, global_ban=True)
                 await ChatAnswer.filter(keywords=data.keywords).delete()
         await ChatContext.filter(keywords=data.keywords).delete()
         await ban_word.save()
@@ -365,7 +378,8 @@ class LearningChat:
 
         popularity: List[Tuple[int, List[ChatMessage]]] = sorted(total_messages.items(),
                                                                  key=cmp_to_key(group_popularity_cmp), reverse=True)
-        log_debug('群聊学习', f'主动发言：群热度排行<m>{">>".join([str(g[0]) for g in popularity])}</m>')
+        log_debug(
+            '群聊学习', f'主动发言：群热度排行<m>{">>".join([str(g[0]) for g in popularity])}</m>')
         for group_id, messages in popularity:
             if len(messages) < 30:
                 log_debug('群聊学习', f'主动发言：群<m>{group_id}</m>消息小于30条，不发言')
@@ -388,11 +402,13 @@ class LearningChat:
                               f'主动发言：群<m>{group_id}</m>最后一条消息是{NICKNAME}发的{last_reply.message}，不发言')
                     continue
                 elif cur_time - last_reply.time < config.speak_min_interval:
-                    log_debug('群聊学习', f'主动发言：群<m>{group_id}</m>上次主动发言时间小于主动发言最小间隔，不发言')
+                    log_debug(
+                        '群聊学习', f'主动发言：群<m>{group_id}</m>上次主动发言时间小于主动发言最小间隔，不发言')
                     continue
 
             # 该群每多少秒发一条消息
-            avg_interval = (messages[0].time - messages[-1].time) / len(messages)
+            avg_interval = (messages[0].time -
+                            messages[-1].time) / len(messages)
             # 如果该群已沉默的时间小于阈值，则不主动发言
             silent_time = cur_time - messages[0].time
             threshold = avg_interval * config.speak_threshold
@@ -437,7 +453,8 @@ class LearningChat:
                                                                    weights=[
                                                                        a.count + 1 if a.time >= today_time else a.count
                                                                        for a in follow_answers])[0]
-                                    message = random.choice(follow_answer.messages)
+                                    message = random.choice(
+                                        follow_answer.messages)
                                     if len(message) < 2:
                                         continue
                                     if message.startswith('&#91;') and message.endswith('&#93;'):
@@ -450,12 +467,15 @@ class LearningChat:
                         break
                 if speak_list:
                     if random.random() < config.speak_poke_probability:
-                        last_speak_users = {message.user_id for message in messages[:5] if message.user_id != self_id}
+                        last_speak_users = {
+                            message.user_id for message in messages[:5] if message.user_id != self_id}
                         select_user = random.choice(list(last_speak_users))
-                        speak_list.append(MessageSegment('poke', {'qq': select_user}))
+                        speak_list.append(MessageSegment(
+                            'poke', {'qq': select_user}))
                     return group_id, speak_list
                 else:
-                    log_debug('群聊学习', f'主动发言：群<m>{group_id}</m>没有找到符合条件的发言，不发言')
+                    log_debug(
+                        '群聊学习', f'主动发言：群<m>{group_id}</m>没有找到符合条件的发言，不发言')
             log_debug('群聊学习', '主动发言：没有符合条件的群，不主动发言')
             return None
 
@@ -488,10 +508,12 @@ class LearningChat:
                                              time=self.data.time,
                                              context=context,
                                              messages=[self.data.message])
-        log_debug('群聊学习', f'➤将被学习为<m>{message.message}</m>的回答，已学次数为<m>{answer.count}</m>')
+        log_debug(
+            '群聊学习', f'➤将被学习为<m>{message.message}</m>的回答，已学次数为<m>{answer.count}</m>')
 
     async def _check_allow(self, message: Union[ChatMessage, ChatAnswer]) -> bool:
-        raw_message = message.message if isinstance(message, ChatMessage) else message.messages[0]
+        raw_message = message.message if isinstance(
+            message, ChatMessage) else message.messages[0]
         # if len(raw_message) < 2:
         #     return False
         if any(i in raw_message for i in

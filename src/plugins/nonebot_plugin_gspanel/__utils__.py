@@ -127,23 +127,28 @@ if not (LOCAL_DIR / "cache").exists():
 if not (LOCAL_DIR / "qq-uid.json").exists():
     (LOCAL_DIR / "qq-uid.json").write_text("{}", encoding="UTF-8")
 _client = Client(verify=False)
-CALC_RULES = _client.get("https://cdn.monsterx.cn/bot/gspanel/calc-rule.json").json()
+CALC_RULES = _client.get(
+    "https://cdn.monsterx.cn/bot/gspanel/calc-rule.json").json()
 (LOCAL_DIR / "calc-rule.json").write_text(
     json.dumps(CALC_RULES, ensure_ascii=False, indent=2), encoding="utf-8"
 )
-CHAR_DATA = _client.get("https://cdn.monsterx.cn/bot/gspanel/char-data.json").json()
+CHAR_DATA = _client.get(
+    "https://cdn.monsterx.cn/bot/gspanel/char-data.json").json()
 (LOCAL_DIR / "char-data.json").write_text(
     json.dumps(CHAR_DATA, ensure_ascii=False, indent=2), encoding="utf-8"
 )
-CHAR_ALIAS = _client.get("https://cdn.monsterx.cn/bot/gspanel/char-alias.json").json()
+CHAR_ALIAS = _client.get(
+    "https://cdn.monsterx.cn/bot/gspanel/char-alias.json").json()
 (LOCAL_DIR / "char-alias.json").write_text(
     json.dumps(CHAR_ALIAS, ensure_ascii=False, indent=2), encoding="utf-8"
 )
-TEAM_ALIAS = _client.get("https://cdn.monsterx.cn/bot/gspanel/team-alias.json").json()
+TEAM_ALIAS = _client.get(
+    "https://cdn.monsterx.cn/bot/gspanel/team-alias.json").json()
 (LOCAL_DIR / "team-alias.json").write_text(
     json.dumps(TEAM_ALIAS, ensure_ascii=False, indent=2), encoding="utf-8"
 )
-HASH_TRANS = _client.get("https://cdn.monsterx.cn/bot/gspanel/hash-trans.json").json()
+HASH_TRANS = _client.get(
+    "https://cdn.monsterx.cn/bot/gspanel/hash-trans.json").json()
 (LOCAL_DIR / "hash-trans.json").write_text(
     json.dumps(HASH_TRANS, ensure_ascii=False, indent=2), encoding="utf-8"
 )

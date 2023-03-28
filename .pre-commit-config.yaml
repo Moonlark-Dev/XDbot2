@@ -1,0 +1,10 @@
+ci:
+  autofix_commit_msg: "[update] 格式化代码"
+  autofix_prs: true
+  autoupdate_branch: master
+
+repos:
+  - repo: https://github.com/hhatto/autopep8
+    rev: main
+    hooks:
+      - id: autopep8

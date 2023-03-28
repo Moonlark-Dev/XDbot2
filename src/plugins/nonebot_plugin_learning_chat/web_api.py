@@ -40,7 +40,8 @@ responseAdaptor(api, payload, query, request, response) {
 def authentication():
     def inner(token: Optional[str] = Header(...)):
         try:
-            payload = jwt.decode(token, config_manager.config.web_secret_key, algorithms='HS256')
+            payload = jwt.decode(
+                token, config_manager.config.web_secret_key, algorithms='HS256')
             if not (username := payload.get('username')) or username != config_manager.config.web_username:
                 raise HTTPException(status_code=400, detail='登录验证失败或已失效，请重新登录')
         except (jwt.JWTError, jwt.ExpiredSignatureError, AttributeError):
@@ -138,7 +139,8 @@ async def init_web():
         try:
             members = await get_bot().get_group_member_list(group_id=group_id)
             member_list = [
-                {'label': f'{member["nickname"] or member["card"]}({member["user_id"]})', 'value': member['user_id']}
+                {'label': f'{member["nickname"] or member["card"]}({member["user_id"]})',
+                 'value': member['user_id']}
                 for member in members]
             config = config_manager.get_group_config(group_id).dict()
             config['break_probability'] = config['break_probability'] * 100
@@ -185,7 +187,8 @@ async def init_web():
                                 group_id: Optional[str] = None,
                                 user_id: Optional[str] = None,
                                 message: Optional[str] = None):
-        orderBy = (orderBy or 'time') if (orderDir or 'desc') == 'asc' else f'-{orderBy or "time"}'
+        orderBy = (orderBy or 'time') if (
+            orderDir or 'desc') == 'asc' else f'-{orderBy or "time"}'
         filter_args = {f'{k}__contains': v for k, v in
                        {'group_id': group_id, 'user_id': user_id, 'raw_message': message}.items() if v}
         return {
@@ -201,7 +204,8 @@ async def init_web():
     @app.get('/learning_chat/api/get_chat_contexts', response_class=JSONResponse, dependencies=[authentication()])
     async def get_chat_context(page: int = 1, perPage: int = 10, orderBy: str = 'time', orderDir: str = 'desc',
                                keywords: Optional[str] = None):
-        orderBy = (orderBy or 'time') if (orderDir or 'desc') == 'asc' else f'-{orderBy or "time"}'
+        orderBy = (orderBy or 'time') if (
+            orderDir or 'desc') == 'asc' else f'-{orderBy or "time"}'
         filter_arg = {'keywords__contains': keywords} if keywords else {}
         return {
             'status': 0,
@@ -220,7 +224,8 @@ async def init_web():
         filter_arg = {'context_id': context_id} if context_id else {}
         if keywords:
             filter_arg['keywords__contains'] = keywords  # type: ignore
-        orderBy = (orderBy or 'count') if (orderDir or 'desc') == 'asc' else f'-{orderBy or "count"}'
+        orderBy = (orderBy or 'count') if (
+            orderDir or 'desc') == 'asc' else f'-{orderBy or "count"}'
         return {
             'status': 0,
             'msg':    'ok',
@@ -239,7 +244,8 @@ async def init_web():
         filter_arg = {'keywords__contains': keywords} if keywords else {}
         items = await ChatBlackList.filter(**filter_arg).offset((page - 1) * perPage).limit(perPage).values()
         for item in items:
-            item['bans'] = '全局禁用' if item['global_ban'] else str(item['ban_group_id'][0])
+            item['bans'] = '全局禁用' if item['global_ban'] else str(
+                item['ban_group_id'][0])
         if bans:
             items = list(filter(lambda x: bans in x['bans'], items))
         return {

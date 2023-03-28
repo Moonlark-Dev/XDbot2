@@ -147,8 +147,8 @@ group_config_form = Form(
                  level=LevelEnum.primary,
                  confirmText='确认将当前配置保存至所有群？',
                  api='post:/learning_chat/api/chat_group_config?group_id=all'
-             ),
-             Action(label='重置', level=LevelEnum.warning, type='reset')]
+    ),
+        Action(label='重置', level=LevelEnum.warning, type='reset')]
 )
 
 blacklist_table = TableCRUD(mode='table',
@@ -172,7 +172,8 @@ blacklist_table = TableCRUD(mode='table',
                                                                            'className': 'break-all',
                                                                            'body':      {'type': 'tpl',
                                                                                          'tpl':  '${keywords}'}}),
-                                     TableColumn(label='已禁用的群', name='bans', searchable=True),
+                                     TableColumn(label='已禁用的群',
+                                                 name='bans', searchable=True),
                                      ])
 message_table = TableCRUD(mode='table',
                           title='',
@@ -194,8 +195,10 @@ message_table = TableCRUD(mode='table',
                                        ],
                           footable=True,
                           columns=[TableColumn(label='消息ID', name='message_id'),
-                                   TableColumn(label='群ID', name='group_id', searchable=True),
-                                   TableColumn(label='用户ID', name='user_id', searchable=True),
+                                   TableColumn(
+                                       label='群ID', name='group_id', searchable=True),
+                                   TableColumn(
+                                       label='用户ID', name='user_id', searchable=True),
                                    TableColumn(type='tpl', tpl='${raw_message|truncate:20}', label='消息',
                                                name='message',
                                                searchable=True, popOver={'mode':      'dialog', 'title': '消息全文',
@@ -294,7 +297,8 @@ context_table = TableCRUD(mode='table',
                                                         'body': {'type': 'tpl', 'tpl': '${keywords}'}}),
                                    TableColumn(type='tpl', tpl='${time|date:YYYY-MM-DD HH\\:mm\\:ss}',
                                                label='最后学习时间', name='time', sortable=True),
-                                   TableColumn(label='已学次数', name='count', sortable=True),
+                                   TableColumn(
+                                       label='已学次数', name='count', sortable=True),
                                    ])
 
 message_page = PageSchema(url='/messages', icon='fa fa-comments', label='群聊消息',
@@ -337,11 +341,13 @@ database_page = PageSchema(label='数据库', icon='fa fa-database',
 config_page = PageSchema(url='/configs', isDefaultPage=True, icon='fa fa-wrench', label='配置',
                          schema=Page(title='配置', initApi='/learning_chat/api/get_group_list',
                                      body=[global_config_form, group_select, group_config_form]))
-chat_page = PageSchema(label='群聊学习', icon='fa fa-wechat (alias)', children=[config_page, database_page])
+chat_page = PageSchema(label='群聊学习', icon='fa fa-wechat (alias)',
+                       children=[config_page, database_page])
 
 github_logo = Tpl(className='w-full',
                   tpl='<div class="flex justify-between"><div></div><div><a href="https://github.com/CMHopeSunshine/nonebot-plugin-learning-chat" target="_blank" title="Copyright"><i class="fa fa-github fa-2x"></i></a></div></div>')
-header = Flex(className='w-full', justify='flex-end', alignItems='flex-end', items=[github_logo])
+header = Flex(className='w-full', justify='flex-end',
+              alignItems='flex-end', items=[github_logo])
 
 admin_app = App(brandName='Learning-Chat',
                 logo='http://static.cherishmoon.fun/LittlePaimon/readme/logo.png',
