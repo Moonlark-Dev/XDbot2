@@ -8,3 +8,10 @@ repos:
     rev: main
     hooks:
       - id: autopep8
+  - repo: local
+    hooks:
+      - id: check-commit-message
+        name: Check commit message
+        entry: bash -c 'if ! grep -qE "^\[(add|update|fix|feature|remove)\]" <<< "$1"; then echo "Invalid commit message"; exit 1; fi' --
+        language: system
+        stages: [commit-msg]
