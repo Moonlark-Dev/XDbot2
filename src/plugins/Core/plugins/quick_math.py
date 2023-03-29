@@ -67,7 +67,7 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
                                    at_sender=True)
                 group = None
                 answer = None
-                achievement.increase_unlock_progress("我爱数学", 1)
+                achievement.increase_unlock_progress("我爱数学", event.get_user_id())
 
     except BaseException:
         await error.report(format_exc())
