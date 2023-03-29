@@ -33,7 +33,7 @@ ACHIEVEMENTS = {
         }
     },
     "我爱数学": {
-        "name": "我爱数学（还没写完）",
+        "name": "我爱数学",
         "condition": "在速算中正确完成15次",
         "need_progress": 15,
         "award": {
