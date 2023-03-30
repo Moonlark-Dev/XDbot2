@@ -72,7 +72,7 @@ async def cave_comment_writer(event: MessageEvent, bot: Bot):
             cave_data = json.load(open("data/cave.data.json", encoding="utf-8"))
             if type(cave_data["data"][cave_id][sender]) == int:
                 _messenger.send_message((f"回声洞被评论：{cave_id}#{data[cave_id]['count'] - 1}\n"
-                                     f"来自：{(await bot.get_stranger_info(user_id=event.get_user_id())['nickname']}\n"
+                                     f"来自：{(await bot.get_stranger_info(user_id=event.get_user_id()))['nickname']}\n"
                                      f"{event.get_message()}"),
                                     cave_data["data"][cave_id][sender])
             await cave_comment.finish(f"评论成功：{cave_id}#{data[cave_id]['count'] - 1}")
