@@ -8,7 +8,7 @@ import marshal
 import re
 from . import _error
 from .etm import exp
-from . import _lang
+from . import _lang, _messenger
 import httpx
 from nonebot import on_command, get_app, on_message
 from nonebot.adapters.onebot.v11 import Bot, Message, MessageEvent
@@ -38,7 +38,7 @@ MAX_NODE_MESSAGE = 200
 
 
 @cave_comment.handle()
-async def cave_comment_writer(event: MessageEvent):
+async def cave_comment_writer(event: MessageEvent, bot: Bot):
     try:
         if not event.reply:
             await cave_comment.finish()
@@ -69,6 +69,12 @@ async def cave_comment_writer(event: MessageEvent):
                     encoding="utf-8"))
             await _error.report(f"「新回声洞评论（{cave_id}#{data[cave_id]['count'] - 1}）」\n{event.get_message()}\n{event.get_session_id()}")
             exp.add_exp(event.get_user_id(), 3)
+            cave_data = json.load(open("data/cave.data.json", encoding="utf-8"))
+            if type(cave_data["data"][cave_id][sender]) == int:
+                _messenger.send_message((f"回声洞被评论：{cave_id}#{data[cave_id]['count'] - 1}\n"
+                                     f"来自：{(await bot.get_stranger_info(user_id=event.get_user_id())['nickname']}"
+                                     f"{event.get_message()}"),
+                                    cave_data["data"][cave_id][sender])
             await cave_comment.finish(f"评论成功：{cave_id}#{data[cave_id]['count'] - 1}")
 
     except FinishedException:
