@@ -14,6 +14,21 @@ import json
 require("nonebot_plugin_apscheduler")
 group = None
 answer = None
+group_unanswered = {}
+
+
+def refresh_group_unanswered(groups=[]):
+    global group_unanswered
+    if not groups:
+        groups = json.load(
+            open(
+                "data/quick_math.enabled_groups.json",
+                encoding="utf-8"))
+    for g in groups:
+        group_unanswered[g] = 0
+
+
+refresh_group_unanswered()
 
 
 async def delete_msg(bot, message_id):
@@ -21,6 +36,7 @@ async def delete_msg(bot, message_id):
     await asyncio.sleep(18)
     if None not in [group, answer]:
         await bot.delete_msg(message_id=message_id)
+        group_unanswered[group] += 1
         group = None
         answer = None
 
@@ -38,6 +54,8 @@ async def send_quick_math():
                 "data/quick_math.enabled_groups.json",
                 encoding="utf-8"))
         group = random.choice(groups)
+        if group_unanswered[group] >= 3:
+            return
         question = f"{random.randint(0, 50)} {random.choice('+-*')} {random.randint(1, 50)}"
         answer = eval(question)
         bot = get_bot(accout_data[str(group)])
@@ -51,7 +69,9 @@ async def send_quick_math():
 
 @on_message().handle()
 async def quick_math(matcher: Matcher, event: GroupMessageEvent):
-    global group, answer
+    global group, answer, group_unanswered
+    if group_unanswered[event.group_id] >= 3:
+        group_unanswered[event.group_id] = int(random.choice("0122233333"))
     try:
         if event.group_id == group:
             try:
@@ -60,6 +80,7 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
                 await matcher.finish()
 
             if _answ == answer:
+                group_unanswered[event.group_id] = 0
                 add = [random.randint(1, 13), random.randint(1, 15)]
                 economy.add_vi(event.get_user_id(), add[0])
                 exp.add_exp(event.get_user_id(), add[1])
@@ -67,7 +88,8 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
                                    at_sender=True)
                 group = None
                 answer = None
-                achievement.increase_unlock_progress("我爱数学", event.get_user_id())
+                achievement.increase_unlock_progress(
+                    "我爱数学", event.get_user_id())
 
     except BaseException:
         await error.report(format_exc())
@@ -92,5 +114,6 @@ async def quick_math_command(matcher: Matcher, event: GroupMessageEvent):
                 "data/quick_math.enabled_groups.json",
                 "w",
                 encoding="utf-8"))
+        refresh_group_unanswered(groups)
     except BaseException:
         await error.report(format_exc(), matcher)

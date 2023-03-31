@@ -24,6 +24,8 @@ async def add_item():
 vimcoin["exchange_rate"] = 1
 
 # @scheduler.scheduled_job("cron", second="*/15", id="chamgeExchangeRate")
+
+
 async def change_exchange_rate():
     # 总vi
     users = json.load(open("data/etm/users.json", encoding="utf-8"))
