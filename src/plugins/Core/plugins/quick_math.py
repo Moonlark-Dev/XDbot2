@@ -14,13 +14,23 @@ import json
 require("nonebot_plugin_apscheduler")
 group = None
 answer = None
-
-
+group_unanswered = {}
+def refresh_group_unanswered(groups = []):
+    global group_unanswered
+    if not groups:
+        groups = json.load(
+                    open(
+                        "data/quick_math.enabled_groups.json",
+                        encoding="utf-8"))
+    for g in groups:
+        group_unanswered[g] = 0
+refresh_group_unanswered()
 async def delete_msg(bot, message_id):
     global group, answer
     await asyncio.sleep(18)
     if None not in [group, answer]:
         await bot.delete_msg(message_id=message_id)
+        group_unanswered[group] += 1
         group = None
         answer = None
 
@@ -38,6 +48,8 @@ async def send_quick_math():
                 "data/quick_math.enabled_groups.json",
                 encoding="utf-8"))
         group = random.choice(groups)
+        if group_unanswered[group] >= 3:
+            return
         question = f"{random.randint(0, 50)} {random.choice('+-*')} {random.randint(1, 50)}"
         answer = eval(question)
         bot = get_bot(accout_data[str(group)])
@@ -51,7 +63,9 @@ async def send_quick_math():
 
 @on_message().handle()
 async def quick_math(matcher: Matcher, event: GroupMessageEvent):
-    global group, answer
+    global group, answer, group_unanswered
+    if group_unanswered[event.group_id] >= 3:
+        group_unanswered[event.group_id] = int(random.choice("03333"))
     try:
         if event.group_id == group:
             try:
@@ -93,5 +107,6 @@ async def quick_math_command(matcher: Matcher, event: GroupMessageEvent):
                 "data/quick_math.enabled_groups.json",
                 "w",
                 encoding="utf-8"))
+        refresh_group_unanswered(groups)
     except BaseException:
         await error.report(format_exc(), matcher)
