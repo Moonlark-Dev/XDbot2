@@ -65,7 +65,7 @@ async def send_quick_math():
 async def quick_math(matcher: Matcher, event: GroupMessageEvent):
     global group, answer, group_unanswered
     if group_unanswered[event.group_id] >= 3:
-        group_unanswered[event.group_id] = int(random.choice("03333"))
+        group_unanswered[event.group_id] = int(random.choice("0122233333"))
     try:
         if event.group_id == group:
             try:
