@@ -15,16 +15,22 @@ require("nonebot_plugin_apscheduler")
 group = None
 answer = None
 group_unanswered = {}
-def refresh_group_unanswered(groups = []):
+
+
+def refresh_group_unanswered(groups=[]):
     global group_unanswered
     if not groups:
         groups = json.load(
-                    open(
-                        "data/quick_math.enabled_groups.json",
-                        encoding="utf-8"))
+            open(
+                "data/quick_math.enabled_groups.json",
+                encoding="utf-8"))
     for g in groups:
         group_unanswered[g] = 0
+
+
 refresh_group_unanswered()
+
+
 async def delete_msg(bot, message_id):
     global group, answer
     await asyncio.sleep(18)
