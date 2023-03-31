@@ -80,6 +80,7 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
                 await matcher.finish()
 
             if _answ == answer:
+                group_unanswered[event.group_id] = 0
                 add = [random.randint(1, 13), random.randint(1, 15)]
                 economy.add_vi(event.get_user_id(), add[0])
                 exp.add_exp(event.get_user_id(), add[1])
