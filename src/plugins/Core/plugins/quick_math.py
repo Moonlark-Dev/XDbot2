@@ -57,7 +57,7 @@ async def send_quick_math():
             group = random.choice(groups)
         except BaseException:
             return None
-        if group_unanswered[group] >= 3 and random.random() >= 0.07:
+        if group_unanswered[group] >= 3:
             return None
         question = f"{random.randint(0, 50)} {random.choice('+-*')} {random.randint(1, 50)}"
         answer = eval(question)
