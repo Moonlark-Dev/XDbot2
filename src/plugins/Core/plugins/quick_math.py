@@ -54,8 +54,8 @@ async def send_quick_math():
                 "data/quick_math.enabled_groups.json",
                 encoding="utf-8"))
         group = random.choice(groups)
-        if group_unanswered[group] >= 3:
-            return
+        if group_unanswered[group] >= 3 and random.random() >= 0.07:
+            return None
         question = f"{random.randint(0, 50)} {random.choice('+-*')} {random.randint(1, 50)}"
         answer = eval(question)
         bot = get_bot(accout_data[str(group)])
