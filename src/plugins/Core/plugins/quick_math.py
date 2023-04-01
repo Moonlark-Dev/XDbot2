@@ -55,7 +55,7 @@ async def send_quick_math():
                 encoding="utf-8"))
         try:
             group = random.choice(groups)
-        except:
+        except BaseException:
             return None
         if group_unanswered[group] >= 3 and random.random() >= 0.07:
             return None
@@ -76,7 +76,7 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
     try:
         if group_unanswered[event.group_id] >= 3:
             group_unanswered[event.group_id] = int(random.choice("0122233333"))
-    except:
+    except BaseException:
         pass
     try:
         if event.group_id == group:

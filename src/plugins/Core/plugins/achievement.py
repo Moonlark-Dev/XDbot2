@@ -23,7 +23,8 @@ async def show_achievement(matcher: Matcher, event: MessageEvent, message: Messa
             await matcher.finish(reply)
         elif argv[0] in ["view", "show", "查看"]:
             achi_data = achievement.ACHIEVEMENTS[" ".join(argv[1:])]
-            if achi_data["name"] in achievement.get_user_achievement(event.get_user_id()):
+            if achi_data["name"] in achievement.get_user_achievement(
+                    event.get_user_id()):
                 unlck_status = lang.text(
                     "achi.unlcked", [], event.get_user_id())
             elif achievement.get_unlck_progress(achi_data['name'], event.get_user_id()):
