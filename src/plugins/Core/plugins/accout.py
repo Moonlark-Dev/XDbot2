@@ -21,6 +21,7 @@ multiAccoutData = {}
 accout_manager = on_command("accout", aliases={"多帐号"})
 driver = get_driver()
 
+
 @event_preprocessor
 async def multiAccoutManager(bot: Bot, event: GroupMessageEvent):
     try:
