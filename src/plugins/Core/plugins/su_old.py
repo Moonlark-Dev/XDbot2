@@ -567,23 +567,6 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                     reply += f"{length}. {group}: {multiAccoutData[group]}\n"
                     length += 1
                 await su.send(reply)
-        elif argument[0] in ["截图", "screenshot"]:
-            try:
-                os.remove("data/screenshot.png")
-            except BaseException:
-                pass
-            try:
-                pyautogui.screenshot(path="data/screenshot.png")
-            except NameError:
-                await su.send("错误：可选依赖 pyautogui 未安装")
-            except OSError:
-                await su.send("失败：无法截图")
-            else:
-                await su.send(
-                    Message(
-                        f"[CQ:image,file=file://{os.abspath('./data/screenshot.png')}]"
-                    )
-                )
 
         # 反馈
         await su.finish("完成")
