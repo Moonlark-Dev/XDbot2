@@ -210,15 +210,7 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                 su_notice_cache = text
                 await su.finish("超级广播内容已设定")
 
-        elif argument[0] == "config" or argument[0] == "配置":
-            if argument[1] == "get" or argument[1] == "获取":
-                await su.send(
-                    json.dumps(
-                        json.load(open(f"data/{argument[2]}.json", encoding="utf-8"))[
-                            argument[3]
-                        ]
-                    )
-                )
+        
             elif argument[1] == "set" or argument == "设置":
                 config = json.load(
                     open(
