@@ -1,3 +1,4 @@
+'''
 from nonebot.adapters.onebot.v11 import MessageEvent, Message, GroupMessageEvent
 from nonebot.adapters.onebot.v11.event import GroupRequestEvent
 from nonebot.adapters.onebot.v11.bot import Bot
@@ -520,7 +521,7 @@ async def group_request_handle(
 
     except BaseException:
         await _error.report(traceback.format_exc())
-
+'''
 
 # [HELPSTART] Version: 2
 # Command: su
