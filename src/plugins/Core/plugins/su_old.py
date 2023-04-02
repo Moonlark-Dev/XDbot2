@@ -523,20 +523,20 @@ async def group_request_handle(
         await _error.report(traceback.format_exc())
 '''
 
-# [HELPSTART] Version: 2
-# Command: su
-# Info: XDbot2超级管理员操作，详见su(0)
-# Msg: 超管快捷操作
-# Usage: su ban <QQ号>：封禁用户，见su(1)
-# Usage: su pardon <QQ号>：解封用户
-# Usage: su plugin enable <插件名>：启用插件（su(2)）
-# Usage: su plugin disable <插件名>：禁用插件
-# Usage: su restart：重启XDbot2
-# Usage: su call <API终结点>\n<数据(json)>：调用 go-cqhttp API（su(4)）
-# Usage: su config set <配置项名> <键> <值(json)>：修改配置（su(5)）
-# Usage: su config get <配置项名> <键>：获取配置值（su(6)）
-# Usage: su ct clear：清除发言排名数据
-# Usage: su echo <文本>：发送文本
-# Usage: su cave remove <回声洞ID>：删除回声洞（su(9)）
-# Usage：我tm不想写了自己去看/man把艹
-# [HELPEND]
+# # [HELPSTART] Version: 2
+# # Command: su
+# # Info: XDbot2超级管理员操作，详见su(0)
+# # Msg: 超管快捷操作
+# # Usage: su ban <QQ号>：封禁用户，见su(1)
+# # Usage: su pardon <QQ号>：解封用户
+# # Usage: su plugin enable <插件名>：启用插件（su(2)）
+# # Usage: su plugin disable <插件名>：禁用插件
+# # Usage: su restart：重启XDbot2
+# # Usage: su call <API终结点>\n<数据(json)>：调用 go-cqhttp API（su(4)）
+# # Usage: su config set <配置项名> <键> <值(json)>：修改配置（su(5)）
+# # Usage: su config get <配置项名> <键>：获取配置值（su(6)）
+# # Usage: su ct clear：清除发言排名数据
+# # Usage: su echo <文本>：发送文本
+# # Usage: su cave remove <回声洞ID>：删除回声洞（su(9)）
+# # Usage：我tm不想写了自己去看/man把艹
+# # [HELPEND]
