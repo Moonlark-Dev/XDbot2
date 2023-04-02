@@ -6,5 +6,5 @@ BASIC_DATA = {
     "price": 5,
     "display_name": "",
     "display_message": "",
-    "can_use": False
+    "can_use": False,
 }

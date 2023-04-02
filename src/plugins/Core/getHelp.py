@@ -9,7 +9,12 @@ def get_plugin_help(plugin_name: str, module: any) -> dict:
     查找插件帮助
     优先级：注释>commandHelp变量
     """
-    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "plugins", f"{plugin_name}.py"), encoding="utf-8") as f:
+    with open(
+        os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "plugins", f"{plugin_name}.py"
+        ),
+        encoding="utf-8",
+    ) as f:
         plugin_file = f.read()
     command_help = dict()
     # 正则表达式出问题了所以用find
@@ -17,7 +22,7 @@ def get_plugin_help(plugin_name: str, module: any) -> dict:
     # 注释写法
     if start != -1:
         # 采集数据
-        lines = plugin_file[start:plugin_file.find("# [HELPEND]", start)]
+        lines = plugin_file[start : plugin_file.find("# [HELPEND]", start)]
         lines = lines.replace("# ", "").replace("#", "").split("\n")
         if lines[0].find("Version: 2") != -1:
             help_version = 2
@@ -37,10 +42,12 @@ def get_plugin_help(plugin_name: str, module: any) -> dict:
                     command_help[now_command] = {"usage": []}
                 elif line_splited[0] in ["Usage", "用法"]:
                     command_help[now_command]["usage"].append(
-                        line_splited[1].replace(r"\n", "\n"))
+                        line_splited[1].replace(r"\n", "\n")
+                    )
                 elif line_splited[0] in ["Info", "描述"]:
                     command_help[now_command]["info"] = line_splited[1].replace(
-                        r"\n", "\n")
+                        r"\n", "\n"
+                    )
                 elif line_splited[0] in ["Msg", "概述"]:
                     command_help[now_command]["msg"] = line_splited[1]
         elif help_version == 1:
@@ -54,11 +61,17 @@ def get_plugin_help(plugin_name: str, module: any) -> dict:
                     commands[lineSplited[1]] = {"usage": []}
                 # 处理
                 if lineSplited[0] == "!Usage":
-                    commands[lineSplited[1]]["usage"].append(line.replace(
-                        f"!Usage {lineSplited[1]}", "").strip().replace(r"\n", "\n"))
+                    commands[lineSplited[1]]["usage"].append(
+                        line.replace(f"!Usage {lineSplited[1]}", "")
+                        .strip()
+                        .replace(r"\n", "\n")
+                    )
                 elif lineSplited[0] == "!Info":
-                    commands[lineSplited[1]]["info"] = line.replace(
-                        f"!Info {lineSplited[1]}", "").strip().replace(r"\n", "\n")
+                    commands[lineSplited[1]]["info"] = (
+                        line.replace(f"!Info {lineSplited[1]}", "")
+                        .strip()
+                        .replace(r"\n", "\n")
+                    )
             for key in list(commands.keys()):
                 command = commands[key]
                 commandName = command["usage"][0].split(" ")[0]

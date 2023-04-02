@@ -21,6 +21,7 @@ class IllegalQuantityException(Exception):
 async def add_item():
     vimcoin["item_count"] += 175
 
+
 vimcoin["exchange_rate"] = 1
 
 # @scheduler.scheduled_job("cron", second="*/15", id="chamgeExchangeRate")
@@ -34,8 +35,9 @@ async def change_exchange_rate():
         all_vim += user["vimcoin"]
     all_vi = all_vim * vimcoin["exchange_rate"]
     user_count = len(list(users.keys()))
-    vimcoin["_exchange_rate"] += ((vimcoin["item_count"] /
-                                  (all_vi / (user_count))) - 1) / 1000
+    vimcoin["_exchange_rate"] += (
+        (vimcoin["item_count"] / (all_vi / (user_count))) - 1
+    ) / 1000
     vimcoin["exchange_rate"] = vimcoin["_exchange_rate"] + 0.25
     json.dump(vimcoin, open("data/etm/vim.json", "w", encoding="utf-8"))
 

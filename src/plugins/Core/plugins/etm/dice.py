@@ -11,7 +11,7 @@ class Dice(Item):
             "display_name": "二十面骰子",
             "display_message": "打开后随机获得：50vi ~ -50vi",
             "maximum_stack": 32,
-            "int": None
+            "int": None,
         }
 
     def use_item(self):

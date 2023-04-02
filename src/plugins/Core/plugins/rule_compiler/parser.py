@@ -6,7 +6,7 @@ INFORMATION_KEYWORDS = {
     "@NAME": "name",
     "@NAMESPACE": "namespace_id",
     "@AUTHOR": "author",
-    "@VERSION": "version"
+    "@VERSION": "version",
 }
 
 """
@@ -30,17 +30,14 @@ EXPR_CALLS = {
     "*": "???",
     "/": "???",
     "++": "add_one",
-    "==": "is"
+    "==": "is",
 }
 
 
 class Parser:
     TOKEN_VALUE = 0
     TOKEN_TYPE = 1
-    BASE_TYPES = [
-        "string",
-        "int"
-    ]
+    BASE_TYPES = ["string", "int"]
     EOL = "eol"
     ROOT_IDENTATION = ""
     OP = "op"
@@ -88,8 +85,7 @@ class Parser:
                         if token[self.TOKEN_VALUE] == "@command":
                             ast[-1]["call"] = "new_command"
                             ast[-1]["name"] = block.pop(0)[self.TOKEN_VALUE]
-                            ast[-1]["arguments"] = self.parse_command_arguments(
-                                block)
+                            ast[-1]["arguments"] = self.parse_command_arguments(block)
                         elif token[self.TOKEN_VALUE] == "if":
                             ast[-1]["call"] = "if"
                             ast[-1]["else"] = []
@@ -116,8 +112,7 @@ class Parser:
                         print("b1", block)
                         ast[-1]["call"] = "invoke"
                         ast[-1]["function"] = token[self.TOKEN_VALUE]
-                        ast[-1]["arguments"] = self.parse_information_token(
-                            block)
+                        ast[-1]["arguments"] = self.parse_information_token(block)
                     elif token[self.TOKEN_TYPE] == "var":
                         print("b2", block)
                         ast[-1]["call"] = "get_var"
@@ -155,12 +150,16 @@ class Parser:
             print("tk", echo, token)
             if type(token) == list:
                 if block[-1]["b"] in [None, []]:
-                    block[-1]["b"] = self.parse_expr_block(
-                        token, echo=echo + 1)
+                    block[-1]["b"] = self.parse_expr_block(token, echo=echo + 1)
                     rich.print(f"{echo}: block1 {block}")
                 else:
                     block.append(
-                        {"call": None, "a": self.parse_expr_block(token, echo=echo + 1), "b": None})
+                        {
+                            "call": None,
+                            "a": self.parse_expr_block(token, echo=echo + 1),
+                            "b": None,
+                        }
+                    )
                     rich.print(f"{echo}: block2 {block}")
             elif token[self.TOKEN_TYPE] == "expr":
                 block[-1]["call"] = EXPR_CALLS[token[self.TOKEN_VALUE]]
@@ -172,7 +171,12 @@ class Parser:
                     block[-1]["b"] = self.parse_expr_item_token(token)
                 else:
                     block.append(
-                        {"call": None, "a": self.parse_expr_item_token(token), "b": None})
+                        {
+                            "call": None,
+                            "a": self.parse_expr_item_token(token),
+                            "b": None,
+                        }
+                    )
             rich.print(f"{echo}: {block}")
         rich.print(f"[blue]{echo}: finish ({block[1:]})")
         return block[1:]
@@ -192,21 +196,25 @@ class Parser:
                 return arguments
             elif token[self.TOKEN_TYPE] == "argument":
                 argv = token[self.TOKEN_VALUE][1:-1].split(":")
-                arguments.append({
-                    "name": argv[0],
-                    "optional": False,
-                    "default": None,
-                    "type": argv[1]
-                })
+                arguments.append(
+                    {
+                        "name": argv[0],
+                        "optional": False,
+                        "default": None,
+                        "type": argv[1],
+                    }
+                )
             elif token[self.TOKEN_TYPE] == "optional_argument":
                 argv = token[self.TOKEN_VALUE][1:-1].split(":")
                 # print("json", argv[1].split("=")[0])
-                arguments.append({
-                    "name": argv[0],
-                    "optional": True,
-                    "default": json.loads(argv[1].split("=")[1]),
-                    "type": argv[1].split("=")[0]
-                })
+                arguments.append(
+                    {
+                        "name": argv[0],
+                        "optional": True,
+                        "default": json.loads(argv[1].split("=")[1]),
+                        "type": argv[1].split("=")[0],
+                    }
+                )
         return arguments
 
     """
@@ -307,5 +315,5 @@ if __name__ == "__main__":
     with open("./helloworld.xr", encoding="utf-8") as f:
         parser = Parser(lexer.parse(f.read()))
 
-#    import rich
+    #    import rich
     rich.print(parser.parse())

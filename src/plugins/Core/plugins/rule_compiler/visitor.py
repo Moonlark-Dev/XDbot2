@@ -12,7 +12,7 @@ def codegen(ast: list, path: str = "./helloworld") -> None:
         "name": rule_name,
         "namespace_id": rule_name,
         "author": None,
-        "version": "v1.0.0"
+        "version": "v1.0.0",
     }
 
     rich.print("-----------------------------------")

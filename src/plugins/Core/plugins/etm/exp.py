@@ -8,7 +8,7 @@ def _get_exp(user_id):
 def get_level(exp):
     level = 1
     while True:
-        if exp > level ** 2:
+        if exp > level**2:
             level += 1
         else:
             break

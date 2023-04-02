@@ -11,181 +11,75 @@ class Config(BaseSettings):
     CONTROL_GROUP = "598443695"
 
     # 初始化
-    DIRECTORIES = [
-        "data",
-        "data/caveImages",
-        "data/rules",
-        "data/etm"
-    ]
+    DIRECTORIES = ["data", "data/caveImages", "data/rules", "data/etm"]
     # 数据文件命名规则：子插件.数据名.json
     FILES = [
         {
             "path": "data/etm/vim.json",
-            "text": json.dumps({
-                "in": 0,
-                "out": 0,
-                "exchange_rate": 1,
-                "_exchange_rate": 0.58,
-                "item_count": 500
-            })
+            "text": json.dumps(
+                {
+                    "in": 0,
+                    "out": 0,
+                    "exchange_rate": 1,
+                    "_exchange_rate": 0.58,
+                    "item_count": 500,
+                }
+            ),
         },
-        {
-            "path": "data/quick_math.enabled_groups.json",
-            "text": "[]"
-        },
-        {
-            "path": "data/ghot.stamps.json",
-            "text": "{}"
-        },
-        {
-            "path": "data/ghot.day.json",
-            "text": "{}"
-        },
-        {
-            "path": "data/ghot.total.json",
-            "text": "{}"
-        },
-        {
-            "path": "data/etm/achievement_progress.json",
-            "text": "{}"
-        },
+        {"path": "data/quick_math.enabled_groups.json", "text": "[]"},
+        {"path": "data/ghot.stamps.json", "text": "{}"},
+        {"path": "data/ghot.day.json", "text": "{}"},
+        {"path": "data/ghot.total.json", "text": "{}"},
+        {"path": "data/etm/achievement_progress.json", "text": "{}"},
         {
             "path": "data/etm/vimcoin.json",
-            "text": json.dumps({
-                "in": 0,
-                "out": 0,
-                "exchange_rate": 1
-            })
+            "text": json.dumps({"in": 0, "out": 0, "exchange_rate": 1}),
         },
-        {
-            "path": "data/etm/achievement.json",
-            "text": "{}"
-        },
-        {
-            "path": "data/etm/sign.json",
-            "text": json.dumps({
-                "latest": {},
-                "days": {}
-            })
-        },
-        {
-            "path": "data/etm/users.json",
-            "text": "{}"
-        },
-        {
-            "path": "data/etm/bags.json",
-            "text": "{}"
-        },
+        {"path": "data/etm/achievement.json", "text": "{}"},
+        {"path": "data/etm/sign.json", "text": json.dumps({"latest": {}, "days": {}})},
+        {"path": "data/etm/users.json", "text": "{}"},
+        {"path": "data/etm/bags.json", "text": "{}"},
         {
             "path": "data/random_events.disable.json",
-            "text": json.dumps({
-                "send_images": [],
-                "download_images": [],
-                "random_give": []
-            })
+            "text": json.dumps(
+                {"send_images": [], "download_images": [], "random_give": []}
+            ),
         },
-        {
-            "path": "data/setu.allow.json",
-            "text": json.dumps({
-                "r18": False
-            })
-        },
-        {
-            "path": "data/jrrp.users.json",
-            "text": "{}"
-        },
-        {
-            "path": "data/smart_reply.data.json",
-            "text": "{\"count\":0}"
-        },
-        {
-            "path": "data/cave.comments.json",
-            "text": "{}"
-        },
-        {
-            "path": "data/rule.rules.json",
-            "text": "[]"
-        },
-        {
-            "path": "data/messenger.messageList.json",
-            "text": "[]"
-        },
-        {
-            "path": "data/ctrl.json",
-            "text": json.dumps({"control": CONTROL_GROUP})
-        },
-        {
-            "path": "data/ct.globalData.json",
-            "text": "{}"
-        },
-        {
-            "path": "data/su.blackList.json",
-            "text": '[]'
-        },
-        {
-            "path": "data/init.disabled.json",
-            "text": "[]"
-        },
+        {"path": "data/setu.allow.json", "text": json.dumps({"r18": False})},
+        {"path": "data/jrrp.users.json", "text": "{}"},
+        {"path": "data/smart_reply.data.json", "text": '{"count":0}'},
+        {"path": "data/cave.comments.json", "text": "{}"},
+        {"path": "data/rule.rules.json", "text": "[]"},
+        {"path": "data/messenger.messageList.json", "text": "[]"},
+        {"path": "data/ctrl.json", "text": json.dumps({"control": CONTROL_GROUP})},
+        {"path": "data/ct.globalData.json", "text": "{}"},
+        {"path": "data/su.blackList.json", "text": "[]"},
+        {"path": "data/init.disabled.json", "text": "[]"},
         {
             "path": "data/cave.data.json",
-            "text": json.dumps({
-                "count": 0,
-                "data": dict()
-            })
+            "text": json.dumps({"count": 0, "data": dict()}),
         },
-        {
-            "path": "data/su.priority_accout.json",
-            "text": "{\"accouts\":[]}"
-        },
-
-        {
-            "path": "data/forward.groupList.json",
-            "text": "[]"
-        },
-
-        {
-            "path": "data/ban.banData.json",
-            "text": "{}"
-        },
-        {
-            "path": "data/vote.list.json",
-            "text": "{}"
-        },
+        {"path": "data/su.priority_accout.json", "text": '{"accouts":[]}'},
+        {"path": "data/forward.groupList.json", "text": "[]"},
+        {"path": "data/ban.banData.json", "text": "{}"},
+        {"path": "data/vote.list.json", "text": "{}"},
         {
             "path": "data/reply.images.json",
-            "text": json.dumps({
-                "A": [],
-                "B": [],
-                "C": [],
-                "review": dict()
-            })
+            "text": json.dumps({"A": [], "B": [], "C": [], "review": dict()}),
         },
-        {
-            "path": "data/whoAtme.data.json",
-            "text": "{}"
-        },
-        {
-            "path": "data/sixcount.data.json",
-            "text": "{}"
-        },
+        {"path": "data/whoAtme.data.json", "text": "{}"},
+        {"path": "data/sixcount.data.json", "text": "{}"},
         {
             "path": "data/sixcount.starttime.json",
-            "text": json.dumps({
-                "time": time.time()
-            })
+            "text": json.dumps({"time": time.time()}),
         },
         {
             "path": "data/setu.config.json",
-            "text": json.dumps({
-                "sleep": 45,
-                "delete_sleep": 25,
-                "proxies": "http://127.0.0.1:7890"
-            })
+            "text": json.dumps(
+                {"sleep": 45, "delete_sleep": 25, "proxies": "http://127.0.0.1:7890"}
+            ),
         },
-        {
-            "path": "data/setu.count.json",
-            "text": "{}"
-        }
+        {"path": "data/setu.count.json", "text": "{}"}
         # ,
         # {
         #    "path": "data/rule.rules.json",

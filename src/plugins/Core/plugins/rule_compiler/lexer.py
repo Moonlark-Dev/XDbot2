@@ -1,69 +1,39 @@
 # from . import types
 import re
 
-KEYWORDS = [
-    "@command",
-    "if",
-    "else",
-    "set",
-    "let"
-]
-EXPRS = [
-    "==",
-    "!=",
-    ">=",
-    "<=",
-    ">",
-    "<",
-    "=",
-    "\\+",
-    "-",
-    "\\*",
-    "/",
-    "\\++",
-    "--"
-]
+KEYWORDS = ["@command", "if", "else", "set", "let"]
+EXPRS = ["==", "!=", ">=", "<=", ">", "<", "=", "\\+", "-", "\\*", "/", "\\++", "--"]
 INFORMATION_KEYWORD = [
     "@NAMESPACE",
     "@NAME",
     "@AUTHOR",
     "@VERSION",
 ]
-TYPE_KEYWORDS = [
-    "int",
-    "str",
-    "json"
-]
+TYPE_KEYWORDS = ["int", "str", "json"]
 
 types: dict = {
     "eol": ";",
     "indentation": r"\n( |\t)+",
     #    "version": r"v\d+\.\d+\.\d+",
     "op": ":",
-
     "parentheses_start": "\\(",
     "parentheses_end": "\\)",
     "optional_argument": f"\\[(((?!\\<).)+):({'|'.join(TYPE_KEYWORDS)})=(.)+\\]",
     "comma": ",",
     "argument": f"<(((?!\\<).)+):({'|'.join(TYPE_KEYWORDS)})>",
-
     "int": "0|-?[1-9][0-9]*",
     "string": r"\"((?!\").)*\"",
     "null_char": "",
     "information": "|".join(INFORMATION_KEYWORD),
-
     "keyword": "|".join(KEYWORDS),
-
     "var": f"(\\$[a-zA-z0-9]+:[^\\s(;|\\(|\\)))]+)|(\\$[^\\s(;|\\(|\\))]+)",
     "int": r"(0|[1-9]+)",
     "comment": r"/\*(.*)\*/",
     "identifier": "[a-zA-z0-9]+",
     "newline": r"\n",
     "expr": "|".join(EXPRS),
-
     "space": r" ",
-
-    "unknown": "(.*)"
+    "unknown": "(.*)",
 }
 
 

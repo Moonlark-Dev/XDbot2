@@ -40,11 +40,9 @@ def save_bags():
                             nbt.pop(key)
                     except BaseException:
                         pass
-                bag_data[user_id].append({
-                    "id": item.item_id,
-                    "count": item.count,
-                    "data": nbt.copy()
-                })
+                bag_data[user_id].append(
+                    {"id": item.item_id, "count": item.count, "data": nbt.copy()}
+                )
     json.dump(bag_data, open("data/etm/bags.json", "w", encoding="utf-8"))
     get_bags()
 
@@ -70,8 +68,7 @@ def add_item(user_id, item_id, item_count=1, item_data={}):
             if item.item_id == item_id:
                 item_count -= item.add(item_count, item_data)
         if item_count > 0:
-            _add_item(user_id, items.ITEMS[item_id](
-                item_count, item_data, user_id))
+            _add_item(user_id, items.ITEMS[item_id](item_count, item_data, user_id))
     except KeyError:
         bags[user_id] = []
         add_item(user_id, item_id, item_count, item_data)
