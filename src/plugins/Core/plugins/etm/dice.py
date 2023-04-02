@@ -36,7 +36,7 @@ class Dice(Item):
             achievement.increase_unlock_progress("什么欧皇", user_id)
             return f"你买了一个二十面骰子，掷出了 {c}，大失败！倾家荡产，丢失了50vi！"
         elif c == -1:
-            achievement.unlck("特性！特性", user_id)
+            achievement.unlock("特性！特性", user_id)
             return f"你买了一个二十面骰子，掷……掷……掷出了……………… {c} ？？？？？？？"
         else:
             # 笑死怎么可能掷出来啊（（（
