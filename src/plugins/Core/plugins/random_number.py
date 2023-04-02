@@ -1,4 +1,3 @@
-import random
 from nonebot.exception import FinishedException
 from nonebot import on_command
 from nonebot.params import CommandArg
@@ -7,9 +6,14 @@ from nonebot.adapters.onebot.v11.message import Message
 from . import _error as error
 from . import _lang as lang
 import traceback
+from lupa import LuaRuntime
 
 random_plugin = on_command('random', aliases={"rd", "随机数"})
 
+
+lua = LuaRuntime(unpack_returned_tuples=True)
+lua.require("src.plugins.Core.lua.random")
+run_sandbox = lua.eval("run_sandbox")
 # [HELPSTART] Version: 2
 # Command: random
 # Usage: random
@@ -26,15 +30,15 @@ async def random_handle(event: MessageEvent, message: Message = CommandArg()):
         # 获取参数
         args = str(message).strip()
         if not args:
-            # 如果没有参数，默认返回0到1的随机小数
-            result = random.random()
+            # 如果没有参数，默认返回0到1的随机数
+            result = run_sandbox(0, 1)
         else:
             # 如果有参数，按照空格拆分，第一个参数为随机数范围的下限，第二个参数为随机数范围的上限
             arg_list = args.split()
             if len(arg_list) == 1:
-                result = random.randint(0, int(arg_list[0]))
+                result = run_sandbox(0, int(arg_list[0]))
             elif len(arg_list) == 2:
-                result = random.randint(int(arg_list[0]), int(arg_list[1]))
+                result = run_sandbox(int(arg_list[0]), int(arg_list[1]))
             else:
                 # 参数错误
                 await random_plugin.finish(lang.text("random_number.argerr", [], event.get_user_id()))
