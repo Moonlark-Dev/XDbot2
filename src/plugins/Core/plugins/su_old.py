@@ -473,20 +473,7 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                 await su.send(f"活动的规则：{activeRules}")
             elif argument[1] == "remove" or argument[1] == "删除":
                 os.remove(f"rules/{argument[2]}.json")
-        elif argument[0] in ["update", "检查更新"]:
-            await su.send("正在运行更新程序，请稍候 ...")
-            old_branch = os.popen("git log").read().split("\n")[
-                0].split(" ")[1][:7]
-            os.system("python3 update.py")
-            await su.send('旧提交：%s\n新提交：%s' % (old_branch, os.popen("git log").read().split("\n")[0].split(" ")[1][:7]))
-        elif argument[0] == "upgrade" or argument[0] == "升级":
-            await su.send("正在更新，请稍候 ...")
-            old_branch = os.popen("git log").read().split("\n")[
-                0].split(" ")[1][:7]
-            os.system("python3 update.py")
-            await su.send('旧提交：%s\n新提交：%s\n即将自动重启' % (old_branch, os.popen("git log").read().split("\n")[0].split(" ")[1][:7]))
-            with open("data/reboot.py", "w") as f:
-                f.write(str(time.time()))
+
         elif argument[0] in ["reply", "调教"]:
             if argument[1] in ["global"]:
                 reply_id = argument[2]
