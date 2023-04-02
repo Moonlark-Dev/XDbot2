@@ -4,7 +4,7 @@ from nonebot.adapters.onebot.v11 import MessageEvent
 from nonebot.exception import IgnoredException
 from nonebot.message import event_preprocessor
 from nonebot.params import CommandArg
-from nonebot.permission import Message
+from nonebot.adapters.onebot.v11 import Message
 from .su import su
 from .accout import multiAccoutData
 from nonebot import get_bots
