@@ -185,11 +185,7 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                     "w",
                     encoding="utf-8"))
             reloadBlackList()
-        elif argument[0] == "call" or argument[0] == "调用":
-            await su.send(
-                str(await bot.call_api(api=argument[1], data=json.loads(argument[2])))
-            )
-        elif argument[0] == "ct" or argument[0] == "发言排名":
+            elif argument[0] == "ct" or argument[0] == "发言排名":
             if argument[1] == "clear" or argument[1] == "清除数据":
                 fileList = os.listdir("data")
                 for file in fileList:
