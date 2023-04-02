@@ -6,13 +6,12 @@ from nonebot.message import event_preprocessor
 from nonebot.params import CommandArg
 from nonebot.adapters.onebot.v11 import Message
 from .su import su
-from .accout import multiAccoutData
+# from .accout import multiAccoutData
 from nonebot import get_bots
 import json
 from . import _error
 
 blackListData = json.load(open("data/su.blackList.json", encoding="utf-8"))
-
 
 @event_preprocessor
 async def blackListHandle(event: MessageEvent):
@@ -41,6 +40,7 @@ async def su_ban(bot: Bot, message: Message = CommandArg()):
                 data += [argument[1]]
                 await su.send(f"已封禁{argument[1]}")
             # 广播
+            multiAccoutData = json.load(open("data/su.multiaccoutdata.ro.json", encoding="utf-8"))
             groupList = list(multiAccoutData.keys())
             if len(argument) >= 3:
                 because = argument[2]
