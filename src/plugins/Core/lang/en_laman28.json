@@ -199,7 +199,7 @@
   "ghot.hour": "Group Popularity Ranking (nearly 1h):\n",
   "ghot.day": "Group Popularity Ranking (today): \n",
   "ghot.total": "Group Popularity Ranking:\n",
-  "quick_math.rightanswer": "You're right, these you got:\n1. VimCoin x{}\n2. Experience x{}",
+  "quick_math.rightanswer": "Bingo! These you got:\n1. VimCoin x{}\n2. Experience x{}",
   "quick_math.enable": "Quick Math is now enabled for this group",
   "quick_math.disable": "Quick Math is now disabled for this group",
   "achi.title_all": "Achievements: ",
