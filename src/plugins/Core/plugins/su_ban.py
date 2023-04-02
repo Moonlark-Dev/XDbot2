@@ -25,12 +25,14 @@ async def blackListHandle(event: MessageEvent):
     except Exception:
         await _error.report(traceback.format_exc())
 
+
 def reloadBlackList():
     global blackListData
     blackListData = json.load(open("data/su.blackList.json", encoding="utf-8"))
 
+
 @su.handle()
-async def ban(bot: Bot, message: Message = CommandArg()):
+async def su_ban(bot: Bot, message: Message = CommandArg()):
     argument = str(message).split(" ")
     try:
         if argument[0] == "ban" or argument[0] == "封禁":
@@ -60,5 +62,3 @@ async def ban(bot: Bot, message: Message = CommandArg()):
             reloadBlackList()
     except BaseException:
         await _error.report(traceback.format_exc(), su)
-
-
