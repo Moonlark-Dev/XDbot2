@@ -7,7 +7,8 @@ from . import _error
 import traceback
 from .su import su
 
-priority_accout = json.load(open("data/su.priority_accout.json", encoding="utf-8"))
+priority_accout = json.load(
+    open("data/su.priority_accout.json", encoding="utf-8"))
 accouts = {}
 multiAccoutData = {}
 accout_manager = on_command("accout", aliases={"多帐号"})
@@ -64,7 +65,8 @@ async def reloadMuiltData():
             elif key in priority_accout["accouts"]:
                 multiAccoutData[group["group_id"]] = key
     json.dump(
-        multiAccoutData, open("data/su.multiaccoutdata.ro.json", "w", encoding="utf-8")
+        multiAccoutData, open(
+            "data/su.multiaccoutdata.ro.json", "w", encoding="utf-8")
     )
 
 
@@ -81,7 +83,8 @@ async def mulitaccout_manager(
                 multiAccoutData[event.group_id] = argument[1]
                 json.dump(
                     multiAccoutData,
-                    open("data/su.multiaccoutdata.ro.json", "w", encoding="utf-8"),
+                    open("data/su.multiaccoutdata.ro.json",
+                         "w", encoding="utf-8"),
                 )
                 await accout_manager.finish(
                     _lang.text("su.set_accout_success", [argument[1]], qq)

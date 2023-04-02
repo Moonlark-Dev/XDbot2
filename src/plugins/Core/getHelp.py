@@ -11,7 +11,8 @@ def get_plugin_help(plugin_name: str, module: any) -> dict:
     """
     with open(
         os.path.join(
-            os.path.dirname(os.path.abspath(__file__)), "plugins", f"{plugin_name}.py"
+            os.path.dirname(os.path.abspath(__file__)
+                            ), "plugins", f"{plugin_name}.py"
         ),
         encoding="utf-8",
     ) as f:
@@ -22,7 +23,7 @@ def get_plugin_help(plugin_name: str, module: any) -> dict:
     # 注释写法
     if start != -1:
         # 采集数据
-        lines = plugin_file[start : plugin_file.find("# [HELPEND]", start)]
+        lines = plugin_file[start: plugin_file.find("# [HELPEND]", start)]
         lines = lines.replace("# ", "").replace("#", "").split("\n")
         if lines[0].find("Version: 2") != -1:
             help_version = 2

@@ -84,7 +84,8 @@ class ChatMessage(Model):
         if not self.is_plain_text and not len(self.plain_text):
             return self.message
         return (
-            self.message if len(self.keyword_list) < 2 else " ".join(self.keyword_list)
+            self.message if len(self.keyword_list) < 2 else " ".join(
+                self.keyword_list)
         )
 
 

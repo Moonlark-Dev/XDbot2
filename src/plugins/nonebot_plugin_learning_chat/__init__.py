@@ -85,7 +85,8 @@ async def speak_up():
     group_id, messages = speak
     for msg in messages:
         try:
-            logger.info("群聊学习", f'{NICKNAME}向群<m>{group_id}</m>主动发言<m>"{msg}"</m>')
+            logger.info(
+                "群聊学习", f'{NICKNAME}向群<m>{group_id}</m>主动发言<m>"{msg}"</m>')
             send_result = await bot.send_group_msg(
                 group_id=group_id, message=Message(msg)
             )

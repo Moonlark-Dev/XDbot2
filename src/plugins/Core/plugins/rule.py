@@ -146,7 +146,8 @@ async def func_command_handler(event: MessageEvent, message: Message = CommandAr
                 command_args[arg["name"]] = arg["default"]
             else:
                 await func_command.finish(
-                    _lang.text("rule.needargv"), [arg["name"]], event.get_user_id()
+                    _lang.text("rule.needargv"), [
+                        arg["name"]], event.get_user_id()
                 )
 
         for key in list(command_args.keys()):
@@ -170,14 +171,16 @@ async def rule_handler(event: MessageEvent, message: Message = CommandArg()):
             if (
                 json.load(
                     open(
-                        os.path.join("./data/rules", f"{argument[1]}.info.json"),
+                        os.path.join("./data/rules",
+                                     f"{argument[1]}.info.json"),
                         encoding="utf-8",
                     )
                 )["user_id"]
                 == event.get_user_id()
             ):
                 threading.Thread(
-                    target=lambda: compiler.build(f"./data/rules/{argument[1]}")
+                    target=lambda: compiler.build(
+                        f"./data/rules/{argument[1]}")
                 ).start()
                 await rule_command.finish(
                     _lang.text("rule.finish", [], event.get_user_id())
@@ -202,7 +205,8 @@ async def rule_handler(event: MessageEvent, message: Message = CommandArg()):
             if (
                 json.load(
                     open(
-                        os.path.join("./data/rules", f"{argument[1]}.info.json"),
+                        os.path.join("./data/rules",
+                                     f"{argument[1]}.info.json"),
                         encoding="utf-8",
                     )
                 )["user_id"]
@@ -230,7 +234,8 @@ async def rule_handler(event: MessageEvent, message: Message = CommandArg()):
             if (
                 json.load(
                     open(
-                        os.path.join("./data/rules", f"{argument[1]}.info.json"),
+                        os.path.join("./data/rules",
+                                     f"{argument[1]}.info.json"),
                         encoding="utf-8",
                     )
                 )["user_id"]
@@ -254,11 +259,13 @@ async def rule_handler(event: MessageEvent, message: Message = CommandArg()):
                 )
         elif argument[0] in ["list", "ls", "查看所有"]:
             await rule_command.finish(
-                _lang.text("rule.list", [list(rules.keys())], event.get_user_id())
+                _lang.text("rule.list", [
+                           list(rules.keys())], event.get_user_id())
             )
         elif argument[0] in ["get", "view", "查看"]:
             with open(
-                os.path.join("./data/rules", f"{argument[1]}.xr", encoding="utf-8")
+                os.path.join("./data/rules",
+                             f"{argument[1]}.xr", encoding="utf-8")
             ) as f:
                 await rule_command.finish(f.read())
 

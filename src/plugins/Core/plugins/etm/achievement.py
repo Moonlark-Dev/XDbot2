@@ -17,7 +17,8 @@ def get_user_achievement(user_id):
 def change_user_achievement(user_id, data):
     user_data = json.load(open("data/etm/achievement.json", encoding="utf-8"))
     user_data[user_id] = data
-    json.dump(user_data, open("data/etm/achievement.json", "w", encoding="utf-8"))
+    json.dump(user_data, open(
+        "data/etm/achievement.json", "w", encoding="utf-8"))
 
 
 def unlock(name, user_id):
@@ -37,7 +38,8 @@ def unlock(name, user_id):
 
 
 def get_unlock_progress(name, user_id):
-    user_data = json.load(open("data/etm/achievement_progress.json", encoding="utf-8"))
+    user_data = json.load(
+        open("data/etm/achievement_progress.json", encoding="utf-8"))
     try:
         return user_data[user_id][name]
     except KeyError:
@@ -45,7 +47,8 @@ def get_unlock_progress(name, user_id):
 
 
 def increase_unlock_progress(name, user_id, count=1):
-    user_data = json.load(open("data/etm/achievement_progress.json", encoding="utf-8"))
+    user_data = json.load(
+        open("data/etm/achievement_progress.json", encoding="utf-8"))
     try:
         user_data[user_id][name] += count
     except KeyError:
@@ -54,7 +57,8 @@ def increase_unlock_progress(name, user_id, count=1):
         except KeyError:
             user_data[user_id] = {name: count}
     json.dump(
-        user_data, open("data/etm/achievement_progress.json", "w", encoding="utf-8")
+        user_data, open("data/etm/achievement_progress.json",
+                        "w", encoding="utf-8")
     )
     if user_data[user_id][name] >= ACHIEVEMENTS[name]["need_progress"]:
         unlock(name, user_id)

@@ -15,7 +15,8 @@ async def call_api(bot: Bot, message: Message = CommandArg()):
             await su.finish(
                 json.dumps(
                     await bot.call_api(
-                        api=argument[1], data=json.loads(" ".join(argument[2:]))
+                        api=argument[1], data=json.loads(
+                            " ".join(argument[2:]))
                     )
                 )
             )

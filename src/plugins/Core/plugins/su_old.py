@@ -29,7 +29,8 @@ blackListData = json.load(open("data/su.blackList.json", encoding="utf-8"))
 multiAccoutData = {}
 group_request = on_type(GroupRequestEvent)
 bots = []
-priority_accout = json.load(open("data/su.priority_accout.json", encoding="utf-8"))
+priority_accout = json.load(
+    open("data/su.priority_accout.json", encoding="utf-8"))
 driver = get_driver()
 accouts = {}
 su_notice_cache = ""
@@ -40,7 +41,7 @@ def parseCave(text: str):
     if imageIDStart == -1:
         return text
     else:
-        imageID = text[imageIDStart + 6 : text.find("]]]", imageIDStart)]
+        imageID = text[imageIDStart + 6: text.find("]]]", imageIDStart)]
         imagePath = os.path.join(
             os.path.abspath("."), "data", "caveImages", f"{imageID}.png"
         )
@@ -73,7 +74,8 @@ async def reloadMuiltData():
             elif key in priority_accout["accouts"]:
                 multiAccoutData[group["group_id"]] = key
     json.dump(
-        multiAccoutData, open("data/su.multiaccoutdata.ro.json", "w", encoding="utf-8")
+        multiAccoutData, open(
+            "data/su.multiaccoutdata.ro.json", "w", encoding="utf-8")
     )
 
 
@@ -90,7 +92,8 @@ async def mulitaccout_manager(
                 multiAccoutData[event.group_id] = argument[1]
                 json.dump(
                     multiAccoutData,
-                    open("data/su.multiaccoutdata.ro.json", "w", encoding="utf-8"),
+                    open("data/su.multiaccoutdata.ro.json",
+                         "w", encoding="utf-8"),
                 )
                 await accout_manager.finish(
                     _lang.text("su.set_accout_success", [argument[1]], qq)
@@ -180,7 +183,7 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
             reloadBlackList()
         elif argument[0] == "notice" or argument[0] == "超级广播" or argument[0] == "广播":
             global su_notice_cache
-            text = str(message)[argument[0].__len__() + 1 :]
+            text = str(message)[argument[0].__len__() + 1:]
             if text == "submit":
                 if su_notice_cache != "":
                     groupList = list(multiAccoutData.keys())
@@ -204,17 +207,20 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                 await su.finish("超级广播内容已设定")
 
         elif argument[1] == "set" or argument == "设置":
-            config = json.load(open(f"data/{argument[2]}.json", encoding="utf-8"))
+            config = json.load(
+                open(f"data/{argument[2]}.json", encoding="utf-8"))
             config[argument[3]] = json.loads(
                 message.extract_plain_text()[
-                    len(argument[0] + argument[1] + argument[2] + argument[3]) + 4 :
+                    len(argument[0] + argument[1] + argument[2] + argument[3]) + 4:
                 ]
             )
             json.dump(
-                config, open(f"data/{argument[2]}.json", mode="w", encoding="utf-8")
+                config, open(
+                    f"data/{argument[2]}.json", mode="w", encoding="utf-8")
             )
         elif argument[0] == "plugins" or argument[0] == "插件管理":
-            config = json.load(open("data/init.disabled.json", encoding="utf-8"))
+            config = json.load(
+                open("data/init.disabled.json", encoding="utf-8"))
             if argument[1] == "disable" or argument[1] == "禁用":
                 if argument[2] not in config:
                     config += [argument[2]]
@@ -224,14 +230,17 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                     if conf == argument[2]:
                         config.pop(length)
                         break
-            json.dump(config, open("data/init.disabled.json", "w", encoding="utf-8"))
+            json.dump(config, open(
+                "data/init.disabled.json", "w", encoding="utf-8"))
         elif argument[0] == "cave" or argument[0] == "回声洞":
             if argument[1] in ["comment", "reply", "回复"]:
                 if argument[2] in ["remove", "rm", "删除"]:
-                    data = json.load(open("data/cave.comments.json", encoding="utf-8"))
+                    data = json.load(
+                        open("data/cave.comments.json", encoding="utf-8"))
                     data[argument[3]]["data"].pop(argument[4])
                     json.dump(
-                        data, open("data/cave.comments.json", "w", encoding="utf-8")
+                        data, open("data/cave.comments.json",
+                                   "w", encoding="utf-8")
                     )
                     await su.send(f"已删除 Cave{argument[3]}#{argument[4]}")
             elif argument[1] == "remove" or argument[1] == "移除":
@@ -246,7 +255,8 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                         )
                     )
                 )
-                json.dump(data, open("data/cave.data.json", "w", encoding="utf-8"))
+                json.dump(data, open(
+                    "data/cave.data.json", "w", encoding="utf-8"))
                 await su.send(f"已删除回声洞（{cave_data['id']}）")
             elif argument[1] in ["add", "添加"]:
                 data = json.load(open("data/cave.data.json", encoding="utf-8"))
@@ -256,7 +266,8 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                     "sender": {"type": "unknown"},
                 }
                 data["count"] += 1
-                json.dump(data, open("data/cave.data.json", "w", encoding="utf-8"))
+                json.dump(data, open(
+                    "data/cave.data.json", "w", encoding="utf-8"))
             elif argument[1] in ["modify", "修改"]:
                 data = json.load(open("data/cave.data.json", encoding="utf-8"))
                 if argument[3] == "sender":
@@ -268,18 +279,22 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                     elif argument[4] in ["id", "qq"]:
                         data["data"][argument[2]]["sender"] = argument[5]
                     elif argument[4] in ["unknown", "unkown"]:
-                        data["data"][argument[2]]["sender"] = {"type": "unknown"}
+                        data["data"][argument[2]]["sender"] = {
+                            "type": "unknown"}
                 elif argument[3] == "text":
                     data["data"][argument[2]]["text"] = (
                         argument[4].replace("%20", " ").replace(r"\n", "\n")
                     )
-                json.dump(data, open("data/cave.data.json", "w", encoding="utf-8"))
+                json.dump(data, open(
+                    "data/cave.data.json", "w", encoding="utf-8"))
         elif argument[0] == "give" or argument[0] == "给予":
             _userCtrl.addItem(
-                argument[1], argument[2], int(argument[3]), json.loads(argument[4])
+                argument[1], argument[2], int(
+                    argument[3]), json.loads(argument[4])
             )
         elif argument[0] == "forward" or argument[0] == "消息转发":
-            data = json.load(open("data/forward.groupList.json", encoding="utf-8"))
+            data = json.load(
+                open("data/forward.groupList.json", encoding="utf-8"))
             if argument[1] == "add" or argument[1] == "添加群":
                 data += [argument[2]]
             elif argument[1] == "remove" or argument[1] == "删除群":
@@ -289,9 +304,11 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                         data.pop(length)
                     else:
                         length += 1
-            json.dump(data, open("data/forward.groupList.json", "w", encoding="utf-8"))
+            json.dump(data, open(
+                "data/forward.groupList.json", "w", encoding="utf-8"))
         elif argument[0] == "shop" or argument[0] == "商店":
-            shopData = json.load(open("data/shop.items.json", encoding="utf-8"))
+            shopData = json.load(
+                open("data/shop.items.json", encoding="utf-8"))
             if argument[1] == "remove" or argument[1] == "下架商品":
                 item = shopData.pop(argument[2])
                 if "from" not in item.keys():
@@ -303,7 +320,8 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                         item["item"]["data"],
                     )
                     json.dump(
-                        shopData, open("data/shop.items.json", "w", encoding="utf-8")
+                        shopData, open("data/shop.items.json",
+                                       "w", encoding="utf-8")
                     )
                     # 通知卖家
                     msgList = json.load(
@@ -318,7 +336,8 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                     ]
                     json.dump(
                         msgList,
-                        open("data/messenger.messageList.json", "w", encoding="utf-8"),
+                        open("data/messenger.messageList.json",
+                             "w", encoding="utf-8"),
                     )
                 elif item["from"] == "autosell":
                     # 系统出售商品
@@ -340,7 +359,8 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                     )
                     await su.send(f"自动出售商品已下架：\n{autosellItem}")
             elif argument[1] == "add" or argument[1] == "添加商品":
-                data = json.load(open("data/autosell.items.json", encoding="utf-8"))
+                data = json.load(
+                    open("data/autosell.items.json", encoding="utf-8"))
                 try:
                     s_nickname = argument[7]
                     s_user_id = argument[8]
@@ -362,7 +382,8 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                     data[-1]["maxBuy"] = int(argument[6])
                 except IndexError:
                     pass
-                json.dump(data, open("data/autosell.items.json", "w", encoding="utf-8"))
+                json.dump(data, open(
+                    "data/autosell.items.json", "w", encoding="utf-8"))
                 await su.send("商品已添加到自动出售任务清单！")
         elif argument[0] == "todo" or argument[0] == "代办":
             with open("TODO.txt", encoding="utf-8") as f:
@@ -391,7 +412,8 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                 reply_id = argument[2]
                 smart_reply.global_reply(reply_id)
             elif argument[1] in ["remove", "rm", "删除"]:
-                smart_reply.remove_reply(argument[2], event.get_user_id(), True)
+                smart_reply.remove_reply(
+                    argument[2], event.get_user_id(), True)
         elif argument[0] in ["ma", "multiaccout", "多账户"]:
             if argument[1] in ["status", "状态"]:
                 reply = "「XDbot2 Multi-Accout 账户列表」\n"
@@ -457,7 +479,8 @@ async def group_request_handle(bot: Bot, event: GroupRequestEvent):
     try:
         if event.sub_type == "invite":
             await bot.send_group_msg(
-                message=("「被邀请加群」\n" f"群号：{event.group_id}\n" f"用户：{event.user_id}"),
+                message=(
+                    "「被邀请加群」\n" f"群号：{event.group_id}\n" f"用户：{event.user_id}"),
                 group_id=ctrlGroup,
             )
             await event.approve(bot)

@@ -50,4 +50,5 @@ def global_reply(reply_id: str) -> None:
     data[reply_id]["global"] = True
     json.dump(data, open("data/smart_reply.data.json", "w", encoding="utf-8"))
 
-    messenger.send_message(f"您提交的 Reply#{reply_id} 已被全局化", data[reply_id]["user_id"])
+    messenger.send_message(
+        f"您提交的 Reply#{reply_id} 已被全局化", data[reply_id]["user_id"])

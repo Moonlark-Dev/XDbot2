@@ -28,13 +28,15 @@ async def show_achievement(
             if achi_data["name"] in achievement.get_user_achievement(
                 event.get_user_id()
             ):
-                unlck_status = lang.text("achi.unlcked", [], event.get_user_id())
+                unlck_status = lang.text(
+                    "achi.unlcked", [], event.get_user_id())
             elif achievement.get_unlock_progress(
                 achi_data["name"], event.get_user_id()
             ):
                 unlck_status = f"{achievement.get_unlock_progress(achi_data['name'], event.get_user_id())} / {achi_data['need_progress']} {(achievement.get_unlock_progress(achi_data['name'], event.get_user_id()) / achi_data['need_progress']) * 100}%"
             else:
-                unlck_status = lang.text("achi.locked", [], event.get_user_id())
+                unlck_status = lang.text(
+                    "achi.locked", [], event.get_user_id())
             await matcher.finish(
                 lang.text(
                     "achi.info",

@@ -36,7 +36,8 @@ class Config(BaseSettings):
             "text": json.dumps({"in": 0, "out": 0, "exchange_rate": 1}),
         },
         {"path": "data/etm/achievement.json", "text": "{}"},
-        {"path": "data/etm/sign.json", "text": json.dumps({"latest": {}, "days": {}})},
+        {"path": "data/etm/sign.json",
+            "text": json.dumps({"latest": {}, "days": {}})},
         {"path": "data/etm/users.json", "text": "{}"},
         {"path": "data/etm/bags.json", "text": "{}"},
         {
@@ -51,7 +52,8 @@ class Config(BaseSettings):
         {"path": "data/cave.comments.json", "text": "{}"},
         {"path": "data/rule.rules.json", "text": "[]"},
         {"path": "data/messenger.messageList.json", "text": "[]"},
-        {"path": "data/ctrl.json", "text": json.dumps({"control": CONTROL_GROUP})},
+        {"path": "data/ctrl.json",
+            "text": json.dumps({"control": CONTROL_GROUP})},
         {"path": "data/ct.globalData.json", "text": "{}"},
         {"path": "data/su.blackList.json", "text": "[]"},
         {"path": "data/init.disabled.json", "text": "[]"},
@@ -76,7 +78,8 @@ class Config(BaseSettings):
         {
             "path": "data/setu.config.json",
             "text": json.dumps(
-                {"sleep": 45, "delete_sleep": 25, "proxies": "http://127.0.0.1:7890"}
+                {"sleep": 45, "delete_sleep": 25,
+                    "proxies": "http://127.0.0.1:7890"}
             ),
         },
         {"path": "data/setu.count.json", "text": "{}"}

@@ -187,7 +187,8 @@ async def su_log(argument: list = str(Command()).split(" ")):
                         ["", "", log_time["Y"], log_time["M"], log_time["D"]], "今日 "
                     )
                 elif argument[1] in ["month", "本月", "月", "m", "M"]:
-                    reply += su_log_match(["", "", log_time["Y"], log_time["M"]], "本月 ")
+                    reply += su_log_match(["", "",
+                                          log_time["Y"], log_time["M"]], "本月 ")
                 elif argument[1] in ["all", "所有", "全部", "a", "A"]:
                     # ********** xd我建议你过来写个合并转发 reply是全部文本(建议按行数分割) **********
                     reply += su_log_match(["", ""], "全部 ")

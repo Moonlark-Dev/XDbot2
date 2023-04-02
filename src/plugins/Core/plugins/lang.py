@@ -43,7 +43,8 @@ async def lang_handle(event: MessageEvent, message: Message = CommandArg()):
                 for i in range(len(ls)):
                     ls[i] = ls[i].replace(".json", "")
                 await lang.finish(
-                    _lang.text("lang.list", ["\n".join(ls)], event.get_user_id())
+                    _lang.text("lang.list", [
+                               "\n".join(ls)], event.get_user_id())
                 )
             elif args.split(" ")[0] == "view":
                 lang_name = args.split(" ")[1]
@@ -60,20 +61,25 @@ async def lang_handle(event: MessageEvent, message: Message = CommandArg()):
                             key_length += 1
 
                     author = _lang._load_key(lang_name, "lang.author", "未知创作者")
-                    version = _lang._load_key(lang_name, "lang.version", "v1.0.0")
+                    version = _lang._load_key(
+                        lang_name, "lang.version", "v1.0.0")
 
                     await lang.send(
                         "\n".join(
                             (
-                                _lang.text("lang.intro", [], event.get_user_id()),
+                                _lang.text("lang.intro", [],
+                                           event.get_user_id()),
                                 _lang.text(
-                                    "lang.lang_name", [lang_name], event.get_user_id()
+                                    "lang.lang_name", [
+                                        lang_name], event.get_user_id()
                                 ),
                                 _lang.text(
-                                    "lang.lang_version", [version], event.get_user_id()
+                                    "lang.lang_version", [
+                                        version], event.get_user_id()
                                 ),
                                 _lang.text(
-                                    "lang.lang_author", [author], event.get_user_id()
+                                    "lang.lang_author", [
+                                        author], event.get_user_id()
                                 ),
                                 _lang.text(
                                     "lang.compatibility",

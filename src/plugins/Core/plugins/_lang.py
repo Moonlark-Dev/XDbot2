@@ -19,7 +19,8 @@ def reload():
     for _lang_file in _lang_files:
         try:
             _lang_index = json.load(
-                open("src/plugins/Core/lang" + os.sep + _lang_file, encoding="utf-8")
+                open("src/plugins/Core/lang" + os.sep +
+                     _lang_file, encoding="utf-8")
             )
             _lang_dict[_lang_file.replace(".json", "")] = _lang_index
         except BaseException as e:

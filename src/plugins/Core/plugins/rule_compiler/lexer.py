@@ -2,7 +2,8 @@
 import re
 
 KEYWORDS = ["@command", "if", "else", "set", "let"]
-EXPRS = ["==", "!=", ">=", "<=", ">", "<", "=", "\\+", "-", "\\*", "/", "\\++", "--"]
+EXPRS = ["==", "!=", ">=", "<=", ">", "<",
+         "=", "\\+", "-", "\\*", "/", "\\++", "--"]
 INFORMATION_KEYWORD = [
     "@NAMESPACE",
     "@NAME",

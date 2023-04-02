@@ -92,12 +92,14 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
                 economy.add_vi(event.get_user_id(), add[0])
                 exp.add_exp(event.get_user_id(), add[1])
                 await matcher.send(
-                    lang.text("quick_math.rightanswer", add, event.get_user_id()),
+                    lang.text("quick_math.rightanswer",
+                              add, event.get_user_id()),
                     at_sender=True,
                 )
                 group = None
                 answer = None
-                achievement.increase_unlock_progress("我爱数学", event.get_user_id())
+                achievement.increase_unlock_progress(
+                    "我爱数学", event.get_user_id())
 
     except BaseException:
         await error.report(format_exc())
@@ -116,7 +118,8 @@ async def quick_math_command(matcher: Matcher, event: GroupMessageEvent):
             groups.append(event.group_id)
             await matcher.send(lang.text("quick_math.enable", [], event.get_user_id()))
         json.dump(
-            groups, open("data/quick_math.enabled_groups.json", "w", encoding="utf-8")
+            groups, open("data/quick_math.enabled_groups.json",
+                         "w", encoding="utf-8")
         )
         refresh_group_unanswered(groups)
     except BaseException:

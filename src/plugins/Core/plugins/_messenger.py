@@ -15,4 +15,5 @@ def send_message(
             "sender": {"nickname": sender_nickname, "user_id": sender_id},
         }
     )
-    json.dump(data, open("data/messenger.messageList.json", mode="w", encoding="utf-8"))
+    json.dump(data, open("data/messenger.messageList.json",
+              mode="w", encoding="utf-8"))

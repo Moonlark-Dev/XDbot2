@@ -13,7 +13,8 @@ from . import _lang
 
 whoAtme = on_command(
     "whoAtMe",
-    aliases={"whoAtme", "whoatme", "wam", "谁At我", "又有没妈的At我了？", "哪个傻逼At我", "谁他妈At我"},
+    aliases={"whoAtme", "whoatme", "wam", "谁At我",
+             "又有没妈的At我了？", "哪个傻逼At我", "谁他妈At我"},
 )
 whoAtmeWriter = on_message()
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]

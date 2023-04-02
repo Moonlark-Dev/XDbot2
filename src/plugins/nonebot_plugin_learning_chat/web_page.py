@@ -88,7 +88,8 @@ global_config_form = Form(
             value="${enable_web}",
             onText="开启",
             offText="关闭",
-            labelRemark=Remark(shape="circle", content="是否开启本后台管理，若关闭，则无法再访问本页面。"),
+            labelRemark=Remark(
+                shape="circle", content="是否开启本后台管理，若关闭，则无法再访问本页面。"),
         ),
         InputText(
             label="后台管理用户名",
@@ -201,7 +202,8 @@ group_config_form = Form(
             value="${enable}",
             onText="开启",
             offText="关闭",
-            labelRemark=Remark(shape="circle", content="针对该群的群聊学习开关，关闭后，仅该群不会学习和回复。"),
+            labelRemark=Remark(
+                shape="circle", content="针对该群的群聊学习开关，关闭后，仅该群不会学习和回复。"),
         ),
         InputNumber(
             label="回复阈值",
@@ -209,7 +211,8 @@ group_config_form = Form(
             value="${answer_threshold}",
             visibleOn="${enable}",
             min=2,
-            labelRemark=Remark(shape="circle", content="可以理解为学习成功所需要的次数，值越低学得越快。"),
+            labelRemark=Remark(
+                shape="circle", content="可以理解为学习成功所需要的次数，值越低学得越快。"),
         ),
         InputArray(
             label="回复阈值权重",
@@ -241,7 +244,8 @@ group_config_form = Form(
             max=100,
             suffix="%",
             visibleOn="${AND(enable, speak_enable)}",
-            labelRemark=Remark(shape="circle", content="达到复读阈值时，打断复读而不是跟随复读的概率。"),
+            labelRemark=Remark(
+                shape="circle", content="达到复读阈值时，打断复读而不是跟随复读的概率。"),
         ),
         InputTag(
             label="屏蔽词",
@@ -252,7 +256,8 @@ group_config_form = Form(
             visibleOn="${enable}",
             joinValues=False,
             extractValue=True,
-            labelRemark=Remark(shape="circle", content="含有这些词的消息不会学习和回复。(回车进行添加)"),
+            labelRemark=Remark(
+                shape="circle", content="含有这些词的消息不会学习和回复。(回车进行添加)"),
         ),
         InputTag(
             label="屏蔽用户",
@@ -264,7 +269,8 @@ group_config_form = Form(
             visibleOn="${enable}",
             joinValues=False,
             extractValue=True,
-            labelRemark=Remark(shape="circle", content="和该群中这些用户有关的消息不会学习和回复。(回车进行添加)"),
+            labelRemark=Remark(
+                shape="circle", content="和该群中这些用户有关的消息不会学习和回复。(回车进行添加)"),
         ),
         Switch(
             label="主动发言开关",
@@ -571,7 +577,8 @@ context_table = TableCRUD(
         ActionType.Dialog(
             tooltip="回复列表",
             icon="fa fa-book text-info",
-            dialog=Dialog(title="回复列表", size="lg", body=answer_table_on_context),
+            dialog=Dialog(title="回复列表", size="lg",
+                          body=answer_table_on_context),
         ),
         ActionType.Ajax(
             tooltip="禁用",

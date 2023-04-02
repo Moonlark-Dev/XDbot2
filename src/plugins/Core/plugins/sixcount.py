@@ -112,7 +112,8 @@ async def pie():
             Pie(init_opts=opts.InitOpts(bg_color="rgba(255,255,255,1)"))
             .add("", user_data)
             .set_global_opts(
-                title_opts=opts.TitleOpts(title="6", subtitle=start_time + " 至今"),
+                title_opts=opts.TitleOpts(
+                    title="6", subtitle=start_time + " 至今"),
                 legend_opts=opts.LegendOpts(is_show=False),
             )
             .set_series_opts(label_opts=opts.LabelOpts(formatter="{b}: {c}"))

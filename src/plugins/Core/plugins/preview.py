@@ -47,7 +47,8 @@ async def preview_website(event: MessageEvent, message: Message = CommandArg()):
                     )
                 except IndexError:
                     await preview.finish(
-                        lang.text("preview.only_group", [], event.get_user_id())
+                        lang.text("preview.only_group",
+                                  [], event.get_user_id())
                     )
         # 截取网页
         file_name = f"preview.image_{int(time.time())}"

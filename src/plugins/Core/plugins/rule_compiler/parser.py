@@ -85,7 +85,8 @@ class Parser:
                         if token[self.TOKEN_VALUE] == "@command":
                             ast[-1]["call"] = "new_command"
                             ast[-1]["name"] = block.pop(0)[self.TOKEN_VALUE]
-                            ast[-1]["arguments"] = self.parse_command_arguments(block)
+                            ast[-1]["arguments"] = self.parse_command_arguments(
+                                block)
                         elif token[self.TOKEN_VALUE] == "if":
                             ast[-1]["call"] = "if"
                             ast[-1]["else"] = []
@@ -112,7 +113,8 @@ class Parser:
                         print("b1", block)
                         ast[-1]["call"] = "invoke"
                         ast[-1]["function"] = token[self.TOKEN_VALUE]
-                        ast[-1]["arguments"] = self.parse_information_token(block)
+                        ast[-1]["arguments"] = self.parse_information_token(
+                            block)
                     elif token[self.TOKEN_TYPE] == "var":
                         print("b2", block)
                         ast[-1]["call"] = "get_var"
@@ -150,7 +152,8 @@ class Parser:
             print("tk", echo, token)
             if type(token) == list:
                 if block[-1]["b"] in [None, []]:
-                    block[-1]["b"] = self.parse_expr_block(token, echo=echo + 1)
+                    block[-1]["b"] = self.parse_expr_block(
+                        token, echo=echo + 1)
                     rich.print(f"{echo}: block1 {block}")
                 else:
                     block.append(
