@@ -24,6 +24,7 @@ except ImportError:
 
 su = on_command("su", aliases={"超管", "superuser"}, permission=SUPERUSER)
 accout_manager = on_command("accout", aliases={"多帐号"})
+
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 blackListData = json.load(open("data/su.blackList.json", encoding="utf-8"))
 multiAccoutData = {}
@@ -499,20 +500,7 @@ async def blackListHandle(bot: Bot, event: MessageEvent):
         await bot.send_group_msg(message=traceback.format_exc(), group_id=ctrlGroup)
 
 
-@event_preprocessor
-async def multiAccoutManager(bot: Bot, event: GroupMessageEvent):
-    try:
-        if event.group_id in multiAccoutData.keys():
-            if (
-                str((await bot.get_login_info())["user_id"])
-                != multiAccoutData[event.group_id]
-            ):
-                raise IgnoredException("多帐号：忽略")
 
-    except IgnoredException as e:
-        raise IgnoredException(e)
-    except Exception:
-        await bot.send_group_msg(message=traceback.format_exc(), group_id=ctrlGroup)
 
 
 @group_request.handle()
