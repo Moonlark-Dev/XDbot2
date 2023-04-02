@@ -53,11 +53,6 @@ def parseCave(text: str):
         return parseCave(text.replace(f"[[Img:{imageID}]]]", str(imageCQ)))
 
 
-def reloadBlackList():
-    global blackListData
-    blackListData = json.load(open("data/su.blackList.json", encoding="utf-8"))
-
-
 @driver.on_bot_connect
 @driver.on_bot_disconnect
 async def reloadMuiltData():

@@ -17,12 +17,13 @@ async def set_config(message: Message = CommandArg()):
                 config[json.loads(argument[3])] = " ".join(argument[4:])
                 json.dump(config, open(
                     f"data/{argument[2]}", "w", encoding="utf-8"))
+
                 await su.finish(f"{argument[2]}::{argument[3]} -> {' '.join(argument[4:])}")
             elif argument[0] in ["set", "设置"]:
                 with open(f"data/{argument[2]}", "w", encoding="utf-8") as f:
                     f.write(" ".join(argument[3:]))
                 await su.finish(f"{argument[2]} -> {' '.join(argument[3:])}")
-    except:
+    except BaseException:
         await _error.report(traceback.format_exc(), su)
 
 
@@ -43,5 +44,5 @@ async def get_config(message: Message = CommandArg()):
                 else:
                     with open(f"data/{argument[2]}", encoding="utf-8") as f:
                         await su.finish(f.read())
-    except:
+    except BaseException:
         await _error.report(traceback.format_exc(), su)
