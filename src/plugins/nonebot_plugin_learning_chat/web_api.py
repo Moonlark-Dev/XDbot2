@@ -42,7 +42,8 @@ def authentication():
         try:
             payload = jwt.decode(
                 token, config_manager.config.web_secret_key, algorithms='HS256')
-            if not (username := payload.get('username')) or username != config_manager.config.web_username:
+            if not (username := payload.get('username')
+                    ) or username != config_manager.config.web_username:
                 raise HTTPException(status_code=400, detail='登录验证失败或已失效，请重新登录')
         except (jwt.JWTError, jwt.ExpiredSignatureError, AttributeError):
             raise HTTPException(status_code=400, detail='登录验证失败或已失效，请重新登录')
@@ -66,20 +67,21 @@ async def init_web():
         if user.username != config_manager.config.web_username or user.password != config_manager.config.web_password:
             return {
                 'status': -100,
-                'msg':    '登录失败，请确认用户ID和密码无误'
+                'msg': '登录失败，请确认用户ID和密码无误'
             }
         token = jwt.encode({'username': user.username,
-                            'exp':      datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(
+                            'exp': datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(
                                 minutes=30)}, config_manager.config.web_secret_key, algorithm='HS256')
         return {
             'status': 0,
-            'msg':    '登录成功',
-            'data':   {
+            'msg': '登录成功',
+            'data': {
                 'token': token
             }
         }
 
-    @app.get('/learning_chat/api/get_group_list', response_class=JSONResponse, dependencies=[authentication()])
+    @app.get('/learning_chat/api/get_group_list',
+             response_class=JSONResponse, dependencies=[authentication()])
     async def get_group_list_api():
         try:
             group_list = await get_bot().get_group_list()
@@ -87,18 +89,19 @@ async def init_web():
                           in group_list]
             return {
                 'status': 0,
-                'msg':    'ok',
-                'data':   {
+                'msg': 'ok',
+                'data': {
                     'group_list': group_list
                 }
             }
         except ValueError:
             return {
                 'status': -100,
-                'msg':    '获取群和好友列表失败，请确认已连接GOCQ'
+                'msg': '获取群和好友列表失败，请确认已连接GOCQ'
             }
 
-    @app.get('/learning_chat/api/chat_global_config', response_class=JSONResponse, dependencies=[authentication()])
+    @app.get('/learning_chat/api/chat_global_config',
+             response_class=JSONResponse, dependencies=[authentication()])
     async def get_chat_global_config():
         try:
             bot = get_bot()
@@ -117,10 +120,11 @@ async def init_web():
         except ValueError:
             return {
                 'status': -100,
-                'msg':    '获取群和好友列表失败，请确认已连接GOCQ'
+                'msg': '获取群和好友列表失败，请确认已连接GOCQ'
             }
 
-    @app.post('/learning_chat/api/chat_global_config', response_class=JSONResponse, dependencies=[authentication()])
+    @app.post('/learning_chat/api/chat_global_config',
+              response_class=JSONResponse, dependencies=[authentication()])
     async def post_chat_global_config(data: dict):
         config_manager.config.update(**data)
         config_manager.save()
@@ -131,10 +135,11 @@ async def init_web():
         jieba.load_userdict(config_manager.config.dictionary)
         return {
             'status': 0,
-            'msg':    '保存成功'
+            'msg': '保存成功'
         }
 
-    @app.get('/learning_chat/api/chat_group_config', response_class=JSONResponse, dependencies=[authentication()])
+    @app.get('/learning_chat/api/chat_group_config',
+             response_class=JSONResponse, dependencies=[authentication()])
     async def get_chat_global_config(group_id: int):
         try:
             members = await get_bot().get_group_member_list(group_id=group_id)
@@ -151,15 +156,16 @@ async def init_web():
         except ValueError:
             return {
                 'status': -100,
-                'msg':    '获取群和好友列表失败，请确认已连接GOCQ'
+                'msg': '获取群和好友列表失败，请确认已连接GOCQ'
             }
 
-    @app.post('/learning_chat/api/chat_group_config', response_class=JSONResponse, dependencies=[authentication()])
+    @app.post('/learning_chat/api/chat_group_config',
+              response_class=JSONResponse, dependencies=[authentication()])
     async def post_chat_global_config(group_id: Union[int, str], data: dict):
         if not data['answer_threshold_weights']:
             return {
                 'status': 400,
-                'msg':    '回复阈值权重不能为空，必须至少有一个数值'
+                'msg': '回复阈值权重不能为空，必须至少有一个数值'
             }
         data['break_probability'] = data['break_probability'] / 100
         data['speak_continuously_probability'] = data['speak_continuously_probability'] / 100
@@ -176,10 +182,11 @@ async def init_web():
         config_manager.save()
         return {
             'status': 0,
-            'msg':    '保存成功'
+            'msg': '保存成功'
         }
 
-    @app.get('/learning_chat/api/get_chat_messages', response_class=JSONResponse, dependencies=[authentication()])
+    @app.get('/learning_chat/api/get_chat_messages',
+             response_class=JSONResponse, dependencies=[authentication()])
     async def get_chat_messages(page: int = 1,
                                 perPage: int = 10,
                                 orderBy: str = 'time',
@@ -193,15 +200,16 @@ async def init_web():
                        {'group_id': group_id, 'user_id': user_id, 'raw_message': message}.items() if v}
         return {
             'status': 0,
-            'msg':    'ok',
-            'data':   {
+            'msg': 'ok',
+            'data': {
                 'items': await ChatMessage.filter(**filter_args).order_by(orderBy).offset((page - 1) * perPage).limit(
                     perPage).values(),
                 'total': await ChatMessage.filter(**filter_args).count()
             }
         }
 
-    @app.get('/learning_chat/api/get_chat_contexts', response_class=JSONResponse, dependencies=[authentication()])
+    @app.get('/learning_chat/api/get_chat_contexts',
+             response_class=JSONResponse, dependencies=[authentication()])
     async def get_chat_context(page: int = 1, perPage: int = 10, orderBy: str = 'time', orderDir: str = 'desc',
                                keywords: Optional[str] = None):
         orderBy = (orderBy or 'time') if (
@@ -209,15 +217,16 @@ async def init_web():
         filter_arg = {'keywords__contains': keywords} if keywords else {}
         return {
             'status': 0,
-            'msg':    'ok',
-            'data':   {
+            'msg': 'ok',
+            'data': {
                 'items': await ChatContext.filter(**filter_arg).order_by(orderBy).offset((page - 1) * perPage).limit(
                     perPage).values(),
                 'total': await ChatContext.filter(**filter_arg).count()
             }
         }
 
-    @app.get('/learning_chat/api/get_chat_answers', response_class=JSONResponse, dependencies=[authentication()])
+    @app.get('/learning_chat/api/get_chat_answers',
+             response_class=JSONResponse, dependencies=[authentication()])
     async def get_chat_answers(context_id: Optional[int] = None, page: int = 1, perPage: int = 10,
                                orderBy: str = 'count',
                                orderDir: str = 'desc', keywords: Optional[str] = None):
@@ -228,8 +237,8 @@ async def init_web():
             orderDir or 'desc') == 'asc' else f'-{orderBy or "count"}'
         return {
             'status': 0,
-            'msg':    'ok',
-            'data':   {
+            'msg': 'ok',
+            'data': {
                 'items': list(
                     map(lambda x: x.update({'messages': [{'msg': m} for m in x['messages']]}) or x,
                         await ChatAnswer.filter(**filter_arg).order_by(orderBy).offset((page - 1) * perPage).limit(
@@ -238,7 +247,8 @@ async def init_web():
             }
         }
 
-    @app.get('/learning_chat/api/get_chat_blacklist', response_class=JSONResponse, dependencies=[authentication()])
+    @app.get('/learning_chat/api/get_chat_blacklist',
+             response_class=JSONResponse, dependencies=[authentication()])
     async def get_chat_blacklist(page: int = 1, perPage: int = 10, keywords: Optional[str] = None,
                                  bans: Optional[str] = None):
         filter_arg = {'keywords__contains': keywords} if keywords else {}
@@ -250,14 +260,15 @@ async def init_web():
             items = list(filter(lambda x: bans in x['bans'], items))
         return {
             'status': 0,
-            'msg':    'ok',
-            'data':   {
+            'msg': 'ok',
+            'data': {
                 'items': items,
                 'total': await ChatBlackList.filter(**filter_arg).count()
             }
         }
 
-    @app.delete('/learning_chat/api/delete_chat', response_class=JSONResponse, dependencies=[authentication()])
+    @app.delete('/learning_chat/api/delete_chat',
+                response_class=JSONResponse, dependencies=[authentication()])
     async def delete_chat(id: int, type: str):
         try:
             if type == 'message':
@@ -272,15 +283,16 @@ async def init_web():
                 await ChatBlackList.filter(id=id).delete()
             return {
                 'status': 0,
-                'msg':    '删除成功'
+                'msg': '删除成功'
             }
         except Exception as e:
             return {
                 'status': 500,
-                'msg':    f'删除失败，{e}'
+                'msg': f'删除失败，{e}'
             }
 
-    @app.put('/learning_chat/api/ban_chat', response_class=JSONResponse, dependencies=[authentication()])
+    @app.put('/learning_chat/api/ban_chat',
+             response_class=JSONResponse, dependencies=[authentication()])
     async def ban_chat(id: int, type: str):
         try:
             if type == 'message':
@@ -292,15 +304,16 @@ async def init_web():
             await LearningChat.add_ban(data)
             return {
                 'status': 0,
-                'msg':    '禁用成功'
+                'msg': '禁用成功'
             }
         except Exception as e:
             return {
                 'status': 500,
-                'msg':    f'禁用失败: {e}'
+                'msg': f'禁用失败: {e}'
             }
 
-    @app.put('/learning_chat/api/delete_all', response_class=JSONResponse, dependencies=[authentication()])
+    @app.put('/learning_chat/api/delete_all',
+             response_class=JSONResponse, dependencies=[authentication()])
     async def delete_all(type: str, id: Optional[int] = None):
         try:
             if type == 'answer':
@@ -316,12 +329,12 @@ async def init_web():
                 await ChatMessage.all().delete()
             return {
                 'status': 0,
-                'msg':    '操作成功'
+                'msg': '操作成功'
             }
         except Exception as e:
             return {
                 'status': 500,
-                'msg':    f'操作失败，{e}'
+                'msg': f'操作失败，{e}'
             }
 
     @app.get('/learning_chat', response_class=RedirectResponse)

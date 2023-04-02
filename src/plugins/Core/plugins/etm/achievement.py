@@ -46,7 +46,8 @@ ACHIEVEMENTS = {
 
 def get_user_achievement(user_id):
     try:
-        return json.load(open("data/etm/achievement.json", encoding="utf-8"))[user_id]
+        return json.load(open("data/etm/achievement.json",
+                         encoding="utf-8"))[user_id]
     except KeyError:
         return []
 

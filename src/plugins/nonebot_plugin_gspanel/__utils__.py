@@ -163,7 +163,8 @@ RELIC_APPEND = _client.get(
 def kStr(prop: str, reverse: bool = False) -> str:
     """转换词条名称为简短形式"""
     if reverse:
-        return prop.replace("充能", "元素充能").replace("伤加成", "元素伤害加成").replace("物理元素", "物理")
+        return prop.replace("充能", "元素充能").replace(
+            "伤加成", "元素伤害加成").replace("物理元素", "物理")
     return (
         prop.replace("百分比", "")
         .replace("元素充能", "充能")
@@ -352,7 +353,8 @@ async def uidHelper(qq: Union[str, int], uid: str = "") -> str:
         cfgFile.write_text(
             json.dumps(uidCfg, ensure_ascii=False, indent=2), encoding="utf-8"
         )
-        return "已{} QQ{} 的 UID 为 {}".format("更新" if qq in uidCfg else "绑定", qq, uid)
+        return "已{} QQ{} 的 UID 为 {}".format(
+            "更新" if qq in uidCfg else "绑定", qq, uid)
     return uidCfg.get(qq, "")
 
 

@@ -121,7 +121,8 @@ def getRelicRank(score: float) -> str:
     """圣遗物评级获取"""
     # 在角色等级较低（基础数值较低）时评级可能显示为 "ERR"
     # 注：角色等级较低时不为 "ERR" 的评分也有可能出错
-    return [r[0] for r in RANK_MAP if score <= r[1]][0] if score <= 66 else "ERR"
+    return [r[0] for r in RANK_MAP if score <=
+            r[1]][0] if score <= 66 else "ERR"
 
 
 async def calcRelicMark(
@@ -552,7 +553,8 @@ async def simplFightProp(
     res = {}
     for propTitle, propValue in fightProp.items():
         # 跳过无效治疗加成
-        if propTitle == "治疗加成" and not propValue and not affixWeight.get(propTitle):
+        if propTitle == "治疗加成" and not propValue and not affixWeight.get(
+                propTitle):
             continue
         # 整理渲染数据
         res[propTitle] = {

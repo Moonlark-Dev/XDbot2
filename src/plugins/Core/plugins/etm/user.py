@@ -10,7 +10,8 @@ RAW_DATA = {
 
 def get_user_data(user_id):
     try:
-        return json.load(open("data/etm/users.json", encoding="utf-8"))[user_id]
+        return json.load(open("data/etm/users.json",
+                         encoding="utf-8"))[user_id]
     except KeyError:
         data = RAW_DATA
         data["user_id"] = user_id

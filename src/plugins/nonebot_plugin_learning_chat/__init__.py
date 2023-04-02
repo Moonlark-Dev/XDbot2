@@ -21,7 +21,7 @@ __plugin_meta__ = PluginMetadata(
     description='群聊学习',
     usage='群聊学习',
     extra={
-        'author':   '惜月',
+        'author': '惜月',
         'priority': 16,
     }
 )
@@ -35,10 +35,10 @@ async def ChatRule(event: GroupMessageEvent, state: T_State) -> bool:
 
 
 learning_chat = on_message(block=False, rule=Rule(ChatRule), permission=GROUP, state={
-    'pm_name':        '群聊学习',
+    'pm_name': '群聊学习',
     'pm_description': '(被动技能)bot会学习群友们的发言',
-    'pm_usage':       '群聊学习',
-    'pm_priority':    1
+    'pm_usage': '群聊学习',
+    'pm_priority': 1
 })
 
 

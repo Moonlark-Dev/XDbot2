@@ -167,7 +167,8 @@ class LearningChat:
             config_manager.save()
             log_info('群聊学习',
                      f'群<m>{self.data.group_id}</m>{"开启" if result == Result.SetEnable else "关闭"}学习功能')
-            return [random.choice(ENABLE_WORDS if result == Result.SetEnable else DISABLE_WORDS)]
+            return [random.choice(ENABLE_WORDS if result ==
+                                  Result.SetEnable else DISABLE_WORDS)]
         elif result == Result.Pass:
             # 跳过
             return None
@@ -254,7 +255,8 @@ class LearningChat:
             log_debug('群聊学习',
                       f'➤➤候选回复有<m>{"|".join([f"""{a.keywords}({round(p, 3)})""" for a, p in answer_dict])}|不回复({round(per_list[-1], 3)})</m>')
 
-            if (result := random.choices(candidate_answers + [None], weights=per_list)[0]) is None:
+            if (result := random.choices(candidate_answers +
+                                         [None], weights=per_list)[0]) is None:
                 log_debug('群聊学习', '➤➤但不进行回复')
                 return None
             result_message = random.choice(result.messages)
@@ -374,7 +376,8 @@ class LearningChat:
             right_group_id, right_messages = right_group
             left_duration = left_messages[0].time - left_messages[-1].time
             right_duration = right_messages[0].time - right_messages[-1].time
-            return cmp(len(left_messages) / left_duration, len(right_messages) / right_duration)
+            return cmp(len(left_messages) / left_duration,
+                       len(right_messages) / right_duration)
 
         popularity: List[Tuple[int, List[ChatMessage]]] = sorted(total_messages.items(),
                                                                  key=cmp_to_key(group_popularity_cmp), reverse=True)
@@ -435,7 +438,8 @@ class LearningChat:
                             message = random.choice(answer.messages)
                             if len(message) < 2:
                                 continue
-                            if message.startswith('&#91;') and message.endswith('&#93;'):
+                            if message.startswith(
+                                    '&#91;') and message.endswith('&#93;'):
                                 continue
                             if any(word in message for word in ban_words):
                                 continue
@@ -457,9 +461,11 @@ class LearningChat:
                                         follow_answer.messages)
                                     if len(message) < 2:
                                         continue
-                                    if message.startswith('&#91;') and message.endswith('&#93;'):
+                                    if message.startswith(
+                                            '&#91;') and message.endswith('&#93;'):
                                         continue
-                                    if all(word not in message for word in ban_words):
+                                    if all(
+                                            word not in message for word in ban_words):
                                         speak_list.append(message)
                                 else:
                                     break

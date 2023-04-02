@@ -85,7 +85,8 @@ async def queryPanelApi(uid: str) -> Dict:
             except (HTTPError, json.decoder.JSONDecodeError) as e:
                 if idx == len(enkaMirrors) - 1:
                     logger.opt(exception=e).error("面板数据接口无法访问或返回错误")
-                    return {"error": f"[{e.__class__.__name__}] 暂时无法访问面板数据接口.."}
+                    return {
+                        "error": f"[{e.__class__.__name__}] 暂时无法访问面板数据接口.."}
                 logger.info(f"从 {apiName} 获取面板失败，正在自动切换镜像重试...")
     if not resJson.get("playerInfo"):
         return {"error": f"玩家 {uid} 返回信息不全，接口可能正在维护.."}
@@ -212,7 +213,8 @@ async def getAvatarData(uid: str, char: str = "全部") -> Dict:
                         f"\n>>>> [提瓦特返回] {teyvatRaw}"
                     )
                 else:
-                    for dmgIdx, dmgData in enumerate(teyvatRaw.get("result", [])):
+                    for dmgIdx, dmgData in enumerate(
+                            teyvatRaw.get("result", [])):
                         aIdx = int(list(wait4Dmg.keys())[dmgIdx])
                         avatars[aIdx]["damage"] = await simplDamageRes(dmgData)
 

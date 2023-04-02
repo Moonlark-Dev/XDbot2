@@ -76,14 +76,16 @@ class ChatMessage(Model):
         """获取纯文本部分的关键词列表"""
         if not self.is_plain_text and not len(self.plain_text):
             return []
-        return jieba_analyse.extract_tags(self.plain_text, topK=config.KEYWORDS_SIZE)
+        return jieba_analyse.extract_tags(
+            self.plain_text, topK=config.KEYWORDS_SIZE)
 
     @cached_property
     def keywords(self) -> str:
         """获取纯文本部分的关键词结果"""
         if not self.is_plain_text and not len(self.plain_text):
             return self.message
-        return self.message if len(self.keyword_list) < 2 else ' '.join(self.keyword_list)
+        return self.message if len(
+            self.keyword_list) < 2 else ' '.join(self.keyword_list)
 
 
 class ChatContext(Model):

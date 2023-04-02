@@ -25,7 +25,7 @@ class Item:
     def use(self, args):
         try:
             count = int(args)
-        except:
+        except BaseException:
             count = 1
 
         if count <= 0 or count >= 200:

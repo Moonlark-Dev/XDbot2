@@ -50,4 +50,5 @@ class BookAndQuill(Item):
                 )
             )['nickname']
             author = f"{author_nickname} ({self.data['author']})"
-            return [f"  {self.data['display_name']}\n作者：{author}\n—————————————\n{self.data['data']}"]
+            return [
+                f"  {self.data['display_name']}\n作者：{author}\n—————————————\n{self.data['data']}"]
