@@ -4,10 +4,12 @@ from .su import su
 from . import _error
 import json
 import traceback
+from nonebot.adapters.onebot.v11 import Message
 
 
 @su.handle()
-async def img_review(argument: list = str(CommandArg()).split(" ")):
+async def img_review(message: Message = CommandArg()):
+    argument = str(message).split(" ")
     try:
         if argument[0] in ["img", "图库"]:
             data = json.load(open("data/reply.images.json", encoding="utf-8"))
@@ -44,7 +46,8 @@ async def img_review(argument: list = str(CommandArg()).split(" ")):
 
 
 @su.handle()
-async def image(argument: list = str(CommandArg()).split(" ")):
+async def image(message: Message = CommandArg()):
+    argument = str(message).split(" ")
     try:
         if argument[0] in ["img", "图库"] and argument[1] not in [
                 "review", "re", "审核库"]:

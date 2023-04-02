@@ -3,11 +3,13 @@ from .su import su
 import traceback
 import os
 from . import _error
+from nonebot.adapters.onebot.v11 import Message
 import json
 
 
 @su.handle()
-async def ct(argument: list = str(CommandArg()).split(" ")):
+async def ct(message: Message = CommandArg()):
+    argument = str(message).split(" ")
     try:
         if argument[0] == "ct" or argument[0] == "发言排名":
             if argument[1] == "clear" or argument[1] == "清除数据":

@@ -5,9 +5,12 @@ import traceback
 import os
 import time
 
+from nonebot.adapters.onebot.v11 import Message
+
 
 @su.handle()
-async def update(argument: list = str(CommandArg()).split(" ")):
+async def update(message: Message = CommandArg()):
+    argument = str(message).split(" ")
     try:
         if argument[0] in ["update", "检查更新"]:
             await su.send("正在运行更新程序，请稍候 ...")

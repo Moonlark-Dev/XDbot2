@@ -1,11 +1,13 @@
 from nonebot.params import CommandArg
+from nonebot.adapters.onebot.v11 import Message
 from .su import su
 from . import _error
 import json
 import traceback
 
 @su.handle()
-async def set_config(argument: list = str(CommandArg()).split(" ")):
+async def set_config(message: Message = CommandArg()):
+    argument = str(message).split(" ")
     try:
         if argument[0] in ["config", "配置"]:
             if argument[1] in ["set-key", "设置键"]:
@@ -22,7 +24,8 @@ async def set_config(argument: list = str(CommandArg()).split(" ")):
         await _error.report(traceback.format_exc(), su)
 
 @su.handle()
-async def get_config(argument: list = str(CommandArg()).split(" ")):
+async def get_config(message: Message = CommandArg()):
+    argument = str(message).split(" ")
     try:
         if argument[0] in ["config", "配置"]:
             if argument[1] in ["get", "获取"]:

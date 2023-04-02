@@ -12,7 +12,8 @@ except BaseException:
 
 
 @su.handle()
-async def screenshot(argument: list = str(CommandArg()).split(" ")):
+async def screenshot(message: Message = CommandArg()):
+    argument = str(message).split(" ")
     try:
         if argument[0] in ["截图", "screenshot"]:
             try:
