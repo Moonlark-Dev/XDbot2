@@ -1,12 +1,17 @@
 import json
 from nonebot import on_command, get_driver, get_bots
 from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, Message
+from nonebot.exception import IgnoredException
+from nonebot.message import event_preprocessor
 from nonebot.params import CommandArg
 from . import _lang
 from . import _error
 import traceback
+import json
 from .su import su
 
+
+ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 priority_accout = json.load(
     open(
         "data/su.priority_accout.json",
@@ -15,6 +20,22 @@ accouts = {}
 multiAccoutData = {}
 accout_manager = on_command("accout", aliases={"多帐号"})
 driver = get_driver()
+
+
+@event_preprocessor
+async def multiAccoutManager(bot: Bot, event: GroupMessageEvent):
+    try:
+        if event.group_id in multiAccoutData.keys():
+            if (
+                str((await bot.get_login_info())["user_id"])
+                != multiAccoutData[event.group_id]
+            ):
+                raise IgnoredException("多帐号：忽略")
+
+    except IgnoredException as e:
+        raise IgnoredException(e)
+    except Exception:
+        await bot.send_group_msg(message=traceback.format_exc(), group_id=ctrlGroup)
 
 
 @su.handle()
