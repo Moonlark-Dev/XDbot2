@@ -21,7 +21,7 @@ async def report(err: str, matcher: any = None):
     if "FinishedException" in error:
         raise FinishedException()
     for e in IGNORED_EXCEPTION:
-        if e in error: # Issue #120
+        if e in error:  # Issue #120
             return None
     # 上报错误
     bot = get_bots()[json.load(
