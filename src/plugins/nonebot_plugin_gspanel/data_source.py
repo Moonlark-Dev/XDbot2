@@ -85,8 +85,7 @@ async def queryPanelApi(uid: str) -> Dict:
             except (HTTPError, json.decoder.JSONDecodeError) as e:
                 if idx == len(enkaMirrors) - 1:
                     logger.opt(exception=e).error("面板数据接口无法访问或返回错误")
-                    return {
-                        "error": f"[{e.__class__.__name__}] 暂时无法访问面板数据接口.."}
+                    return {"error": f"[{e.__class__.__name__}] 暂时无法访问面板数据接口.."}
                 logger.info(f"从 {apiName} 获取面板失败，正在自动切换镜像重试...")
     if not resJson.get("playerInfo"):
         return {"error": f"玩家 {uid} 返回信息不全，接口可能正在维护.."}
@@ -166,8 +165,7 @@ async def getAvatarData(uid: str, char: str = "全部") -> Dict:
         # 本次刷新成功，处理全部角色
         elif not newData.get("error"):
             _tip = "success"
-            avatarsCache = {
-                str(x["id"]): x for x in cacheData.get("avatars", [])}
+            avatarsCache = {str(x["id"]): x for x in cacheData.get("avatars", [])}
             now, wait4Dmg, avatars = int(time()), {}, []
             for newAvatar in newData["avatarInfoList"]:
                 if newAvatar["avatarId"] in [10000005, 10000007]:
@@ -188,8 +186,7 @@ async def getAvatarData(uid: str, char: str = "全部") -> Dict:
                     else:
                         logger.debug(
                             "UID{} 的 {} 数据变化细则：\n{}\n{}".format(
-                                uid, tmp["name"], avatarsCache[str(
-                                    tmp["id"])], nowStat
+                                uid, tmp["name"], avatarsCache[str(tmp["id"])], nowStat
                             )
                         )
                 refreshed.append(tmp["id"])
@@ -198,8 +195,7 @@ async def getAvatarData(uid: str, char: str = "全部") -> Dict:
                     wait4Dmg[str(len(avatars) - 1)] = tmp
 
             if wait4Dmg:
-                _names = "/".join(f"[{aI}]{a['name']}" for aI,
-                                  a in wait4Dmg.items())
+                _names = "/".join(f"[{aI}]{a['name']}" for aI, a in wait4Dmg.items())
                 logger.info(f"正在为 UID{uid} 的 {_names} 重新请求伤害计算接口")
                 # 深拷贝避免转换对上下文中的 avatars 产生影响
                 wtf = deepcopy([a for _, a in wait4Dmg.items()])
@@ -213,8 +209,7 @@ async def getAvatarData(uid: str, char: str = "全部") -> Dict:
                         f"\n>>>> [提瓦特返回] {teyvatRaw}"
                     )
                 else:
-                    for dmgIdx, dmgData in enumerate(
-                            teyvatRaw.get("result", [])):
+                    for dmgIdx, dmgData in enumerate(teyvatRaw.get("result", [])):
                         aIdx = int(list(wait4Dmg.keys())[dmgIdx])
                         avatars[aIdx]["damage"] = await simplDamageRes(dmgData)
 
@@ -271,8 +266,7 @@ async def getPanel(uid: str, char: str = "全部") -> Union[bytes, str]:
     if data.get("error"):
         return data["error"]
 
-    mode, tplVer = ("list", LIST_TPL_VER) if char == "全部" else (
-        "panel", CHAR_TPL_VER)
+    mode, tplVer = ("list", LIST_TPL_VER) if char == "全部" else ("panel", CHAR_TPL_VER)
 
     # 图标下载任务
     dlTasks = (
@@ -283,8 +277,7 @@ async def getPanel(uid: str, char: str = "全部") -> Union[bytes, str]:
                 download(sData["icon"], local=char)
                 for _, sData in data["skills"].items()
             ],
-            *[download(conData["icon"], local=char)
-              for conData in data["consts"]],
+            *[download(conData["icon"], local=char) for conData in data["consts"]],
             download(data["weapon"]["icon"], local="weapon"),
             *[
                 download(relicData["icon"], local="artifacts")

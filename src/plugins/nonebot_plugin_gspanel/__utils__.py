@@ -127,28 +127,23 @@ if not (LOCAL_DIR / "cache").exists():
 if not (LOCAL_DIR / "qq-uid.json").exists():
     (LOCAL_DIR / "qq-uid.json").write_text("{}", encoding="UTF-8")
 _client = Client(verify=False)
-CALC_RULES = _client.get(
-    "https://cdn.monsterx.cn/bot/gspanel/calc-rule.json").json()
+CALC_RULES = _client.get("https://cdn.monsterx.cn/bot/gspanel/calc-rule.json").json()
 (LOCAL_DIR / "calc-rule.json").write_text(
     json.dumps(CALC_RULES, ensure_ascii=False, indent=2), encoding="utf-8"
 )
-CHAR_DATA = _client.get(
-    "https://cdn.monsterx.cn/bot/gspanel/char-data.json").json()
+CHAR_DATA = _client.get("https://cdn.monsterx.cn/bot/gspanel/char-data.json").json()
 (LOCAL_DIR / "char-data.json").write_text(
     json.dumps(CHAR_DATA, ensure_ascii=False, indent=2), encoding="utf-8"
 )
-CHAR_ALIAS = _client.get(
-    "https://cdn.monsterx.cn/bot/gspanel/char-alias.json").json()
+CHAR_ALIAS = _client.get("https://cdn.monsterx.cn/bot/gspanel/char-alias.json").json()
 (LOCAL_DIR / "char-alias.json").write_text(
     json.dumps(CHAR_ALIAS, ensure_ascii=False, indent=2), encoding="utf-8"
 )
-TEAM_ALIAS = _client.get(
-    "https://cdn.monsterx.cn/bot/gspanel/team-alias.json").json()
+TEAM_ALIAS = _client.get("https://cdn.monsterx.cn/bot/gspanel/team-alias.json").json()
 (LOCAL_DIR / "team-alias.json").write_text(
     json.dumps(TEAM_ALIAS, ensure_ascii=False, indent=2), encoding="utf-8"
 )
-HASH_TRANS = _client.get(
-    "https://cdn.monsterx.cn/bot/gspanel/hash-trans.json").json()
+HASH_TRANS = _client.get("https://cdn.monsterx.cn/bot/gspanel/hash-trans.json").json()
 (LOCAL_DIR / "hash-trans.json").write_text(
     json.dumps(HASH_TRANS, ensure_ascii=False, indent=2), encoding="utf-8"
 )
@@ -163,8 +158,7 @@ RELIC_APPEND = _client.get(
 def kStr(prop: str, reverse: bool = False) -> str:
     """转换词条名称为简短形式"""
     if reverse:
-        return prop.replace("充能", "元素充能").replace(
-            "伤加成", "元素伤害加成").replace("物理元素", "物理")
+        return prop.replace("充能", "元素充能").replace("伤加成", "元素伤害加成").replace("物理元素", "物理")
     return (
         prop.replace("百分比", "")
         .replace("元素充能", "充能")
@@ -353,8 +347,7 @@ async def uidHelper(qq: Union[str, int], uid: str = "") -> str:
         cfgFile.write_text(
             json.dumps(uidCfg, ensure_ascii=False, indent=2), encoding="utf-8"
         )
-        return "已{} QQ{} 的 UID 为 {}".format(
-            "更新" if qq in uidCfg else "绑定", qq, uid)
+        return "已{} QQ{} 的 UID 为 {}".format("更新" if qq in uidCfg else "绑定", qq, uid)
     return uidCfg.get(qq, "")
 
 
