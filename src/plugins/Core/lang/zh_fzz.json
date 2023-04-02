@@ -1,4 +1,3 @@
-
 {
   "lang.version": "latest",
   "lang.intro": "「语言详细信息」",
@@ -84,7 +83,7 @@
   "status.ram": "随机存储器：",
   "status.swap": "交换内存：",
   "status.run": "运行时间：",
-  "status.boot": "开只因时间：" ,
+  "status.boot": "开只因时间：",
   "status.py": "Python版本：",
   "status.error": "无效参数：{}\n可用值：cpu、mem、swap、system、host（可留空）",
   "vote.create_success": "投票创建成功！ID: #{}",
@@ -125,9 +124,6 @@
   "preview.only_group": "错误：请在群聊使用这玩意",
   "setu_rank.title": "随机涩涩的使用排行：",
   "random_number.argerr": "参数错误！",
-  "ger.title": "「当前的汇率（{}）」",
-  "ger.io": "I/O：{}/{}",
-  "ger.er": "汇率：1 vi = {} vim",
   "setu.poor": "错误：你妹钱整（需要 1.2vi）",
   "userinfo.title": "「用户信息告示牌」",
   "userinfo.level": "LV",
@@ -147,5 +143,16 @@
   "achi.title": "解锁的成就：",
   "achi.info": "「成就的信息捏」\n名称：{}\n解锁条件：{}\n解锁进度：{}",
   "achi.locked": "妹解锁捏",
-  "achi.unlcked": "解锁了w"
+  "achi.unlcked": "解锁了w",
+  "cave.help": {
+    "name": "cave",
+    "info": "随投查 回声洞",
+    "msg": "hsd",
+    "usage": [
+      "cave：随机回声洞",
+      "cave-a <内容>：整一条回声洞（见cave(1)）",
+      "cave-g <回声洞ID>：看指定回声洞",
+      "cave-q <开始ID> <结束ID>：查询范围内回声洞"
+    ]
+  }
 }

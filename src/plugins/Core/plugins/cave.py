@@ -21,19 +21,6 @@ ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 latest_use = time.time()
 path = os.path.abspath(os.path.dirname("."))
 app = get_app()
-commandHelp = {
-    "cave": {
-        "name": "cave",
-        "info": "随机、投稿或查询 回声洞",
-        "msg": "回声洞",
-        "usage": [
-            "cave：随机一条回声洞",
-            "cave-a <内容>：投稿一条回声洞（见cave(1)）",
-            "cave-g <回声洞ID>：查看指定回声洞",
-            "cave-q <开始ID> <结束ID>：查询一堆范围内的回声洞"
-        ],
-    }
-}
 MAX_NODE_MESSAGE = 200
 
 
@@ -45,37 +32,35 @@ async def cave_comment_writer(event: MessageEvent, bot: Bot):
         reply_message = str(event.reply.message)
         if re.match(r"回声洞——（(0|[1-9][0-9]*)）\n(.+)\n——(.*)", reply_message):
             # 懒得写了就这样吧
-            cave_id = re.search(
-                r"回声洞——（[0-9]+）",
-                reply_message)[0].replace(
-                "回声洞——（",
-                "").replace(
-                "）",
-                "")
+            cave_id = (
+                re.search(r"回声洞——（[0-9]+）", reply_message)[0]
+                .replace("回声洞——（", "")
+                .replace("）", "")
+            )
             data = json.load(open("data/cave.comments.json", encoding="utf-8"))
             if cave_id not in data.keys():
                 data[cave_id] = {"count": 1, "data": {}}
             data[cave_id]["data"][str(data[cave_id]["count"])] = {
                 "id": data[cave_id]["count"],
                 "text": str(event.get_message()),
-                "sender": event.get_user_id()
+                "sender": event.get_user_id(),
             }
             data[cave_id]["count"] += 1
-            json.dump(
-                data,
-                open(
-                    "data/cave.comments.json",
-                    "w",
-                    encoding="utf-8"))
-            await _error.report(f"「新回声洞评论（{cave_id}#{data[cave_id]['count'] - 1}）」\n{event.get_message()}\n{event.get_session_id()}")
+            json.dump(data, open("data/cave.comments.json", "w", encoding="utf-8"))
+            await _error.report(
+                f"「新回声洞评论（{cave_id}#{data[cave_id]['count'] - 1}）」\n{event.get_message()}\n{event.get_session_id()}"
+            )
             exp.add_exp(event.get_user_id(), 3)
-            cave_data = json.load(
-                open("data/cave.data.json", encoding="utf-8"))
+            cave_data = json.load(open("data/cave.data.json", encoding="utf-8"))
             if isinstance(cave_data["data"][cave_id]["sender"], int):
-                _messenger.send_message((f"回声洞被评论：{cave_id}#{data[cave_id]['count'] - 1}\n"
-                                         f"来自：{(await bot.get_stranger_info(user_id=event.get_user_id()))['nickname']}\n"
-                                         f"{event.get_message()}"),
-                                        cave_data["data"][cave_id]["sender"])
+                _messenger.send_message(
+                    (
+                        f"回声洞被评论：{cave_id}#{data[cave_id]['count'] - 1}\n"
+                        f"来自：{(await bot.get_stranger_info(user_id=event.get_user_id()))['nickname']}\n"
+                        f"{event.get_message()}"
+                    ),
+                    cave_data["data"][cave_id]["sender"],
+                )
             await cave_comment.finish(f"评论成功：{cave_id}#{data[cave_id]['count'] - 1}")
 
     except FinishedException:
@@ -95,8 +80,7 @@ async def downloadImages(message: str):
     if cqStart == -1:
         return message
     else:
-        url = message[message.find("url=", cqStart) +
-                      4: message.find("]", cqStart)]
+        url = message[message.find("url=", cqStart) + 4 : message.find("]", cqStart)]
         imageID = str(time.time())
         async with httpx.AsyncClient() as client:
             response = await client.get(url)
@@ -104,8 +88,7 @@ async def downloadImages(message: str):
                 f.write(response.read())
         return await downloadImages(
             message.replace(
-                message[cqStart: message.find(
-                    "]", cqStart)], f"[[Img:{imageID}]]"
+                message[cqStart : message.find("]", cqStart)], f"[[Img:{imageID}]]"
             )
         )
 
@@ -115,7 +98,7 @@ def parseCave(text: str):
     if imageIDStart == -1:
         return text
     else:
-        imageID = text[imageIDStart + 6: text.find("]]]", imageIDStart)]
+        imageID = text[imageIDStart + 6 : text.find("]]]", imageIDStart)]
         imagePath = os.path.join(path, "data", "caveImages", f"{imageID}.png")
         imageCQ = f"[CQ:image,file=file://{imagePath}]"
         return parseCave(text.replace(f"[[Img:{imageID}]]]", str(imageCQ)))
@@ -131,8 +114,7 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
             argument.append("")
         else:
             argument = argument[0].split(" ")
-        if argument[0] not in ["add", "添加", "-a"] and time.time() - \
-                latest_use < 3:
+        if argument[0] not in ["add", "添加", "-a"] and time.time() - latest_use < 3:
             await cave.finish(f"冷却中（{3 - (time.time() - latest_use)}s）", at_sender=True)
         else:
             latest_use = time.time()
@@ -149,16 +131,17 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
             else:
                 senderData = await bot.get_stranger_info(user_id=caveData["sender"])
             await cave.send(
-                Message((
-                    f'{_lang.text("cave.name",[],event.get_user_id())}——（{caveData["id"]}）\n'
-                    f'{text}\n'
-                    f"——{senderData['nickname']}")))
+                Message(
+                    (
+                        f'{_lang.text("cave.name",[],event.get_user_id())}——（{caveData["id"]}）\n'
+                        f"{text}\n"
+                        f"——{senderData['nickname']}"
+                    )
+                )
+            )
             # 发送评论
             if event.get_session_id().split("_")[0] == "group":
-                comments = json.load(
-                    open(
-                        "data/cave.comments.json",
-                        encoding="utf-8"))
+                comments = json.load(open("data/cave.comments.json", encoding="utf-8"))
                 caveData["id"] = str(caveData["id"])
                 if caveData["id"] in comments.keys():
                     comments = list(comments[caveData["id"]]["data"].values())
@@ -168,14 +151,16 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                     while len(comments) > 0:
                         if count <= MAX_NODE_MESSAGE:
                             comment = comments.pop(-1)
-                            node_message[-1].append({
-                                "type": "node",
-                                "data": {
-                                    "uin": comment["sender"],
-                                    "nickname": f"来自【{(await bot.get_stranger_info(user_id=comment['sender']))['nickname']}】的评论 - #{comment['id']}",
-                                    "content": comment["text"]
+                            node_message[-1].append(
+                                {
+                                    "type": "node",
+                                    "data": {
+                                        "uin": comment["sender"],
+                                        "nickname": f"来自【{(await bot.get_stranger_info(user_id=comment['sender']))['nickname']}】的评论 - #{comment['id']}",
+                                        "content": comment["text"],
+                                    },
                                 }
-                            })
+                            )
                         else:
                             node_message.append([])
                             count = 0
@@ -184,7 +169,7 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                         await bot.call_api(
                             api="send_group_forward_msg",
                             messages=node,
-                            group_id=event.get_session_id().split("_")[1]
+                            group_id=event.get_session_id().split("_")[1],
                         )
             await cave.finish()
 
@@ -202,40 +187,43 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                     text = parseCave(caveData["text"])
                     if isinstance(caveData["sender"], dict):
                         if caveData["sender"]["type"] == "nickname":
-                            senderData = {
-                                "nickname": caveData["sender"]["name"]}
+                            senderData = {"nickname": caveData["sender"]["name"]}
                         else:
                             senderData = {"nickname": "未知"}
                     else:
-                        senderData = await bot.get_stranger_info(user_id=caveData["sender"])
+                        senderData = await bot.get_stranger_info(
+                            user_id=caveData["sender"]
+                        )
                     cave_text = (
                         f"{_lang.text('cave.name',[],event.get_user_id())}——（{caveData['id']}）\n"
                         f"{text}\n"
                         f"——{senderData['nickname']}\n"
                     )
 
-                    node_message.append({
-                        "type": "node",
-                        "data": {
-                            "uin": int(user_info["user_id"]),
-                            "nickname": user_info["nickname"],
-                            "content": cave_text
+                    node_message.append(
+                        {
+                            "type": "node",
+                            "data": {
+                                "uin": int(user_info["user_id"]),
+                                "nickname": user_info["nickname"],
+                                "content": cave_text,
+                            },
                         }
-                    })
+                    )
             await bot.call_api(
                 api="send_group_forward_msg",
                 messages=node_message,
-                group_id=str(event.get_session_id().split("_")[1])
+                group_id=str(event.get_session_id().split("_")[1]),
             )
 
         elif argument[0] in ["add", "-a", "添加"]:
             exp.add_exp(event.get_user_id(), 6)
-            text = await downloadImages(str(message)[argument[0].__len__():].strip())
+            text = await downloadImages(str(message)[argument[0].__len__() :].strip())
             data["data"][data["count"]] = {
                 "id": data["count"],
                 "text": text,
                 "sender": event.get_user_id(),
-                "time": time.time()
+                "time": time.time(),
             }
             data["count"] += 1
             # 发送通知
@@ -252,9 +240,7 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
             # 写入数据
             json.dump(data, open("data/cave.data.json", "w", encoding="utf-8"))
             await cave.finish(
-                _lang.text(
-                    "cave.added", [
-                        data["count"] - 1], event.get_user_id())
+                _lang.text("cave.added", [data["count"] - 1], event.get_user_id())
             )
 
         elif argument[0] in ["-g", "查询", "view", "show", "查看"]:
@@ -277,10 +263,7 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                 )
             )
             if event.get_session_id().split("_")[0] == "group":
-                comments = json.load(
-                    open(
-                        "data/cave.comments.json",
-                        encoding="utf-8"))
+                comments = json.load(open("data/cave.comments.json", encoding="utf-8"))
                 caveData["id"] = str(caveData["id"])
                 if caveData["id"] in comments.keys():
                     comments = list(comments[caveData["id"]]["data"].values())
@@ -290,14 +273,16 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                     while len(comments) > 0:
                         if count <= MAX_NODE_MESSAGE:
                             comment = comments.pop(-1)
-                            node_message[-1].append({
-                                "type": "node",
-                                "data": {
-                                    "uin": comment["sender"],
-                                    "nickname": f"来自【{(await bot.get_stranger_info(user_id=comment['sender']))['nickname']}】的评论 - #{comment['id']}",
-                                    "content": comment["text"]
+                            node_message[-1].append(
+                                {
+                                    "type": "node",
+                                    "data": {
+                                        "uin": comment["sender"],
+                                        "nickname": f"来自【{(await bot.get_stranger_info(user_id=comment['sender']))['nickname']}】的评论 - #{comment['id']}",
+                                        "content": comment["text"],
+                                    },
                                 }
-                            })
+                            )
                         else:
                             node_message.append([])
                             count = 0
@@ -306,7 +291,7 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                         await bot.call_api(
                             api="send_group_forward_msg",
                             messages=node,
-                            group_id=event.get_session_id().split("_")[1]
+                            group_id=event.get_session_id().split("_")[1],
                         )
             await cave.finish()
 
@@ -316,8 +301,7 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
             canReadCount = len(data["data"].keys())
             await cave.finish(
                 _lang.text(
-                    "cave.data_finish", [
-                        count, canReadCount], event.get_user_id()
+                    "cave.data_finish", [count, canReadCount], event.get_user_id()
                 )
             )
 
