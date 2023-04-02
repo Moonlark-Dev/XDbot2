@@ -210,7 +210,6 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                 su_notice_cache = text
                 await su.finish("超级广播内容已设定")
 
-        
             elif argument[1] == "set" or argument == "设置":
                 config = json.load(
                     open(
