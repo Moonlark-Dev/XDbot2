@@ -201,12 +201,6 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                                 "w",
                                 encoding="utf-8"))
                         await su.send(f"已重置：{file}")
-        elif argument[0] == "echo" or argument[0] == "调试输出":
-            await su.send(
-                Message(
-                    message.extract_plain_text()[
-                        argument[0].__len__() + 1:])
-            )
         elif argument[0] == "notice" or argument[0] == "超级广播" or argument[0] == "广播":
             global su_notice_cache
             text = str(message)[argument[0].__len__() + 1:]
