@@ -19,17 +19,14 @@ def reload():
     for _lang_file in _lang_files:
         try:
             _lang_index = json.load(
-                open(
-                    "src/plugins/Core/lang" +
-                    os.sep +
-                    _lang_file, encoding="utf-8"))
+                open("src/plugins/Core/lang" + os.sep + _lang_file, encoding="utf-8")
+            )
             _lang_dict[_lang_file.replace(".json", "")] = _lang_index
         except BaseException as e:
             logger.warning(f"加载 {_lang_file} 时发生错误：{e}")
 
 
-def text(key: str, _format: list = [],
-         user: str = "default", params: dict = {}):
+def text(key: str, _format: list = [], user: str = "default", params: dict = {}):
     try:
         lang = _lang_user[user]
     except KeyError:

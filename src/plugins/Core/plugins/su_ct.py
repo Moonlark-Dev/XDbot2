@@ -16,12 +16,7 @@ async def ct(message: Message = CommandArg()):
                 fileList = os.listdir("data")
                 for file in fileList:
                     if file.startswith("ct."):
-                        json.dump(
-                            dict(),
-                            open(
-                                f"data/{file}",
-                                "w",
-                                encoding="utf-8"))
+                        json.dump(dict(), open(f"data/{file}", "w", encoding="utf-8"))
                         await su.send(f"已重置：{file}")
                 await su.finish("已清除所有发言排名数据")
     except BaseException:

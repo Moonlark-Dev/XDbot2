@@ -21,9 +21,8 @@ def refresh_group_unanswered(groups=[]):
     global group_unanswered
     if not groups:
         groups = json.load(
-            open(
-                "data/quick_math.enabled_groups.json",
-                encoding="utf-8"))
+            open("data/quick_math.enabled_groups.json", encoding="utf-8")
+        )
     for g in groups:
         group_unanswered[g] = 0
 
@@ -46,25 +45,27 @@ async def send_quick_math():
     global group, answer
     try:
         accout_data = json.load(
-            open(
-                "data/su.multiaccoutdata.ro.json",
-                encoding="utf-8"))
+            open("data/su.multiaccoutdata.ro.json", encoding="utf-8")
+        )
         groups = json.load(
-            open(
-                "data/quick_math.enabled_groups.json",
-                encoding="utf-8"))
+            open("data/quick_math.enabled_groups.json", encoding="utf-8")
+        )
         try:
             group = random.choice(groups)
         except BaseException:
             return None
         if group_unanswered[group] >= 3:
             return None
-        question = f"{random.randint(0, 50)} {random.choice('+-*')} {random.randint(1, 50)}"
+        question = (
+            f"{random.randint(0, 50)} {random.choice('+-*')} {random.randint(1, 50)}"
+        )
         answer = eval(question)
         bot = get_bot(accout_data[str(group)])
-        msg_id = (await bot.send_group_msg(
-            group_id=group,
-            message=f"[QUICK MATH] {question} = ?"))["message_id"]
+        msg_id = (
+            await bot.send_group_msg(
+                group_id=group, message=f"[QUICK MATH] {question} = ?"
+            )
+        )["message_id"]
         asyncio.create_task(delete_msg(bot, msg_id))
     except BaseException:
         await error.report(format_exc())
@@ -90,12 +91,13 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
                 add = [random.randint(1, 13), random.randint(1, 15)]
                 economy.add_vi(event.get_user_id(), add[0])
                 exp.add_exp(event.get_user_id(), add[1])
-                await matcher.send(lang.text("quick_math.rightanswer", add, event.get_user_id()),
-                                   at_sender=True)
+                await matcher.send(
+                    lang.text("quick_math.rightanswer", add, event.get_user_id()),
+                    at_sender=True,
+                )
                 group = None
                 answer = None
-                achievement.increase_unlock_progress(
-                    "我爱数学", event.get_user_id())
+                achievement.increase_unlock_progress("我爱数学", event.get_user_id())
 
     except BaseException:
         await error.report(format_exc())
@@ -105,9 +107,8 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
 async def quick_math_command(matcher: Matcher, event: GroupMessageEvent):
     try:
         groups = json.load(
-            open(
-                "data/quick_math.enabled_groups.json",
-                encoding="utf-8"))
+            open("data/quick_math.enabled_groups.json", encoding="utf-8")
+        )
         if event.group_id in groups:
             groups.pop(groups.index(event.group_id))
             await matcher.send(lang.text("quick_math.disable", [], event.get_user_id()))
@@ -115,11 +116,8 @@ async def quick_math_command(matcher: Matcher, event: GroupMessageEvent):
             groups.append(event.group_id)
             await matcher.send(lang.text("quick_math.enable", [], event.get_user_id()))
         json.dump(
-            groups,
-            open(
-                "data/quick_math.enabled_groups.json",
-                "w",
-                encoding="utf-8"))
+            groups, open("data/quick_math.enabled_groups.json", "w", encoding="utf-8")
+        )
         refresh_group_unanswered(groups)
     except BaseException:
         await error.report(format_exc(), matcher)

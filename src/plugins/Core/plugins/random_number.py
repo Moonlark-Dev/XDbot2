@@ -8,7 +8,7 @@ from . import _lang as lang
 import traceback
 from lupa import LuaRuntime
 
-random_plugin = on_command('random', aliases={"rd", "随机数"})
+random_plugin = on_command("random", aliases={"rd", "随机数"})
 
 
 lua = LuaRuntime(unpack_returned_tuples=True)
@@ -41,7 +41,9 @@ async def random_handle(event: MessageEvent, message: Message = CommandArg()):
                 result = run_sandbox(int(arg_list[0]), int(arg_list[1]))
             else:
                 # 参数错误
-                await random_plugin.finish(lang.text("random_number.argerr", [], event.get_user_id()))
+                await random_plugin.finish(
+                    lang.text("random_number.argerr", [], event.get_user_id())
+                )
         # 返回结果
         await random_plugin.finish(str(result))
     except FinishedException:

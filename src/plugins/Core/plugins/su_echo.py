@@ -11,7 +11,10 @@ async def echo(message: Message = CommandArg()):
     argument = str(message).split(" ")
     try:
         if argument[0] in ["echo", "调试输出"]:
-            await su.send(Message(
-                ("".join(argument[1:]).replace("&#91;", "[").replace("&#93;", "]"))))
+            await su.send(
+                Message(
+                    ("".join(argument[1:]).replace("&#91;", "[").replace("&#93;", "]"))
+                )
+            )
     except BaseException:
         await error.report(format_exc(), su)

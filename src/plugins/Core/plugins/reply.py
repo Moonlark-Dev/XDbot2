@@ -40,7 +40,7 @@ dictionary = {
         "（被撅力）哼哼哼啊啊啊啊啊啊啊啊（悲",
         "（拍桌）你是不是有病啊？",
         "（脸红）啊……不可以",
-        "杰哥不要！（？"
+        "杰哥不要！（？",
     ],
     "to_me": ["?", "¿", "喵？", "a？", "（窥屏.jpg）", "喵喵喵？", "(?"],
     "primary": ["（窥屏.jpg）", "az……", "hmm"],
@@ -61,8 +61,8 @@ dictionary = {
         "你可以在「/st-l」查询身边的人使用「/st-r」次数的记录",
         "你可以在「/preview six」查询身边的人有多能发「6」",
         "6!",
-        "空格！空格！！空格！！！"
-    ]
+        "空格！空格！！空格！！！",
+    ],
 }
 
 
@@ -127,12 +127,9 @@ async def repetitionHandle(event: GroupMessageEvent):
                 "user": [event.get_user_id()],
             }
         else:
-            if event.get_user_id(
-            ) not in repetitionCache[event.group_id]["user"]:
-                if event.get_plaintext(
-                ) == repetitionCache[event.group_id]["message"]:
-                    repetitionCache[event.group_id]["user"].append(
-                        event.get_user_id())
+            if event.get_user_id() not in repetitionCache[event.group_id]["user"]:
+                if event.get_plaintext() == repetitionCache[event.group_id]["message"]:
+                    repetitionCache[event.group_id]["user"].append(event.get_user_id())
                     if len(repetitionCache[event.group_id]["user"]) >= random.randint(
                         2, 5
                     ):
@@ -166,16 +163,17 @@ async def imageSenderHandle(event: GroupMessageEvent):
     try:
         global latestSend
         if time.time() - latestSend > 90:
-            if event.group_id in json.load(
-                    open("data/random_events.disable.json", encoding="utf-8"))["send_images"]:
+            if (
+                event.group_id
+                in json.load(open("data/random_events.disable.json", encoding="utf-8"))[
+                    "send_images"
+                ]
+            ):
                 await imageSender.finish()
             if random.random() <= 0.05:  # 机率：5%
                 images = []
                 # message = event.get_plaintext()
-                imageData = json.load(
-                    open(
-                        "data/reply.images.json",
-                        encoding="utf-8"))
+                imageData = json.load(open("data/reply.images.json", encoding="utf-8"))
                 # 初始化图库
                 for image in imageData["A"]:
                     images += [image, image, image]
@@ -202,8 +200,7 @@ async def imageSenderHandle(event: GroupMessageEvent):
                     except BaseException:
                         pass
                     json.dump(
-                        imageData, open(
-                            "data/reply.images.json", "w", encoding="utf-8")
+                        imageData, open("data/reply.images.json", "w", encoding="utf-8")
                     )
 
     except FinishedException:
@@ -217,24 +214,22 @@ async def imageSaverHandle(bot: Bot, event: GroupMessageEvent):
     try:
         global latestSend
         if time.time() - latestSend > 60:
-            if event.group_id in json.load(
-                    open("data/random_events.disable.json", encoding="utf-8"))["download_images"]:
+            if (
+                event.group_id
+                in json.load(open("data/random_events.disable.json", encoding="utf-8"))[
+                    "download_images"
+                ]
+            ):
                 await imageSaver.finish()
             message = str(event.get_message())
             # await imageSaver.send(message)
             imageCQ = re.match(r"\[CQ:image(.*)\]", message)
             if imageCQ is not None:
                 imageCQ = imageCQ.group(0)
-                isMeme = int(
-                    re.search(
-                        r"subType=\d",
-                        imageCQ).group(0).split("=")[1])
+                isMeme = int(re.search(r"subType=\d", imageCQ).group(0).split("=")[1])
                 # await imageSaver.send(str(bool(isMeme)))
                 if isMeme and random.random() <= 0.05:  # 概率：5%
-                    data = json.load(
-                        open(
-                            "data/reply.images.json",
-                            encoding="utf-8"))
+                    data = json.load(open("data/reply.images.json", encoding="utf-8"))
                     imageID = len(data["review"].keys())
                     data["review"][imageID] = imageCQ
                     await bot.send_group_msg(
@@ -250,21 +245,15 @@ async def imageSaverHandle(bot: Bot, event: GroupMessageEvent):
                     )
 
                     json.dump(
-                        data,
-                        open(
-                            "data/reply.images.json",
-                            "w",
-                            encoding="utf-8"))
+                        data, open("data/reply.images.json", "w", encoding="utf-8")
+                    )
                     await asyncio.sleep(random.random() / 2)
                     await imageSaver.send(
                         _lang.text("reply.good_image", [], event.get_user_id())
                     )
                     latestSend = time.time()
                 elif isMeme and random.random() <= 0.10:  # 概率：10%
-                    data = json.load(
-                        open(
-                            "data/reply.images.json",
-                            encoding="utf-8"))
+                    data = json.load(open("data/reply.images.json", encoding="utf-8"))
                     imageID = len(data["review"].keys())
                     data["review"][imageID] = imageCQ
                     await bot.send_group_msg(
@@ -284,11 +273,8 @@ async def imageSaverHandle(bot: Bot, event: GroupMessageEvent):
                     )
 
                     json.dump(
-                        data,
-                        open(
-                            "data/reply.images.json",
-                            "w",
-                            encoding="utf-8"))
+                        data, open("data/reply.images.json", "w", encoding="utf-8")
+                    )
                     latestSend = time.time()
                 # elif random.random() <= 0.01:
 

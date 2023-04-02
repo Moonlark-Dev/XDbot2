@@ -44,18 +44,35 @@ async def sign_handler(event: MessageEvent):
             economy.add_vi(qq, int(add_vi))
             data["latest"][qq] = date
             now_data = user.get_user_data(qq)
-            await sign.send("\n".join((
-                lang.text("sign.success", [], qq),
-                lang.text("sign.hr", [], qq),
-                lang.text(
-                    "sign.add_exp", [
-                        round(origin_data["exp"], 2), round(now_data["exp"], 2), add_exp], qq),
-                lang.text(
-                    "sign.add_vim", [
-                        round(origin_data["vimcoin"], 2), round(now_data["vimcoin"], 2), add_vi], qq),
-                lang.text("sign.hr", [], qq),
-                lang.text("sign.days", [data["days"][qq]], qq)
-            )), at_sender=True)
+            await sign.send(
+                "\n".join(
+                    (
+                        lang.text("sign.success", [], qq),
+                        lang.text("sign.hr", [], qq),
+                        lang.text(
+                            "sign.add_exp",
+                            [
+                                round(origin_data["exp"], 2),
+                                round(now_data["exp"], 2),
+                                add_exp,
+                            ],
+                            qq,
+                        ),
+                        lang.text(
+                            "sign.add_vim",
+                            [
+                                round(origin_data["vimcoin"], 2),
+                                round(now_data["vimcoin"], 2),
+                                add_vi,
+                            ],
+                            qq,
+                        ),
+                        lang.text("sign.hr", [], qq),
+                        lang.text("sign.days", [data["days"][qq]], qq),
+                    )
+                ),
+                at_sender=True,
+            )
             json.dump(data, open("data/etm/sign.json", "w", encoding="utf-8"))
             if add_vi == Decimal(0):
                 achievement.unlock("+0！", event.get_user_id())

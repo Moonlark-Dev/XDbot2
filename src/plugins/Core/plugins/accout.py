@@ -7,10 +7,7 @@ from . import _error
 import traceback
 from .su import su
 
-priority_accout = json.load(
-    open(
-        "data/su.priority_accout.json",
-        encoding="utf-8"))
+priority_accout = json.load(open("data/su.priority_accout.json", encoding="utf-8"))
 accouts = {}
 multiAccoutData = {}
 accout_manager = on_command("accout", aliases={"多帐号"})
@@ -29,9 +26,11 @@ async def get_multiaccout_data(bot: Bot, message: Message = CommandArg()):
                 length = 1
                 for accout in list(bots.keys()):
                     userData = await bot.get_stranger_info(
-                        user_id=(await bots[accout].get_login_info())["user_id"])
+                        user_id=(await bots[accout].get_login_info())["user_id"]
+                    )
                     reply += (
-                        f"{length}. {userData['nickname']} ({userData['user_id']})\n")
+                        f"{length}. {userData['nickname']} ({userData['user_id']})\n"
+                    )
                     length += 1
                 await su.send(reply)
                 # 分配情况
@@ -65,17 +64,14 @@ async def reloadMuiltData():
             elif key in priority_accout["accouts"]:
                 multiAccoutData[group["group_id"]] = key
     json.dump(
-        multiAccoutData,
-        open(
-            "data/su.multiaccoutdata.ro.json",
-            "w",
-            encoding="utf-8"))
+        multiAccoutData, open("data/su.multiaccoutdata.ro.json", "w", encoding="utf-8")
+    )
 
 
 @accout_manager.handle()
 async def mulitaccout_manager(
-        event: GroupMessageEvent,
-        message: Message = CommandArg()):
+    event: GroupMessageEvent, message: Message = CommandArg()
+):
     global multiAccoutData
     try:
         argument = str(message).split(" ")
@@ -84,13 +80,18 @@ async def mulitaccout_manager(
             if argument[1] in accouts[event.group_id]:
                 multiAccoutData[event.group_id] = argument[1]
                 json.dump(
-                    multiAccoutData, open(
-                        "data/su.multiaccoutdata.ro.json", "w", encoding="utf-8"))
-                await accout_manager.finish(_lang.text("su.set_accout_success", [argument[1]], qq))
+                    multiAccoutData,
+                    open("data/su.multiaccoutdata.ro.json", "w", encoding="utf-8"),
+                )
+                await accout_manager.finish(
+                    _lang.text("su.set_accout_success", [argument[1]], qq)
+                )
             else:
                 await accout_manager.finish(_lang.text("su.accout_not_found"), user=qq)
         elif argument[0] == "list":
-            await accout_manager.finish(_lang.text("su.accout_list", [accouts[event.group_id]], qq))
+            await accout_manager.finish(
+                _lang.text("su.accout_list", [accouts[event.group_id]], qq)
+            )
         elif argument[0] == "reload":
             await reloadMuiltData()
 

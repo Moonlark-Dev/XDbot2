@@ -17,7 +17,7 @@ latest_time = time.time() - 15
 builtin_urls = {
     "six": "http://127.0.0.1:38192/six",
     "ban": "http://127.0.0.1:38192/ban/%group_id%",
-    "setu": "http://127.0.0.1:38192/setu"
+    "setu": "http://127.0.0.1:38192/setu",
 }
 
 # [HELPSTART] Version: 2
@@ -43,16 +43,19 @@ async def preview_website(event: MessageEvent, message: Message = CommandArg()):
             if "%group_id%" in url:
                 try:
                     url = url.replace(
-                        "%group_id%", event.get_session_id().split("_")[1])
+                        "%group_id%", event.get_session_id().split("_")[1]
+                    )
                 except IndexError:
-                    await preview.finish(lang.text("preview.only_group", [], event.get_user_id()))
+                    await preview.finish(
+                        lang.text("preview.only_group", [], event.get_user_id())
+                    )
         # 截取网页
         file_name = f"preview.image_{int(time.time())}"
         async with async_playwright() as p:
             browser = await p.chromium.launch()
             page = await browser.new_page()
             await page.goto(url)
-            await asyncio.sleep(1)      # 等待页面加载完成，参考 Issue#61
+            await asyncio.sleep(1)  # 等待页面加载完成，参考 Issue#61
             url = page.url
             await page.screenshot(path=f"data/{file_name}.png", full_page=True)
             await browser.close()
@@ -63,8 +66,13 @@ async def preview_website(event: MessageEvent, message: Message = CommandArg()):
         draw.text((0, 0), url, (0, 0, 0), font=font)
         image.save(f"data/{file_name}.png")
         # 发送图片
-        await preview.send(Message(MessageSegment.image(
-            file=f"file://{os.path.abspath(os.path.join('./data', f'{file_name}.png'))}")))
+        await preview.send(
+            Message(
+                MessageSegment.image(
+                    file=f"file://{os.path.abspath(os.path.join('./data', f'{file_name}.png'))}"
+                )
+            )
+        )
         # 删除图片 (Issue #66)
         os.remove(os.path.abspath(os.path.join("./data", f"{file_name}.png")))
 

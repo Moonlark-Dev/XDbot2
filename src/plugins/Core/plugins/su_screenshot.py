@@ -5,6 +5,7 @@ import traceback
 from . import _error
 import os.path
 from nonebot.log import logger
+
 try:
     import pyautogui
 except BaseException:

@@ -26,7 +26,11 @@ async def reply_sender_handle(event: GroupMessageEvent):
         message = str(event.get_message())
         user_id = event.get_user_id()
         for item in list(data.values()):
-            if item["global"] or item["group_id"] == event.group_id or item["user_id"] == user_id:
+            if (
+                item["global"]
+                or item["group_id"] == event.group_id
+                or item["user_id"] == user_id
+            ):
                 if re.match(item["matcher"], message):
                     latest_send = time.time()
                     await reply_sender.finish(Message(random.choice(item["text"])))
@@ -34,6 +38,7 @@ async def reply_sender_handle(event: GroupMessageEvent):
         raise FinishedException()
     except BaseException:
         await _error.report(traceback.format_exc())
+
 
 # [HELPSTART] Version: 2
 # Command: reply
@@ -60,7 +65,9 @@ async def reply_command(event: GroupMessageEvent, message: Message = CommandArg(
         elif arguments[0] == "add":
             matcher = arguments[1]
             reply_text = msg.split("\n")[1:]
-            reply_id = await _.create_reply(matcher, reply_text, event.group_id, user_id)
+            reply_id = await _.create_reply(
+                matcher, reply_text, event.group_id, user_id
+            )
             await reply.finish(lang.text("reply.add_finish", [str(reply_id)], user_id))
         elif arguments[0] == "remove":
             if _.remove_reply(arguments[1], user_id):
@@ -69,26 +76,31 @@ async def reply_command(event: GroupMessageEvent, message: Message = CommandArg(
                 await reply.finish(lang.text("reply.403", [], user_id))
         elif arguments[0] in ["get", "show"]:
             data = _.get_list()[arguments[1]]
-            await reply.finish(lang.text(
-                "reply.show_data",
-                [arguments[1],
-                 data["matcher"],
-                 data["global"],
-                 data["text"]], user_id))
+            await reply.finish(
+                lang.text(
+                    "reply.show_data",
+                    [arguments[1], data["matcher"], data["global"], data["text"]],
+                    user_id,
+                )
+            )
         elif arguments[0] in ["list", "ls"]:
             data = _.get_list()
             reply_list = []
             for key in list(data.keys()):
                 if data[key]["user_id"] == user_id:
                     reply_list.append(f"#{key}")
-            await reply.finish(lang.text("reply.mydata", [" ".join(reply_list)], user_id))
+            await reply.finish(
+                lang.text("reply.mydata", [" ".join(reply_list)], user_id)
+            )
         elif arguments[0] in ["all"]:
             data = _.get_list()
             data_list = []
             for key in list(data.keys()):
                 if data[key]["global"] or data[key]["group_id"] == event.group_id:
                     data_list.append(f"#{key}")
-            await reply.finish(lang.text("reply.alldata", [" ".join(data_list)], user_id))
+            await reply.finish(
+                lang.text("reply.alldata", [" ".join(data_list)], user_id)
+            )
         else:
             await reply.finish(lang.text("reply.need_argv", [], user_id))
 

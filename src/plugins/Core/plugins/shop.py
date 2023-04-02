@@ -10,16 +10,8 @@ import traceback
 
 shop = on_command("shop", aliases={"系统商店", "systemshop", "ss"})
 SHOP_ITEMS = {
-    "1": {
-        "id": "dice",
-        "count": 1,
-        "data": {}
-    },
-    "2": {
-        "id": "book_and_quill",
-        "count": 1,
-        "data": {}
-    }
+    "1": {"id": "dice", "count": 1, "data": {}},
+    "2": {"id": "book_and_quill", "count": 1, "data": {}},
 }
 
 
@@ -36,19 +28,22 @@ async def shop_handler(event: MessageEvent, message: Message = CommandArg()):
             await shop.finish(reply)
         elif arguments[0] == "view":
             item = items.json2items([SHOP_ITEMS[arguments[1]]])[0]
-            await shop.finish((
-                f"「商品信息（#{arguments[1]}）」\n"
-                "——————————————\n"
-                f"物品：{item.data['display_name']} ({item.item_id})\n"
-                f"价格：{economy.vi2vim(item.data['price'])}vim ({item.data['price']}vi)\n"
-                f"简介：\n  {item.data['display_message']}"))
+            await shop.finish(
+                (
+                    f"「商品信息（#{arguments[1]}）」\n"
+                    "——————————————\n"
+                    f"物品：{item.data['display_name']} ({item.item_id})\n"
+                    f"价格：{economy.vi2vim(item.data['price'])}vim ({item.data['price']}vi)\n"
+                    f"简介：\n  {item.data['display_message']}"
+                )
+            )
         elif arguments[0] == "buy":
             item = items.json2items([SHOP_ITEMS[arguments[1]]])[0]
             if len(arguments) >= 3:
                 count = int(arguments[2])
             else:
                 count = 1
-            if economy.use_vi(qq, item.data['price'] * count)[0]:
+            if economy.use_vi(qq, item.data["price"] * count)[0]:
                 exp.add_exp(qq, int(5 * (1 + count / 25)))
                 bag.add_item(qq, item.item_id, count, item.data)
                 await shop.finish("购买成功！\n使用「/bag」查看", at_sender=True)

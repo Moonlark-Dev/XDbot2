@@ -129,19 +129,13 @@ async def ctRecorderHandle(bot: Bot, event: GroupMessageEvent):
             if event.get_plaintext().startswith(start):
                 return
         # 获取数据
-        globalData = json.load(
-            open(
-                "data/ct.globalData.json",
-                encoding="utf-8"))
+        globalData = json.load(open("data/ct.globalData.json", encoding="utf-8"))
         group = event.get_session_id().split("_")[1]
         userID = event.get_user_id()
         if userID == "1226383994":
             userID = "2558938020"
         if os.path.isfile(f"data/ct.{group}.json"):
-            groupData = json.load(
-                open(
-                    f"data/ct.{group}.json",
-                    encoding="utf-8"))
+            groupData = json.load(open(f"data/ct.{group}.json", encoding="utf-8"))
         else:
             groupData = dict()
         # 修改数据
@@ -154,18 +148,8 @@ async def ctRecorderHandle(bot: Bot, event: GroupMessageEvent):
         else:
             groupData[userID] += 1
         # 保存数据
-        json.dump(
-            globalData,
-            open(
-                "data/ct.globalData.json",
-                "w",
-                encoding="utf-8"))
-        json.dump(
-            groupData,
-            open(
-                f"data/ct.{group}.json",
-                "w",
-                encoding="utf-8"))
+        json.dump(globalData, open("data/ct.globalData.json", "w", encoding="utf-8"))
+        json.dump(groupData, open(f"data/ct.{group}.json", "w", encoding="utf-8"))
 
     except Exception:
         await _error.report(traceback.format_exc())

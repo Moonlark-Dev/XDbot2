@@ -11,14 +11,17 @@ import traceback
 async def update_xdbot(matcher: Matcher, event: MessageEvent):
     try:
         await matcher.send(lang.text("update.checking", [], event.get_user_id()))
-        old_commit = os.popen("git log").read().split("\n")[
-            0].split(" ")[1][:7]
+        old_commit = os.popen("git log").read().split("\n")[0].split(" ")[1][:7]
         os.system("python3 update.py")
         await matcher.finish(
             lang.text(
                 "update.finish",
-                [old_commit, os.popen("git log").read().split("\n")[
-                    0].split(" ")[1][:7]],
-                event.get_user_id()))
+                [
+                    old_commit,
+                    os.popen("git log").read().split("\n")[0].split(" ")[1][:7],
+                ],
+                event.get_user_id(),
+            )
+        )
     except BaseException:
         await error.report(traceback.format_exc(), matcher)

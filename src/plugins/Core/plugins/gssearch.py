@@ -26,12 +26,14 @@ urls = {
     "罗莎莉亚": "https://upload-bbs.miyoushe.com/upload/2022/04/20/74019947/cb23ecdf67076903655f04828b22ac1e_9052213692875242731.png",
     "埃洛伊": "https://upload-bbs.miyoushe.com/upload/2022/04/24/74019947/2540c26a2ac2577b3167f53db3c52dbc_1799590105380907974.png",
     "砂糖": "https://upload-bbs.miyoushe.com/upload/2022/04/21/74019947/572601cc24092a0b6eaee8906cb87bcf_8296508453075717975.png",
-    "菲谢尔": "https://upload-bbs.miyoushe.com/upload/2022/04/28/74019947/e58ddfb05f1b892c6a5b4f13c54778f8_8036909337049568299.png"
+    "菲谢尔": "https://upload-bbs.miyoushe.com/upload/2022/04/28/74019947/e58ddfb05f1b892c6a5b4f13c54778f8_8036909337049568299.png",
 }
 
 
 @gssearch.handle()
-async def handle_first_receive(event: GroupMessageEvent, bot: bot, message: Message = CommandArg()):
+async def handle_first_receive(
+    event: GroupMessageEvent, bot: bot, message: Message = CommandArg()
+):
     # 蒙德(done)
 
     # 璃月(to do)
@@ -42,7 +44,12 @@ async def handle_first_receive(event: GroupMessageEvent, bot: bot, message: Mess
 
     if str(message) not in urls:
         await gssearch.finish(f"未找到" + message)
-    msg = await gssearch.finish(Message(f"[CQ:image,file={urls[str(message).strip()]}]\n攻略制作:猫冬 https://www.miyoushe.com/ys/accountCenter/postList?id=74019947"))
+    msg = await gssearch.finish(
+        Message(
+            f"[CQ:image,file={urls[str(message).strip()]}]\n攻略制作:猫冬 https://www.miyoushe.com/ys/accountCenter/postList?id=74019947"
+        )
+    )
+
 
 # [HELPSTART] Version: 2
 # Command: gssearch

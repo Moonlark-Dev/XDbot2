@@ -35,12 +35,7 @@ async def img_review(message: Message = CommandArg()):
                         data["review"] = dict()
                     else:
                         data["review"].pop(argument[3])
-            json.dump(
-                data,
-                open(
-                    "data/reply.images.json",
-                    "w",
-                    encoding="utf-8"))
+            json.dump(data, open("data/reply.images.json", "w", encoding="utf-8"))
     except BaseException:
         await _error.report(traceback.format_exc(), su)
 
@@ -49,8 +44,7 @@ async def img_review(message: Message = CommandArg()):
 async def image(message: Message = CommandArg()):
     argument = str(message).split(" ")
     try:
-        if argument[0] in ["img", "图库"] and argument[1] not in [
-                "review", "re", "审核库"]:
+        if argument[0] in ["img", "图库"] and argument[1] not in ["review", "re", "审核库"]:
             data = json.load(open("data/reply.images.json", encoding="utf-8"))
             if argument[1] in ["添加", "add"]:
                 data[argument[2]].append(argument[3])
@@ -63,11 +57,6 @@ async def image(message: Message = CommandArg()):
                 data[argument[2]].pop(int(argument[3]))
             elif argument[1] in ["clear", "清空"]:
                 data = {"A": [], "B": [], "C": [], "review": dict()}
-            json.dump(
-                data,
-                open(
-                    "data/reply.images.json",
-                    "w",
-                    encoding="utf-8"))
+            json.dump(data, open("data/reply.images.json", "w", encoding="utf-8"))
     except BaseException:
         await _error.report(traceback.format_exc(), su)
