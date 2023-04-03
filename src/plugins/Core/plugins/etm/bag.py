@@ -18,6 +18,12 @@ def get_bags():
 
 get_bags()
 
+def get_items_count_in_bag(user_id):
+    count = 0
+    bag = bags[user_id]
+    for item in bag:
+        count += item.count
+    return count
 
 @scheduler.scheduled_job("cron", second="*/15", id="save_bags")
 def save_bags():

@@ -20,7 +20,7 @@ async def show_bag(bot: Bot, event: MessageEvent):
         qq = event.get_user_id()
         data = bag.get_user_bag(qq)
         nickname = (await bot.get_stranger_info(user_id=int(qq)))["nickname"]
-        reply = lang.text("bag.title", [nickname, len(data), 255], qq)
+        reply = lang.text("bag.title", [nickname, bag.get_items_count_in_bag(qq), 255], qq)
         length = 0
         for item in data:
             reply += f"\n{length}. {item.data['display_name']} x{item.count}"
