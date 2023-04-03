@@ -63,7 +63,6 @@ def save_bags():
             economy._add_vimcoin(user, 0.0002 * (count - 255))
 
 
-
 def get_user_bag(user_id):
     try:
         return bags[user_id]
