@@ -10,7 +10,8 @@ from . import _lang
 
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 IGNORED_EXCEPTION = [
-    "NetworkError"
+    "NetworkError",
+    "IllegalQuantityException"
 ]
 
 
