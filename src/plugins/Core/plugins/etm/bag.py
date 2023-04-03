@@ -18,12 +18,14 @@ def get_bags():
 
 get_bags()
 
+
 def get_items_count_in_bag(user_id):
     count = 0
     bag = bags[user_id]
     for item in bag:
         count += item.count
     return count
+
 
 @scheduler.scheduled_job("cron", second="*/15", id="save_bags")
 def save_bags():
@@ -85,6 +87,7 @@ def add_item(user_id, item_id, item_count=1, item_data={}):
 
 async def use_item(user_id, item_pos, argv=""):
     try:
+        # print(user_id, item_pos, bags[user_id])
         return bags[user_id][item_pos].use(argv)
     except NameError:
         return await bags[user_id][item_pos].async_use(argv)

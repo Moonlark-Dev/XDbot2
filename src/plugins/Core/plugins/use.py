@@ -20,7 +20,7 @@ async def use_item(event: MessageEvent, message: Message = CommandArg()):
             "\n".join(
                 await bag.use_item(
                     qq,
-                    int(argv[0]) + 1,
+                    int(argv[0]) - 1,
                     " ".join(argv[1:])
                 )
             )
