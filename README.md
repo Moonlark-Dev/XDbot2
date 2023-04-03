@@ -21,6 +21,8 @@ IT Craft XDBot2（下简称`XDbot2`）是一个简单的QQ功能型机器人，�
 
 您可以通过提交 [Issues](https://github.com/This-is-XiaoDeng/XDbot2/issues) 或 [Pull requests](https://github.com/This-is-XiaoDeng/XDbot2/pulls) 帮助改进这个项目
 
+> 备注：请将更改先推入`develop`分支
+
 > 建议阅读： [附录：贡献 | XDbot2 Wiki](https://github.com/This-is-XiaoDeng/XDbot2/wiki/%E9%99%84%E5%BD%95%EF%BC%9A%E8%B4%A1%E7%8C%AE) 
 
 # 鸣谢
