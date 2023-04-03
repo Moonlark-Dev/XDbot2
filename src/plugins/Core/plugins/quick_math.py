@@ -123,3 +123,9 @@ async def quick_math_command(matcher: Matcher, event: GroupMessageEvent):
         refresh_group_unanswered(groups)
     except BaseException:
         await error.report(format_exc(), matcher)
+
+# [HELPSTART] Version: 2
+# Command: qm
+# Usage: qm
+# Info: 开启/关闭速算
+# [HELPEND]
