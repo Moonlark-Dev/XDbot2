@@ -3,6 +3,7 @@ import json
 from .item_basic_data import BASIC_DATA
 from nonebot_plugin_apscheduler import scheduler
 from nonebot import require
+from . import economy
 
 require("nonebot_plugin_apscheduler")
 
@@ -17,6 +18,14 @@ def get_bags():
 
 
 get_bags()
+
+
+def get_items_count_in_bag(user_id):
+    count = 0
+    bag = bags[user_id]
+    for item in bag:
+        count += item.count
+    return count
 
 
 @scheduler.scheduled_job("cron", second="*/15", id="save_bags")
@@ -47,6 +56,11 @@ def save_bags():
                 })
     json.dump(bag_data, open("data/etm/bags.json", "w", encoding="utf-8"))
     get_bags()
+    # 超出容量处理
+    for user in list(bags.keys()):
+        count = get_items_count_in_bag(user)
+        if count >= 255:
+            economy._add_vimcoin(user, 0.0002 * (count - 255))
 
 
 def get_user_bag(user_id):
@@ -79,6 +93,7 @@ def add_item(user_id, item_id, item_count=1, item_data={}):
 
 async def use_item(user_id, item_pos, argv=""):
     try:
+        # print(user_id, item_pos, bags[user_id])
         return bags[user_id][item_pos].use(argv)
     except NameError:
         return await bags[user_id][item_pos].async_use(argv)
