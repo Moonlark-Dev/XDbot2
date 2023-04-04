@@ -8,6 +8,7 @@ import json
 
 su_notice_cache = ""
 
+
 @su.handle()
 async def su_primary_notice(message: Message = CommandArg()):
     try:
