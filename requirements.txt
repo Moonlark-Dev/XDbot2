@@ -6,3 +6,4 @@ psutil
 pyecharts
 nonebot_plugin_apscheduler
 lupa
+sentry_sdk
