@@ -21,18 +21,33 @@ def load_data():
     users = os.listdir("data/etm")
     for user in users:
         if os.path.isdir(os.path.join("data", "etm", user)):
-            achi_user_data[user] = json.load(
-                open(f"data/etm/{user}/achi.json", encoding="utf-8"))
-            achi_unlock_progress[user] = json.load(
-                open(f"data/etm/{user}/achi_unlock_progress.json", encoding="utf-8"))
-            bags[user] = json.load(
-                open(
-                    f"data/etm/{user}/bag.json",
-                    encoding="utf-8"))
-            basic_data[user] = json.load(
-                open(
-                    f"data/etm/{user}/user.json",
-                    encoding="utf-8"))
+            try:
+                achi_user_data[user] = json.load(
+                    open(f"data/etm/{user}/achi.json", encoding="utf-8"))
+
+            except BaseException:
+                pass
+            try:
+                achi_unlock_progress[user] = json.load(
+                    open(f"data/etm/{user}/achi_unlock_progress.json", encoding="utf-8"))
+            except BaseException:
+                pass
+            try:
+                bags[user] = json.load(
+                    open(
+                        f"data/etm/{user}/bag.json",
+                        encoding="utf-8"))
+            except BaseException:
+                pass
+            try:
+                basic_data[user] = json.load(
+                    open(
+                        f"data/etm/{user}/user.json",
+                        encoding="utf-8"))
+            except BaseException:
+                pass
+
+
 load_data()
 
 
