@@ -47,11 +47,10 @@ dictionary = {
     "tips": [
         "XDbot的生日是2022/06/28！",
         "你知道吗：不你不知道",
-        "XDbot2 是一个开源项目，可以在 https://github.com/This-is-XiaoDeng/XDbo2 上查看XDbot的源代码",
+        "XDbot2 是一个开源项目，可以在 https://github.com/ITCraftDevelopmentTeam/XDbo2 上查看XDbot的源代码",
         "pay.thisisxd.top，XiaoDeng3386在线化缘.jpg",
         "你可以使用「/upload-log」查看 XDbot2 的日志（虽然没有什么用，如果你不是一个开发者）",
         "XDbot提供了多种风格的语言包，使用「/lang list」可以查看它们",
-        "「prpr」——XiaoDeng3386（你最好真的在说Pull Request）",
         "404 not found",
         "这里没有tips",
         "print('Hello, XDbot2!')",

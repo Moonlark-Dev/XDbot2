@@ -1,6 +1,6 @@
-**简体中文** | [English](https://github.com/This-is-XiaoDeng/XDbot2/blob/master/README_en.md)
+**简体中文** | [English](https://github.com/ITCraftDevelopmentTeam/XDbot2/blob/master/README_en.md)
 
-![](https://socialify.git.ci/This-is-XiaoDeng/XDbot2/image?description=1&forks=1&issues=1&language=1&logo=https://www.thisisxd.top/img/XDbot2.png&name=1&owner=1&pulls=1&stargazers=1&theme=Light)
+![](https://socialify.git.ci/ITCraftDevelopmentTeam/XDbot2/image?description=1&forks=1&issues=1&language=1&logo=https://www.thisisxd.top/img/XDbot2.png&name=1&owner=1&pulls=1&stargazers=1&theme=Light)
 
 ## 简介
 
@@ -19,15 +19,18 @@ IT Craft XDBot2（下简称`XDbot2`）是一个简单的QQ功能型机器人，�
 
 ## 贡献
 
-您可以通过提交 [Issues](https://github.com/This-is-XiaoDeng/XDbot2/issues) 或 [Pull requests](https://github.com/This-is-XiaoDeng/XDbot2/pulls) 帮助改进这个项目
+您可以通过提交 [Issues](https://github.com/ITCraftDevelopmentTeam/XDbot2/issues) 或 [Pull requests](https://github.com/ITCraftDevelopmentTeam/XDbot2/pulls) 帮助改进这个项目
 
 > 备注：请将更改先推入`develop`分支
 
-> 建议阅读： [附录：贡献 | XDbot2 Wiki](https://github.com/This-is-XiaoDeng/XDbot2/wiki/%E9%99%84%E5%BD%95%EF%BC%9A%E8%B4%A1%E7%8C%AE) 
+> 建议阅读： [附录：贡献 | XDbot2 Wiki](https://github.com/ITCraftDevelopmentTeam/XDbot2/wiki/%E9%99%84%E5%BD%95%EF%BC%9A%E8%B4%A1%E7%8C%AE) 
 
 # 鸣谢
 
 - [IT Craft Development Team](https://itcdt.top)
 
-<a href="https://pay.thisisxd.top/"><img src="https://img.shields.io/badge/Sponsor%20me!-green?logo=wechat&amp;logoColor=white&amp;style=flat" alt="Sponsor me!"></a>
+----
+
+<a href="https://pay.thisisxd.top/"><img src="https://img.shields.io/badge/Sponsor%20-%20This%20is%20XiaoDeng-green?logo=wechat&amp;logoColor=white&amp;style=flat" alt="Sponsor This is XiaoDeng"></a>
+<a href="https://sponsor.xxtg666.top/"><img src="https://img.shields.io/badge/Sponsor%20-%20xxtg666-blue?logo=alipay&amp;logoColor=white&amp;style=flat" alt="Sponsor xxtg666"></a>
 
