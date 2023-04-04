@@ -20,7 +20,7 @@ require("nonebot_plugin_apscheduler")
 def load_data():
     users = os.listdir("data/etm")
     for user in users:
-        if os.path.isdir(os.path.join("data", "etm", user)):
+        if not os.path.isdir(os.path.join("data", "etm", user)):
             achi_user_data[user] = json.load(
                 open(f"data/etm/{user}/achi.json", encoding="utf-8"))
             achi_unlock_progress[user] = json.load(
