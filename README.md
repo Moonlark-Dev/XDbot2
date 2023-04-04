@@ -31,5 +31,6 @@ IT Craft XDBot2（下简称`XDbot2`）是一个简单的QQ功能型机器人，�
 
 ----
 
-- This-is-XiaoDeng: <a href="https://pay.thisisxd.top/"><img src="https://img.shields.io/badge/Sponsor%20me!-green?logo=wechat&amp;logoColor=white&amp;style=flat" alt="Sponsor me!"></a>
+<a href="https://pay.thisisxd.top/"><img src="https://img.shields.io/badge/Sponsor%20-%20This%20is%20XiaoDeng-green?logo=wechat&amp;logoColor=white&amp;style=flat" alt="Sponsor This is XiaoDeng"></a>
+<a href="https://sponsor.xxtg666.top/"><img src="https://img.shields.io/badge/Sponsor%20-%20xxtg666-blue?logo=alipay&amp;logoColor=white&amp;style=flat" alt="Sponsor xxtg666"></a>
 
