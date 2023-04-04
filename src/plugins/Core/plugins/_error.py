@@ -41,7 +41,6 @@ async def report(err: str, matcher: any = None):
     bot = get_bots()[json.load(
         open("data/su.multiaccoutdata.ro.json", encoding="utf-8"))[ctrlGroup]]
     await bot.send_group_msg(message=err, group_id=ctrlGroup)
-    if "「" in err and matcher == None:
+    if "「" in err and matcher is None:
         return None
     logger.error(err)
-    

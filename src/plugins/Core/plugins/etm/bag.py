@@ -4,6 +4,7 @@ from .item_basic_data import BASIC_DATA
 from nonebot_plugin_apscheduler import scheduler
 from nonebot import require
 from . import economy
+from . import data
 
 require("nonebot_plugin_apscheduler")
 
@@ -12,8 +13,8 @@ bags = {}
 
 
 def get_bags():
-    data = json.load(open("data/etm/bags.json", encoding="utf-8"))
-    for user, bag in list(data.items()):
+    data.bags
+    for user, bag in list(data.bags.items()):
         bags[user] = items.json2items(bag, user)
 
 
@@ -54,7 +55,7 @@ def save_bags():
                     "count": item.count,
                     "data": nbt.copy()
                 })
-    json.dump(bag_data, open("data/etm/bags.json", "w", encoding="utf-8"))
+    data.bags = bag_data
     get_bags()
     # 超出容量处理
     for user in list(bags.keys()):

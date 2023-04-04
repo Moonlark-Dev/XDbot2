@@ -6,7 +6,7 @@ from .economy import IllegalQuantityException
 class Item:
     def __init__(self, count, data, user_id):
         self.count = count
-        self.item_id = "dice"
+        self.item_id = ""  # dice"
         self.basic_data = {}
         # 初始化
         self.on_register()

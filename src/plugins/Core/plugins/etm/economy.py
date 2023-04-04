@@ -1,16 +1,17 @@
 from . import user
-from nonebot_plugin_apscheduler import scheduler
+# from nonebot_plugin_apscheduler import scheduler
 from nonebot import require
 import json
-from nonebot.log import logger
+# from nonebot.log import logger
+from .data import vimcoin
 
-vimcoin = json.load(open("data/etm/vim.json", encoding="utf-8"))
+
 # {
 #    "in": 0,
 #    "out": 0,
 #    "exchange_rate": 1
 # }
-require("nonebot_plugin_apscheduler")
+# require("nonebot_plugin_apscheduler")
 
 
 class IllegalQuantityException(Exception):
@@ -25,7 +26,7 @@ vimcoin["exchange_rate"] = 1
 
 # @scheduler.scheduled_job("cron", second="*/15", id="chamgeExchangeRate")
 
-
+"""
 async def change_exchange_rate():
     # 总vi
     users = json.load(open("data/etm/users.json", encoding="utf-8"))
@@ -38,6 +39,7 @@ async def change_exchange_rate():
                                   (all_vi / (user_count))) - 1) / 1000
     vimcoin["exchange_rate"] = vimcoin["_exchange_rate"] + 0.25
     json.dump(vimcoin, open("data/etm/vim.json", "w", encoding="utf-8"))
+"""
 
 
 def _add_vimcoin(user_id, count):
