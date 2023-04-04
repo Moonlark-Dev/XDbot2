@@ -4,7 +4,7 @@ from nonebot.adapters.onebot.v11 import Message
 from .su import su
 from . import _error
 from nonebot import get_bots
-from .accout import multiAccoutData
+import json
 
 su_notice_cache = ""
 
@@ -17,6 +17,8 @@ async def su_primary_notice(message: Message = CommandArg()):
             text = str(message)[argument[0].__len__() + 1:]
             if text == "submit":
                 if su_notice_cache != "":
+                    multiAccoutData = json.load(
+                        open("data/su.multiaccoutdata.ro.json", encoding="utf-8"))
                     groupList = list(multiAccoutData.keys())
                     bots = get_bots()
                     # 开始广播
