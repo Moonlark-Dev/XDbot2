@@ -1,4 +1,5 @@
 from .item import Item
+from .._lang import text
 import nonebot
 from . import exp
 
@@ -22,9 +23,9 @@ class BookAndQuill(Item):
         if argv[0] == "--write":
             if not self.data["saved"]:
                 self.data["data"] = " ".join(argv[1:])
-                return ["已写入"]
+                return [text("etm.book_written", [], self.user_id)]
             else:
-                return ["错误：书本已被保存"]
+                return [text("etm.book_saved", [], self.user_id)]
         elif argv[0] == "--save":
             if not self.data["saved"]:
                 self.data["author"] = self.user_id
@@ -34,9 +35,9 @@ class BookAndQuill(Item):
                 self.data["display_message"] = "\n".join(
                     _argv.splitlines()[1:])
                 exp.add_exp(self.user_id, 4)
-                return ["保存成功！"]
+                return [text("etm.book_savesuccess", [], self.user_id)]
             else:
-                return ["错误：已经保存过了！"]
+                return [text("etm.book_saved", [], self.user_id)]
         else:
             author_nickname = (
                 await (
@@ -48,5 +49,5 @@ class BookAndQuill(Item):
                 )
             )['nickname']
             author = f"{author_nickname} ({self.data['author']})"
-            return [
-                f"  {self.data['display_name']}\n作者：{author}\n—————————————\n{self.data['data']}"]
+            return [text("etm.book_read", [self.data['display_name'], author, self.data['data']])
+               ]
