@@ -33,6 +33,7 @@ def load_data():
                 open(
                     f"data/etm/{user}/user.json",
                     encoding="utf-8"))
+load_data()
 
 
 def _save_data(name, data):
@@ -58,3 +59,4 @@ def save_data():
 @scheduler.scheduled_job("cron", second="*/20", id="save_data")
 async def _():
     save_data()
+    load_data()
