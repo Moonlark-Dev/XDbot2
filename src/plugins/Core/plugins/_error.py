@@ -29,7 +29,7 @@ async def report(err: str, matcher: any = None):
                 _lang.text(
                     "_error.github",
                     [
-                        "https://github.com/This-is-XiaoDeng/XDbot2/issues/new?assignees=&labels=%C2%B7+Bug&template=bug.yml"
+                        "https://github.com/ITCraftDevelopmentTeam/XDbot2/issues/new?assignees=&labels=%C2%B7+Bug&template=bug.yml"
                     ],
                 )
             )
