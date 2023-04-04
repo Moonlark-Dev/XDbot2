@@ -1,3 +1,4 @@
+from .etm import data
 import os
 from . import _lang as lang
 from nonebot import on_command
@@ -11,6 +12,7 @@ import traceback
 async def update_xdbot(matcher: Matcher, event: MessageEvent):
     try:
         await matcher.send(lang.text("update.checking", [], event.get_user_id()))
+        data.save_data()
         old_commit = os.popen("git log").read().split("\n")[
             0].split(" ")[1][:7]
         os.system("python3 update.py")
