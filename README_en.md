@@ -1,6 +1,6 @@
-[简体中文](https://github.com/This-is-XiaoDeng/XDbot2) | **English**
+[简体中文](https://github.com/ITCraftDevelopmentTeam/XDbot2) | **English**
 
-![](https://socialify.git.ci/This-is-XiaoDeng/XDbot2/image?description=1&forks=1&issues=1&language=1&logo=https://www.thisisxd.top/img/XDbot2.png&name=1&owner=1&pulls=1&stargazers=1&theme=Light)
+![](https://socialify.git.ci/ITCraftDevelopmentTeam/XDbot2/image?description=1&forks=1&issues=1&language=1&logo=https://www.thisisxd.top/img/XDbot2.png&name=1&owner=1&pulls=1&stargazers=1&theme=Light)
 
 ## Introduction
 
