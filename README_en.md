@@ -19,13 +19,15 @@ You can join the XDbot user QQ group (159910125) to try XDbot2
 
 ## Contribution
 
-You can do this by submitting [Issues](https://github.com/This-is-XiaoDeng/XDbot2/issues) or [Pull requests](https://github.com/This-is-XiaoDeng/XDbot2/pulls) to help improve this project
+You can do this by submitting [Issues](https://github.com/ITCraftDevelopmentTeam/XDbot2/issues) or [Pull requests](https://github.com/ITCraftDevelopmentTeam/XDbot2/pulls) to help improve this project
 
-> Suggested reading: [Appendix: Contributions | XDbot2 Wiki](https://github.com/This-is-XiaoDeng/XDbot2/wiki/%E9%99%84%E5%BD%95%EF%BC%9A%E8%B4%A1%E7%8C%AE) 
+> Suggested reading: [Appendix: Contributions | XDbot2 Wiki](https://github.com/ITCraftDevelopmentTeam/XDbot2/wiki/%E9%99%84%E5%BD%95%EF%BC%9A%E8%B4%A1%E7%8C%AE) 
 
 # Acknowledgements
 
 - [IT Craft Development Team](https://itcdt.top)
 
-<a href="https://pay.thisisxd.top/"><img src="https://img.shields.io/badge/Sponsor%20me!-green?logo=wechat&amp;logoColor=white&amp;style=flat" alt="Sponsor me!"></a>
+----
+
+- This-is-XiaoDeng: <a href="https://pay.thisisxd.top/"><img src="https://img.shields.io/badge/Sponsor%20me!-green?logo=wechat&amp;logoColor=white&amp;style=flat" alt="Sponsor me!"></a>
 
