@@ -3,6 +3,7 @@ from . import economy
 from . import exp
 import json
 import time
+from . import data
 
 ACHIEVEMENTS = {
     "什么欧皇": {
@@ -46,17 +47,13 @@ ACHIEVEMENTS = {
 
 def get_user_achievement(user_id):
     try:
-        return json.load(open("data/etm/achievement.json",
-                         encoding="utf-8"))[user_id]
+        return data.achi_user_data[user_id]
     except KeyError:
         return []
 
 
 def change_user_achievement(user_id, data):
-    user_data = json.load(open("data/etm/achievement.json", encoding="utf-8"))
-    user_data[user_id] = data
-    json.dump(user_data, open(
-        "data/etm/achievement.json", "w", encoding="utf-8"))
+    data.achi_user_data[user_id] = data
 
 
 def unlck(name, user_id):
@@ -73,8 +70,7 @@ def unlck(name, user_id):
 
 
 def get_unlck_progress(name, user_id):
-    user_data = json.load(
-        open("data/etm/achievement_progress.json", encoding="utf-8"))
+    user_data = data.achi_unlock_progress
     try:
         return user_data[user_id][name]
     except KeyError:
@@ -82,16 +78,12 @@ def get_unlck_progress(name, user_id):
 
 
 def increase_unlock_progress(name, user_id, count=1):
-    user_data = json.load(
-        open("data/etm/achievement_progress.json", encoding="utf-8"))
     try:
-        user_data[user_id][name] += count
+        data.achi_unlock_progress[user_id][name] += count
     except KeyError:
         try:
-            user_data[user_id][name] = count
+            data.achi_unlock_progress[user_id][name] = count
         except KeyError:
-            user_data[user_id] = {name: count}
-    json.dump(user_data, open(
-        "data/etm/achievement_progress.json", "w", encoding="utf-8"))
-    if user_data[user_id][name] >= ACHIEVEMENTS[name]["need_progress"]:
+            data.achi_unlock_progress[user_id] = {name: count}
+    if data.achi_unlock_progress[user_id][name] >= ACHIEVEMENTS[name]["need_progress"]:
         unlck(name, user_id)

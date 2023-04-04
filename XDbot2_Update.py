@@ -1,16 +1,28 @@
-# XDbot2 v2.7.37
+# XDbot2 2023-04-04-19-25
 
 import os
 import json
 
-print("欢迎使用：XDbot2 v2.7.37")
+print("欢迎使用：XDbot2")
 
-data = json.load(open("data/cave.data.json", "r", encoding="utf-8"))
-# print(data)
-for key in list(data["data"].keys()):
-    print(key, data["data"][key]["sender"])
-    if data["data"][key]["sender"] == "2696519745":
-        data["data"].pop(key)
-        print("removed", key)
 
-json.dump(data, open("data/cave.data.json", "w", encoding="utf-8"))
+def move_data(origin_file, file_name):
+    data = json.load(open(f"data/etm/{origin_file}", encoding="utf-8"))
+    for user in list(data.keys()):
+        try:
+            os.mkdir(f"data/etm/{user}")
+        except BaseException:
+            pass
+        json.dump(
+            data[user],
+            open(
+                f"data/etm/{user}/{file_name}.json",
+                "w",
+                encoding="utf-8"))
+
+
+move_data("achievement.json", "achi")
+move_data("achievement_progress.json", "achi_unlock_progress")
+move_data("bags.json", "bag")
+move_data("users.json", "user")
+# move_data("achievement.json", "achi")

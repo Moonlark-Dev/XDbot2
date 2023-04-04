@@ -1,5 +1,3 @@
-from . import economy
-import random
 from .item import Item
 import nonebot
 from . import exp
