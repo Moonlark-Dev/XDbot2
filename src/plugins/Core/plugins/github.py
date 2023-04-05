@@ -88,10 +88,10 @@ async def get_pull(matcher: Matcher, event: MessageEvent):
         pull_data = await call_github_api(f"https://api.github.com/repos/{repo}/pulls/{pull_id}")
         await matcher.finish(f"""{pull_data['html_url']}
 标题：{pull_data['title']} ({pull_data['state']})
-仓库：{pull_data['head']['repo']['full_name']}
 创建者：{pull_data['user']['login']}
 创建时间：{pull_data['created_at']}
 最后更新：{pull_data['updated_at']}
+
 {pull_data['body']}""")
 
     except:
