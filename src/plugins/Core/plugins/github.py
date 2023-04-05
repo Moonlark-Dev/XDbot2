@@ -2,6 +2,8 @@ import traceback
 from nonebot import on_command, on_regex
 import httpx
 from nonebot.adapters.onebot.v11 import Message, MessageEvent
+import time
+import cairosvg
 from nonebot.matcher import Matcher
 from nonebot.log import logger
 from nonebot.params import CommandArg
@@ -9,6 +11,8 @@ from . import _error as error
 import json
 import urllib.parse
 import re
+import os
+import os.path
 
 
 config = json.load(open("data/github.config.json", encoding="utf-8"))
@@ -79,7 +83,14 @@ async def get_repo(matcher: Matcher, event: MessageEvent):
     try:
         repo = re.search(r"[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+", event.get_plaintext())[0]
         repo_data = await call_github_api(f"https://api.github.com/repos/{repo}")
-        await matcher.finish(Message(f"""[CQ:image,url=https://socialify.git.ci/{repo_data['full_name']}/image?description=1&forks=1&issues=1&language=1&logo={repo_data['owner']['avatar_url']}]"""))
+        # 获取头图
+        url = f"https://socialify.git.ci/{repo_data['full_name']}/image?description=1&forks=1&issues=1&language=1&logo={repo_data['owner']['avatar_url']}"
+        file = f"data/github.head_image_{time.time()}.png"
+        cairosvg.svg2png(url, file)
+        # 发送
+        await matcher.send(Message(f"[CQ:image,url=file://{os.path.abspath(file)}]"))
+        # 删除缓存
+        os.remove(file)
 
     except:
         await error.report(traceback.format_exc(), matcher)
