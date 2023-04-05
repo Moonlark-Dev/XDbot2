@@ -50,4 +50,4 @@ class BookAndQuill(Item):
             )['nickname']
             author = f"{author_nickname} ({self.data['author']})"
             return [text("etm.book_read", [self.data['display_name'], author, self.data['data']])
-               ]
+                    ]
