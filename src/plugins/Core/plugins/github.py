@@ -3,7 +3,7 @@ from nonebot import on_command, on_regex
 import httpx
 from nonebot.adapters.onebot.v11 import Message, MessageEvent
 import time
-import cairosvg
+# import cairosvg
 from nonebot.matcher import Matcher
 from nonebot.log import logger
 from nonebot.params import CommandArg
@@ -11,8 +11,8 @@ from . import _error as error
 import json
 import urllib.parse
 import re
-import os
-import os.path
+# import os
+# import os.path
 
 
 config = json.load(open("data/github.config.json", encoding="utf-8"))
@@ -83,14 +83,16 @@ async def get_repo(matcher: Matcher, event: MessageEvent):
     try:
         repo = re.search(r"[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+", event.get_plaintext())[0]
         repo_data = await call_github_api(f"https://api.github.com/repos/{repo}")
-        # 获取头图
-        url = f"https://socialify.git.ci/{repo_data['full_name']}/image?description=1&forks=1&issues=1&language=1&logo={repo_data['owner']['avatar_url']}&name=1&owner=1&pulls=1&stargazers=1&theme=Light"
-        file = f"data/github.head_image_{time.time()}.png"
-        cairosvg.svg2png(url=url, write_to=file)
         # 发送
-        await matcher.send(Message(f"[CQ:image,file=file://{os.path.abspath(file)}]"))
+        await matcher.send(Message(f"""
+{repo_data['html_url']}
+全名：{repo_data['full_name']} {"(只读)" if repo_data['archived'] else ""}
+所有者：{repo_data['owner']['login']}
+星标：{len(await call_github_api(repo_data['stargazers_url']))} | 议题：{len(await call_github_api(repo_data['issue_url'].replace("{/number}", "")))} | 拉取请求：{len(await call_github_api(repo_data['pulls_url'].replace("{/number}", "")))}
+
+"""))
         # 删除缓存
-        os.remove(file)
+        # os.remove(file)
 
     except:
         await error.report(traceback.format_exc(), matcher)
