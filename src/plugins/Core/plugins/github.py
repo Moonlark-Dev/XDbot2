@@ -33,7 +33,7 @@ async def github(matcher: Matcher, message: Message = CommandArg()):
             else:
                 code = argument[1]
                 async with httpx.AsyncClient() as client:
-                    response = await client.get(f"https://github.com/login/oauth/access_token?client_id={config['client_id']}&client_secret={config['client_secret']}&code={code}")
+                    response = await client.get(f"https://github.com/login/oauth/access_token?client_id={config['client_id']}&client_secret={config['secret']}&code={code}")
                 config["access_token"] = json.loads(response.read())["access_token"]
                 save_config()
                 async with httpx.AsyncClient() as client:
