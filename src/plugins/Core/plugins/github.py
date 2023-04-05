@@ -1,13 +1,14 @@
 import traceback
-from nonebot import on_command
+from nonebot import on_command, on_regex
 import httpx
-from nonebot.adapters.onebot.v11 import Message
+from nonebot.adapters.onebot.v11 import Message, MessageEvent
 from nonebot.matcher import Matcher
 from nonebot.log import logger
 from nonebot.params import CommandArg
 from . import _error as error
 import json
 import urllib.parse
+import re
 
 
 config = json.load(open("data/github.config.json", encoding="utf-8"))
@@ -23,6 +24,14 @@ def get_headers():
     return {
         "Authorization": f"Bearer {config['access_token']}"
     }
+
+async def call_github_api(url):
+    async with httpx.AsyncClient(proxies=get_proxy()) as client:
+        response = await client.get(
+            url, headers=get_headers())
+    return json.loads(response.read())
+
+
 
 def get_proxy():
     try:
@@ -47,13 +56,7 @@ async def github(matcher: Matcher, message: Message = CommandArg()):
                 logger.debug(content)
                 config["access_token"] = urllib.parse.parse_qs(content)["access_token"][0]
                 save_config()
-                async with httpx.AsyncClient(proxies=get_proxy()) as client:
-                    response = await client.get(
-                        "https://api.github.com/user",
-                        headers=get_headers())
-                await matcher.finish(f"已成功登录到 {json.loads(response.read())['login']}")
-                
-
+                await matcher.finish(f"已成功登录到 {(await call_github_api('https://api.github.com/user'))['login']}")                
         elif argument[0] == "set":
             if argument[1] == "id":
                 config["client_id"] = argument[2]
@@ -66,3 +69,15 @@ async def github(matcher: Matcher, message: Message = CommandArg()):
             save_config()
     except:
         await error.report(traceback.format_exc(), matcher)
+
+
+@on_regex(r"(github\.com/[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+)|(^[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+)").handle()
+async def get_repo(matcher: Matcher, event: MessageEvent):
+    try:
+        repo = re.search(r"[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+", event.get_plaintext())
+        repo_data = await call_github_api(f"https://api.github.com/repos/{repo}")
+        await matcher.finish(Message(f"""[CQ:image,url=https://socialify.git.ci/{repo_data['full_name']}/image?description=1&forks=1&issues=1&language=1&logo={repo_data['owner']['avatar_url']}]"""))
+
+    except:
+        await error.report(traceback.format_exc(), matcher)
+    
