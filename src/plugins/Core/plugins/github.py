@@ -86,7 +86,7 @@ async def get_repo(matcher: Matcher, event: MessageEvent):
         # 获取头图
         url = f"https://socialify.git.ci/{repo_data['full_name']}/image?description=1&forks=1&issues=1&language=1&logo={repo_data['owner']['avatar_url']}"
         file = f"data/github.head_image_{time.time()}.png"
-        cairosvg.svg2png(url, file)
+        cairosvg.svg2png(url=url, write_to=file)
         # 发送
         await matcher.send(Message(f"[CQ:image,url=file://{os.path.abspath(file)}]"))
         # 删除缓存
