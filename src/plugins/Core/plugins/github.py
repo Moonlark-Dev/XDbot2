@@ -88,7 +88,7 @@ async def get_repo(matcher: Matcher, event: MessageEvent):
 {repo_data['html_url']}
 全名：{repo_data['full_name']} {"(只读)" if repo_data['archived'] else ""}
 所有者：{repo_data['owner']['login']}
-星标：{len(await call_github_api(repo_data['stargazers_url']))} | 议题：{len(await call_github_api(repo_data['issue_url'].replace("{/number}", "")))} | 拉取请求：{len(await call_github_api(repo_data['pulls_url'].replace("{/number}", "")))}
+星标：{len(await call_github_api(repo_data['stargazers_url']))} | 议题：{len(await call_github_api(repo_data['issues_url'].replace("{/number}", "")))} | 拉取请求：{len(await call_github_api(repo_data['pulls_url'].replace("{/number}", "")))}
 
 """))
         # 删除缓存
