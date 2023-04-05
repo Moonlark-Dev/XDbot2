@@ -19,7 +19,7 @@ def save_config():
     
 
 
-@on_command("github").handle()
+@on_command("github", aliases={"gh"}).handle()
 async def github(matcher: Matcher, message: Message = CommandArg()):
     try:
         argument = str(message).split(" ")
