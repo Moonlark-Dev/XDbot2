@@ -3,6 +3,7 @@ from nonebot import on_command
 import httpx
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.matcher import Matcher
+from nonebot.log import logger
 from nonebot.params import CommandArg
 from . import _error as error
 import json
@@ -40,8 +41,8 @@ async def github(matcher: Matcher, message: Message = CommandArg()):
                 code = argument[1]
                 async with httpx.AsyncClient(proxies=get_proxy()) as client:
                     response = await client.get(
-                            f"https://github.com/login/oauth/access_token?client_id={config['client_id']}&client_secret={config['secret']}&code={code}",
-                            headers={"accept": "json"})
+                            f"https://github.com/login/oauth/access_token?client_id={config['client_id']}&client_secret={config['secret']}&code={code}")
+                logger.debug(response.read())
                 config["access_token"] = json.loads(response.read())["access_token"]
                 save_config()
                 async with httpx.AsyncClient(proxies=get_proxy()) as client:
