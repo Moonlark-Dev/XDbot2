@@ -84,7 +84,7 @@ async def get_repo(matcher: Matcher, event: MessageEvent):
         repo = re.search(r"[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+", event.get_plaintext())[0]
         repo_data = await call_github_api(f"https://api.github.com/repos/{repo}")
         # 获取头图
-        url = f"https://socialify.git.ci/{repo_data['full_name']}/image?description=1&forks=1&issues=1&language=1&logo={repo_data['owner']['avatar_url']}"
+        url = f"https://socialify.git.ci/{repo_data['full_name']}/image?description=1&forks=1&issues=1&language=1&logo={repo_data['owner']['avatar_url']}&name=1&owner=1&pulls=1&stargazers=1&theme=Light"
         file = f"data/github.head_image_{time.time()}.png"
         cairosvg.svg2png(url=url, write_to=file)
         # 发送
