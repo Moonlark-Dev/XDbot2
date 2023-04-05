@@ -87,7 +87,7 @@ async def get_repo(matcher: Matcher, event: MessageEvent):
     try:
         repo = re.search(
             r"[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+",
-            event.get_plaintext())[0]
+            event.get_plaintext().replace("github.com", ""))[0]
         repo_data = await call_github_api(f"https://api.github.com/repos/{repo}")
         # 发送
         await matcher.send(Message(f"""{repo_data['html_url']}
