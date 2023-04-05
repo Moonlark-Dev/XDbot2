@@ -52,8 +52,8 @@ def get_user_achievement(user_id):
         return []
 
 
-def change_user_achievement(user_id, data):
-    data.achi_user_data[user_id] = data
+def change_user_achievement(user_id, _data):
+    data.achi_user_data[user_id] = _data
 
 
 def unlck(name, user_id):

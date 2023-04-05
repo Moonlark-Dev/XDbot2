@@ -147,5 +147,9 @@
   "achi.title": "已解锁成就：",
   "achi.info": "「成就详细信息」\n名称：{}\n解锁条件：{}\n解锁进度：{}",
   "achi.locked": "未解锁",
-  "achi.unlcked": "已解锁"
+  "achi.unlcked": "已解锁",
+  "etm.book_written": "已写入",
+  "etm.book_saved": "错误：书本已被保存",
+  "etm.book_savesuccess": "保存成功！",
+  "etm.book_read": " {}\n作者：{}\n—————————————\n{}"
 }

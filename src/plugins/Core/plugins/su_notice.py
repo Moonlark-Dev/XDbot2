@@ -39,5 +39,5 @@ async def su_primary_notice(message: Message = CommandArg()):
             else:
                 su_notice_cache = text
                 await su.finish("超级广播内容已设定")
-    except:
+    except BaseException:
         await _error.report(traceback.format_exc(), su)
