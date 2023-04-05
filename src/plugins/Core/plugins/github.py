@@ -84,12 +84,13 @@ async def get_repo(matcher: Matcher, event: MessageEvent):
         repo = re.search(r"[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+", event.get_plaintext())[0]
         repo_data = await call_github_api(f"https://api.github.com/repos/{repo}")
         # 发送
-        await matcher.send(Message(f"""
-{repo_data['html_url']}
+        await matcher.send(Message(f"""{repo_data['html_url']}
 全名：{repo_data['full_name']} {"(只读)" if repo_data['archived'] else ""}
 所有者：{repo_data['owner']['login']}
-星标：{len(await call_github_api(repo_data['stargazers_url']))} | 议题：{len(await call_github_api(repo_data['issues_url'].replace("{/number}", "")))} | 拉取请求：{len(await call_github_api(repo_data['pulls_url'].replace("{/number}", "")))}
-
+星标：{repo_data['stargazers_count']} | 议题：{repo_data['open_issues']} | 拉取请求：{len(await call_github_api(repo_data['pulls_url'].replace("{/number}", "")))} | 复刻：{repo_data['forks']}
+语言：{repo_data['language']} | 查看：{repo_data['watchers']} | 许可证：{repo_data['licence']['name']} | 创建日期：{repo_data["created_at"]}
+更新日期：{repo_data['updated_at']} | GIT地址：{repo_data['clone_url']}
+简介：{repo_data['description']}
 """))
         # 删除缓存
         # os.remove(file)
