@@ -88,7 +88,7 @@ async def get_repo(matcher: Matcher, event: MessageEvent):
         file = f"data/github.head_image_{time.time()}.png"
         cairosvg.svg2png(url=url, write_to=file)
         # 发送
-        await matcher.send(Message(f"[CQ:image,url=file://{os.path.abspath(file)}]"))
+        await matcher.send(Message(f"[CQ:image,file=file://{os.path.abspath(file)}]"))
         # 删除缓存
         os.remove(file)
 
