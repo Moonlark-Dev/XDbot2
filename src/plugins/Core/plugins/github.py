@@ -22,6 +22,12 @@ def get_headers():
         "Authorization": f"Bearer {config['access_token']}"
     }
 
+def get_proxy():
+    try:
+        return config["proxies"]
+    except:
+        return None
+
 
 @on_command("github", aliases={"gh"}).handle()
 async def github(matcher: Matcher, message: Message = CommandArg()):
@@ -32,11 +38,11 @@ async def github(matcher: Matcher, message: Message = CommandArg()):
                 await matcher.send(f'请在浏览器打开 https://github.com/login/oauth/authorize?client_id={config["client_id"]}&scope=repo')
             else:
                 code = argument[1]
-                async with httpx.AsyncClient() as client:
+                async with httpx.AsyncClient(proxies=get_proxy()) as client:
                     response = await client.get(f"https://github.com/login/oauth/access_token?client_id={config['client_id']}&client_secret={config['secret']}&code={code}")
                 config["access_token"] = json.loads(response.read())["access_token"]
                 save_config()
-                async with httpx.AsyncClient() as client:
+                async with httpx.AsyncClient(proxies=get_proxy()) as client:
                     response = await client.get(
                         "https://api.github.com/user",
                         headers=get_headers())
@@ -50,6 +56,8 @@ async def github(matcher: Matcher, message: Message = CommandArg()):
             elif argument[1] == "secret":
                 config["secret"] = argument[2]
                 await matcher.send("Secret 已设置")
+            elif argument[1] == "proxies":
+                config["proxies"] = argument[2]
             save_config()
     except:
         await error.report(traceback.format_exc(), matcher)
