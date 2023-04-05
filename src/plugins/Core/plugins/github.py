@@ -29,7 +29,10 @@ async def call_github_api(url):
     async with httpx.AsyncClient(proxies=get_proxy()) as client:
         response = await client.get(
             url, headers=get_headers())
-    return json.loads(response.read())
+    logger.debug(response.status_code)
+    content = response.read()
+    logger.debug(content)
+    return json.loads(content)
 
 
 
