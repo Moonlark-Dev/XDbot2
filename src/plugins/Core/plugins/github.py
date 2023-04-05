@@ -7,6 +7,7 @@ from nonebot.log import logger
 from nonebot.params import CommandArg
 from . import _error as error
 import json
+import urllib.parse
 
 
 config = json.load(open("data/github.config.json", encoding="utf-8"))
@@ -42,8 +43,9 @@ async def github(matcher: Matcher, message: Message = CommandArg()):
                 async with httpx.AsyncClient(proxies=get_proxy()) as client:
                     response = await client.get(
                             f"https://github.com/login/oauth/access_token?client_id={config['client_id']}&client_secret={config['secret']}&code={code}")
-                logger.debug(response.read())
-                config["access_token"] = json.loads(response.read())["access_token"]
+                content = response.read().decode("utf-8")
+                logger.debug(content)
+                config["access_token"] = urllib.parse.parse_qs(content)["access_token"][0]
                 save_config()
                 async with httpx.AsyncClient(proxies=get_proxy()) as client:
                     response = await client.get(
