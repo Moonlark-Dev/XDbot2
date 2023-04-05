@@ -31,5 +31,6 @@ async def github(matcher: Matcher, message: Message = CommandArg()):
                 config["client_id"] = argument[2]
             elif argument[1] == "secret":
                 config["secret"] = argument[2]
+            save_config()
     except:
         await error.report(traceback.format_exc(), matcher)
