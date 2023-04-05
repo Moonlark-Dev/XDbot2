@@ -81,6 +81,22 @@ async def github(matcher: Matcher, message: Message = CommandArg()):
     except BaseException:
         await error.report(traceback.format_exc(), matcher)
 
+@on_regex(r"(github\.com/[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+/pull/[0-9]+)").handle()
+async def get_pull(matcher: Matcher, event: MessageEvent):
+    try:
+        repo = re.search(r"[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]", event.get_plaintext().replace("github.com", ""))[0]
+        pull_id = re.search(r"pull/[0-9]+", event.get_plaintext())[0].replace("pull/", "")
+        pull_data = await call_github_api(f"https://api.github.com/repos/{repo}/pulls/{pull_id}")
+        await matcher.finish(f"""{pull_data['html_url']}
+标题：{pull_data['title']} ({pull_data['state']})
+仓库：{pull_data['head']['repo']['full_name']}
+创建者：{pull_data['user']['login']}
+创建时间：{pull_data['created_at']}
+最后更新：{pull_data['updated_at']}
+{pull_data['body']}""")
+
+    except:
+        await error.report(traceback.format_exc(), matcher)
 
 @on_regex(r"(github\.com/[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+)|(^[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+)").handle()
 async def get_repo(matcher: Matcher, event: MessageEvent):
