@@ -88,7 +88,7 @@ async def get_repo(matcher: Matcher, event: MessageEvent):
 全名：{repo_data['full_name']} {"(只读)" if repo_data['archived'] else ""}
 所有者：{repo_data['owner']['login']}
 星标：{repo_data['stargazers_count']} | 议题：{repo_data['open_issues']} | 拉取请求：{len(await call_github_api(repo_data['pulls_url'].replace("{/number}", "")))} | 复刻：{repo_data['forks']}
-语言：{repo_data['language']} | 查看：{repo_data['watchers']} | 许可证：{repo_data['licence']['name']} | 创建日期：{repo_data["created_at"]}
+语言：{repo_data['language']} | 查看：{repo_data['watchers']} | 许可证：{repo_data['license']['name']} | 创建日期：{repo_data["created_at"]}
 更新日期：{repo_data['updated_at']} | GIT地址：{repo_data['clone_url']}
 简介：{repo_data['description']}
 """))
