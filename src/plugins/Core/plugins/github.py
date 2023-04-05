@@ -100,6 +100,8 @@ async def get_pull(matcher: Matcher, event: MessageEvent):
 @on_regex(r"(github\.com/[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+)|(^[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+)").handle()
 async def get_repo(matcher: Matcher, event: MessageEvent):
     try:
+        if "pull" in event.get_plaintext().split("/"):
+            await matcher.finish()
         repo = re.search(
             r"[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+",
             event.get_plaintext().replace("github.com", ""))[0]
