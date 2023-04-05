@@ -182,7 +182,7 @@ async def suHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                     "w",
                     encoding="utf-8"))
             reloadBqlackList()
-       
+
 
             elif argument[1] == "set" or argument == "设置":
                 config = json.load(

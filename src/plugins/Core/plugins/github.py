@@ -17,17 +17,21 @@ import re
 
 config = json.load(open("data/github.config.json", encoding="utf-8"))
 
+
 def update_config():
     global config
     config = json.load(open("data/github.config.json", encoding="utf-8"))
 
+
 def save_config():
     json.dump(config, open("data/github.config.json", "w", encoding="utf-8"))
-    
+
+
 def get_headers():
     return {
         "Authorization": f"Bearer {config['access_token']}"
     }
+
 
 async def call_github_api(url):
     async with httpx.AsyncClient(proxies=get_proxy()) as client:
@@ -39,11 +43,10 @@ async def call_github_api(url):
     return json.loads(content)
 
 
-
 def get_proxy():
     try:
         return config["proxies"]
-    except:
+    except BaseException:
         return None
 
 
@@ -58,12 +61,13 @@ async def github(matcher: Matcher, message: Message = CommandArg()):
                 code = argument[1]
                 async with httpx.AsyncClient(proxies=get_proxy()) as client:
                     response = await client.get(
-                            f"https://github.com/login/oauth/access_token?client_id={config['client_id']}&client_secret={config['secret']}&code={code}")
+                        f"https://github.com/login/oauth/access_token?client_id={config['client_id']}&client_secret={config['secret']}&code={code}")
                 content = response.read().decode("utf-8")
                 logger.debug(content)
-                config["access_token"] = urllib.parse.parse_qs(content)["access_token"][0]
+                config["access_token"] = urllib.parse.parse_qs(content)[
+                    "access_token"][0]
                 save_config()
-                await matcher.finish(f"已成功登录到 {(await call_github_api('https://api.github.com/user'))['login']}")                
+                await matcher.finish(f"已成功登录到 {(await call_github_api('https://api.github.com/user'))['login']}")
         elif argument[0] == "set":
             if argument[1] == "id":
                 config["client_id"] = argument[2]
@@ -74,14 +78,16 @@ async def github(matcher: Matcher, message: Message = CommandArg()):
             elif argument[1] == "proxies":
                 config["proxies"] = argument[2]
             save_config()
-    except:
+    except BaseException:
         await error.report(traceback.format_exc(), matcher)
 
 
 @on_regex(r"(github\.com/[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+)|(^[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+)").handle()
 async def get_repo(matcher: Matcher, event: MessageEvent):
     try:
-        repo = re.search(r"[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+", event.get_plaintext())[0]
+        repo = re.search(
+            r"[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+",
+            event.get_plaintext())[0]
         repo_data = await call_github_api(f"https://api.github.com/repos/{repo}")
         # 发送
         await matcher.send(Message(f"""{repo_data['html_url']}
@@ -92,11 +98,9 @@ async def get_repo(matcher: Matcher, event: MessageEvent):
 许可证：{repo_data['license']['name']}
 创建日期：{repo_data["created_at"]}
 更新日期：{repo_data['updated_at']}
-简介：{repo_data['description']}
-"""))
+简介：{repo_data['description']}"""))
         # 删除缓存
         # os.remove(file)
 
-    except:
+    except BaseException:
         await error.report(traceback.format_exc(), matcher)
-    
