@@ -67,7 +67,7 @@ async def send_quick_calculus():
             a = randint(1, 10)
             b = randint(1, 10)
             c = randint(1, 10)
-            d = randint(1, 10) 
+            d = randint(1, 10)
             f = a*x**3 + b*x**2 + c*x + d
             if random() <= 0.25:
                 # 求导数
@@ -79,7 +79,8 @@ async def send_quick_calculus():
                 question = f"求函数 f(x) = {f} 的二阶导数"
                 logger.debug(answer)
             else:
-                answer = str(solve(diff(f, x))).replace("[", "").replace("]", "").replace(" ", "")
+                answer = str(solve(diff(f, x))).replace(
+                    "[", "").replace("]", "").replace(" ", "")
                 question = f"求函数 f(x) = {f} 的解"
                 logger.debug(answer)
 
@@ -95,7 +96,8 @@ async def send_quick_calculus():
                 question = f"求函数 f(x) = {f} 的导数"
                 logger.debug(answer)
             else:
-                answer = str(solve(diff(f, x))).replace("[", "").replace("]", "").replace(" ", "")
+                answer = str(solve(diff(f, x))).replace(
+                    "[", "").replace("]", "").replace(" ", "")
                 question = f"求函数 f(x) = {f} 的解"
                 logger.debug(answer)
 

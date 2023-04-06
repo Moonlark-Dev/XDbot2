@@ -75,7 +75,7 @@ async def send_quick_math():
         await error.report(format_exc())
 
 
-#@on_message().handle()
+# @on_message().handle()
 async def _(event: GroupMessageEvent):
     global group, answer, send_time
     try:
@@ -83,7 +83,8 @@ async def _(event: GroupMessageEvent):
         if str(answer) in event.get_plaintext() and time.time() - send_time < 1:
             group = None
             answer = None
-            logger.warning(f"速算反作弊：疑似发现外挂，本题无效（响应时间：{time.time() - send_time}）")
+            logger.warning(
+                f"速算反作弊：疑似发现外挂，本题无效（响应时间：{time.time() - send_time}）")
     except:
         await error.report(traceback.format_exc())
 
