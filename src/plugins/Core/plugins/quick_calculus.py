@@ -67,7 +67,7 @@ async def send_quick_calculus():
             a = randint(1, 10)
             b = randint(1, 10)
             c = randint(1, 10)
-            d = randint(1, 10) 
+            d = randint(1, 10)
             f = a*x**3 + b*x**2 + c*x + d
             if random() <= 0.5:
                 # 求导数
@@ -93,6 +93,7 @@ async def send_quick_calculus():
                 # answer = str(solve(diff(f, x))).replace("[", "").replace("]", "").replace(" ", "")
                 # question = f"求函数 f(x) = {f} 的解"
                 # logger.debug(answer)
+
 
         bot = get_bot(accout_data[str(group)])
         msg_id = (await bot.send_group_msg(
