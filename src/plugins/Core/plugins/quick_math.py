@@ -75,7 +75,7 @@ async def send_quick_math():
         await error.report(format_exc())
 
 
-@on_message().handle()
+#@on_message().handle()
 async def _(event: GroupMessageEvent):
     global group, answer, send_time
     try:
