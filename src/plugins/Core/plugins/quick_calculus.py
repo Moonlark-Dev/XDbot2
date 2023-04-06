@@ -125,7 +125,7 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
 
             if _answ == answer:
                 group_unanswered[event.group_id] = 0
-                add = [randint(1, 13), randint(1, 15)]
+                add = [randint(10, 30), randint(5, 25)]
                 economy.add_vi(event.get_user_id(), add[0])
                 exp.add_exp(event.get_user_id(), add[1])
                 await matcher.send(lang.text("quick_math.rightanswer", add, event.get_user_id()),
@@ -148,10 +148,10 @@ async def quick_math_command(matcher: Matcher, event: GroupMessageEvent):
                 encoding="utf-8"))
         if event.group_id in groups:
             groups.pop(groups.index(event.group_id))
-            await matcher.send(lang.text("quick_math.disable", [], event.get_user_id()))
+            await matcher.send(lang.text("quick_calculus.disable", [], event.get_user_id()))
         else:
             groups.append(event.group_id)
-            await matcher.send(lang.text("quick_math.enable", [], event.get_user_id()))
+            await matcher.send(lang.text("quick_calculus.enable", [], event.get_user_id()))
         json.dump(
             groups,
             open(
