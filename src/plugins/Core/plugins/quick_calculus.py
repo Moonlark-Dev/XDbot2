@@ -90,10 +90,9 @@ async def send_quick_calculus():
             question = f"求函数 f(x) = {f} 的导数"
             logger.debug(answer)
             # else:
-                # answer = str(solve(diff(f, x))).replace("[", "").replace("]", "").replace(" ", "")
-                # question = f"求函数 f(x) = {f} 的解"
-                # logger.debug(answer)
-
+            # answer = str(solve(diff(f, x))).replace("[", "").replace("]", "").replace(" ", "")
+            # question = f"求函数 f(x) = {f} 的解"
+            # logger.debug(answer)
 
         bot = get_bot(accout_data[str(group)])
         msg_id = (await bot.send_group_msg(
