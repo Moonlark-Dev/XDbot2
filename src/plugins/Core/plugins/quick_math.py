@@ -79,7 +79,8 @@ async def send_quick_math():
 async def _(event: GroupMessageEvent):
     global group, answer, send_time
     try:
-        if str(answer) in event.get_plaintext() and time.time() - send_time < 0.5:
+        logger.debug(time.time() - send_time)
+        if str(answer) in event.get_plaintext() and time.time() - send_time < 1:
             group = None
             answer = None
             logger.warning(f"速算反作弊：疑似发现外挂，本题无效（响应时间：{time.time() - send_time}）")
