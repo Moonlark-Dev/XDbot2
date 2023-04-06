@@ -1,6 +1,7 @@
 import random
 from traceback import format_exc
 import asyncio
+import traceback
 from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
@@ -10,11 +11,14 @@ from .etm import achievement, economy, exp
 from nonebot_plugin_apscheduler import scheduler
 from nonebot import get_bot, on_message, require, on_command
 import json
+from nonebot.log import logger
+import time
 
 require("nonebot_plugin_apscheduler")
 group = None
 answer = None
 group_unanswered = {}
+send_time = 0
 
 
 def refresh_group_unanswered(groups=[]):
@@ -43,7 +47,7 @@ async def delete_msg(bot, message_id):
 
 @scheduler.scheduled_job("cron", minute="*/3", id="send_quick_math")
 async def send_quick_math():
-    global group, answer
+    global group, answer, send_time
     try:
         accout_data = json.load(
             open(
@@ -62,12 +66,25 @@ async def send_quick_math():
         question = f"{random.randint(0, 50)} {random.choice('+-*')} {random.randint(1, 50)}"
         answer = eval(question)
         bot = get_bot(accout_data[str(group)])
+        send_time = time.time()
         msg_id = (await bot.send_group_msg(
             group_id=group,
             message=f"[QUICK MATH] {question} = ?"))["message_id"]
         asyncio.create_task(delete_msg(bot, msg_id))
     except BaseException:
         await error.report(format_exc())
+
+
+@on_message().handle()
+async def _(event: GroupMessageEvent):
+    global group, answer, send_time
+    try:
+        if str(answer) in event.get_plaintext() and time.time() - send_time < 0.5:
+            group = None
+            answer = None
+            logger.warning(f"速算反作弊：疑似发现外挂，本题无效（响应时间：{time.time() - send_time}）")
+    except:
+        await error.report(traceback.format_exc())
 
 
 @on_message().handle()
