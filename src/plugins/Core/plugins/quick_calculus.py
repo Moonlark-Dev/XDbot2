@@ -35,7 +35,7 @@ refresh_group_unanswered()
 
 async def delete_msg(bot, message_id):
     global group, answer
-    await asyncio.sleep(30)
+    await asyncio.sleep(45)
     if None not in [group, answer]:
         await bot.delete_msg(message_id=message_id)
         group_unanswered[group] += 1
