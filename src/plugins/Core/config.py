@@ -34,6 +34,10 @@ class Config(BaseSettings):
             })
         },
         {
+            "path": "data/quick_calculus.enabled_groups.json",
+            "text": "[]"
+        },
+        {
             "path": "data/quick_math.enabled_groups.json",
             "text": "[]"
         },
