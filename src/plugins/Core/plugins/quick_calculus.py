@@ -69,35 +69,30 @@ async def send_quick_calculus():
             c = randint(1, 10)
             d = randint(1, 10) 
             f = a*x**3 + b*x**2 + c*x + d
-            if random() <= 0.25:
-                # 求导数
-                answer = str(diff(f, x)).replace(" ", "")
-                question = f"求函数 f(x) = {f} 的导数"
-                logger.debug(answer)
-            elif random() <= 0.5:
-                answer = str(diff(diff(f, x), x)).replace(" ", "")
-                question = f"求函数 f(x) = {f} 的二阶导数"
-                logger.debug(answer)
-            else:
-                answer = str(solve(diff(f, x))).replace("[", "").replace("]", "").replace(" ", "")
-                question = f"求函数 f(x) = {f} 的解"
-                logger.debug(answer)
-
-        else:
-            x = Symbol('x')
-            a = randint(1, 10)
-            b = randint(1, 10)
-            c = randint(1, 10)
-            f = a*x**2 + b*x + c
             if random() <= 0.5:
                 # 求导数
                 answer = str(diff(f, x)).replace(" ", "")
                 question = f"求函数 f(x) = {f} 的导数"
                 logger.debug(answer)
             else:
-                answer = str(solve(diff(f, x))).replace("[", "").replace("]", "").replace(" ", "")
-                question = f"求函数 f(x) = {f} 的解"
+                answer = str(diff(diff(f, x), x)).replace(" ", "")
+                question = f"求函数 f(x) = {f} 的二阶导数"
                 logger.debug(answer)
+        else:
+            x = Symbol('x')
+            a = randint(1, 10)
+            b = randint(1, 10)
+            c = randint(1, 10)
+            f = a*x**2 + b*x + c
+            # if random() <= 0.5:
+            # 求导数
+            answer = str(diff(f, x)).replace(" ", "")
+            question = f"求函数 f(x) = {f} 的导数"
+            logger.debug(answer)
+            # else:
+                # answer = str(solve(diff(f, x))).replace("[", "").replace("]", "").replace(" ", "")
+                # question = f"求函数 f(x) = {f} 的解"
+                # logger.debug(answer)
 
         bot = get_bot(accout_data[str(group)])
         msg_id = (await bot.send_group_msg(
