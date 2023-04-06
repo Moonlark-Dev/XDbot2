@@ -43,7 +43,7 @@ async def delete_msg(bot, message_id):
         answer = None
 
 
-@scheduler.scheduled_job("cron", minute="*/5", id="send_quick_calculus")
+@scheduler.scheduled_job("cron", minute="*/4", id="send_quick_calculus")
 async def send_quick_calculus():
     global group, answer
     try:
@@ -119,13 +119,13 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
     try:
         if event.group_id == group:
             try:
-                _answ = int(event.get_plaintext().strip())
+                _answ = event.get_plaintext().strip().replace(" ", "")
             except ValueError:
                 await matcher.finish()
 
             if _answ == answer:
                 group_unanswered[event.group_id] = 0
-                add = [random.randint(1, 13), random.randint(1, 15)]
+                add = [randint(1, 13), randint(1, 15)]
                 economy.add_vi(event.get_user_id(), add[0])
                 exp.add_exp(event.get_user_id(), add[1])
                 await matcher.send(lang.text("quick_math.rightanswer", add, event.get_user_id()),
