@@ -110,7 +110,8 @@ async def get_repo(matcher: Matcher, event: MessageEvent):
             event.get_plaintext().replace("github.com", ""))[0]
         repo_data = await call_github_api(f"https://api.github.com/repos/{repo}")
         # 发送
-        await matcher.send(Message(f"""{repo_data['html_url']}
+        try:
+            await matcher.send(Message(f"""{repo_data['html_url']}
 全名：{repo_data['full_name']} {"(只读)" if repo_data['archived'] else ""}
 所有者：{repo_data['owner']['login']}
 星标：{repo_data['stargazers_count']} | 议题：{repo_data['open_issues']} | 拉取请求：{len(await call_github_api(repo_data['pulls_url'].replace("{/number}", "")))}
@@ -119,6 +120,8 @@ async def get_repo(matcher: Matcher, event: MessageEvent):
 创建日期：{repo_data["created_at"]}
 更新日期：{repo_data['updated_at']}
 简介：{repo_data['description']}"""))
+        except:
+            pass
         # 删除缓存
         # os.remove(file)
 
