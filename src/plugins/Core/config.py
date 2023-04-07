@@ -34,6 +34,12 @@ class Config(BaseSettings):
             })
         },
         {
+            "path": "data/quick_math.average.json",
+            "data": json.dumps({
+                "average": 0
+            })
+        },
+        {
             "path": "data/quick_calculus.enabled_groups.json",
             "text": "[]"
         },

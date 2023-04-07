@@ -75,16 +75,18 @@ async def send_quick_math():
         await error.report(format_exc())
 
 
-# @on_message().handle()
-async def _(event: GroupMessageEvent):
+@on_message().handle()
+async def _(matcher: Matcher, event: GroupMessageEvent):
     global group, answer, send_time
     try:
-        logger.debug(time.time() - send_time)
-        if str(answer) in event.get_plaintext() and time.time() - send_time < 1:
-            group = None
-            answer = None
-            logger.warning(
-                f"速算反作弊：疑似发现外挂，本题无效（响应时间：{time.time() - send_time}）")
+        if group == event.group_id:
+            if str(answer) in event.get_plaintext()\
+                    and str(answer) != event.get_plaintext():
+                data = json.load(open("data/quick_math.average.json", encoding="utf-8"))
+                if time.time() - send_time <= data["average"] / 2:
+                    group = None
+                    answer = None
+                    await matcher.send("[反作弊] 疑似发现外挂，本题无效")
     except:
         await error.report(traceback.format_exc())
 
@@ -111,6 +113,9 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
                 exp.add_exp(event.get_user_id(), add[1])
                 await matcher.send(lang.text("quick_math.rightanswer", add, event.get_user_id()),
                                    at_sender=True)
+                data = json.load(open("data/quick_math.average.json", encoding="utf-8"))
+                data["average"] = round((data["average"] + (time.time() - send_time)) / 2, 3)
+                json.dump(data, open("data/quick_math.average.json", "w", encoding="utf-8"))
                 group = None
                 answer = None
                 achievement.increase_unlock_progress(
