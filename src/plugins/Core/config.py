@@ -35,7 +35,7 @@ class Config(BaseSettings):
         },
         {
             "path": "data/quick_math.average.json",
-            "data": json.dumps({
+            "text": json.dumps({
                 "average": 0
             })
         },
