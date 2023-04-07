@@ -90,7 +90,7 @@ async def get_issue(matcher: Matcher, event: MessageEvent):
         issue_data = await call_github_api(f"https://api.github.com/repos/{repo}/issues/{issue_id}")
         labels = ""
         for label in issue_data["labels"]:
-            labals += f"{label['name']}, "
+            labels += f"{label['name']}, "
         await matcher.finish(f"""{issue_data['html_url']}
 标题：{issue_data['title']} ({issue_data['state']})
 创建者：{issue_data['user']['login']}
