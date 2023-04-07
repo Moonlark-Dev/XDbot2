@@ -81,6 +81,23 @@ async def github(matcher: Matcher, message: Message = CommandArg()):
     except BaseException:
         await error.report(traceback.format_exc(), matcher)
 
+@on_regex(r"(github\.com/[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+/issue/[0-9]+)").handle()
+async def get_issue(matcher: Matcher, event: MessageEvent):
+    try:
+        repo, issue_id = re.search(
+                r"[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+/pull/[0-9]+",
+                event.get_plaintext().replace("github.com", ""))[0].split("/issue/")
+        issue_data = await call_github_api(f"https://api.github.com/repos/{repo}/issues/{issue_id}")
+        await matcher.finish(f"""{issue_data['html_url']}
+标题：{issue_data['title']} ({issue_data['state']})
+创建者：{issue_data['user']['login']}
+创建时间：{issue_data['created_at']}
+最后更新：{issue_data['updated_at']}
+
+{issue_data['body']}""")
+
+    except:
+        await error.report(traceback.format_exc(), matcher)
 
 @on_regex(r"(github\.com/[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+/pull/[0-9]+)").handle()
 async def get_pull(matcher: Matcher, event: MessageEvent):
