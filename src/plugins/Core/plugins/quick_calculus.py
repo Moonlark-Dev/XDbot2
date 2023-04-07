@@ -45,14 +45,19 @@ def generate_limit_question():
     answer = f"{latex(_limit)}"
     return question, answer
 
-
-def check_answer(_answer, right_answer):
+def _check_answer(_answer, right_answer):
     transformations = standard_transformations + \
         (implicit_multiplication_application,)
     answer_expr = parse_expr(_answer, transformations=transformations)
     right_answer_expr = parse_expr(
         right_answer, transformations=transformations)
     return answer_expr == right_answer_expr
+
+def check_answer(_answer, right_answer):
+    try:
+        return _check_answer(_answer, right_answer)
+    except:
+        return False
 
 
 async def delete_msg(bot, message_id):
