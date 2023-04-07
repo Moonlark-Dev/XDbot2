@@ -37,12 +37,14 @@ refresh_group_unanswered()
 
 def generate_limit_question():
     x = symbols('x')
-    f = choice([x**2 + 3*x - 2, x**3 - 2*x + 1, x**4 - 4*x**3 + 5*x**2 + 2*x - 1])
+    f = choice([x**2 + 3*x - 2, x**3 - 2*x + 1,
+               x**4 - 4*x**3 + 5*x**2 + 2*x - 1])
     a = randint(-10, 10)
     _limit = limit(f, x, a)
     question = f"计算函数 {latex(f)} 在 $x={a}$ 处的极限。"
     answer = f"{latex(_limit)}"
     return question, answer
+
 
 def check_answer(_answer, right_answer):
     transformations = standard_transformations + \
