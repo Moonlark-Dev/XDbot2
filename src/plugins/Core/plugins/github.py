@@ -81,12 +81,13 @@ async def github(matcher: Matcher, message: Message = CommandArg()):
     except BaseException:
         await error.report(traceback.format_exc(), matcher)
 
+
 @on_regex(r"(github\.com/[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+/issues/[0-9]+)").handle()
 async def get_issue(matcher: Matcher, event: MessageEvent):
     try:
         repo, issue_id = re.search(
-                r"[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+/issues/[0-9]+",
-                event.get_plaintext().replace("github.com", ""))[0].split("/issues/")
+            r"[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+/issues/[0-9]+",
+            event.get_plaintext().replace("github.com", ""))[0].split("/issues/")
         issue_data = await call_github_api(f"https://api.github.com/repos/{repo}/issues/{issue_id}")
         labels = ""
         for label in issue_data["labels"]:
@@ -101,6 +102,7 @@ async def get_issue(matcher: Matcher, event: MessageEvent):
 
     except:
         await error.report(traceback.format_exc(), matcher)
+
 
 @on_regex(r"(github\.com/[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+/pull/[0-9]+)").handle()
 async def get_pull(matcher: Matcher, event: MessageEvent):
@@ -124,7 +126,7 @@ async def get_pull(matcher: Matcher, event: MessageEvent):
 async def get_repo(matcher: Matcher, event: MessageEvent):
     try:
         if ("pull" in event.get_plaintext().split("/") or
-            "issues" in event.get_plaintext().split("/")):
+                "issues" in event.get_plaintext().split("/")):
             await matcher.finish()
         repo = re.search(
             r"[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+",
