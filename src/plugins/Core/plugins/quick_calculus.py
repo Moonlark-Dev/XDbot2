@@ -2,16 +2,18 @@ from random import *
 from traceback import format_exc
 import asyncio
 from sympy import *
-from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent
+from nonebot.adapters.onebot.v11 import GroupMessageEvent
 from nonebot.matcher import Matcher
-from nonebot.params import CommandArg
+# from nonebot.params import CommandArg
 from . import _lang as lang
 from . import _error as error
-from .etm import achievement, economy, exp
+from .etm import economy, exp
 from nonebot_plugin_apscheduler import scheduler
 from nonebot import get_bot, on_message, require, on_command
 from nonebot.log import logger
 import json
+from sympy.parsing.sympy_parser import (
+    parse_expr, standard_transformations, implicit_multiplication_application)
 
 require("nonebot_plugin_apscheduler")
 group = None
@@ -31,6 +33,33 @@ def refresh_group_unanswered(groups=[]):
 
 
 refresh_group_unanswered()
+
+
+def generate_limit_question():
+    x = symbols('x')
+    f = choice([x**2 + 3*x - 2, x**3 - 2*x + 1,
+               x**4 - 4*x**3 + 5*x**2 + 2*x - 1])
+    a = randint(-10, 10)
+    _limit = limit(f, x, a)
+    question = f"计算函数 {latex(f)} 在 $x={a}$ 处的极限。"
+    answer = f"{latex(_limit)}"
+    return question, answer
+
+
+def _check_answer(_answer, right_answer):
+    transformations = standard_transformations + \
+        (implicit_multiplication_application,)
+    answer_expr = parse_expr(_answer, transformations=transformations)
+    right_answer_expr = parse_expr(
+        right_answer, transformations=transformations)
+    return answer_expr == right_answer_expr
+
+
+def check_answer(_answer, right_answer):
+    try:
+        return _check_answer(_answer, right_answer)
+    except:
+        return False
 
 
 async def delete_msg(bot, message_id):
@@ -78,21 +107,18 @@ async def send_quick_calculus():
                 answer = str(diff(diff(f, x), x)).replace(" ", "")
                 question = f"求函数 f(x) = {f} 的二阶导数"
                 logger.debug(answer)
-        else:
+        elif random() <= 0.25:
             x = Symbol('x')
             a = randint(1, 10)
             b = randint(1, 10)
             c = randint(1, 10)
             f = a*x**2 + b*x + c
-            # if random() <= 0.5:
-            # 求导数
             answer = str(diff(f, x)).replace(" ", "")
             question = f"求函数 f(x) = {f} 的导数"
             logger.debug(answer)
-            # else:
-            # answer = str(solve(diff(f, x))).replace("[", "").replace("]", "").replace(" ", "")
-            # question = f"求函数 f(x) = {f} 的解"
-            # logger.debug(answer)
+        else:
+            question, answer = generate_limit_question()
+            logger.debug(answer)
 
         bot = get_bot(accout_data[str(group)])
         msg_id = (await bot.send_group_msg(
@@ -118,7 +144,7 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
             except ValueError:
                 await matcher.finish()
 
-            if _answ == answer:
+            if check_answer(_answ, answer):
                 group_unanswered[event.group_id] = 0
                 add = [randint(10, 30), randint(5, 25)]
                 economy.add_vi(event.get_user_id(), add[0])
@@ -158,7 +184,7 @@ async def quick_math_command(matcher: Matcher, event: GroupMessageEvent):
         await error.report(format_exc(), matcher)
 
 # [HELPSTART] Version: 2
-# Command: qm
-# Usage: qm
-# Info: 开启/关闭速算
+# Command: qc
+# Usage: qc
+# Info: 开启/关闭快速微积分
 # [HELPEND]
