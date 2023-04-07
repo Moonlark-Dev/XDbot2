@@ -85,7 +85,7 @@ async def github(matcher: Matcher, message: Message = CommandArg()):
 async def get_issue(matcher: Matcher, event: MessageEvent):
     try:
         repo, issue_id = re.search(
-                r"[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+issues/[0-9]+",
+                r"[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+/issues/[0-9]+",
                 event.get_plaintext().replace("github.com", ""))[0].split("/issues/")
         issue_data = await call_github_api(f"https://api.github.com/repos/{repo}/issues/{issue_id}")
         await matcher.finish(f"""{issue_data['html_url']}
