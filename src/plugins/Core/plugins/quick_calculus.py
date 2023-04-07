@@ -45,6 +45,7 @@ def generate_limit_question():
     answer = f"{latex(_limit)}"
     return question, answer
 
+
 def _check_answer(_answer, right_answer):
     transformations = standard_transformations + \
         (implicit_multiplication_application,)
@@ -52,6 +53,7 @@ def _check_answer(_answer, right_answer):
     right_answer_expr = parse_expr(
         right_answer, transformations=transformations)
     return answer_expr == right_answer_expr
+
 
 def check_answer(_answer, right_answer):
     try:
