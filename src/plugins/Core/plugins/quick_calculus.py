@@ -35,6 +35,15 @@ def refresh_group_unanswered(groups=[]):
 refresh_group_unanswered()
 
 
+def generate_limit_question():
+    x = symbols('x')
+    f = choice([x**2 + 3*x - 2, x**3 - 2*x + 1, x**4 - 4*x**3 + 5*x**2 + 2*x - 1])
+    a = randint(-10, 10)
+    _limit = limit(f, x, a)
+    question = f"计算函数 {latex(f)} 在 $x={a}$ 处的极限。"
+    answer = f"{latex(_limit)}"
+    return question, answer
+
 def check_answer(_answer, right_answer):
     transformations = standard_transformations + \
         (implicit_multiplication_application,)
@@ -89,7 +98,7 @@ async def send_quick_calculus():
                 answer = str(diff(diff(f, x), x)).replace(" ", "")
                 question = f"求函数 f(x) = {f} 的二阶导数"
                 logger.debug(answer)
-        else:
+        elif random() <= 0.25:
             x = Symbol('x')
             a = randint(1, 10)
             b = randint(1, 10)
@@ -97,6 +106,9 @@ async def send_quick_calculus():
             f = a*x**2 + b*x + c
             answer = str(diff(f, x)).replace(" ", "")
             question = f"求函数 f(x) = {f} 的导数"
+            logger.debug(answer)
+        else:
+            question, answer = generate_limit_question()
             logger.debug(answer)
 
         bot = get_bot(accout_data[str(group)])
