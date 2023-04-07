@@ -2,16 +2,17 @@ from random import *
 from traceback import format_exc
 import asyncio
 from sympy import *
-from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent
+from nonebot.adapters.onebot.v11 import GroupMessageEvent
 from nonebot.matcher import Matcher
-from nonebot.params import CommandArg
+# from nonebot.params import CommandArg
 from . import _lang as lang
 from . import _error as error
-from .etm import achievement, economy, exp
+from .etm import economy, exp
 from nonebot_plugin_apscheduler import scheduler
 from nonebot import get_bot, on_message, require, on_command
 from nonebot.log import logger
 import json
+from sympy.parsing.sympy_parser import (parse_expr, standard_transformations, implicit_multiplication_application)
 
 require("nonebot_plugin_apscheduler")
 group = None
@@ -32,6 +33,12 @@ def refresh_group_unanswered(groups=[]):
 
 refresh_group_unanswered()
 
+
+def check_answer(_answer, right_answer):
+    transformations = standard_transformations + (implicit_multiplication_application,)
+    answer_expr = parse_expr(_answer, transformations=transformations)
+    right_answer_expr = parse_expr(right_answer, transformations=transformations)
+    return answer_expr == right_answer_expr
 
 async def delete_msg(bot, message_id):
     global group, answer
@@ -83,16 +90,10 @@ async def send_quick_calculus():
             a = randint(1, 10)
             b = randint(1, 10)
             c = randint(1, 10)
-            f = a*x**2 + b*x + c
-            # if random() <= 0.5:
-            # 求导数
+            f = a*x**2 + b*x + c           
             answer = str(diff(f, x)).replace(" ", "")
             question = f"求函数 f(x) = {f} 的导数"
             logger.debug(answer)
-            # else:
-            # answer = str(solve(diff(f, x))).replace("[", "").replace("]", "").replace(" ", "")
-            # question = f"求函数 f(x) = {f} 的解"
-            # logger.debug(answer)
 
         bot = get_bot(accout_data[str(group)])
         msg_id = (await bot.send_group_msg(
@@ -118,7 +119,7 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
             except ValueError:
                 await matcher.finish()
 
-            if _answ == answer:
+            if check_answer(_answ, answer):
                 group_unanswered[event.group_id] = 0
                 add = [randint(10, 30), randint(5, 25)]
                 economy.add_vi(event.get_user_id(), add[0])
@@ -158,7 +159,7 @@ async def quick_math_command(matcher: Matcher, event: GroupMessageEvent):
         await error.report(format_exc(), matcher)
 
 # [HELPSTART] Version: 2
-# Command: qm
-# Usage: qm
-# Info: 开启/关闭速算
+# Command: qc
+# Usage: qc
+# Info: 开启/关闭快速微积分
 # [HELPEND]
