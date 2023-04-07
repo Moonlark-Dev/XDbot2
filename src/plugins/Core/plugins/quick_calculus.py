@@ -12,7 +12,8 @@ from nonebot_plugin_apscheduler import scheduler
 from nonebot import get_bot, on_message, require, on_command
 from nonebot.log import logger
 import json
-from sympy.parsing.sympy_parser import (parse_expr, standard_transformations, implicit_multiplication_application)
+from sympy.parsing.sympy_parser import (
+    parse_expr, standard_transformations, implicit_multiplication_application)
 
 require("nonebot_plugin_apscheduler")
 group = None
@@ -35,10 +36,13 @@ refresh_group_unanswered()
 
 
 def check_answer(_answer, right_answer):
-    transformations = standard_transformations + (implicit_multiplication_application,)
+    transformations = standard_transformations + \
+        (implicit_multiplication_application,)
     answer_expr = parse_expr(_answer, transformations=transformations)
-    right_answer_expr = parse_expr(right_answer, transformations=transformations)
+    right_answer_expr = parse_expr(
+        right_answer, transformations=transformations)
     return answer_expr == right_answer_expr
+
 
 async def delete_msg(bot, message_id):
     global group, answer
@@ -90,7 +94,7 @@ async def send_quick_calculus():
             a = randint(1, 10)
             b = randint(1, 10)
             c = randint(1, 10)
-            f = a*x**2 + b*x + c           
+            f = a*x**2 + b*x + c
             answer = str(diff(f, x)).replace(" ", "")
             question = f"求函数 f(x) = {f} 的导数"
             logger.debug(answer)
