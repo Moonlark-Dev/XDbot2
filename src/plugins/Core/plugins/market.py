@@ -33,7 +33,7 @@ async def item_list(event: MessageEvent, message: Message = CommandArg()):
             for id, item_json in list(data.items()):
                 item = items.json2items([item_json["item"]])[0]
                 reply += _lang.text("market.list_item", [
-                    id, item.data["display_name"], item.count, item_json["price"]], user_id)
+                    id, item.data["display_name"], item_json["price"]], user_id)
             await market.finish(reply)
     except BaseException:
         await _error.report(traceback.format_exc(), market)

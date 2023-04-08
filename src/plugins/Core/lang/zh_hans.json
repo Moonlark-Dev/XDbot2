@@ -155,6 +155,6 @@
   "etm.book_savesuccess": "保存成功！",
   "etm.book_read": " {}\n作者：{}\n—————————————\n{}",
   "market.list_title": "「全球市场」",
-  "market.list_item": "\n{}. {} x{} {}vim",
+  "market.list_item": "\n{}. {} {}vim",
   "market.view": "「商品信息（#{}）」\n——————————————\n  {} ({})\n价格：{}vim（可购：{}）\n存货量：{}\n出售者：{}({})\n简介：{}"
 }
