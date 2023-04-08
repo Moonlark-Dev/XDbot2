@@ -80,6 +80,7 @@ async def buy_item(event: MessageEvent, message: Message = CommandArg()):
                         average_price[item_json["item"]["id"]] = item_json["price"]
                     save_data()
                     data[argv[1]]["count"] -= count
+                    save_data()
                     if data[argv[1]]["count"] == 0:
                         data.pop(argv[1])
                     await market.finish("购买成功！")
