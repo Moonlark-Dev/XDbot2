@@ -84,7 +84,7 @@ async def send_quick_math():
             return None
         if group_unanswered[group] >= 3:
             return None
-        question = f"{random.randint(0, 50)} {random.choice('+-*')} {random.randint(1, 50)}"
+        question = f"{random.randint(0, 40)} {random.choice('+-*')} {random.randint(0, 35)}"
         answer = eval(question)
         bot = get_bot(accout_data[str(group)])
         send_time = time.time()
