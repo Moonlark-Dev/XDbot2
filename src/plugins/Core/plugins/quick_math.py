@@ -24,11 +24,12 @@ send_time = 0
 def render_text_as_image(string):
     # Set the font size and the font type
     font_size = 36
-    font = ImageFont.truetype("./src/plugins/Core/font/sarasa-fixed-cl-regular.ttf", font_size)
+    font = ImageFont.truetype(
+        "./src/plugins/Core/font/sarasa-fixed-cl-regular.ttf", font_size)
     # Get the size of the text
     text_width, text_height = font.getsize(string)
     # Create a new image with the size of the text
-    image = Image.new('RGB', (text_width, text_height), color = 'white')
+    image = Image.new('RGB', (text_width, text_height), color='white')
     # Draw the text on the image
     draw = ImageDraw.Draw(image)
     draw.text((0, 0), string, fill='black', font=font)
@@ -39,6 +40,8 @@ def render_text_as_image(string):
     image.save('data/quick_math.image.png')
 
 # render_text_as_image("[QUICK MATH] 29 + 1 = ?")
+
+
 def refresh_group_unanswered(groups=[]):
     global group_unanswered
     if not groups:
@@ -101,7 +104,8 @@ async def _(matcher: Matcher, event: GroupMessageEvent):
         if group == event.group_id:
             if str(answer) in event.get_plaintext()\
                     and str(answer) != event.get_plaintext():
-                data = json.load(open("data/quick_math.average.json", encoding="utf-8"))
+                data = json.load(
+                    open("data/quick_math.average.json", encoding="utf-8"))
                 if time.time() - send_time <= data["average"] / 2:
                     group = None
                     answer = None
@@ -132,9 +136,12 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
                 exp.add_exp(event.get_user_id(), add[1])
                 await matcher.send(lang.text("quick_math.rightanswer", add, event.get_user_id()),
                                    at_sender=True)
-                data = json.load(open("data/quick_math.average.json", encoding="utf-8"))
-                data["average"] = round((data["average"] + (time.time() - send_time)) / 2, 3)
-                json.dump(data, open("data/quick_math.average.json", "w", encoding="utf-8"))
+                data = json.load(
+                    open("data/quick_math.average.json", encoding="utf-8"))
+                data["average"] = round(
+                    (data["average"] + (time.time() - send_time)) / 2, 3)
+                json.dump(data, open(
+                    "data/quick_math.average.json", "w", encoding="utf-8"))
                 group = None
                 answer = None
                 achievement.increase_unlock_progress(
