@@ -23,7 +23,7 @@ send_time = 0
 
 def render_text_as_image(string):
     # Set the font size and the font type
-    font_size = 36
+    font_size = 20
     font = ImageFont.truetype(
         "./src/plugins/Core/font/sarasa-fixed-cl-regular.ttf", font_size)
     # Get the size of the text
