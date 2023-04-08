@@ -61,7 +61,7 @@ def save_bags():
     for user in list(bags.keys()):
         count = get_items_count_in_bag(user)
         if count > 128:
-            economy._add_vimcoin(user, -0.002 * (count - 128))
+            economy._add_vimcoin(user, -0.001 * (count - 128))
 
 
 def get_user_bag(user_id):
