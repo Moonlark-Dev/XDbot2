@@ -35,8 +35,8 @@ def render_text_as_image(string):
     font_size = 20, 16
     font = ImageFont.truetype(
         "./src/plugins/Core/font/sarasa-fixed-cl-regular.ttf", font_size[0])
-    title_font = ImageFont.truetype(                        
-        "./src/plugins/Core/font/sarasa-fixed-cl-regular.ttf", font_size[1]) 
+    title_font = ImageFont.truetype(
+        "./src/plugins/Core/font/sarasa-fixed-cl-regular.ttf", font_size[1])
     # Get the size of the text
     text_width, text_height = font.getsize(string)
     # Create a new image with the size of the text
