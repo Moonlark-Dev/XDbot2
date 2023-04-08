@@ -20,6 +20,14 @@ class Config(BaseSettings):
     # 数据文件命名规则：子插件.数据名.json
     FILES = [
         {
+            "path": "data/market.average.json",
+            "text": "{}"
+        },
+        {
+            "path": "data/market.items.json",
+            "text": "{}"
+        },
+        {
             "path": "data/github.config.json",
             "text": "{}"
         },

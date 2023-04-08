@@ -7,6 +7,7 @@ from nonebot_plugin_apscheduler import scheduler
 achi_user_data = {}
 achi_unlock_progress = {}
 bags = {}
+buff = {}
 vimcoin = {
     "in": 0,
     "out": 0,
@@ -46,6 +47,11 @@ def load_data():
                         encoding="utf-8"))
             except BaseException:
                 pass
+            try:
+                buff[user] = json.load(
+                    open(f"data/etm/{user}/buff.json", encoding="utf-8"))
+            except:
+                pass
 
 
 load_data()
@@ -69,6 +75,7 @@ def save_data():
     _save_data("achi_unlock_progress", achi_unlock_progress)
     _save_data("bag", bags)
     _save_data("user", basic_data)
+    _save_data("buff", buff)
 
 
 @scheduler.scheduled_job("cron", second="*/20", id="save_data")
