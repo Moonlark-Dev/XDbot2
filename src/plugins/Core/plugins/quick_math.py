@@ -5,6 +5,7 @@ import traceback
 from nonebot.adapters.onebot.v11 import GroupMessageEvent
 from nonebot.matcher import Matcher
 from . import _lang as lang
+from sympy import *
 from . import _error as error
 from .etm import achievement, economy, exp
 from nonebot_plugin_apscheduler import scheduler
@@ -19,6 +20,14 @@ group = None
 answer = None
 group_unanswered = {}
 send_time = 0
+
+
+def generate_equation():
+    x = symbols('x')
+    a, b = random.randint(1, 10), random.randint(1, 10)
+    eq = Eq(a*x + b, random.randint(1, 50))
+    ans = solve(eq)
+    return eq, ans
 
 
 def render_text_as_image(string):
@@ -84,11 +93,17 @@ async def send_quick_math():
             return None
         if group_unanswered[group] >= 3:
             return None
-        question = f"{random.randint(0, 40)} {random.choice('+-*')} {random.randint(0, 35)}"
-        answer = eval(question)
+        if random.random() <= 0.5:
+            question = f"{random.randint(0, 40)} {random.choice('+-*')} {random.randint(0, 35)}"
+            answer = eval(question)
+            question += " = ?"
+        else:
+            question, answer = generate_equation()
+            question = latex(question)
+            answer = str(answer).replace("[", "").replace("]", "")
         bot = get_bot(accout_data[str(group)])
         send_time = time.time()
-        render_text_as_image(f"[QUICK MATH] {question} = ?")
+        render_text_as_image(f"[QUICK MATH] {question}")
         msg_id = (await bot.send_group_msg(
             group_id=group,
             message="[CQ:image,file=file://{}]".format(os.path.abspath("./data/quick_math.image.png"))))["message_id"]
@@ -125,11 +140,11 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
     try:
         if event.group_id == group:
             try:
-                _answ = int(event.get_plaintext().strip())
+                _answ = event.get_plaintext().strip()
             except ValueError:
                 await matcher.finish()
 
-            if _answ == answer:
+            if _answ == str(answer):
                 group_unanswered[event.group_id] = 0
                 add = [random.randint(1, 13), random.randint(1, 15)]
                 economy.add_vi(event.get_user_id(), add[0])

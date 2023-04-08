@@ -1,8 +1,7 @@
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Message, MessageEvent
-from .etm import exp, economy, bag, items
+from .etm import exp, economy, bag, items, user
 from nonebot.params import CommandArg
-
 from . import _lang as lang
 from . import _error as error
 import json
@@ -40,7 +39,7 @@ async def shop_handler(event: MessageEvent, message: Message = CommandArg()):
                 f"「商品信息（#{arguments[1]}）」\n"
                 "——————————————\n"
                 f"物品：{item.data['display_name']} ({item.item_id})\n"
-                f"价格：{economy.vi2vim(item.data['price'])}vim ({item.data['price']}vi)\n"
+                f"价格：{economy.vi2vim(item.data['price'])}vim (可购：{int(user.get_user_data(qq)['vimcoin'] / item.data['price'])})\n"
                 f"简介：\n  {item.data['display_message']}"))
         elif arguments[0] == "buy":
             item = items.json2items([SHOP_ITEMS[arguments[1]]])[0]
