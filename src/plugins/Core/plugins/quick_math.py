@@ -25,6 +25,7 @@ lua = LuaRuntime(unpack_returned_tuples=True)
 lua.require("src.plugins.Core.lua.calc")
 run_sandbox = lua.eval("run_sandbox")
 
+
 def generate_equation():
     x = symbols('x')
     a, b = random.randint(1, 10), random.randint(1, 10)
