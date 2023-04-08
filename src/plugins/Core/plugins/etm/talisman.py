@@ -1,6 +1,7 @@
 from .item import Item
 from . import buff
 
+
 class Talisman(Item):
     def on_register(self):
         self.item_id = "talisman"
@@ -14,5 +15,3 @@ class Talisman(Item):
     def use_item(self):
         buff.give_buff(self.user_id, "护符", 1)
         return "护符已生效"
-
-

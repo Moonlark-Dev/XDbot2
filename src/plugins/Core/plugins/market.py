@@ -10,6 +10,7 @@ market = on_command("market")
 data = json.load(open("data/market.items.json", encoding="utf-8"))
 average_price = json.load(open("data/market.average.json", encoding="utf-8"))
 
+
 def get_average(item_id):
     try:
         return average_price[item_id]
@@ -19,9 +20,12 @@ def get_average(item_id):
             "count": 1,
             "data": {}}])[0].data["price"]
 
+
 def save_data():
     json.dump(data, open("data/market.items.json", "w", encoding="utf-8"))
-    json.dump(average_price, open("data/market.average.json", "w", encoding="utf-8"))
+    json.dump(average_price, open(
+        "data/market.average.json", "w", encoding="utf-8"))
+
 
 @market.handle()
 async def item_list(event: MessageEvent, message: Message = CommandArg()):
@@ -38,6 +42,7 @@ async def item_list(event: MessageEvent, message: Message = CommandArg()):
     except BaseException:
         await _error.report(traceback.format_exc(), market)
 
+
 @market.handle()
 async def view_item(event: MessageEvent, message: Message = CommandArg()):
     try:
@@ -51,13 +56,15 @@ async def view_item(event: MessageEvent, message: Message = CommandArg()):
                 item.data["display_name"],
                 item.item_id,
                 item_data["price"],
-                min(int(user.get_user_data(user_id)["vimcoin"] / item_data["price"]), item_data["count"]),
+                min(int(user.get_user_data(user_id)[
+                    "vimcoin"] / item_data["price"]), item_data["count"]),
                 item_data["count"],
                 item_data["seller"]["nickname"],
                 item_data["seller"]["user_id"],
                 item.data["display_message"]], user_id))
     except BaseException:
         await _error.report(traceback.format_exc(), market)
+
 
 @market.handle()
 async def buy_item(event: MessageEvent, message: Message = CommandArg()):
@@ -72,12 +79,15 @@ async def buy_item(event: MessageEvent, message: Message = CommandArg()):
                 count = 1
             if count < item_json["count"]:
                 if economy.use_vimcoin(user_id, count * item_json["price"]):
-                    bag.add_item(user_id, item_json["item"]["id"], item_json["item"]["count"], item_json["item"]["data"])
+                    bag.add_item(
+                        user_id, item_json["item"]["id"], item_json["item"]["count"], item_json["item"]["data"])
                     economy.add_vimcoin(user_id, count * item_json["price"])
                     try:
-                        average_price[item_json["item"]["id"]] = (average_price[item_json["item"]["id"]] + count * item_json["price"]) / count + 1
+                        average_price[item_json["item"]["id"]] = (
+                            average_price[item_json["item"]["id"]] + count * item_json["price"]) / count + 1
                     except:
-                        average_price[item_json["item"]["id"]] = item_json["price"]
+                        average_price[item_json["item"]
+                                      ["id"]] = item_json["price"]
                     save_data()
                     data[argv[1]]["count"] -= count
                     save_data()
@@ -90,6 +100,7 @@ async def buy_item(event: MessageEvent, message: Message = CommandArg()):
                 await market.finish("错误：库存不足")
     except BaseException:
         await _error.report(traceback.format_exc(), market)
+
 
 @market.handle()
 async def sell_item(event: MessageEvent, bot: Bot, message: Message = CommandArg()):
@@ -129,9 +140,6 @@ async def sell_item(event: MessageEvent, bot: Bot, message: Message = CommandArg
                     await market.finish("失败：数量不足")
             else:
                 await market.finish("失败：物品不可出售")
-            
 
     except BaseException:
         await _error.report(traceback.format_exc(), market)
-
-

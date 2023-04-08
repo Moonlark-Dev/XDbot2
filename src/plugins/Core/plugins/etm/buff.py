@@ -8,6 +8,7 @@ BUFFERS = {
     }
 }
 
+
 def get_buff_level(user_id, buff_id):
     try:
         buff = data.buff[user_id]
@@ -19,6 +20,7 @@ def get_buff_level(user_id, buff_id):
     except:
         return BUFFERS[buff_id]["default_level"]
 
+
 def effect_buff(user_id, buff_id):
     try:
         data.buff[user_id][buff_id]["effect_count"] += 1
@@ -28,6 +30,7 @@ def effect_buff(user_id, buff_id):
     except:
         return False
 
+
 def can_effect(user_id, buff_id):
     try:
         if data.buff[user_id][buff_id]["effect_count"] >= BUFFERS[buff_id]["max_effect"](data.buff[user_id][buff_id]["level"]):
@@ -36,7 +39,8 @@ def can_effect(user_id, buff_id):
     except:
         return False
 
-def give_buff(user_id, buff_id, buff_level, endtime = None, effect_count = 0):
+
+def give_buff(user_id, buff_id, buff_level, endtime=None, effect_count=0):
     if user_id not in data.buff.keys():
         data.buff[user_id] = {}
     data.buff[user_id][buff_id] = {
@@ -45,4 +49,3 @@ def give_buff(user_id, buff_id, buff_level, endtime = None, effect_count = 0):
         "effect_count": effect_count
     }
     data.save_data()
-
