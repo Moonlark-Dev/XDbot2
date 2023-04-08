@@ -46,7 +46,7 @@ async def view_item(event: MessageEvent, message: Message = CommandArg()):
         if argv[0] == "view":
             item_data = data[argv[1]]
             item = items.json2items([item_data["item"]])[0]
-            await market.finish(_lang.text("market.view", [{
+            await market.finish(_lang.text("market.view", [
                 item_data["id"],
                 item.data["display_name"],
                 item.item_id,
@@ -55,7 +55,7 @@ async def view_item(event: MessageEvent, message: Message = CommandArg()):
                 item_data["count"],
                 item_data["seller"]["nickname"],
                 item_data["seller"]["user_id"],
-                item.data["display_message"]}], user_id))
+                item.data["display_message"]], user_id))
     except BaseException:
         await _error.report(traceback.format_exc(), market)
 
