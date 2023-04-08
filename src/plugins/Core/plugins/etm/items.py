@@ -1,9 +1,11 @@
 from .dice import Dice
+from .talisman import Talisman
 from .book_and_quill import BookAndQuill
 
 ITEMS = {
     "dice": Dice,
-    "book_and_quill": BookAndQuill
+    "book_and_quill": BookAndQuill,
+    "talisman": Talisman
 }
 
 
