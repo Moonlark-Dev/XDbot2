@@ -77,7 +77,7 @@ async def buy_item(event: MessageEvent, message: Message = CommandArg()):
                     try:
                         average_price[item_json["item"]["id"]] = (average_price[item_json["item"]["id"]] + count * item_json["price"]) / count + 1
                     except:
-                        average_price[item_json["item"]["id"]] = item_json["item"]["price"]
+                        average_price[item_json["item"]["id"]] = item_json["price"]
                     save_data()
                     data[argv[1]]["count"] -= count
                     if data[argv[1]]["count"] == 0:
