@@ -60,7 +60,7 @@ def save_bags():
     # 超出容量处理
     for user in list(bags.keys()):
         count = get_items_count_in_bag(user)
-        if count >= 255:
+        if count > 128:
             economy._add_vimcoin(user, 0.0002 * (count - 255))
 
 
