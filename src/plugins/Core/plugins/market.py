@@ -101,7 +101,7 @@ async def sell_item(event: MessageEvent, bot: Bot, message: Message = CommandArg
             price = max(1, float(argv[3]))
             if item.data["can_be_sold"]:
                 if count <= item.count:
-                    if price <= min(get_average(item.item_id) * 2, item["price"] * 7):
+                    if price <= min(get_average(item.item_id) * 2, item.data["price"] * 7):
                         id = 1
                         while True:
                             if str(id) not in data.keys():
