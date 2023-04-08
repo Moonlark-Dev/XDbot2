@@ -13,6 +13,7 @@ from nonebot import get_bot, on_message, require, on_command
 import json
 from PIL import Image, ImageDraw, ImageFont
 import time
+from lupa import LuaRuntime
 import os.path
 
 require("nonebot_plugin_apscheduler")
@@ -20,7 +21,9 @@ group = None
 answer = None
 group_unanswered = {}
 send_time = 0
-
+lua = LuaRuntime(unpack_returned_tuples=True)
+lua.require("src.plugins.Core.lua.calc")
+run_sandbox = lua.eval("run_sandbox")
 
 def generate_equation():
     x = symbols('x')
@@ -147,7 +150,7 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
             except ValueError:
                 await matcher.finish()
 
-            if _answ == str(answer):
+            if _answ == str(answer) or run_sandbox(_answ) == run_sandbox(str(answer)):
                 group_unanswered[event.group_id] = 0
                 add = [random.randint(1, 13), random.randint(1, 15)]
                 economy.add_vi(event.get_user_id(), add[0])
