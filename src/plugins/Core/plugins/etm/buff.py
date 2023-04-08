@@ -17,7 +17,7 @@ def get_buff_level(user_id, buff_id):
                 return BUFFERS[buff_id]["default_level"]
         return data.buff[user_id][buff_id]["level"]
     except:
-        return data.buff[buff_id]
+        return BUFFERS[buff_id]["default_level"]
 
 def effect_buff(user_id, buff_id):
     try:
