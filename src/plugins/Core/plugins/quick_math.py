@@ -21,12 +21,14 @@ answer = None
 group_unanswered = {}
 send_time = 0
 
+
 def generate_equation():
     x = symbols('x')
     a, b = random.randint(1, 10), random.randint(1, 10)
     eq = Eq(a*x + b, random.randint(1, 50))
     ans = solve(eq)
     return str(eq), str(ans)
+
 
 def render_text_as_image(string):
     # Set the font size and the font type
