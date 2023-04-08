@@ -34,7 +34,8 @@ def generate_equation():
     return eq, ans
 
 
-def render_text_as_image(string):
+def render_text_as_image(_string):
+    string = _string.replace(" ", "")
     # Set the font size and the font type
     font_size = 20, 16
     font = ImageFont.truetype(
