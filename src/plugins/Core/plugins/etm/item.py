@@ -23,6 +23,9 @@ class Item:
         pass
 
     def use(self, args):
+        if not self.data["useable"]:
+            return ["失败：物品无法被使用"]
+
         try:
             count = int(args)
         except BaseException:
@@ -44,7 +47,7 @@ class Item:
         return msg
 
     def drop(self, count):
-        if self.count >= count:
+        if self.count >= count and self.data["disposable"]:
             self.count -= count
             return True
         else:
