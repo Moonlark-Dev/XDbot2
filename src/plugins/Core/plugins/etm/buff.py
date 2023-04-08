@@ -36,8 +36,6 @@ def can_effect(user_id, buff_id):
     except:
         return False
 
-
-
 def give_buff(user_id, buff_id, buff_level, endtime = None, effect_count = 0):
     if user_id not in data.buff.keys():
         data.buff[user_id] = {}

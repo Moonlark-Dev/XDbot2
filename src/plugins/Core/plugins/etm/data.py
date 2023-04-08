@@ -48,7 +48,7 @@ def load_data():
             except BaseException:
                 pass
             try:
-                buff[user_id] = json.load(open(f"data/etm/{user}/buff.json", encoding="utf-8"))
+                buff[user] = json.load(open(f"data/etm/{user}/buff.json", encoding="utf-8"))
             except:
                 pass
 
