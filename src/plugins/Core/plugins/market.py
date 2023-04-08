@@ -45,7 +45,7 @@ async def view_item(event: MessageEvent, message: Message = CommandArg()):
         argv = str(message).split(" ")
         if argv[0] == "view":
             item_data = data[argv[1]]
-            item = items.json2items(item_data["item"])[0]
+            item = items.json2items([item_data["item"]])[0]
             await market.finish(_lang.text("market.view", [{
                 item_data["id"],
                 item.data["display_name"],
