@@ -43,9 +43,10 @@ def render_text_as_image(_string):
     title_font = ImageFont.truetype(
         "./src/plugins/Core/font/sarasa-fixed-cl-regular.ttf", font_size[1])
     # Get the size of the text
-    text_width, text_height = font.getsize(string)
+    width1, height1 = font.getsize(string)
+    width2, height2 = title_font.getsize("[QUICK MATH]")
     # Create a new image with the size of the text
-    image = Image.new('RGB', (text_width, text_height + 18), color='white')
+    image = Image.new('RGB', (max(width1, width2), max(height1, height2) + 18), color='white')
     # Draw the text on the image
     draw = ImageDraw.Draw(image)
     draw.text((0, 17), string, fill='black', font=font)
