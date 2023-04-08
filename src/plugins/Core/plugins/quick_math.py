@@ -2,17 +2,17 @@ import random
 from traceback import format_exc
 import asyncio
 import traceback
-from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent
+from nonebot.adapters.onebot.v11 import GroupMessageEvent
 from nonebot.matcher import Matcher
-from nonebot.params import CommandArg
 from . import _lang as lang
 from . import _error as error
 from .etm import achievement, economy, exp
 from nonebot_plugin_apscheduler import scheduler
 from nonebot import get_bot, on_message, require, on_command
 import json
-from nonebot.log import logger
+from PIL import Image, ImageDraw, ImageFont
 import time
+import os.path
 
 require("nonebot_plugin_apscheduler")
 group = None
@@ -21,6 +21,24 @@ group_unanswered = {}
 send_time = 0
 
 
+def render_text_as_image(string):
+    # Set the font size and the font type
+    font_size = 36
+    font = ImageFont.truetype("./src/plugins/Core/font/sarasa-fixed-cl-regular.ttf", font_size)
+    # Get the size of the text
+    text_width, text_height = font.getsize(string)
+    # Create a new image with the size of the text
+    image = Image.new('RGB', (text_width, text_height), color = 'white')
+    # Draw the text on the image
+    draw = ImageDraw.Draw(image)
+    draw.text((0, 0), string, fill='black', font=font)
+    # Remove any extra white space in the image
+    bbox = image.getbbox()
+    image = image.crop(bbox)
+    # Save the image to the local system
+    image.save('data/quick_math.image.png')
+
+# render_text_as_image("[QUICK MATH] 29 + 1 = ?")
 def refresh_group_unanswered(groups=[]):
     global group_unanswered
     if not groups:
@@ -67,9 +85,10 @@ async def send_quick_math():
         answer = eval(question)
         bot = get_bot(accout_data[str(group)])
         send_time = time.time()
+        render_text_as_image(f"[QUICK MATH] {question} = ?")
         msg_id = (await bot.send_group_msg(
             group_id=group,
-            message=f"[QUICK MATH] {question} = ?"))["message_id"]
+            message="[CQ:image,file=file://{}]".format(os.path.abspath("./data/quick_math.image.png"))))["message_id"]
         asyncio.create_task(delete_msg(bot, msg_id))
     except BaseException:
         await error.report(format_exc())
