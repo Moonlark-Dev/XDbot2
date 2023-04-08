@@ -36,13 +36,13 @@ async def show_achievement(matcher: Matcher, event: MessageEvent, message: Messa
                 "achi.info",
                 [achi_data['name'], achi_data['condition'], unlck_status],
                 event.get_user_id()))
-        elif argv[0] in ["all", "全部"]:
-            reply = lang.text("achi.title_all", [], event.get_user_id())
-            length = 1
-            for item in list(achievement.ACHIEVEMENTS.values()):
-                reply += f"\n{length}. {item['name']}"
-                length += 1
-            await matcher.finish(reply)
+        # elif argv[0] in ["all", "全部"]:
+        #     reply = lang.text("achi.title_all", [], event.get_user_id())
+        #     length = 1
+        #     for item in list(achievement.ACHIEVEMENTS.values()):
+        #         reply += f"\n{length}. {item['name']}"
+        #         length += 1
+#             await matcher.finish(reply)
     except BaseException:
         await error.report(format_exc(), matcher)
 
@@ -50,7 +50,6 @@ async def show_achievement(matcher: Matcher, event: MessageEvent, message: Messa
 # Command: achievement
 # Usage: achievement [list]
 # Usage: achievement view <成就名>
-# Usage: achievement all
 # Msg: 查看成就
 # Info: 查看成就
 # [HELPEND]
