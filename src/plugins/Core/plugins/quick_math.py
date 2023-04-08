@@ -5,12 +5,12 @@ import traceback
 from nonebot.adapters.onebot.v11 import GroupMessageEvent
 from nonebot.matcher import Matcher
 from . import _lang as lang
+from sympy import *
 from . import _error as error
 from .etm import achievement, economy, exp
 from nonebot_plugin_apscheduler import scheduler
 from nonebot import get_bot, on_message, require, on_command
 import json
-from sympy import *
 from PIL import Image, ImageDraw, ImageFont
 import time
 import os.path
@@ -27,7 +27,7 @@ def generate_equation():
     a, b = random.randint(1, 10), random.randint(1, 10)
     eq = Eq(a*x + b, random.randint(1, 50))
     ans = solve(eq)
-    return str(eq), str(ans)
+    return eq, ans
 
 
 def render_text_as_image(string):
@@ -99,7 +99,8 @@ async def send_quick_math():
             question += " = ?"
         else:
             question, answer = generate_equation()
-            answer = answer.replace("[", "").replace("]", "")
+            question = latex(question)
+            answer = str(answer).replace("[", "").replace("]", "")
         bot = get_bot(accout_data[str(group)])
         send_time = time.time()
         render_text_as_image(f"[QUICK MATH] {question}")
