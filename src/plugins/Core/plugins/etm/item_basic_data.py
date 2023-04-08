@@ -1,6 +1,6 @@
 BASIC_DATA = {
     "useable": True,
-    "can_sell": True,
+    "cam_be_sold": True,
     "dispoable": True,
     "maximum_stack": 64,
     "price": 5,
