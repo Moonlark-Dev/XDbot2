@@ -32,16 +32,19 @@ def generate_equation():
 
 def render_text_as_image(string):
     # Set the font size and the font type
-    font_size = 20
+    font_size = 20, 16
     font = ImageFont.truetype(
-        "./src/plugins/Core/font/sarasa-fixed-cl-regular.ttf", font_size)
+        "./src/plugins/Core/font/sarasa-fixed-cl-regular.ttf", font_size[0])
+    title_font = ImageFont.truetype(
+        "./src/plugins/Core/font/sarasa-fixed-cl-regular.ttf", font_size[1])
     # Get the size of the text
     text_width, text_height = font.getsize(string)
     # Create a new image with the size of the text
-    image = Image.new('RGB', (text_width, text_height), color='white')
+    image = Image.new('RGB', (text_width, text_height + 18), color='white')
     # Draw the text on the image
     draw = ImageDraw.Draw(image)
-    draw.text((0, 0), string, fill='black', font=font)
+    draw.text((0, 17), string, fill='black', font=font)
+    draw.text((0, 0), "[QUICK MATH]", fill='black', font=title_font)
     # Remove any extra white space in the image
     bbox = image.getbbox()
     image = image.crop(bbox)
@@ -103,7 +106,7 @@ async def send_quick_math():
             answer = str(answer).replace("[", "").replace("]", "")
         bot = get_bot(accout_data[str(group)])
         send_time = time.time()
-        render_text_as_image(f"[QUICK MATH] {question}")
+        render_text_as_image(f"{question}")
         msg_id = (await bot.send_group_msg(
             group_id=group,
             message="[CQ:image,file=file://{}]".format(os.path.abspath("./data/quick_math.image.png"))))["message_id"]
