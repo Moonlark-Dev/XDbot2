@@ -2,23 +2,44 @@ import random
 from traceback import format_exc
 import asyncio
 import traceback
-from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent
+from nonebot.adapters.onebot.v11 import GroupMessageEvent
 from nonebot.matcher import Matcher
-from nonebot.params import CommandArg
 from . import _lang as lang
 from . import _error as error
 from .etm import achievement, economy, exp
 from nonebot_plugin_apscheduler import scheduler
 from nonebot import get_bot, on_message, require, on_command
 import json
-from nonebot.log import logger
+from PIL import Image, ImageDraw, ImageFont
 import time
+import os.path
 
 require("nonebot_plugin_apscheduler")
 group = None
 answer = None
 group_unanswered = {}
 send_time = 0
+
+
+def render_text_as_image(string):
+    # Set the font size and the font type
+    font_size = 20
+    font = ImageFont.truetype(
+        "./src/plugins/Core/font/sarasa-fixed-cl-regular.ttf", font_size)
+    # Get the size of the text
+    text_width, text_height = font.getsize(string)
+    # Create a new image with the size of the text
+    image = Image.new('RGB', (text_width, text_height), color='white')
+    # Draw the text on the image
+    draw = ImageDraw.Draw(image)
+    draw.text((0, 0), string, fill='black', font=font)
+    # Remove any extra white space in the image
+    bbox = image.getbbox()
+    image = image.crop(bbox)
+    # Save the image to the local system
+    image.save('data/quick_math.image.png')
+
+# render_text_as_image("[QUICK MATH] 29 + 1 = ?")
 
 
 def refresh_group_unanswered(groups=[]):
@@ -37,7 +58,7 @@ refresh_group_unanswered()
 
 async def delete_msg(bot, message_id):
     global group, answer
-    await asyncio.sleep(18)
+    await asyncio.sleep(20)
     if None not in [group, answer]:
         await bot.delete_msg(message_id=message_id)
         group_unanswered[group] += 1
@@ -45,7 +66,7 @@ async def delete_msg(bot, message_id):
         answer = None
 
 
-@scheduler.scheduled_job("cron", minute="*/4", id="send_quick_math")
+@scheduler.scheduled_job("cron", minute="*/3", id="send_quick_math")
 async def send_quick_math():
     global group, answer, send_time
     try:
@@ -63,28 +84,32 @@ async def send_quick_math():
             return None
         if group_unanswered[group] >= 3:
             return None
-        question = f"{random.randint(0, 50)} {random.choice('+-*')} {random.randint(1, 50)}"
+        question = f"{random.randint(0, 40)} {random.choice('+-*')} {random.randint(0, 35)}"
         answer = eval(question)
         bot = get_bot(accout_data[str(group)])
         send_time = time.time()
+        render_text_as_image(f"[QUICK MATH] {question} = ?")
         msg_id = (await bot.send_group_msg(
             group_id=group,
-            message=f"[QUICK MATH] {question} = ?"))["message_id"]
+            message="[CQ:image,file=file://{}]".format(os.path.abspath("./data/quick_math.image.png"))))["message_id"]
         asyncio.create_task(delete_msg(bot, msg_id))
     except BaseException:
         await error.report(format_exc())
 
 
-# @on_message().handle()
-async def _(event: GroupMessageEvent):
+@on_message().handle()
+async def _(matcher: Matcher, event: GroupMessageEvent):
     global group, answer, send_time
     try:
-        logger.debug(time.time() - send_time)
-        if str(answer) in event.get_plaintext() and time.time() - send_time < 1:
-            group = None
-            answer = None
-            logger.warning(
-                f"速算反作弊：疑似发现外挂，本题无效（响应时间：{time.time() - send_time}）")
+        if group == event.group_id:
+            if str(answer) in event.get_plaintext()\
+                    and str(answer) != event.get_plaintext():
+                data = json.load(
+                    open("data/quick_math.average.json", encoding="utf-8"))
+                if time.time() - send_time <= data["average"] / 2:
+                    group = None
+                    answer = None
+                    await matcher.send("[反作弊] 疑似发现外挂，本题无效")
     except:
         await error.report(traceback.format_exc())
 
@@ -111,6 +136,12 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
                 exp.add_exp(event.get_user_id(), add[1])
                 await matcher.send(lang.text("quick_math.rightanswer", add, event.get_user_id()),
                                    at_sender=True)
+                data = json.load(
+                    open("data/quick_math.average.json", encoding="utf-8"))
+                data["average"] = round(
+                    (data["average"] + (time.time() - send_time)) / 2, 3)
+                json.dump(data, open(
+                    "data/quick_math.average.json", "w", encoding="utf-8"))
                 group = None
                 answer = None
                 achievement.increase_unlock_progress(

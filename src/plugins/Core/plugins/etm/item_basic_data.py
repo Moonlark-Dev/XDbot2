@@ -1,10 +1,9 @@
 BASIC_DATA = {
-    "can_use": True,
-    "can_sell": True,
-    "can_drop": True,
+    "useable": True,
+    "cam_be_sold": True,
+    "dispoable": True,
     "maximum_stack": 64,
     "price": 5,
     "display_name": "",
-    "display_message": "",
-    "can_use": False
+    "display_message": ""
 }
