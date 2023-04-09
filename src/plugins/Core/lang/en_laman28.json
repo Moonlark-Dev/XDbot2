@@ -1,5 +1,5 @@
 {
-  "lang.version": "23w12b",
+  "lang.version": "23w15a",
   "lang.author": "Laman28",
   "lang.intro": "[Language details]",
   "lang.lang_name": "Name: {}",
@@ -8,7 +8,7 @@
   "lang.compatibility": "Compatibility: {}/{} ({}%)",
   "lang.keylost": "The missing keys: {}",
   "lang.empty": "Use {} to switch language",
-  "lang.success": "Current language using: {}",
+  "lang.success": "Current language is {}",
   "lang.notfound": "Language file {} cannot be found",
   "lang.list": "Available languages:\n{}",
   "_error.failed": "Failed",
@@ -19,7 +19,7 @@
   "_userCtrl.dice.15-17": "Bought a 20-sided dice, rolled {}, you got lucky with 10vi!",
   "_userCtrl.dice.10-14": "Bought a 20-sided dice, rolled {}, you got 5vi back!",
   "_userCtrl.dice.2-9": "Bought a 20-sided dice, rolled {} and got nothing ...",
-  "_userCtrl.dice.1": "Bought a 20-sided dice, rolled 1, TOO BAD, you lost 50vi!",
+  "_userCtrl.dice.1": "Bought a 20-sided dice, rolled 1. That's too bad! you lost 50vi!",
   "_userCtrl.cannot_use": "What are you trying ...",
   "autosell.log": "Only ... is not because of you to refresh the goods",
   "bag.get": "「{}'s Inventory」\n",
@@ -35,7 +35,7 @@
   "cave.data_finish": "Total: {}\nValid: {}",
   "cave.notfound": "Echo Cave ({}) cannot be found",
   "ct.nodata": "Nothing available",
-  "ct.rank": "Presentation Ranking —— {}\n",
+  "ct.rank": "Presentation Ranking --- {}\n",
   "ct.usage": "Usage: ct [group]",
   "fakenode.new": "「New fake-forwarding」\nUser: {}\n \n{}",
   "forward.private": "「Private chat messages forwarding」",
@@ -206,5 +206,12 @@
   "achi.title": "Achievements unlocked: ",
   "achi.info": "[Achievement detail]\nName: {}\nCondition: {}\nProgress: {}",
   "achi.locked": "Locked",
-  "achi.unlcked": "Unlocked"
+  "achi.unlcked": "Unlocked",
+  "etm.book_written": "Written",
+  "etm.book_saved": "Error: The book has been saved",
+  "etm.book_savesuccess": "Saved",
+  "etm.book_read": " {}\nAuthor: {}\n----------------------\n{}",
+  "market.list_title": "[World Market]",
+  "market.list_item": "\n{}. {} {}vim",
+  "market.view": "[Commodity Information (#{})]\n----------------------\n  {} ({})\nPrice: {}vim（Available: {}）\nRemain: {}\nSeller: {}({})\nComments: {}"
 }
