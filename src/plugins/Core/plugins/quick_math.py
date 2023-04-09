@@ -9,7 +9,7 @@ from sympy import *
 from . import _error as error
 from .etm import achievement, economy, exp
 from nonebot_plugin_apscheduler import scheduler
-from nonebot import get_bot, on_message, require, on_command
+from nonebot import get_bot, on_message, require, on_command, on_regex
 import json
 from PIL import Image, ImageDraw, ImageFont
 import time
@@ -139,7 +139,7 @@ async def _(matcher: Matcher, event: GroupMessageEvent):
         await error.report(traceback.format_exc())
 
 
-@on_message().handle()
+@on_regex(r"^-?[0-9]+((\/[0-9]+)|\.[0-9]+)?$").handle()
 async def quick_math(matcher: Matcher, event: GroupMessageEvent):
     global group, answer, group_unanswered
     try:
@@ -154,7 +154,7 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
             except ValueError:
                 await matcher.finish()
 
-            if _answ == str(answer) or run_sandbox(_answ) == run_sandbox(str(answer)):
+            if _answ == str(answer) or ("/" in str(answer) and run_sandbox(_answ) == run_sandbox(str(answer))):
                 group_unanswered[event.group_id] = 0
                 add = [random.randint(1, 13), random.randint(1, 15)]
                 economy.add_vi(event.get_user_id(), add[0])
