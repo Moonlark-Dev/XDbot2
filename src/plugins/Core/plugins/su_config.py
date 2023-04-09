@@ -19,7 +19,7 @@ async def set_config(message: Message = CommandArg()):
                     f"data/{argument[2]}", "w", encoding="utf-8"))
 
                 await su.finish(f"{argument[2]}::{argument[3]} -> {' '.join(argument[4:])}")
-            elif argument[0] in ["set", "设置"]:
+            elif argument[1] in ["set", "设置"]:
                 with open(f"data/{argument[2]}", "w", encoding="utf-8") as f:
                     f.write(" ".join(argument[3:]))
                 await su.finish(f"{argument[2]} -> {' '.join(argument[3:])}")
