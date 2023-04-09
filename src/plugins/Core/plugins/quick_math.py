@@ -9,7 +9,7 @@ from sympy import *
 from . import _error as error
 from .etm import achievement, economy, exp
 from nonebot_plugin_apscheduler import scheduler
-from nonebot import get_bot, on_message, require, on_command
+from nonebot import get_bot, on_message, require, on_command, on_regex
 import json
 from PIL import Image, ImageDraw, ImageFont
 import time
@@ -139,7 +139,7 @@ async def _(matcher: Matcher, event: GroupMessageEvent):
         await error.report(traceback.format_exc())
 
 
-@on_message().handle()
+@on_regex(r"^-?[0-9]+((\/[0-9]+)|\.[0-9]+)?$").handle()
 async def quick_math(matcher: Matcher, event: GroupMessageEvent):
     global group, answer, group_unanswered
     try:
