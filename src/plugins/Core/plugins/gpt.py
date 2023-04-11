@@ -19,7 +19,7 @@ generator = client.use_plugin(config["plugin"])
 async def _(matcher: Matcher, message: Message = CommandArg()):
     try:
         task = generator.generate(text=message.extract_plain_text())
-        while task.state == "waiting":
+        while task.state in ["waiting", "running"]:
             await asyncio.sleep(config["sleep"])
             task.refresh()
         if task.state == "succeeded":
