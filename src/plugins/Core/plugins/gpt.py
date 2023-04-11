@@ -21,6 +21,7 @@ async def _(matcher: Matcher, message: Message = CommandArg()):
         task = generator.generate(text=message.extract_plain_text())
         while task.state == "waiting":
             await asyncio.sleep(config["sleep"])
+            task.refresh()
         if task.state == "succeeded":
             await matcher.finish(task.output.blocks[0].text, at_sender=True)
     except:
