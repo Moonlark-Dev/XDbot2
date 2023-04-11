@@ -82,7 +82,7 @@ async def send_quick_calculus():
                 encoding="utf-8"))
         groups = json.load(
             open(
-                "data/quick_math.enabled_groups.json",
+                "data/quick_calculus.enabled_groups.json",
                 encoding="utf-8"))
         try:
             group = choice(groups)
