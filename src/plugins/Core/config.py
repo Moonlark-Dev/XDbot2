@@ -24,6 +24,15 @@ class Config(BaseSettings):
             "text": "{}"
         },
         {
+            "path": "data/gpt.config.json",
+            "text": json.dumps({
+                "api_key": "",
+                "workspace": "gpt-4",
+                "plugin": "gpt-4",
+                "sleep": 1
+            })
+        },
+        {
             "path": "data/market.items.json",
             "text": "{}"
         },

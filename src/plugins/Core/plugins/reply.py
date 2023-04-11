@@ -91,7 +91,7 @@ async def random_send_handle():
         await _error.report(traceback.format_exc())
 
 
-@on_tome_msg.handle()
+# @on_tome_msg.handle()
 async def to_me_msg_handle():
     try:
         if random.random() <= 0.75:
