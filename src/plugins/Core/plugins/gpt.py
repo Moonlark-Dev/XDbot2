@@ -20,8 +20,9 @@ generator = client.use_plugin(config["plugin"])
 
 
 @on_message(rule=to_me()).handle()
-async def _(matcher: Matcher, event: MessageEvent, message: Message = CommandArg()):
+async def _(matcher: Matcher, event: MessageEvent):
     try:
+        message = event.get_message()
         if event.reply is not None:
             if re.match("^回声洞——（[0-9]+）", str(event.reply.message)):
                 await matcher.finish()
