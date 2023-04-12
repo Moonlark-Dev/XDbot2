@@ -21,7 +21,7 @@ async def _(matcher: Matcher, event: GroupMessageEvent, message: Message = Comma
         session = await openai.ChatCompletion.acreate(
             model="gpt-3.5-turbo",
             messages=messages[str(event.group_id)])
-        reply = session["choice"][0]["message"]
+        reply = session["choices"][0]["message"]
         messages[str(event.group_id)].append(reply)
         await matcher.finish(reply["content"])
 
