@@ -6,7 +6,7 @@ from nonebot.adapters.onebot.v11 import GroupMessageEvent, Message
 import openai
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
-import async
+import asyncio
 
 
 api_keys = []
