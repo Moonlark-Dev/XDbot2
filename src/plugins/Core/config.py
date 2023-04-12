@@ -35,7 +35,7 @@ class Config(BaseSettings):
         {
             "path": "data/chatgpt.messages.json",
             "text": json.dumps({})
-            }
+        },
         {
             "path": "data/market.items.json",
             "text": "{}"
