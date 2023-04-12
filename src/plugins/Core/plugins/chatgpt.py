@@ -25,8 +25,8 @@ async def get_apikeys():
             logger.info(f"成功获取 {len(api_keys)} 个 API 密钥")
             return None
         except:
-            logger.warning(f"获取 API 秘钥失败，将在 5s 后重试（{i} / 5）")
-            await asyncio.sleep(5)
+            logger.warning(f"获取 API 秘钥失败，将在 3s 后重试（{i+1} / 5）")
+            await asyncio.sleep(3)
     logger.warning("无法获取 API 秘钥，使用内置")
     api_keys = [
         "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",
