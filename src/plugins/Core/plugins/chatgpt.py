@@ -1,12 +1,11 @@
-from random import choice
-import httpx
-from nonebot import get_driver, logger, on_command
+from traceback import format_exc
+from nonebot import get_driver, on_command
 import json
 from nonebot.adapters.onebot.v11 import GroupMessageEvent, Message
+from . import _error
 import openai
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
-import asyncio
 
 messages = json.load(open("data/chatgpt.messages.json", encoding="utf-8"))
 openai.proxy = "http://127.0.0.1:7890"
@@ -14,7 +13,7 @@ openai.api_key = "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"
 
 @on_command("gpt", aliases={"chat", "chatgpt"}).handle()
 async def _(matcher: Matcher, event: GroupMessageEvent, message: Message = CommandArg()):
-#     try:
+    try:
         if str(event.group_id) not in messages.keys():
             messages[str(event.group_id)] = []
         messages[str(event.group_id)].append({"role": "user", "content": message.extract_plain_text()})
@@ -23,7 +22,9 @@ async def _(matcher: Matcher, event: GroupMessageEvent, message: Message = Comma
             messages=messages[str(event.group_id)])
         reply = session["choices"][0]["message"]
         messages[str(event.group_id)].append(reply)
-        await matcher.finish(reply["content"])
+        await matcher.finish(reply["content"], at_sender=True)
+    except:
+        await _error.report(format_exc(), matcher)
 
 @get_driver().on_shutdown
 async def save_data():
