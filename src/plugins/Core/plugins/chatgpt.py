@@ -19,7 +19,7 @@ async def get_apikeys():
     global api_keys
     while True:
         try:
-            async with httpx.AsyncClient() as client:
+            async with httpx.AsyncClient(proxies=openai.proxy) as client:
                 response = await client.get("http://freeopenai.xyz/api.txt")
             api_keys = response.read().decode("utf-8").splitlines()
             logger.info(f"成功获取 {len(api_keys)} 个 API 密钥")
