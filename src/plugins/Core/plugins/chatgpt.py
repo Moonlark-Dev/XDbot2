@@ -9,7 +9,7 @@ from nonebot.params import CommandArg
 
 messages = json.load(open("data/chatgpt.messages.json", encoding="utf-8"))
 openai.proxy = "http://127.0.0.1:7890"
-openai.api_key = "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"
+openai.api_key = "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"
 
 
 @on_command("gpt", aliases={"chat", "chatgpt"}).handle()
