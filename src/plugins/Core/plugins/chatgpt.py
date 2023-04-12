@@ -50,5 +50,5 @@ async def _(matcher: Matcher, event: GroupMessageEvent, message: Message = Comma
 
 @get_driver().on_shutdown
 async def save_data():
-    json.dump(messages, open("data/chatgpt.messages.json"))
+    json.dump(messages, open("data/chatgpt.messages.json", "w", encoding="utf-8"))
         
