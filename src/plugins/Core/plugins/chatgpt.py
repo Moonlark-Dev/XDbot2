@@ -11,22 +11,29 @@ messages = json.load(open("data/chatgpt.messages.json", encoding="utf-8"))
 openai.proxy = "http://127.0.0.1:7890"
 openai.api_key = "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"
 
+
 @on_command("gpt", aliases={"chat", "chatgpt"}).handle()
 async def _(matcher: Matcher, event: GroupMessageEvent, message: Message = CommandArg()):
     try:
         if str(event.group_id) not in messages.keys():
             messages[str(event.group_id)] = []
-        messages[str(event.group_id)].append({"role": "user", "content": message.extract_plain_text()})
+        messages[str(event.group_id)].append(
+            {"role": "user", "content": message.extract_plain_text()})
         session = await openai.ChatCompletion.acreate(
             model="gpt-3.5-turbo",
             messages=messages[str(event.group_id)])
         reply = session["choices"][0]["message"]
         messages[str(event.group_id)].append(reply)
         await matcher.finish(reply["content"], at_sender=True)
-    except:
+    except BaseException:
         await _error.report(format_exc(), matcher)
+
 
 @get_driver().on_shutdown
 async def save_data():
-    json.dump(messages, open("data/chatgpt.messages.json", "w", encoding="utf-8"))
-        
+    json.dump(
+        messages,
+        open(
+            "data/chatgpt.messages.json",
+            "w",
+            encoding="utf-8"))

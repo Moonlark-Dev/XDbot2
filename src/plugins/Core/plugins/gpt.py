@@ -1,5 +1,6 @@
 from nonebot import on_message
-from nonebot.adapters.onebot.v11 import Message, MessageEvent
+from nonebot.adapters.onebot.v11 import Message
+from nonebot.adapters.onebot.v11.event import MessageEvent
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
 from steamship import Steamship
@@ -21,7 +22,7 @@ generator = client.use_plugin(config["plugin"])
 @on_message(rule=to_me()).handle()
 async def _(matcher: Matcher, event: MessageEvent, message: Message = CommandArg()):
     try:
-        if event.reply != None:
+        if event.reply is not None:
             if re.match("^回声洞——（[0-9]+）", str(event.reply.message)):
                 await matcher.finish()
         elif len(message.extract_plain_text().strip()) <= 1:
@@ -34,6 +35,5 @@ async def _(matcher: Matcher, event: MessageEvent, message: Message = CommandArg
             task.refresh()
         if task.state == "succeeded":
             await matcher.finish(task.output.blocks[0].text, at_sender=True)
-    except:
+    except BaseException:
         await error.report(traceback.format_exc(), matcher)
-            

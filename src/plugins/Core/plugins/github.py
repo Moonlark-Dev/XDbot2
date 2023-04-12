@@ -100,7 +100,7 @@ async def get_issue(matcher: Matcher, event: MessageEvent):
 
 {issue_data['body']}""")
 
-    except:
+    except BaseException:
         await error.report(traceback.format_exc(), matcher)
 
 
@@ -118,7 +118,7 @@ async def get_pull(matcher: Matcher, event: MessageEvent):
 
 {pull_data['body']}""")
 
-    except:
+    except BaseException:
         await error.report(traceback.format_exc(), matcher)
 
 
@@ -143,7 +143,7 @@ async def get_repo(matcher: Matcher, event: MessageEvent):
 创建日期：{repo_data["created_at"]}
 更新日期：{repo_data['updated_at']}
 简介：{repo_data['description']}"""))
-        except:
+        except BaseException:
             pass
         # 删除缓存
         # os.remove(file)
