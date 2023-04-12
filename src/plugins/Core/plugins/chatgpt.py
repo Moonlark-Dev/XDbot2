@@ -39,6 +39,8 @@ async def get_apikeys():
 @on_command("gpt", aliases={"chat", "chatgpt"}).handle()
 async def _(matcher: Matcher, event: GroupMessageEvent, message: Message = CommandArg()):
 #     try:
+        if str(event.group_id) not in messages.keys():
+            messages[str(event.group_id)] = []
         messages[str(event.group_id)].append({"role": "user", "content": message.extract_plain_text()})
         openai.api_key = choice(api_keys)
         session = await openai.ChatCompletion.acreate(
