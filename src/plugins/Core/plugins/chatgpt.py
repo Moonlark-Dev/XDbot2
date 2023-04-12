@@ -6,6 +6,7 @@ from nonebot.adapters.onebot.v11 import GroupMessageEvent, Message
 import openai
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
+import async
 
 
 api_keys = []
@@ -16,10 +17,17 @@ openai.proxy = "http://127.0.0.1:7890"
 @get_driver().on_startup
 async def get_apikeys():
     global api_keys
-    async with httpx.AsyncClient() as client:
-        response = await client.get("http://freeopenai.xyz/api.txt")
-    api_keys = response.read().decode("utf-8").splitlines()
-    logger.info(f"成功获取 {len(api_keys)} 个 API 密钥")
+    while True:
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.get("http://freeopenai.xyz/api.txt")
+            api_keys = response.read().decode("utf-8").splitlines()
+            logger.info(f"成功获取 {len(api_keys)} 个 API 密钥")
+            break
+        except:
+            logger.warning(f"获取 API 秘钥失败，将在 5s 后重试")
+            await async.sleep(5)
+            
 
 
 @on_command("gpt", aliases={"chat", "chatgpt"}).handle()
