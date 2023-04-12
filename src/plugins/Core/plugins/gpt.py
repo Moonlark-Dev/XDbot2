@@ -1,12 +1,15 @@
-from nonebot import on_command
-from nonebot.adapters.onebot.v11 import Message
+from nonebot import on_message
+from nonebot.adapters.onebot.v11 import Message, MessageEvent
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
 from steamship import Steamship
 import json
 import os
 import asyncio
+from nonebot.rule import to_me
 import traceback
+
+from sympy import re
 from . import _error as error
 
 config = json.load(open("data/gpt.config.json", encoding="utf-8"))
@@ -15,9 +18,16 @@ client = Steamship(workspace=config["workspace"])
 generator = client.use_plugin(config["plugin"])
 
 
-@on_command("gpt").handle()
-async def _(matcher: Matcher, message: Message = CommandArg()):
+@on_message(rule=to_me()).handle()
+async def _(matcher: Matcher, event: MessageEvent, message: Message = CommandArg()):
     try:
+        if event.reply != None:
+            if re.match("^回声洞——（[0-9]+）", str(event.reply.message)):
+                await matcher.finish()
+        elif len(message.extract_plain_text().strip()) <= 1:
+            # TODO 从词库返回
+            await matcher.finish()
+        # 生成文本
         task = generator.generate(text=message.extract_plain_text())
         while task.state in ["waiting", "running"]:
             await asyncio.sleep(config["sleep"])
