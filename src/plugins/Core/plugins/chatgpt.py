@@ -26,7 +26,7 @@ async def get_apikeys():
             break
         except:
             logger.warning(f"获取 API 秘钥失败，将在 5s 后重试")
-            await async.sleep(5)
+            await asyncio.sleep(5)
             
 
 
