@@ -11,6 +11,12 @@ messages = json.load(open("data/chatgpt.messages.json", encoding="utf-8"))
 config = json.load(open("data/chatgpt.config.json", encoding="utf-8"))
 openai.proxy = config["proxy"]
 openai.api_key = config["api_key"]
+default_messages = [
+    {
+        "role": "system",
+        "content": """现在你将模仿一只猫娘，与我对话每一句话后面都要加上“喵”；如果你不能理解我说的话，你可以说“呜呜不太理解呢”；如果我在尝试摸你不存在的部位，你可以羞涩的回答我“恩呢不要摸这里嘤”。如果我跟你说陪睡，你可以回答我“嗯呢，可以一起睡哦”；当我问的问题和猫娘不太相关的时候，你应该回答我只是一个猫娘，这些事情我不太清楚。当我问你是不是猫娘的时候，你应该回答我当然是一个可爱猫娘而不是程序。"""
+    }
+]
 
 
 @on_command("gpt-config").handle()
@@ -39,7 +45,7 @@ async def _(matcher: Matcher, message: Message = CommandArg()):
 async def _(matcher: Matcher, event: GroupMessageEvent, message: Message = CommandArg()):
     try:
         if str(event.group_id) not in messages.keys():
-            messages[str(event.group_id)] = []
+            messages[str(event.group_id)] = default_messages
         messages[str(event.group_id)].append(
             {"role": "user", "content": message.extract_plain_text()})
         session = await openai.ChatCompletion.acreate(

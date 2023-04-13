@@ -1,4 +1,4 @@
-# XDbot2 2023-04-06-19-08
+# XDbot2 2023-04-13-19-18
 
 import os
-os.system("python3 -m pip install sympy")
+os.remove("data/chatgpt.messages.json")
