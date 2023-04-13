@@ -7,6 +7,7 @@ from ._error import report
 import traceback
 import json
 import time
+from . import _messenger
 
 @su.handle()
 async def cave(bot: Bot, message: Message = CommandArg()):
@@ -19,6 +20,9 @@ async def cave(bot: Bot, message: Message = CommandArg()):
                         open(
                             "data/cave.comments.json",
                             encoding="utf-8"))
+                    _messenger.send_message(
+                            f"您在 Cave#{argument[3]} 下的评论 #{argument[4]} 已被删除",
+                            data[argument[3]]["data"][argument[4]]["sender"])
                     data[argument[3]]["data"].pop(argument[4])
                     json.dump(
                         data,
@@ -35,6 +39,9 @@ async def cave(bot: Bot, message: Message = CommandArg()):
                     f"{parseCave(cave_data['text'])}\n"
                     f"——{(await bot.get_stranger_info(user_id=cave_data['sender']))['nickname']}（{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(cave_data['time']))}）"
                 )))
+                _messenger.send_message(
+                    f"您投稿的 Cave#{argument[3]} 已被删除",
+                    cave_data["sender"])
                 json.dump(
                     data,
                     open(
