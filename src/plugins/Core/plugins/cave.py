@@ -14,9 +14,10 @@ from nonebot import on_command, get_app, on_message
 from nonebot.adapters.onebot.v11 import Bot, Message, MessageEvent
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
+from nonebot.rule import to_me
 
 cave = on_command("cave", aliases={"回声洞"})
-cave_comment = on_message()
+cave_comment = on_message(rule=to_me())
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 latest_use = time.time()
 path = os.path.abspath(os.path.dirname("."))
