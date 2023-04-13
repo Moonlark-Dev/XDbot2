@@ -1,4 +1,4 @@
-from nonebot import on_command, on_fullmatch
+from nonebot import on_command, on_regex
 from . import _error as error
 from nonebot.adapters.onebot.v11.event import MessageEvent
 from . import _lang as lang
@@ -10,7 +10,7 @@ import json
 
 from decimal import Decimal
 
-sign = on_fullmatch(("签到", ".sign"))
+sign = on_regex("^(签到|.sign)$")
 sign_rank = on_command("sign-rank")
 
 
