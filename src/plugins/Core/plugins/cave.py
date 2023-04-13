@@ -168,7 +168,7 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
 
                     while len(comments) > 0:
                         if count <= MAX_NODE_MESSAGE:
-                            comment = comments.pop(-1)
+                            comment = comments.pop(0)
                             node_message[-1].append({
                                 "type": "node",
                                 "data": {
