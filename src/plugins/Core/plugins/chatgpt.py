@@ -14,7 +14,7 @@ openai.api_key = config["api_key"]
 
 
 @on_command("gpt-config").handle()
-async def _(matcher: Matcher, event: MessageEvent, message: Message = CommandArg()):
+async def _(matcher: Matcher, message: Message = CommandArg()):
     try:
         argv = message.extract_plain_text().split(" ")
         if argv[0] == "proxy":
@@ -31,7 +31,8 @@ async def _(matcher: Matcher, event: MessageEvent, message: Message = CommandArg
                 openai.api_key = argv[1]
                 config["api_key"] = argv[1]
                 await matcher.finish(f"API 秘钥已设为：{argv[1]}")
-
+    except:
+        await _error.report(format_exc(), matcher)
 
 
 @on_command("gpt", aliases={"chat", "chatgpt"}).handle()
