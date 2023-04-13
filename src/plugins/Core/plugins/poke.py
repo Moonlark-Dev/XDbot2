@@ -14,6 +14,6 @@ async def poke(matcher: Matcher, message: Message = CommandArg()):
         argv = message.extract_plain_text().split(" ")
         for _ in range(min(15, int(argv[1]))):
             await matcher.send(Message(f"[CQ:poke,qq={argv[0]}]"))
-            await asyncio.sleep(1 + random())
+            await asyncio.sleep(random())
     except:
         await _error.report(traceback.format_exc(), matcher)
