@@ -55,8 +55,8 @@ dictionary = {
         "print('Hello, XDbot2!')",
         "also try Sugar",
         "also try XTBot",
-        "/st-l",
-        "/preview six"
+        "使用 /st-l 获取随机涩图使用排行（谁还不是个LSP呢）",
+        "使用 /preview six 查看某些人是多能发 6"
     ]
 }
 
