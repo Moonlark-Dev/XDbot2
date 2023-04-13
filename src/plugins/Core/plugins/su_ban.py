@@ -54,12 +54,17 @@ async def su_pardon(message: Message = CommandArg()):
 async def su_ban(bot: Bot, message: Message = CommandArg()):
     argument = str(message).split(" ")
     try:
-        if argument[0] == "ban" or argument[0] == "封禁":
+        if argument[0] in ["ban", "封禁"]:
             data = json.load(open("data/su.blackList.json", encoding="utf-8"))
             if argument[1] not in data:
                 data += [argument[1]]
                 await su.send(f"已封禁{argument[1]}")
             # 广播
+            try:
+                if argument[2] in ["--disable-notice", "-d"]:
+                    await su.finish()
+            except KeyError:
+                pass
             multiAccoutData = json.load(
                 open("data/su.multiaccoutdata.ro.json", encoding="utf-8"))
             groupList = list(multiAccoutData.keys())
