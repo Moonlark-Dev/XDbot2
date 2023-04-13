@@ -3,6 +3,7 @@ import os
 from nonebot.log import logger
 import random
 
+
 def reload():
     global _lang_user
     global _lang_dict
@@ -43,7 +44,7 @@ def text(key: str, _format: list = [],
             value = _lang_dict["zh_hans"][key]
         except BaseException:
             return f"<本地化键缺失 {key}>"
-    if type(value) == list:
+    if isinstance(value, list):
         value = random.choice(value)[0]
     for i in _format:
         value = value.replace("{}", str(i), 1)
@@ -56,7 +57,7 @@ def text(key: str, _format: list = [],
 def _load_key(langname, key, default=None):
     try:
         value = _lang_dict[langname][key]
-        if type(value) == list:
+        if isinstance(value, list):
             value = random.choice(value)[0]
     except BaseException:
         return default if default else key

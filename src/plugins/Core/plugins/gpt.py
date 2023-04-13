@@ -25,13 +25,17 @@ async def _(matcher: Matcher, event: MessageEvent):
     try:
         message = event.get_message()
         if event.reply is not None:
-            if re.match("^回声洞——（[0-9]+）", event.reply.message.extract_plain_text()):
+            if re.match("^回声洞——（[0-9]+）",
+                        event.reply.message.extract_plain_text()):
                 await matcher.finish()
         elif len(message.extract_plain_text().strip()) <= 1:
             # TODO 从词库返回
             await matcher.finish()
         # 生成文本
-        task = generator.generate(text=temp.replace("%message%", message.extract_plain_text()))
+        task = generator.generate(
+            text=temp.replace(
+                "%message%",
+                message.extract_plain_text()))
         while task.state in ["waiting", "running"]:
             await asyncio.sleep(config["sleep"])
             task.refresh()

@@ -39,7 +39,7 @@ async def su_pardon(message: Message = CommandArg()):
             data = json.load(open("data/su.blackList.json", encoding="utf-8"))
             if argument[1] in data:
                 data.pop(data.index(argument[1]))
-                await su.send(f"已解封{argument[1]}") 
+                await su.send(f"已解封{argument[1]}")
             json.dump(
                 data,
                 open(
@@ -49,6 +49,7 @@ async def su_pardon(message: Message = CommandArg()):
             reloadBlackList()
     except BaseException:
         await _error.report(traceback.format_exc(), su)
+
 
 @su.handle()
 async def su_ban(bot: Bot, message: Message = CommandArg()):

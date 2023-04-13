@@ -9,6 +9,7 @@ import json
 import time
 from . import _messenger
 
+
 @su.handle()
 async def cave(bot: Bot, message: Message = CommandArg()):
     try:
@@ -21,8 +22,8 @@ async def cave(bot: Bot, message: Message = CommandArg()):
                             "data/cave.comments.json",
                             encoding="utf-8"))
                     _messenger.send_message(
-                            f"您在 Cave#{argument[3]} 下的评论 #{argument[4]} 已被删除",
-                            data[argument[3]]["data"][argument[4]]["sender"])
+                        f"您在 Cave#{argument[3]} 下的评论 #{argument[4]} 已被删除",
+                        data[argument[3]]["data"][argument[4]]["sender"])
                     data[argument[3]]["data"].pop(argument[4])
                     json.dump(
                         data,
@@ -86,5 +87,5 @@ async def cave(bot: Bot, message: Message = CommandArg()):
                         "data/cave.data.json",
                         "w",
                         encoding="utf-8"))
-    except:
+    except BaseException:
         await report(traceback.format_exc(), su)

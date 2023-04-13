@@ -37,7 +37,7 @@ async def _(matcher: Matcher, message: Message = CommandArg()):
                 openai.api_key = argv[1]
                 config["api_key"] = argv[1]
                 await matcher.finish(f"API 秘钥已设为：{argv[1]}")
-    except:
+    except BaseException:
         await _error.report(format_exc(), matcher)
 
 

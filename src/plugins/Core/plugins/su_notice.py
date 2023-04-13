@@ -29,7 +29,7 @@ async def su_primary_notice(message: Message = CommandArg()):
                                 message=Message(f"【超级广播】\n{su_notice_cache}"),
                                 group_id=group,
                             )
-                        except:
+                        except BaseException:
                             await su.send(f"在 {group} 广播消息失败：\n{traceback.format_exc()}")
                     su_notice_cache = ""
                 else:

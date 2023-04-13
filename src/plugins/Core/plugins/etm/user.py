@@ -1,4 +1,3 @@
-import json
 from . import data as _data
 
 RAW_DATA = {
@@ -11,7 +10,7 @@ RAW_DATA = {
 
 def get_user_data(user_id):
     try:
-        return _data.basic_data[user_id]
+        return _data.basic_data[user_id].copy()
     except KeyError:
         data = RAW_DATA.copy()
         data["user_id"] = user_id
