@@ -17,6 +17,14 @@ IT Craft XDBot2（下简称`XDbot2`）是一个简单的QQ功能型机器人，�
 
 您可以加入 XDbot用户群（159910125）以体验 XDbot2
 
+### 现有节点
+
+| 节点名称         | 平台  | 账号       | 分支    | 管理者                      | 备注                             |
+|------------------|-------|------------|---------|-----------------------------|----------------------------------|
+| XDbot 0x01       | QQ    | 3407603681 | master  | 这里是小邓QwQ（1744793737） |                                  |
+| XDbot 0x02       | QQ    | 3457602590 | master  | 这里是小邓QwQ（1744793737） | 与 XDbot 0x01 数据互通（风控中） |
+| XDbot 0x03 (Dev) | QQ    | 1552257261 | develop | 这里是小邓QwQ（1744793737） |                                  |
+
 ## 贡献
 
 您可以通过提交 [Issues](https://github.com/ITCraftDevelopmentTeam/XDbot2/issues) 或 [Pull requests](https://github.com/ITCraftDevelopmentTeam/XDbot2/pulls) 帮助改进这个项目
