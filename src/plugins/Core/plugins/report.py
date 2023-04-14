@@ -12,7 +12,7 @@ async def handle(event: MessageEvent, message: Message = CommandArg()):
     await _error.report(
         "「举报信息」\n"
         f"{message}\n"
-        f"{event.get_session_id()}\n")
+        f"{event.get_session_id()}")
     await report.finish(
         _lang.text("report.success", [], event.get_user_id()), at_sender=True)
 

@@ -15,5 +15,5 @@ async def poke(matcher: Matcher, message: Message = CommandArg()):
         for _ in range(min(15, int(argv[1]))):
             await matcher.send(Message(f"[CQ:poke,qq={argv[0]}]"))
             await asyncio.sleep(random())
-    except:
+    except BaseException:
         await _error.report(traceback.format_exc(), matcher)
