@@ -6,6 +6,7 @@ from . import _error
 import openai
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
+from . import _lang as lang
 
 messages = json.load(open("data/chatgpt.messages.json", encoding="utf-8"))
 config = json.load(open("data/chatgpt.config.json", encoding="utf-8"))
@@ -20,7 +21,7 @@ default_messages = [
 
 
 @on_command("gpt-config").handle()
-async def _(matcher: Matcher, message: Message = CommandArg()):
+async def _(matcher: Matcher, event: MessageEvent, message: Message = CommandArg()):
     try:
         argv = message.extract_plain_text().split(" ")
         if argv[0] == "proxy":
@@ -29,14 +30,14 @@ async def _(matcher: Matcher, message: Message = CommandArg()):
             else:
                 openai.proxy = argv[1]
                 config["proxy"] = argv[1]
-                await matcher.finish(f"代理已设为：{argv[1]}")
+                await matcher.finish(lang.text("chatgpt.proxy_set", [openai.proxy], event.user_id))
         elif argv[0] == "apikey":
             if len(argv) == 1:
                 await matcher.finish(str(openai.api_key))
             else:
                 openai.api_key = argv[1]
                 config["api_key"] = argv[1]
-                await matcher.finish(f"API 秘钥已设为：{argv[1]}")
+                await matcher.finish(lang.text("chatgpt.apikey_set", [openai.api_key], event.user_id))
     except BaseException:
         await _error.report(format_exc(), matcher)
 
@@ -67,3 +68,24 @@ async def save_data():
             "w",
             encoding="utf-8"))
     json.dump(config, open("data/chatgpt.config.json", "w", encoding="utf-8"))
+
+@on_command("gpt-cache").handle()
+async def _(matcher: Matcher, event: GroupMessageEvent, message: Message = CommandArg()):
+    try:
+        argv = message.extract_plain_text().split(" ")
+        if argv[0] in ["clear", "reset"]:
+            try:
+                messages.pop(str(event.group_id))
+            except:
+                pass
+            await matcher.finish(lang.text("chatgpt.cache_cleaned", [], event.user_id))
+        elif argv[1] == "show":
+            reply = lang.text("chatgpt.cache", [], event.user_id)
+            cache = messages[str(event.group_id)]
+            for item in cache[1:]:
+                reply += f"\n{'User: ' if item['role'] == 'user' else 'XDbot: '}{item['content']}"
+            await matcher.finish(reply)
+    except:
+        await _error.report(format_exc(), matcher)
+
+

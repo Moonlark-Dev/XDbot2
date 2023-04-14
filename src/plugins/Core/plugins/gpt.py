@@ -1,5 +1,5 @@
 from nonebot import on_message
-from nonebot.adapters.onebot.v11 import Message
+from nonebot.adapters.onebot.v11 import GroupMessageEvent, Message
 from nonebot.adapters.onebot.v11.event import MessageEvent
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
@@ -43,3 +43,5 @@ async def _(matcher: Matcher, event: MessageEvent):
             await matcher.finish(task.output.blocks[0].text, at_sender=True)
     except BaseException:
         await error.report(traceback.format_exc(), matcher)
+
+
