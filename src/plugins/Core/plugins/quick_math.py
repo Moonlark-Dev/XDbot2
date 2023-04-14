@@ -150,7 +150,7 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
     try:
         if event.group_id == group:
             try:
-                _answ = event.get_plaintext().strip()
+                _answ = event.get_plaintext().strip().replace("x=", "")
             except ValueError:
                 await matcher.finish()
 
