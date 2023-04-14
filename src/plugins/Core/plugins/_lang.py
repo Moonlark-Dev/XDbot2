@@ -52,7 +52,7 @@ def text(key: str, _format: list = [],
                     break
             value = value if value else f"<本地化键缺失 {key}>"
     if isinstance(value, list):
-        value = random.choice(value)[0]
+        value = random.choice(value)
     for i in _format:
         value = value.replace("{}", str(i), 1)
     if params:
