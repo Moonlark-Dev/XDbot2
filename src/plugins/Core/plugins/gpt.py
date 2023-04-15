@@ -43,5 +43,3 @@ async def _(matcher: Matcher, event: MessageEvent):
             await matcher.finish(task.output.blocks[0].text, at_sender=True)
     except BaseException:
         await error.report(traceback.format_exc(), matcher)
-
-

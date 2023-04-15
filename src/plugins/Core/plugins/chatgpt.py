@@ -69,6 +69,7 @@ async def save_data():
             encoding="utf-8"))
     json.dump(config, open("data/chatgpt.config.json", "w", encoding="utf-8"))
 
+
 @on_command("gpt-cache").handle()
 async def _(matcher: Matcher, event: GroupMessageEvent, message: Message = CommandArg()):
     try:
@@ -88,5 +89,3 @@ async def _(matcher: Matcher, event: GroupMessageEvent, message: Message = Comma
             await matcher.finish(reply)
     except:
         await _error.report(format_exc(), matcher)
-
-
