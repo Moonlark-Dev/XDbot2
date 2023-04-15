@@ -6,6 +6,7 @@ from nonebot import get_bots
 import random
 from nonebot.exception import FinishedException
 from nonebot.log import logger
+# from nonebot.adapters.onebot.v11 import Message
 from . import _lang
 
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]

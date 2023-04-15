@@ -14,9 +14,10 @@ from nonebot import on_command, get_app, on_message
 from nonebot.adapters.onebot.v11 import Bot, Message, MessageEvent
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
+from nonebot.rule import to_me
 
 cave = on_command("cave", aliases={"回声洞"})
-cave_comment = on_message()
+cave_comment = on_message(rule=to_me())
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 latest_use = time.time()
 path = os.path.abspath(os.path.dirname("."))
@@ -167,7 +168,7 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
 
                     while len(comments) > 0:
                         if count <= MAX_NODE_MESSAGE:
-                            comment = comments.pop(-1)
+                            comment = comments.pop(0)
                             node_message[-1].append({
                                 "type": "node",
                                 "data": {

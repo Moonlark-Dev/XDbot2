@@ -24,6 +24,26 @@ class Config(BaseSettings):
             "text": "{}"
         },
         {
+            "path": "data/gpt.config.json",
+            "text": json.dumps({
+                "api_key": "",
+                "workspace": "gpt-4",
+                "plugin": "gpt-4",
+                "sleep": 1
+            })
+        },
+        {
+            "path": "data/chatgpt.config.json",
+            "text": json.dumps({
+                "proxy": "http://127.0.0.1:7890",
+                "api_key": ""
+            })
+        },
+        {
+            "path": "data/chatgpt.messages.json",
+            "text": json.dumps({})
+        },
+        {
             "path": "data/market.items.json",
             "text": "{}"
         },

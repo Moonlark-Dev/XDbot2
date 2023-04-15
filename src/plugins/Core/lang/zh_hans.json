@@ -156,5 +156,12 @@
   "etm.book_read": " {}\n作者：{}\n—————————————\n{}",
   "market.list_title": "「全球市场」",
   "market.list_item": "\n{}. {} {}vim",
-  "market.view": "「商品信息（#{}）」\n——————————————\n  {} ({})\n价格：{}vim（可购：{}）\n存货量：{}\n出售者：{}({})\n简介：{}"
+  "market.view": "「商品信息（#{}）」\n——————————————\n  {} ({})\n价格：{}vim（可购：{}）\n存货量：{}\n出售者：{}({})\n简介：{}",
+  "chatgpt.proxy_set": "代理已设为：{}",
+  "chatgpt.apikey_set": "API 秘钥已设为：{}",
+  "chatgpt.cache_cleaned": [
+    "好的，XDbot 已为主人抹去了过去，我们现在应该探索什么喵？",
+    "XDbotGPT 聊天记录已清除喵"
+  ],
+  "chatgpt.cache": "主人与 XDbot 的聊天记录如下：{}"
 }

@@ -14,7 +14,7 @@ average_price = json.load(open("data/market.average.json", encoding="utf-8"))
 def get_average(item_id):
     try:
         return average_price[item_id]
-    except:
+    except BaseException:
         return items.json2items([{
             "id": item_id,
             "count": 1,
@@ -75,7 +75,7 @@ async def buy_item(event: MessageEvent, message: Message = CommandArg()):
             item_json = data[argv[1]]
             try:
                 count = max(argv[2], 1)
-            except:
+            except BaseException:
                 count = 1
             if count < item_json["count"]:
                 if economy.use_vimcoin(user_id, count * item_json["price"]):
@@ -85,7 +85,7 @@ async def buy_item(event: MessageEvent, message: Message = CommandArg()):
                     try:
                         average_price[item_json["item"]["id"]] = (
                             average_price[item_json["item"]["id"]] + count * item_json["price"]) / count + 1
-                    except:
+                    except BaseException:
                         average_price[item_json["item"]
                                       ["id"]] = item_json["price"]
                     save_data()
@@ -113,7 +113,8 @@ async def sell_item(event: MessageEvent, bot: Bot, message: Message = CommandArg
             price = max(1, float(argv[3]))
             if item.data["can_be_sold"]:
                 if count <= item.count:
-                    if price <= min(get_average(item.item_id) * 2, item.data["price"] * 7):
+                    if price <= min(get_average(item.item_id)
+                                    * 2, item.data["price"] * 7):
                         id = 1
                         while True:
                             if str(id) not in data.keys():

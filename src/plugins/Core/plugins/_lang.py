@@ -1,6 +1,7 @@
 import json
 import os
 from nonebot.log import logger
+import random
 
 
 def reload():
@@ -29,20 +30,29 @@ def reload():
 
 
 def text(key: str, _format: list = [],
-         user: str = "default", params: dict = {}):
+         _user: str | int = "default", params: dict = {}):
+    user = str(_user)
     try:
         lang = _lang_user[user]
     except KeyError:
         lang = "zh_hans"
     if lang == "debug":
         return f"<{key}>"
+    value = None
     try:
         value = _lang_dict[lang][key]
     except BaseException:
         try:
             value = _lang_dict["zh_hans"][key]
         except BaseException:
-            return f"<本地化键缺失 {key}>"
+            # 在其他语言文件查找
+            for l in list(_lang_dict.values()):
+                if key in l.keys():
+                    value = l[key]
+                    break
+            value = value if value else f"<本地化键缺失 {key}>"
+    if isinstance(value, list):
+        value = random.choice(value)
     for i in _format:
         value = value.replace("{}", str(i), 1)
     if params:
@@ -53,7 +63,9 @@ def text(key: str, _format: list = [],
 
 def _load_key(langname, key, default=None):
     try:
-        return _lang_dict[langname][key]
+        value = _lang_dict[langname][key]
+        if isinstance(value, list):
+            value = random.choice(value)[0]
     except BaseException:
         return default if default else key
 

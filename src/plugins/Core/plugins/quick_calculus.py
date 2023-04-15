@@ -37,8 +37,8 @@ refresh_group_unanswered()
 
 def generate_limit_question():
     x = symbols('x')
-    f = choice([x**2 + 3*x - 2, x**3 - 2*x + 1,
-               x**4 - 4*x**3 + 5*x**2 + 2*x - 1])
+    f = choice([x**2 + 3 * x - 2, x**3 - 2 * x + 1,
+               x**4 - 4 * x**3 + 5 * x**2 + 2 * x - 1])
     a = randint(-10, 10)
     _limit = limit(f, x, a)
     question = f"计算函数 {latex(f)} 在 $x={a}$ 处的极限。"
@@ -58,7 +58,7 @@ def _check_answer(_answer, right_answer):
 def check_answer(_answer, right_answer):
     try:
         return _check_answer(_answer, right_answer)
-    except:
+    except BaseException:
         return False
 
 
@@ -82,7 +82,7 @@ async def send_quick_calculus():
                 encoding="utf-8"))
         groups = json.load(
             open(
-                "data/quick_math.enabled_groups.json",
+                "data/quick_calculus.enabled_groups.json",
                 encoding="utf-8"))
         try:
             group = choice(groups)
@@ -97,7 +97,7 @@ async def send_quick_calculus():
             b = randint(1, 10)
             c = randint(1, 10)
             d = randint(1, 10)
-            f = a*x**3 + b*x**2 + c*x + d
+            f = a * x**3 + b * x**2 + c * x + d
             if random() <= 0.5:
                 # 求导数
                 answer = str(diff(f, x)).replace(" ", "")
@@ -112,7 +112,7 @@ async def send_quick_calculus():
             a = randint(1, 10)
             b = randint(1, 10)
             c = randint(1, 10)
-            f = a*x**2 + b*x + c
+            f = a * x**2 + b * x + c
             answer = str(diff(f, x)).replace(" ", "")
             question = f"求函数 f(x) = {f} 的导数"
             logger.debug(answer)

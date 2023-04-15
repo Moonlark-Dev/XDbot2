@@ -24,10 +24,13 @@ async def su_primary_notice(message: Message = CommandArg()):
                     bots = get_bots()
                     # 开始广播
                     for group in groupList:
-                        await bots[multiAccoutData[group]].send_group_msg(
-                            message=Message(f"【超级广播】\n{su_notice_cache}"),
-                            group_id=group,
-                        )
+                        try:
+                            await bots[multiAccoutData[group]].send_group_msg(
+                                message=Message(f"【超级广播】\n{su_notice_cache}"),
+                                group_id=group,
+                            )
+                        except BaseException:
+                            await su.send(f"在 {group} 广播消息失败：\n{traceback.format_exc()}")
                     su_notice_cache = ""
                 else:
                     await su.finish("请先使用 /su notice <context> 设定超级广播内容")
