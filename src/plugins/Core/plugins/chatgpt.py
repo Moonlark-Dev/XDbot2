@@ -79,11 +79,12 @@ async def _(matcher: Matcher, event: GroupMessageEvent, message: Message = Comma
             except:
                 pass
             await matcher.finish(lang.text("chatgpt.cache_cleaned", [], event.user_id))
-        elif argv[1] == "show":
-            reply = lang.text("chatgpt.cache", [], event.user_id)
+        elif argv[0] == "show":
+            reply = ""
             cache = messages[str(event.group_id)]
             for item in cache[1:]:
                 reply += f"\n{'User: ' if item['role'] == 'user' else 'XDbot: '}{item['content']}"
+            reply = lang.text("chatgpt.cache", [reply], event.user_id)
             await matcher.finish(reply)
     except:
         await _error.report(format_exc(), matcher)
