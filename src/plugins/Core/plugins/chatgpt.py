@@ -89,3 +89,17 @@ async def _(matcher: Matcher, event: GroupMessageEvent, message: Message = Comma
             await matcher.finish(reply)
     except:
         await _error.report(format_exc(), matcher)
+
+# [HELPSTART] Version: 2
+# Command: gpt
+# Usage: gpt <内容...>
+# Info: XDbotGPT
+# Command: gpt-config
+# Info: 配置 XDbotGPT
+# Usage: gpt-config {apikey|proxy} <值>
+# Command: gpt-cache
+# Info: XDbotGPT 缓存操作
+# Msg: XDbotGPT 缓存
+# Usage: gpt-cache {show|reset}
+# [HELPEND]
+
