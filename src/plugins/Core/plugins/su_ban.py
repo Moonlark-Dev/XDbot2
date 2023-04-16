@@ -58,8 +58,16 @@ async def su_ban(bot: Bot, message: Message = CommandArg()):
         if argument[0] in ["ban", "封禁"]:
             data = json.load(open("data/su.blackList.json", encoding="utf-8"))
             if argument[1] not in data:
-                data += [argument[1]]
+                data.append(argument[1])
                 await su.send(f"已封禁{argument[1]}")
+            json.dump(
+                data,
+                open(
+                    "data/su.blackList.json",
+                    "w",
+                    encoding="utf-8"))
+            reloadBlackList()
+
             # 广播
             try:
                 if argument[2] in ["--disable-notice", "-d"]:
@@ -80,12 +88,5 @@ async def su_ban(bot: Bot, message: Message = CommandArg()):
                     message=f"用户 {username}({argument[1]}) 已被超管封禁：{because}",
                     group_id=group,
                 )
-            json.dump(
-                data,
-                open(
-                    "data/su.blackList.json",
-                    "w",
-                    encoding="utf-8"))
-            reloadBlackList()
     except BaseException:
         await _error.report(traceback.format_exc(), su)
