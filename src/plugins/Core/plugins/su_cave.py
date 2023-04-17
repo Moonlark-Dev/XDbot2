@@ -41,7 +41,7 @@ async def cave(bot: Bot, message: Message = CommandArg()):
                     f"——{(await bot.get_stranger_info(user_id=cave_data['sender']))['nickname']}（{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(cave_data['time']))}）"
                 )))
                 _messenger.send_message(
-                    f"您投稿的 Cave#{argument[3]} 已被删除",
+                    f"您投稿的 Cave#{argument[2]} 已被删除",
                     cave_data["sender"])
                 json.dump(
                     data,
