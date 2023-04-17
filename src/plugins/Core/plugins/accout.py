@@ -18,7 +18,7 @@ priority_accout = json.load(
         encoding="utf-8"))
 accouts = {}
 multiAccoutData = {}
-accout_manager = on_command("accout", aliases={"多帐号"})
+accout_manager = on_command("accout", aliases={"多帐号", "account"})
 driver = get_driver()
 
 
