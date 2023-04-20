@@ -66,6 +66,7 @@ def _load_key(langname, key, default=None):
         value = _lang_dict[langname][key]
         if isinstance(value, list):
             value = random.choice(value)
+        return value
     except BaseException:
         return default if default else key
 
