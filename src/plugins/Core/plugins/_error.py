@@ -26,7 +26,7 @@ async def report(err: str, matcher: any = None):
     if matcher is not None:
         await matcher.send(f"处理失败！\n{error}", at_sender=True)
         if random.random() <= 0.35:
-            await matcher.finish(
+            await matcher.send(
                 _lang.text(
                     "_error.github",
                     [
