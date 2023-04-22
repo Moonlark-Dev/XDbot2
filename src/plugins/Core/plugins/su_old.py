@@ -29,7 +29,7 @@ accout_manager = on_command("accout", aliases={"多帐号"})
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 blackListData = json.load(open("data/su.blackList.json", encoding="utf-8"))
 multiAccoutData = {}
-group_request = on_type(GroupRequestEvent)
+
 bots = []
 priority_accout = json.load(
     open(
