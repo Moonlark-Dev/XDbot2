@@ -14,9 +14,10 @@ ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 privateForward = on_message()
 groupForward = on_message()
 forwardData = json.load(
-            open(
-                "data/forward.groupList.json",
-                encoding="utf-8"))
+    open(
+        "data/forward.groupList.json",
+        encoding="utf-8"))
+
 
 @privateForward.handle()
 async def privateForwardHandle(bot: Bot, event: PrivateMessageEvent):
@@ -32,7 +33,7 @@ async def privateForwardHandle(bot: Bot, event: PrivateMessageEvent):
 @groupForward.handle()
 async def groupForwardHandle(bot: Bot, event: GroupMessageEvent):
     try:
-       
+
         if str(event.group_id) in forwardData:
             await _error.report(f"""{_lang.text("forward.group")}
 {_lang.text("forward._group")}{event.get_session_id().split('_')[1]}

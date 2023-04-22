@@ -7,6 +7,7 @@ from . import _error
 from . import forward
 import json
 
+
 @su.handle()
 async def set_forward(matcher: Matcher, message: Message = CommandArg()):
     try:
