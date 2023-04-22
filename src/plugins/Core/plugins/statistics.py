@@ -11,11 +11,21 @@ import time
 
 START_TIME = 1656345600
 
+
 def get_run_time():
     t = time.time() - START_TIME
     return int(t / 86400)
 
-
+def get_user_count():
+    count = 0
+    for file in os.listdir("data/etm"):
+        if os.path.isdir(os.path.join("./data/etm", file)):
+            try:
+                int(file)
+                count += 1
+            except:
+                pass
+    return count
 
 def get_lines(top = "./src/plugins/Core"):
     lines = 0
@@ -56,6 +66,7 @@ async def _(matcher: Matcher, event: MessageEvent):
                     friends.append(friend["user_id"])
 
         await matcher.finish(lang.text("statistics.info", [
+            get_user_count(),
             len(groups),
             group_member_count,
             get_lines()[0],
