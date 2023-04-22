@@ -51,4 +51,4 @@ async def _(matcher: Matcher, event: MessageEvent):
                     
             
     except:
-        pass
+        await error.report(traceback.format_exc(), matcher)
