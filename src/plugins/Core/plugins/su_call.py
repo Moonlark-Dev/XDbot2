@@ -18,6 +18,5 @@ async def call_api(bot: Bot, message: Message = CommandArg()):
                         api=argument[1],
                         **json.loads(" ".join(argument[2:])))))
 
-
     except BaseException:
         await _error.report(traceback.format_exc(), su)

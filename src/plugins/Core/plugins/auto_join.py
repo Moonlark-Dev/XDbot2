@@ -5,6 +5,7 @@ import traceback
 from nonebot.adapters.onebot.v11.event import GroupRequestEvent
 from .accout import reloadMuiltData
 
+
 @on_type(GroupRequestEvent).handle()
 async def group_request_handle(
         bot: Bot,
