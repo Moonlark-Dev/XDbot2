@@ -27,15 +27,16 @@ async def set_forward(matcher: Matcher, message: Message = CommandArg()):
                     else:
                         length += 1
             await matcher.send("完成")
-            forward.forwardData = json.load(
-                open(
-                    "data/forward.groupList.json",
-                    encoding="utf-8"))
             json.dump(
                 data,
                 open(
                     "data/forward.groupList.json",
                     "w",
                     encoding="utf-8"))
+            forward.forwardData = json.load(
+                open(
+                    "data/forward.groupList.json",
+                    encoding="utf-8"))
+
     except:
         await _error.report(traceback.format_exc(), matcher)
