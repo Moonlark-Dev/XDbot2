@@ -6,6 +6,15 @@ from . import _lang as lang
 import traceback
 import os
 import os.path
+import time
+
+START_TIME = 1656345600
+
+def get_run_time():
+    t = time.time() - START_TIME
+    return int(t / 86400)
+
+
 
 def get_lines(top = "./src/plugins/Core"):
     lines = 0
@@ -50,7 +59,7 @@ async def _(matcher: Matcher, event: MessageEvent):
             group_member_count,
             get_lines()[0],
             get_lines()[1],
-            len(friends)], event.get_user_id()))
+            get_run_time()], event.get_user_id()))
                     
             
     except:
