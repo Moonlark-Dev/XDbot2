@@ -89,6 +89,10 @@ for plugin in pluginList:
         except Exception as e:
             logger.error(f"加载失败：插件{plugin}加载发生错误：{e}")
             print(traceback.format_exc())
+
+            data = json.load(open("data/_error.count.json", encoding="utf-8"))
+            data["count"] += 1
+            json.dump(data, open("data/_error.count.json", "w", encoding="utf-8"))
     else:
         logger.warning(f"未知或已禁用插件：{plugin}")
 logger.info(f"已成功加载 {loadedPlugins.__len__()} 个插件，{len(helpData.keys())}个指令帮助")
