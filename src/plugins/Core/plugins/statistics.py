@@ -34,7 +34,7 @@ def get_lines(top = "./src/plugins/Core"):
             chars += get_lines(os.path.join(top, file))[1]
     return lines, chars
 
-@nonebot.on_command("statistics").handle()
+@nonebot.on_command("statistics", aliases={"统计信息"}).handle()
 async def _(matcher: Matcher, event: MessageEvent):
     try:
         bots = list(nonebot.get_bots().values())
