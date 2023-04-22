@@ -47,7 +47,7 @@ async def _(matcher: Matcher, event: MessageEvent):
 
         await matcher.finish(lang.text("statistics.info", [
             len(groups),
-            group_member_count,,
+            group_member_count,
             get_lines()[0],
             get_lines()[1],
             len(friends)], event.get_user_id()))
