@@ -164,5 +164,5 @@
     "XDbotGPT 聊天记录已清除喵"
   ],
   "chatgpt.cache": "主人与 XDbot 的聊天记录如下：{}",
-  "statistics.info": "XDbot2 统计信息：\n群聊数：{}（{} 成员）\n好友数：{}\n原创代码：{}行"
+  "statistics.info": "XDbot2 统计信息：\n加入群聊：{}（{} 成员）\n好友数：{}\n原创代码：{}行（{}字符）"
 }

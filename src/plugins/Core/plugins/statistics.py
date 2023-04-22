@@ -10,16 +10,19 @@ import os.path
 
 def get_lines(top = "./src/plugins/Core"):
     lines = 0
+    chars = 0
     for file in os.listdir(top):
         if os.path.isfile(os.path.join(top, file)):
             try:
                 with open(os.path.join(top, file), encoding="utf-8") as f:
                     lines += f.read().splitlines().__len__()
+                    chars += f.read().__len__()
             except:
                 pass
         else:
-            lines += get_lines(os.path.join(top, file))
-    return lines
+            lines += get_lines(os.path.join(top, file))[0]
+            chars += get_lines(os.path.join(top, file))[1]
+    return lines, chars
 
 @nonebot.on_command("statistics").handle()
 async def _(matcher: Matcher, event: MessageEvent):
@@ -45,8 +48,9 @@ async def _(matcher: Matcher, event: MessageEvent):
         await matcher.finish(lang.text("statistics.info", [
             len(groups),
             group_member_count,
-            friends,
-            get_lines()
+            len(friends),
+            get_lines()[0],
+            get_lines()[1]
         ], event.get_user_id()))
                     
             
