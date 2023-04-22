@@ -44,12 +44,12 @@ async def cave_comment_writer(event: MessageEvent, bot: Bot):
         if not event.reply:
             await cave_comment.finish()
         reply_message = str(event.reply.message)
-        if re.match(r"回声洞——（(0|[1-9][0-9]*)）\n(.+)\n——(.*)", reply_message):
+        if re.match(r".{0,10}——（(0|[1-9][0-9]*)）\n(.+)\n——(.*)", reply_message):
             # 懒得写了就这样吧
             cave_id = re.search(
-                r"回声洞——（[0-9]+）",
+                r"（[0-9]+）",
                 reply_message)[0].replace(
-                "回声洞——（",
+                "（",
                 "").replace(
                 "）",
                 "")
