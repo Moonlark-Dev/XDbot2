@@ -3,6 +3,7 @@ from nonebot.adapters.onebot.v11 import MessageEvent
 from nonebot.matcher import Matcher
 from . import _error as error
 from . import _lang as lang
+import json
 import traceback
 import os
 import os.path
@@ -59,7 +60,9 @@ async def _(matcher: Matcher, event: MessageEvent):
             group_member_count,
             get_lines()[0],
             get_lines()[1],
-            get_run_time()], event.get_user_id()))
+            json.load(open("data/_error.count.json", encoding="utf-8"))["count"],
+            get_run_time()
+        ], event.get_user_id()))
                     
             
     except:

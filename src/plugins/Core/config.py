@@ -33,6 +33,12 @@ class Config(BaseSettings):
             })
         },
         {
+            "path": "data/_error.count.json",
+            "text": json.dumps({
+                "count": 0
+            })
+        },
+        {
             "path": "data/chatgpt.config.json",
             "text": json.dumps({
                 "proxy": "http://127.0.0.1:7890",
