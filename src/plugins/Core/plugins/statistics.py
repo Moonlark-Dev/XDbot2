@@ -4,7 +4,6 @@ from nonebot.matcher import Matcher
 from . import _error as error
 from . import _lang as lang
 import traceback
-import json
 import os
 import os.path
 
@@ -15,8 +14,9 @@ def get_lines(top = "./src/plugins/Core"):
         if os.path.isfile(os.path.join(top, file)):
             try:
                 with open(os.path.join(top, file), encoding="utf-8") as f:
-                    lines += f.read().splitlines().__len__()
-                    chars += f.read().__len__()
+                    code = f.read()
+                    lines += code.splitlines().__len__()
+                    chars += code.__len__()
             except:
                 pass
         else:
