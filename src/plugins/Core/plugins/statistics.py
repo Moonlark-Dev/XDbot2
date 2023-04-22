@@ -33,7 +33,7 @@ async def _(matcher: Matcher, event: MessageEvent):
                 if group["group_id"] in groups:
                     pass
                 else:
-                    group.append(group["group_id"])
+                    groups.append(group["group_id"])
                     group_member_count += (await bot.get_group_info(group_id=group["group_id"]))["member_count"]
 
         friends = []
