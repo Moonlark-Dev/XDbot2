@@ -16,6 +16,7 @@ def get_run_time():
     t = time.time() - START_TIME
     return int(t / 86400)
 
+
 def get_user_count():
     count = 0
     for file in os.listdir("data/etm"):
@@ -27,7 +28,8 @@ def get_user_count():
                 pass
     return count
 
-def get_lines(top = "./src/plugins/Core"):
+
+def get_lines(top="./src/plugins/Core"):
     lines = 0
     chars = 0
     for file in os.listdir(top):
@@ -43,6 +45,7 @@ def get_lines(top = "./src/plugins/Core"):
             lines += get_lines(os.path.join(top, file))[0]
             chars += get_lines(os.path.join(top, file))[1]
     return lines, chars
+
 
 @nonebot.on_command("statistics", aliases={"统计信息"}).handle()
 async def _(matcher: Matcher, event: MessageEvent):
@@ -71,10 +74,10 @@ async def _(matcher: Matcher, event: MessageEvent):
             group_member_count,
             get_lines()[0],
             get_lines()[1],
-            json.load(open("data/_error.count.json", encoding="utf-8"))["count"],
+            json.load(open("data/_error.count.json",
+                      encoding="utf-8"))["count"],
             get_run_time()
         ], event.get_user_id()))
-                    
-            
+
     except:
         await error.report(traceback.format_exc(), matcher)
