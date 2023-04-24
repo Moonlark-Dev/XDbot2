@@ -99,7 +99,7 @@ async def voteHandle(
                     if voteData["users"][k] == length:
                         selected += 1
                 length += 1
-                answer += f"{length}. {c} （{selected}/{len(voteData['users'])}） {int(selected / len(voteData['users'] ) * 100)}%\n"
+                answer += f"{length}. {c} （{selected}/{len(voteData['users'])}） {int(selected / max(len(voteData['users'] ), -1) * 100)}%\n"
 
         elif mode == "select" or mode == "选择":
             voteData = data[argument[0].split(" ")[1]]
