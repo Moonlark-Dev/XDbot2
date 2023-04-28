@@ -1,0 +1,3 @@
+[submodule "src/plugins/Core/plugins/rulev3c"]
+	path = src/plugins/Core/plugins/rulev3c
+	url = https://github.com/ITCraftDevelopmentTeam/XDbot2-Rule-V3.git
