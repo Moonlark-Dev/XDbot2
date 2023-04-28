@@ -16,7 +16,7 @@ async def img_review(message: Message = CommandArg()):
             if argument[1] in ["review", "审核库", "re"]:
                 if argument[2] in ["list", "列表"]:
                     for key in data["review"].keys():
-                        await su.send(Message(f"「ID：{key}」\n{data['review'][key]}"))
+                        await su.send(Message(f"「ID：{key}」\n[CQ:image,file={data['review'][key]}]"))
                 elif argument[2] in ["pass", "通过"]:
                     if argument[3] in ["all", "所有", "*"]:
                         for key in list(data["review"].keys()):
@@ -57,7 +57,7 @@ async def image(message: Message = CommandArg()):
             elif argument[1] in ["list", "列表"]:
                 length = 0
                 for image in data[argument[2]]:
-                    await su.send(Message(f"「临时ID：{argument[2]}{length}」\n{image}"))
+                    await su.send(Message(f"「临时ID：{argument[2]}{length}」\n[CQ:image,file={image}]"))
                     length += 1
             elif argument[1] in ["remove", "删除"]:
                 data[argument[2]].pop(int(argument[3]))
