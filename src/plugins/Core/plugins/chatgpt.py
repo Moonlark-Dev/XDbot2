@@ -77,7 +77,7 @@ async def _(matcher: Matcher, event: GroupMessageEvent, message: Message = Comma
         if argv[0] in ["clear", "reset"]:
             try:
                 messages.pop(str(event.group_id))
-            except:
+            except BaseException:
                 pass
             await matcher.finish(lang.text("chatgpt.cache_cleaned", [], event.user_id))
         elif argv[0] == "show":
@@ -87,7 +87,7 @@ async def _(matcher: Matcher, event: GroupMessageEvent, message: Message = Comma
                 reply += f"\n{'User: ' if item['role'] == 'user' else 'XDbot: '}{item['content']}"
             reply = lang.text("chatgpt.cache", [reply], event.user_id)
             await matcher.finish(reply)
-    except:
+    except BaseException:
         await _error.report(format_exc(), matcher)
 
 # [HELPSTART] Version: 2

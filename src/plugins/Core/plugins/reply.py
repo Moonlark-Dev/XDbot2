@@ -193,7 +193,7 @@ async def imageSenderHandle(event: GroupMessageEvent):
                 try:
                     await imageSender.send(Message(f"[CQ:image,file={image}]"))
                     latestSend = time.time()
-                except:
+                except BaseException:
                     pass
                 if random.random() <= 0.30:  # 清理图库，机率：5% x 5%
                     imageData = json.load(

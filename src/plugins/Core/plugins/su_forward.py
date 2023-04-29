@@ -38,5 +38,5 @@ async def set_forward(matcher: Matcher, message: Message = CommandArg()):
                     "data/forward.groupList.json",
                     encoding="utf-8"))
 
-    except:
+    except BaseException:
         await _error.report(traceback.format_exc(), matcher)
