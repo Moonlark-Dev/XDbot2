@@ -56,7 +56,13 @@ dictionary = {
         "also try Sugar",
         "also try XTBot",
         "使用 /st-l 获取随机涩图使用排行（谁还不是个LSP呢）",
-        "使用 /preview six 查看某些人是多能发 6"
+        "使用 /preview six 查看某些人是多能发 6",
+        "怒艹大伟哥出奇迹!",
+        "Let's!Get!!Higher!!!",
+        "Clap!",
+        "You know what you know.",
+        "You know how you know why you know what you know.",
+        "欢迎回到地球"
     ]
 }
 
