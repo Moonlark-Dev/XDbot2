@@ -48,6 +48,20 @@ async def run_rule(rule, ast, _env = {}):
                         pass
                     case "++":
                         pass
+                    case "<":
+                        pass
+                    case "<=":
+                        pass
+                    case ">":
+                        pass
+                    case ">=":
+                        pass
+                    case "*get":
+                        pass
+                    case _:
+                        pass
+            case "eval":
+                pass
             case "var":
                 rules[rule]["locals"][item["name"]] = await run_rule(rule, item["value"], _env)
             case "del":
@@ -62,8 +76,8 @@ async def run_rule(rule, ast, _env = {}):
                                 _globals.pop(var)
                             except KeyError:
                                 pass
-                
-
+            case _:
+                pass
 
 
 @get_driver().on_startup
