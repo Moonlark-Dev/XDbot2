@@ -101,6 +101,7 @@ async def to_me_msg_handle():
         await _error.report(traceback.format_exc())
 """
 
+
 @on_poke.handle()
 async def poke_handle():
     try:
@@ -192,7 +193,8 @@ async def imageSenderHandle(event: GroupMessageEvent):
                 try:
                     await imageSender.send(Message(f"[CQ:image,file={image}]"))
                     latestSend = time.time()
-                except: pass
+                except:
+                    pass
                 if random.random() <= 0.30:  # 清理图库，机率：5% x 5%
                     imageData = json.load(
                         open("data/reply.images.json", encoding="utf-8")
@@ -239,7 +241,8 @@ async def imageSaverHandle(event: GroupMessageEvent):
                             "data/reply.images.json",
                             encoding="utf-8"))
                     imageID = len(data["review"].keys())
-                    data["review"][imageID] = imageCQ.split("url=")[-1].replace("]", "")
+                    data["review"][imageID] = imageCQ.split(
+                        "url=")[-1].replace("]", "")
                     await _error.report((
                         f"{imageCQ}\n"
                         f"{_lang.text('reply.pass',[imageID])}"

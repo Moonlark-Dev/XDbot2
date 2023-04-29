@@ -9,7 +9,8 @@ DEFAULT_RULE_CONFIG = {
 rules = {"_": {"config": DEFAULT_RULE_CONFIG, "ast": [], "locals": []}}
 _globals = {}
 
-async def run_rule(rule, ast, _env = {}):
+
+async def run_rule(rule, ast, _env={}):
     # config = rules[rule]["config"]
     if type(ast) != list:
         return ast
@@ -18,14 +19,9 @@ async def run_rule(rule, ast, _env = {}):
             case "call":
                 match item["func"]:
                     case "*get_value":
-                        if item["args"][0][1:] in rules[rule]["locals"].keys():
-                            return rules[rule]["locals"][item["args"][0][1:]]
-                        elif item["args"][0][1:] in _env.keys():
-                            return _env[item["args"][0][1:]]
-                        elif item["args"][0][1:] in _globals.keys():
-                            return _globals[item["args"][0][1:]]
-                        else:
-                            return None
+                        return (rules[rule].get(item["args"][0][1:]) or
+                                _env.get(item["args"][0][1:]) or
+                                _globals.get(item["args"][0][1:]))
                     case "match":
                         pass
                     case "command":
@@ -33,9 +29,9 @@ async def run_rule(rule, ast, _env = {}):
                     case "on":
                         pass
                     case "send":
-                        await _env["_match"].send(run_rule(rule, ast, _env))
+                        await _env["_match"].send(await run_rule(rule, ast, _env))
                     case "==":
-                        return run_rule(rule, item["args"][0]) == run_rule(rule, item["args"][1])
+                        return await run_rule(rule, item["args"][0]) == await run_rule(rule, item["args"][1])
                     case "+":
                         pass
                     case "-":
@@ -68,7 +64,7 @@ async def run_rule(rule, ast, _env = {}):
                 for var in item["name"]:
                     try:
                         rules[rule]["locals"].pop(var)
-                    except KeyError: 
+                    except KeyError:
                         try:
                             _env.pop(var)
                         except KeyError:
