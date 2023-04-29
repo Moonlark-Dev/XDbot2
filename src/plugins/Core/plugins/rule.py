@@ -9,7 +9,8 @@ DEFAULT_RULE_CONFIG = {
 rules = {"_": {"config": DEFAULT_RULE_CONFIG, "ast": [], "locals": []}}
 _globals = {}
 
-async def run_rule(rule, ast, _env = {}):
+
+async def run_rule(rule, ast, _env={}):
     # config = rules[rule]["config"]
     if type(ast) != list:
         return ast
@@ -63,7 +64,7 @@ async def run_rule(rule, ast, _env = {}):
                 for var in item["name"]:
                     try:
                         rules[rule]["locals"].pop(var)
-                    except KeyError: 
+                    except KeyError:
                         try:
                             _env.pop(var)
                         except KeyError:

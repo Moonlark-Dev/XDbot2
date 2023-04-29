@@ -19,7 +19,6 @@ default_messages = [
 ]
 
 
-
 @on_message(rule=to_me()).handle()
 async def _(matcher: Matcher, event: MessageEvent):
     try:
@@ -30,7 +29,7 @@ async def _(matcher: Matcher, event: MessageEvent):
         elif len(message.extract_plain_text().strip()) <= 1:
             # TODO 从词库返回
             await matcher.finish()
-        
+
         messages = default_messages.copy()
         messages.append(
             {"role": "user", "content": message.extract_plain_text()})
@@ -40,7 +39,6 @@ async def _(matcher: Matcher, event: MessageEvent):
         reply = session["choices"][0]["message"]
         messages[str(event.group_id)].append(reply)
         await matcher.finish(reply["content"], at_sender=True)
- 
 
     except BaseException:
         await error.report(traceback.format_exc(), matcher)
