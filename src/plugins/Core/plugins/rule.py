@@ -18,14 +18,9 @@ async def run_rule(rule, ast, _env = {}):
             case "call":
                 match item["func"]:
                     case "*get_value":
-                        if item["args"][0][1:] in rules[rule]["locals"].keys():
-                            return rules[rule]["locals"][item["args"][0][1:]]
-                        elif item["args"][0][1:] in _env.keys():
-                            return _env[item["args"][0][1:]]
-                        elif item["args"][0][1:] in _globals.keys():
-                            return _globals[item["args"][0][1:]]
-                        else:
-                            return None
+                        return (rules[rule].get(item["args"][0][1:]) or
+                                _env.get(item["args"][0][1:]) or
+                                _globals.get(item["args"][0][1:]))
                     case "match":
                         pass
                     case "command":
