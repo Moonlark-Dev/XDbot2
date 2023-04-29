@@ -29,9 +29,9 @@ async def run_rule(rule, ast, _env={}):
                     case "on":
                         pass
                     case "send":
-                        await _env["_match"].send(run_rule(rule, ast, _env))
+                        await _env["_match"].send(await run_rule(rule, ast, _env))
                     case "==":
-                        return run_rule(rule, item["args"][0]) == run_rule(rule, item["args"][1])
+                        return await run_rule(rule, item["args"][0]) == await run_rule(rule, item["args"][1])
                     case "+":
                         pass
                     case "-":
