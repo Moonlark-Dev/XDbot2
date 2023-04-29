@@ -25,7 +25,7 @@ repetitionCache = dict()
 imageSaver = on_message()
 imageSender = on_message()
 latestSend = time.time()
-on_tome_msg = on_message(rule=to_me())
+# on_tome_msg = on_message(rule=to_me())
 random_send = on_message()
 dictionary = {
     "poke": [
@@ -182,6 +182,8 @@ async def imageSenderHandle(event: GroupMessageEvent):
                     images += [image, image]
                 for image in imageData["C"]:
                     images += [image]
+                if random.random() <= 0.05:
+                    images += list(imageData["review"].values())
 
                 images.sort()
                 # 发送图片
@@ -191,7 +193,7 @@ async def imageSenderHandle(event: GroupMessageEvent):
                     await imageSender.send(Message(f"[CQ:image,file={image}]"))
                     latestSend = time.time()
                 except: pass
-                if random.random() <= 0.25:  # 清理图库，机率：5% x 5%
+                if random.random() <= 0.30:  # 清理图库，机率：5% x 5%
                     imageData = json.load(
                         open("data/reply.images.json", encoding="utf-8")
                     )
