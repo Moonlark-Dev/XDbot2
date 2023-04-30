@@ -59,7 +59,7 @@ async def _(matcher: Matcher, event: GroupMessageEvent, message: Message = Comma
             reply["content"],
             at_sender=True)
     except BaseException:
-        await _error.report(format_exc(), matcher)
+        await _error.report(format_exc(), matcher, event)
 
 
 @get_driver().on_shutdown

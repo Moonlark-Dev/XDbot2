@@ -49,4 +49,4 @@ async def _(matcher: Matcher, event: MessageEvent):
             at_sender=True)
 
     except BaseException:
-        await error.report(traceback.format_exc(), matcher)
+        await error.report(traceback.format_exc(), matcher, event)

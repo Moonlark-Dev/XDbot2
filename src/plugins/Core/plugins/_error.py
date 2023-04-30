@@ -6,7 +6,7 @@ from nonebot import get_bots
 import random
 from nonebot.exception import FinishedException
 from nonebot.log import logger
-from nonebot.adapters.onebot.v11 import MessageSegment
+from nonebot.adapters.onebot.v11 import MessageEvent, MessageSegment
 from nonebot.matcher import Matcher
 from . import _lang
 
@@ -17,7 +17,7 @@ IGNORED_EXCEPTION = [
 ]
 
 
-async def report(err: str, matcher: None | Matcher = None):
+async def report(err: str, matcher: None | Matcher = None, event: MessageEvent | None = None):
     error = err.splitlines()[-1]
     logger.debug(error)
     # 过滤错误
@@ -25,9 +25,7 @@ async def report(err: str, matcher: None | Matcher = None):
         raise FinishedException()
     # 反馈错误
     if matcher is not None:
-        # 我试图让回复的信息中回复原消息，但是我失败了  ——XiaoDeng3386
-        reply = MessageSegment.text("") #MessageSegment.reply(matcher().dict()["message_id"])
-        
+        reply = MessageSegment.text("") if not event else MessageSegment.reply(event.message_id)
         await matcher.send(
             reply + MessageSegment.text(f"处理失败！\n{error}"),
             at_sender=True)
