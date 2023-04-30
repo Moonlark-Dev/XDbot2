@@ -85,7 +85,7 @@ async def delete_msg(bot, message_id):
         answer = None
 
 
-@scheduler.scheduled_job("cron", minute="*/3", id="send_quick_math")
+@scheduler.scheduled_job("cron", minute="*/2", id="send_quick_math")
 async def send_quick_math():
     global group, answer, send_time
     try:
