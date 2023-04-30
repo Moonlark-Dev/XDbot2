@@ -34,32 +34,35 @@ def refresh_group_unanswered(groups=[]):
 
 refresh_group_unanswered()
 
-def format_math(t): # 暂不兼容求极限
-    t = t.replace("f(x)","y")
-    t = t.replace("**3","³")
-    t = t.replace("**2","²")
-    t = t.replace("*","")
-    t = t.replace("y","f(x)")
+
+def format_math(t):  # 暂不兼容求极限
+    t = t.replace("f(x)", "y")
+    t = t.replace("**3", "³")
+    t = t.replace("**2", "²")
+    t = t.replace("*", "")
+    t = t.replace("y", "f(x)")
     return t
 
+
 def format_answer(t):
-    t = t.replace(" ","")
-    t = t.replace("-","+-")
+    t = t.replace(" ", "")
+    t = t.replace("-", "+-")
     t = t.replace("**3", "³")
     t = t.replace("**2", "²")
     t = t.replace("^3", "³")
     t = t.replace("^2", "²")
-    t = t.replace("x","*x")
-    t = t.replace("**","*")
+    t = t.replace("x", "*x")
+    t = t.replace("**", "*")
     t = t.split("+")
     for e in range(len(t)):
         if t[e].startswith("*x") or t[e].startswith("-*x"):
-            t[e] = t[e].replace("*x","x",1)
+            t[e] = t[e].replace("*x", "x", 1)
     t = "+".join(t)
-    t = t.replace("+-","-")
-    t = t.replace("³","**3")
-    t = t.replace("²","**2")
+    t = t.replace("+-", "-")
+    t = t.replace("³", "**3")
+    t = t.replace("²", "**2")
     return t
+
 
 def generate_limit_question():
     x = symbols('x')
