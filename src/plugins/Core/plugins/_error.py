@@ -38,10 +38,6 @@ async def report(err: str, matcher: any = None):
     for e in IGNORED_EXCEPTION:
         if e in error:  # Issue #120
             return None
-    # 记录错误
-    data = json.load(open("data/_error.count.json", encoding="utf-8"))
-    data["count"] += 1
-    json.dump(data, open("data/_error.count.json", "w", encoding="utf-8"))
     # 上报错误
     bot = get_bots()[json.load(
         open("data/su.multiaccoutdata.ro.json", encoding="utf-8"))[ctrlGroup]]
@@ -49,3 +45,7 @@ async def report(err: str, matcher: any = None):
     if "「" in err and matcher is None:
         return None
     logger.error(err)
+    # 记录错误
+    data = json.load(open("data/_error.count.json", encoding="utf-8"))
+    data["count"] += 1
+    json.dump(data, open("data/_error.count.json", "w", encoding="utf-8"))
