@@ -7,6 +7,7 @@ import openai
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
 from . import _lang as lang
+from nonebot.adapters.onebot.v11 import MessageSegment
 
 messages = json.load(open("data/chatgpt.messages.json", encoding="utf-8"))
 config = json.load(open("data/chatgpt.config.json", encoding="utf-8"))
@@ -54,7 +55,9 @@ async def _(matcher: Matcher, event: GroupMessageEvent, message: Message = Comma
             messages=messages[str(event.group_id)])
         reply = session["choices"][0]["message"]
         messages[str(event.group_id)].append(reply)
-        await matcher.finish(reply["content"], at_sender=True)
+        await matcher.finish(
+            reply["content"],
+            at_sender=True)
     except BaseException:
         await _error.report(format_exc(), matcher)
 
@@ -86,7 +89,8 @@ async def _(matcher: Matcher, event: GroupMessageEvent, message: Message = Comma
             for item in cache[1:]:
                 reply += f"\n{'User: ' if item['role'] == 'user' else 'XDbot: '}{item['content']}"
             reply = lang.text("chatgpt.cache", [reply], event.user_id)
-            await matcher.finish(reply)
+            await matcher.finish(
+                MessageSegment.reply(event.message_id) + MessageSegment.text(reply))
     except BaseException:
         await _error.report(format_exc(), matcher)
 
