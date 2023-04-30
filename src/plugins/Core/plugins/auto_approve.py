@@ -3,7 +3,6 @@ from nonebot.adapters.onebot.v11 import Bot
 from . import _error
 import traceback
 from nonebot.adapters.onebot.v11.event import GroupRequestEvent
-from .accout import reloadMuiltData
 from . import _messenger
 
 superusers = get_driver().config.superusers
@@ -19,8 +18,9 @@ async def group_request_handle(
                 await event.approve(bot)
             else:
                 _messenger.send_message(
-                    f"请在 https://github.com/ITCraftDevelopmentTeam/XDbot2/issues/new?template=group.yml 一个入群申请来部署 XDbot2 到 {event.group_id}\n详细信息：https://github.com/ITCraftDevelopmentTeam/XDbot2/discussions/176",
+                    f" 『温馨提示』\n请在 https://github.com/ITCraftDevelopmentTeam/XDbot2/issues/new?template=group.yml 发送一个入群申请来部署 XDbot2 到 {event.group_id}\n \n详细信息：\nhttps://github.com/ITCraftDevelopmentTeam/XDbot2/discussions/176",
                     event.get_user_id()
                 )
+
     except BaseException:
         await _error.report(traceback.format_exc())
