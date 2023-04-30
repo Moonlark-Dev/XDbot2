@@ -6,7 +6,7 @@ from nonebot import get_bots
 import random
 from nonebot.exception import FinishedException
 from nonebot.log import logger
-from nonebot.adapters.onebot.v11 import MessageEvent, MessageSegment
+from nonebot.adapters.onebot.v11 import GroupMessageEvent, MessageEvent, MessageSegment
 from nonebot.matcher import Matcher
 from . import _lang
 
@@ -17,7 +17,7 @@ IGNORED_EXCEPTION = [
 ]
 
 
-async def report(err: str, matcher: None | Matcher = None, event: MessageEvent | None = None):
+async def report(err: str, matcher: None | Matcher = None, event: MessageEvent | GroupMessageEvent | None = None):
     error = err.splitlines()[-1]
     logger.debug(error)
     # 过滤错误
