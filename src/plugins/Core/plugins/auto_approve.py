@@ -24,6 +24,3 @@ async def group_request_handle(
                 )
     except BaseException:
         await _error.report(traceback.format_exc())
-
-
-
