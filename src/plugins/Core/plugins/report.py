@@ -4,13 +4,13 @@ from nonebot.params import CommandArg
 from . import _lang
 from . import _error
 
-report = on_command("report", aliases={"举报"})
+report = on_command("report", aliases={"举报", "反馈"})
 
 
 @report.handle()
 async def handle(event: MessageEvent, message: Message = CommandArg()):
     await _error.report(
-        "「举报信息」\n"
+        "「反馈信息」\n"
         f"{message}\n"
         f"{event.get_session_id()}")
     await report.finish(
@@ -19,6 +19,6 @@ async def handle(event: MessageEvent, message: Message = CommandArg()):
 # [HELPSTART] Version: 2
 # Command: report
 # Usage: /report <messages>
-# Msg: 举报其他用户
-# Info: 用于举报其他用户（或自己）的违规行为
+# Msg: 举报 & 反馈
+# Info: 反馈信息举报其他用户（或自己）的违规行为
 # [HELPEND]

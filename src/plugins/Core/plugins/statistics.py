@@ -24,7 +24,7 @@ def get_user_count():
             try:
                 int(file)
                 count += 1
-            except:
+            except BaseException:
                 pass
     return count
 
@@ -39,7 +39,7 @@ def get_lines(top="./src/plugins/Core"):
                     code = f.read()
                     lines += code.splitlines().__len__()
                     chars += code.__len__()
-            except:
+            except BaseException:
                 pass
         else:
             lines += get_lines(os.path.join(top, file))[0]
@@ -79,5 +79,5 @@ async def _(matcher: Matcher, event: MessageEvent):
             get_run_time()
         ], event.get_user_id()))
 
-    except:
+    except BaseException:
         await error.report(traceback.format_exc(), matcher)

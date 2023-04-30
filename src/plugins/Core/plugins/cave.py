@@ -31,7 +31,7 @@ commandHelp = {
             "cave：随机一条回声洞",
             "cave-a <内容>：投稿一条回声洞（见cave(1)）",
             "cave-g <回声洞ID>：查看指定回声洞",
-            "cave-q <开始ID> <结束ID>：查询一堆范围内的回声洞"
+            "cave-q <开始ID> <结束ID>：查询指定范围内的回声洞"
         ],
     }
 }
@@ -44,7 +44,8 @@ async def cave_comment_writer(event: MessageEvent, bot: Bot):
         if not event.reply:
             await cave_comment.finish()
         reply_message = str(event.reply.message)
-        if re.match(r".{0,10}——（(0|[1-9][0-9]*)）\n(.+)\n——(.*)", reply_message):
+        if re.match(
+                r".{0,10}——（(0|[1-9][0-9]*)）\n(.+)\n——(.*)", reply_message):
             # 懒得写了就这样吧
             cave_id = re.search(
                 r"（[0-9]+）",

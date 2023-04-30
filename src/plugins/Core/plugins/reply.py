@@ -25,7 +25,7 @@ repetitionCache = dict()
 imageSaver = on_message()
 imageSender = on_message()
 latestSend = time.time()
-on_tome_msg = on_message(rule=to_me())
+# on_tome_msg = on_message(rule=to_me())
 random_send = on_message()
 dictionary = {
     "poke": [
@@ -56,7 +56,13 @@ dictionary = {
         "also try Sugar",
         "also try XTBot",
         "使用 /st-l 获取随机涩图使用排行（谁还不是个LSP呢）",
-        "使用 /preview six 查看某些人是多能发 6"
+        "使用 /preview six 查看某些人是多能发 6",
+        "怒艹大伟哥出奇迹!",
+        "Let's!Get!!Higher!!!",
+        "Clap!",
+        "You know what you know.",
+        "You know how you know why you know what you know.",
+        "欢迎回到地球"
     ]
 }
 
@@ -89,7 +95,8 @@ async def random_send_handle():
     except BaseException:
         await _error.report(traceback.format_exc())
 
-
+"""
+# 由于 gpt 插件，本函数已被暂时弃用
 # @on_tome_msg.handle()
 async def to_me_msg_handle():
     try:
@@ -98,6 +105,7 @@ async def to_me_msg_handle():
             await on_tome_msg.send(random.choice(dictionary["to_me"]))
     except BaseException:
         await _error.report(traceback.format_exc())
+"""
 
 
 @on_poke.handle()
@@ -181,14 +189,19 @@ async def imageSenderHandle(event: GroupMessageEvent):
                     images += [image, image]
                 for image in imageData["C"]:
                     images += [image]
+                if random.random() <= 0.05:
+                    images += list(imageData["review"].values())
 
                 images.sort()
                 # 发送图片
                 image = random.choice(images)
                 await asyncio.sleep(random.random() / 2)
-                await imageSender.send(Message(image))
-                latestSend = time.time()
-                if random.random() <= 0.25:  # 清理图库，机率：5% x 5%
+                try:
+                    await imageSender.send(Message(f"[CQ:image,file={image}]"))
+                    latestSend = time.time()
+                except BaseException:
+                    pass
+                if random.random() <= 0.30:  # 清理图库，机率：5% x 5%
                     imageData = json.load(
                         open("data/reply.images.json", encoding="utf-8")
                     )
@@ -211,7 +224,7 @@ async def imageSenderHandle(event: GroupMessageEvent):
 
 
 @imageSaver.handle()
-async def imageSaverHandle(bot: Bot, event: GroupMessageEvent):
+async def imageSaverHandle(event: GroupMessageEvent):
     try:
         global latestSend
         if time.time() - latestSend > 60:
@@ -228,37 +241,31 @@ async def imageSaverHandle(bot: Bot, event: GroupMessageEvent):
                         r"subType=\d",
                         imageCQ).group(0).split("=")[1])
                 # await imageSaver.send(str(bool(isMeme)))
-                if isMeme and random.random() <= 0.05:  # 概率：5%
+                if isMeme and random.random() <= 0.15:  # 概率：5%
                     data = json.load(
                         open(
                             "data/reply.images.json",
                             encoding="utf-8"))
                     imageID = len(data["review"].keys())
-                    data["review"][imageID] = imageCQ
-                    await bot.send_group_msg(
-                        message=Message(
-                            (
-                                f"{imageCQ}\n"
-                                f"{_lang.text('reply.pass',[imageID])}"
-                                f"{_lang.text('reply.rm',[imageID])}"
-                                f"{event.get_session_id()}"
-                            )
-                        ),
-                        group_id=ctrlGroup,
-                    )
-
+                    data["review"][imageID] = imageCQ.split(
+                        "url=")[-1].replace("]", "")
+                    await _error.report((
+                        f"{imageCQ}\n"
+                        f"{_lang.text('reply.pass',[imageID])}"
+                        f"{_lang.text('reply.rm',[imageID])}"
+                        f"{event.get_session_id()}"))
                     json.dump(
                         data,
                         open(
                             "data/reply.images.json",
                             "w",
                             encoding="utf-8"))
-                    await asyncio.sleep(random.random() / 2)
+                    await asyncio.sleep(random.random())
                     await imageSaver.send(
                         _lang.text("reply.good_image", [], event.get_user_id())
                     )
                     latestSend = time.time()
-                elif isMeme and random.random() <= 0.10:  # 概率：10%
+                """elif isMeme and random.random() <= 0.10:  # 概率：10%
                     data = json.load(
                         open(
                             "data/reply.images.json",
@@ -288,9 +295,7 @@ async def imageSaverHandle(bot: Bot, event: GroupMessageEvent):
                             "w",
                             encoding="utf-8"))
                     latestSend = time.time()
-                # elif random.random() <= 0.01:
+                # elif random.random() <= 0.01:"""
 
-    except FinishedException:
-        raise FinishedException()
     except Exception:
         await _error.report(traceback.format_exc())
