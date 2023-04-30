@@ -25,8 +25,8 @@ async def report(err: str, matcher: None | Matcher = None):
         raise FinishedException()
     # 反馈错误
     if matcher is not None:
-        # try:
-        reply = MessageSegment.reply(matcher.get_last_receive().dict()["message_id"])
+        # 我试图让回复的信息中回复原消息，但是我失败了  ——XiaoDeng3386
+        reply = MessageSegment.text("") #MessageSegment.reply(matcher().dict()["message_id"])
         
         await matcher.send(
             reply + MessageSegment.text(f"处理失败！\n{error}"),
