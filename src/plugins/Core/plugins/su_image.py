@@ -53,7 +53,8 @@ async def image(message: Message = CommandArg()):
                 "review", "re", "审核库"]:
             data = json.load(open("data/reply.images.json", encoding="utf-8"))
             if argument[1] in ["添加", "add"]:
-                data[argument[2]].append(argument[3].split("url=")[-1].replace("]", ""))
+                data[argument[2]].append(
+                    argument[3].split("url=")[-1].replace("]", ""))
             elif argument[1] in ["list", "列表"]:
                 length = 0
                 for image in data[argument[2]]:
