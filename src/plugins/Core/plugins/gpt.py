@@ -34,6 +34,13 @@ async def _(matcher: Matcher, event: MessageEvent):
             await matcher.finish(choice(dictionary["to_me"]))
 
         messages = default_messages.copy()
+        if event.reply:
+            messages.append(
+                {
+                    "role": "assistant",
+                    "content": event.reply.message.extract_plain_text()
+                }
+            )
         messages.append(
             {"role": "user", "content": message.extract_plain_text()})
         try:
