@@ -6,6 +6,7 @@ from nonebot.adapters.onebot.v11 import MessageEvent
 from . import _error, _lang
 from nonebot.matcher import Matcher
 
+
 @on_command("qm-avg").handle()
 async def qmavg(matcher: Matcher, event: MessageEvent):
     try:
@@ -20,5 +21,3 @@ async def qmavg(matcher: Matcher, event: MessageEvent):
 # Info: 速算平均用时
 # Usage: qm-avg
 # [HELPEND]
-
-
