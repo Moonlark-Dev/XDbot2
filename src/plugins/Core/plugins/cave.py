@@ -319,7 +319,7 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
             await cave.finish(
                 _lang.text(
                     "cave.data_finish", [
-                        count, canReadCount], event.get_user_id()
+                        count, canReadCount, len(os.listdir("data/caveImages"))], event.get_user_id()
                 )
             )
 
