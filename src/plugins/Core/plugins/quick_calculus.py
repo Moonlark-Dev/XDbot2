@@ -35,6 +35,35 @@ def refresh_group_unanswered(groups=[]):
 refresh_group_unanswered()
 
 
+def format_math(t):  # 暂不兼容求极限
+    t = t.replace("f(x)", "y")
+    t = t.replace("**3", "³")
+    t = t.replace("**2", "²")
+    t = t.replace("*", "")
+    t = t.replace("y", "f(x)")
+    return t
+
+
+def format_answer(t):
+    t = t.replace(" ", "")
+    t = t.replace("-", "+-")
+    t = t.replace("**3", "³")
+    t = t.replace("**2", "²")
+    t = t.replace("^3", "³")
+    t = t.replace("^2", "²")
+    t = t.replace("x", "*x")
+    t = t.replace("**", "*")
+    t = t.split("+")
+    for e in range(len(t)):
+        if t[e].startswith("*x") or t[e].startswith("-*x"):
+            t[e] = t[e].replace("*x", "x", 1)
+    t = "+".join(t)
+    t = t.replace("+-", "-")
+    t = t.replace("³", "**3")
+    t = t.replace("²", "**2")
+    return t
+
+
 def generate_limit_question():
     x = symbols('x')
     f = choice([x**2 + 3 * x - 2, x**3 - 2 * x + 1,
@@ -57,7 +86,9 @@ def _check_answer(_answer, right_answer):
 
 def check_answer(_answer, right_answer):
     try:
-        return _check_answer(_answer, right_answer)
+        if not _check_answer(_answer, right_answer):
+            return _check_answer(format_answer(_answer), right_answer)
+        return True
     except BaseException:
         return False
 
@@ -101,11 +132,11 @@ async def send_quick_calculus():
             if random() <= 0.5:
                 # 求导数
                 answer = str(diff(f, x)).replace(" ", "")
-                question = f"求函数 f(x) = {f} 的导数"
+                question = format_math(f"求函数 f(x) = {f} 的导数")
                 logger.debug(answer)
             else:
                 answer = str(diff(diff(f, x), x)).replace(" ", "")
-                question = f"求函数 f(x) = {f} 的二阶导数"
+                question = format_math(f"求函数 f(x) = {f} 的二阶导数")
                 logger.debug(answer)
         elif random() <= 0.25:
             x = Symbol('x')
@@ -114,7 +145,7 @@ async def send_quick_calculus():
             c = randint(1, 10)
             f = a * x**2 + b * x + c
             answer = str(diff(f, x)).replace(" ", "")
-            question = f"求函数 f(x) = {f} 的导数"
+            question = format_math(f"求函数 f(x) = {f} 的导数")
             logger.debug(answer)
         else:
             question, answer = generate_limit_question()

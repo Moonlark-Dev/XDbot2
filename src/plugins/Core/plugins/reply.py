@@ -14,7 +14,7 @@ from nonebot import on_message, on_type
 from nonebot.rule import to_me
 from nonebot.adapters.onebot.v11.event import PokeNotifyEvent
 from nonebot.adapters.onebot.v11 import Message
-from nonebot.adapters.onebot.v11.bot import Bot
+# from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot.adapters.onebot.v11.event import GroupMessageEvent
 
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
@@ -42,8 +42,8 @@ dictionary = {
         "（脸红）啊……不可以",
         "杰哥不要！（？"
     ],
-    "to_me": ["?", "¿", "喵？", "a？", "（窥屏.jpg）", "喵喵喵？", "(?"],
-    "primary": ["（窥屏.jpg）", "az……", "hmm"],
+    "to_me": ["?", "¿", "喵？", "a？", "喵喵喵？", "(?"],
+    "primary": ["az……", "hmm"],
     "tips": [
         "XDbot的生日是2022/06/28！",
         "你知道吗：不你不知道",
