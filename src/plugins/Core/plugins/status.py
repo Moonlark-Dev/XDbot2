@@ -1,5 +1,6 @@
 from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot.adapters.onebot.v11 import Message, MessageEvent
+from nonebot import get_app
 from nonebot.params import CommandArg
 from nonebot import on_command
 from nonebot.exception import FinishedException
@@ -15,6 +16,11 @@ import platform
 
 status = on_command("status", aliases={"系统状态", "状态"})
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
+
+
+@get_app().get("/status")
+async def get_status_from_web():
+    return {"status": "OK"}
 
 
 def cpu_percent():
