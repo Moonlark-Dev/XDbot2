@@ -106,7 +106,7 @@
   "su.accout_not_found": "帳號不存在！",
   "su.accout_list": "本群可用帳號：{}",
   "rule.needargv": "缺少參數：{}",
-  "rule.noprimission": "錯誤：權限不足",
+  "rule.permission_denied": "錯誤：權限不足",
   "rule.created": "規則 {} 已創建！",
   "rule.finish": "完成！",
   "rule.list": "活動的規則：\n{}",
@@ -149,7 +149,7 @@
   "achi.title": "已解鎖成就：",
   "achi.info": "「成就詳細信息」\n名稱：{}\n解鎖條件：{}\n解鎖進度：{}",
   "achi.locked": "未解鎖",
-  "achi.unlcked": "已解鎖",
+  "achi.unlocked": "已解鎖",
   "etm.book_written": "已寫入",
   "etm.book_saved": "錯誤：書本已被保存",
   "etm.book_savesuccess": "保存成功！",
@@ -164,5 +164,6 @@
     "XDbotGPT 聊天記錄已清除"
   ],
   "chatgpt.cache": "主人與 XDbot 的聊天記錄如下：{}",
-  "statistics.info": "XDbot2 統計信息：\n用戶數量：{}\n加入群聊：{}（{} 成員）\n原創代碼：{}行（{}字符）\n產生錯誤：{}\nXDbot 已經走過了 {}days"
+  "statistics.info": "XDbot2 統計信息：\n用戶數量：{}\n加入群聊：{}（{} 成員）\n原創代碼：{}行（{}字符）\n產生錯誤：{}\nXDbot 已經走過了 {}days",
+  "qm_avg.info": "[QUICK MATH]\n平均作答用時：{}s"
 }
