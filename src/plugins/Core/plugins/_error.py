@@ -18,7 +18,7 @@ IGNORED_EXCEPTION = [
 
 
 # , event: MessageEvent | GroupMessageEvent | None = None):
-async def report(err: str, matcher: None | Matcher = None):
+async def report(err: str, matcher: None | Matcher = None, *args, **params):
     error = err.splitlines()[-1]
     logger.debug(error)
     # 过滤错误
