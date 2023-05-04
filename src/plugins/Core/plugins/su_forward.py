@@ -25,7 +25,7 @@ async def set_forward(matcher: Matcher, bot: Bot, message: Message = CommandArg(
                         group_id=int(argument[2]),
                         user_id=(await bot.get_login_info())["user_id"],
                         card=(await bot.get_login_info())["nickname"] + "（监听中）")
-                except:
+                except BaseException:
                     pass
             elif argument[1] == "remove" or argument[1] == "删除群":
                 length = 0
@@ -37,7 +37,7 @@ async def set_forward(matcher: Matcher, bot: Bot, message: Message = CommandArg(
                                 group_id=int(argument[2]),
                                 user_id=(await bot.get_login_info())["user_id"],
                                 card=(await bot.get_login_info())["nickname"][:-5])
-                        except:
+                        except BaseException:
                             pass
 
                     else:

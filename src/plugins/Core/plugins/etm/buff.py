@@ -12,31 +12,33 @@ BUFFERS = {
 def get_buff_level(user_id, buff_id):
     try:
         buff = data.buff[user_id]
-        if buff["endtime"] != None:
+        if buff["endtime"] is not None:
             if time() > buff["endtime"]:
                 data.buff[user_id].pop(buff_id)
                 return BUFFERS[buff_id]["default_level"]
         return data.buff[user_id][buff_id]["level"]
-    except:
+    except BaseException:
         return BUFFERS[buff_id]["default_level"]
 
 
 def effect_buff(user_id, buff_id):
     try:
         data.buff[user_id][buff_id]["effect_count"] += 1
-        if data.buff[user_id][buff_id]["effect_count"] >= BUFFERS[buff_id]["max_effect"](data.buff[user_id][buff_id]["level"]):
+        if data.buff[user_id][buff_id]["effect_count"] >= BUFFERS[buff_id]["max_effect"](
+                data.buff[user_id][buff_id]["level"]):
             data.buff[user_id].pop(buff_id)
         return True
-    except:
+    except BaseException:
         return False
 
 
 def can_effect(user_id, buff_id):
     try:
-        if data.buff[user_id][buff_id]["effect_count"] >= BUFFERS[buff_id]["max_effect"](data.buff[user_id][buff_id]["level"]):
+        if data.buff[user_id][buff_id]["effect_count"] >= BUFFERS[buff_id]["max_effect"](
+                data.buff[user_id][buff_id]["level"]):
             return False
         return True
-    except:
+    except BaseException:
         return False
 
 
