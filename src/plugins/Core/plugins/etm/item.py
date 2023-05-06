@@ -12,7 +12,7 @@ class Item:
         self.on_register()
         # 设置 NBT
         self.data = BASIC_DATA.copy()
-        self.data.update(self.basic_data)
+        self.data.update(self.basic_data.copy())
         self.data.update(data)
         self.user_id = user_id
 
