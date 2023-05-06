@@ -8,7 +8,7 @@ class Pouch(Item):
     def on_register(self):
         self.basic_data = {
             "display_name": "收纳袋",
-            "display_message": "\x00",
+            "display_message": "收纳物品利器\x00",
             "items": [],
             "max_item_count": 16
         }
