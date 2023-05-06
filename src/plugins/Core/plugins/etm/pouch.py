@@ -29,10 +29,10 @@ class Pouch(Item):
             item = bag.get_user_bag(self.user_id)[int(args[1])]
             count = item.count
             item_id = item.item_id
-            if count < int(args[1]):
-                raise economy.IllegalQuantityException(args[1])
-            elif len(args) < 3:
+            if len(args) < 3:
                 args.append(count)
+            if count < int(args[2]):
+                raise economy.IllegalQuantityException(args[2])
             
             # 处理nbt
             nbt = item.data.copy()
@@ -52,7 +52,7 @@ class Pouch(Item):
             item.count -= int(args[2])
             self.data["items"].append({
                 "id": item_id,
-                "count": int(args[-1]),
+                "count": int(args[2]),
                 "data": nbt
             })
             bag.save_bags()
