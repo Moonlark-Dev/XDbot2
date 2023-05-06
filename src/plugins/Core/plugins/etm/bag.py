@@ -45,9 +45,11 @@ def save_bags():
                         pass
                 for key in list(item.basic_data.keys()):
                     try:
+
+                        print("Cleaned", user_id,key, nbt[key], item.basic_data[key])
                         if nbt[key] == item.basic_data[key]:
                             nbt.pop(key)
-                            print("Cleaned", user_id,key, nbt[key], item.basic_data[key])
+                            
                     except BaseException:
                         pass
                 bag_data[user_id].append({
