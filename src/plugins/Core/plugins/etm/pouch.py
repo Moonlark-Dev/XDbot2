@@ -56,4 +56,5 @@ class Pouch(Item):
             })
             bag.save_bags()
             self.update_info()
+            return ["已添加"]
 
