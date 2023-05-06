@@ -231,10 +231,10 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
             )
 
         elif argument[0] in ["add", "-a", "添加"]:
-            if not str(message)[argument[0].__len__():].strip():
-                await cave.finish(_lang.text("cave.not_allow_null_cave", [], event.get_user_id()))
             exp.add_exp(event.get_user_id(), 6)
             text = await downloadImages(str(message)[argument[0].__len__():].strip())
+            if text == "":
+                await cave.finish(_lang.text("cave.not_allow_null_cave", [], event.get_user_id()))
             data["data"][data["count"]] = {
                 "id": data["count"],
                 "text": text,
