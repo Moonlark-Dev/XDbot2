@@ -27,7 +27,7 @@ class Pouch(Item):
         args = args.split(" ")
         # self.data["items"] = self.data["items"].copy()
         if args[0] in ["put", "--put"]:
-            item = bag.get_user_bag(self.user_id)[int(args[1])]
+            item = bag.get_user_bag(self.user_id)[int(args[1]) + 1]
             count = item.count
             item_id = item.item_id
             if len(args) < 3:
