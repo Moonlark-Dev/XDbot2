@@ -4,7 +4,8 @@ from . import bag
 from . import economy
 from .item_basic_data import BASIC_DATA
 
-class Pouch(Item): 
+
+class Pouch(Item):
     def on_register(self):
         self.basic_data = {
             "display_name": "收纳袋",
@@ -16,13 +17,14 @@ class Pouch(Item):
 
     def update_info(self):
         item_list = items.json2items(self.data["items"])
-        display_info = self.data["display_message"].split("\x00")[0] + "\x00\n物品列表（\x01used/\x01max）："
+        display_info = self.data["display_message"].split(
+            "\x00")[0] + "\x00\n物品列表（\x01used/\x01max）："
         length = 1
         for i in item_list:
             display_info += f"\n{length}. {i.data['display_name']} x{i.count}"
             length += 1
         self.data["display_message"] = display_info
-    
+
     def use(self, args):
         args = args.split(" ")
         # self.data["items"] = self.data["items"].copy()
@@ -34,7 +36,7 @@ class Pouch(Item):
                 args.append(count)
             if count < int(args[2]):
                 raise economy.IllegalQuantityException(args[2])
-            
+
             # 处理nbt
             nbt = item.data.copy()
             for key in list(BASIC_DATA.keys()):
@@ -58,4 +60,3 @@ class Pouch(Item):
             })
             self.update_info()
             return ["已添加"]
-
