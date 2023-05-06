@@ -13,7 +13,6 @@ bags = {}
 
 
 def get_bags():
-    data.bags
     for user, bag in list(data.bags.items()):
         bags[user] = items.json2items(bag, user)
 
@@ -48,6 +47,7 @@ def save_bags():
                     try:
                         if nbt[key] == item.basic_data[key]:
                             nbt.pop(key)
+                            print("Cleaned", user_id,key)
                     except BaseException:
                         pass
                 bag_data[user_id].append({
