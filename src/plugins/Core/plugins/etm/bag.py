@@ -1,5 +1,4 @@
 from . import items
-import json
 from .item_basic_data import BASIC_DATA
 from nonebot_plugin_apscheduler import scheduler
 from nonebot import require
@@ -46,7 +45,7 @@ def save_bags():
                 for key in list(item.basic_data.keys()):
                     try:
 
-                        print("Cleaned", user_id,key, nbt[key], item.basic_data[key])
+
                         if nbt[key] == item.basic_data[key]:
                             nbt.pop(key)
                             

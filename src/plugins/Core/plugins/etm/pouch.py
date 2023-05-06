@@ -57,5 +57,5 @@ class Pouch(Item):
                 "data": nbt
             })
             self.update_info()
-            return ["已添加", str(self.data)]
+            return ["已添加"]
 
