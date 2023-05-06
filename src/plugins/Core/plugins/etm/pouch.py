@@ -55,7 +55,6 @@ class Pouch(Item):
                 "count": int(args[2]),
                 "data": nbt
             })
-            bag.save_bags()
             self.update_info()
             return ["已添加", str(self.data)]
 
