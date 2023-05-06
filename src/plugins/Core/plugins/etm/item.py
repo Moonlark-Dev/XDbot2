@@ -16,6 +16,9 @@ class Item:
         self.data.update(data)
         self.user_id = user_id
 
+        if self.data["_remove_basic_data"]:
+            del self.basic_data
+
     def on_register(self):
         pass
 
