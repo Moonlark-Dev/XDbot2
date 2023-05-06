@@ -8,7 +8,7 @@ class Pouch(Item):
     def on_register(self):
         self.basic_data = {
             "display_name": "收纳袋",
-            "display_message": "收纳物品利器\x00",
+            "display_message": "收纳袋\x00",
             "items": [],
             "max_item_count": 16
         }
@@ -24,6 +24,7 @@ class Pouch(Item):
         self.data["display_message"] = display_info
     
     def use(self, args):
+        args = args.split(" ")
         if args[0] in ["put", "--put"]:
             item = bag.get_user_bag(self.user_id)[int(args[1])]
             count = item.count
