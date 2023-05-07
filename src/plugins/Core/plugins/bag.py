@@ -22,7 +22,7 @@ async def show_bag(bot: Bot, event: MessageEvent, message: Message = CommandArg(
         data = bag.get_user_bag(qq)
 
         if argv[0] == "view":
-            item = data[int(argv[1]) + 1]
+            item = data[int(argv[1]) - 1]
             await bag_cmd.finish(lang.text("bag.item_info", [
                 item.data["display_name"],
                 item.item_id,

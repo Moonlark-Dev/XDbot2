@@ -37,7 +37,7 @@ class Pouch(Item):
             return self.get_item(args)
 
     def get_item(self, args):
-        item = self.data["items"][int(args[1])]
+        item = self.data["items"][int(args[1]) - 1]
         if len(args) < 3:
             count = item["count"]
         else:
@@ -47,12 +47,12 @@ class Pouch(Item):
 
         bag.add_item(self.user_id, item["id"], item["count"], item["data"])
         if count == item["count"]:
-            self.data["items"].pop(int(args[1]))
+            self.data["items"].pop(int(args[1]) - 1)
         else:
-            self.data["items"][int(args[1])]["count"] -= count
+            self.data["items"][int(args[1]) - 1]["count"] -= count
 
     def put_item(self, args):
-        item = bag.get_user_bag(self.user_id)[int(args[1]) + 1]
+        item = bag.get_user_bag(self.user_id)[int(args[1]) - 1]
         count = item.count
         item_id = item.item_id
         if len(args) < 3:
