@@ -50,6 +50,9 @@ class Pouch(Item):
             self.data["items"].pop(int(args[1]) - 1)
         else:
             self.data["items"][int(args[1]) - 1]["count"] -= count
+        
+        self.update_info()
+        return ["已取出"]
 
     def put_item(self, args):
         item = bag.get_user_bag(self.user_id)[int(args[1]) - 1]
@@ -82,4 +85,4 @@ class Pouch(Item):
             "data": nbt
         })
         self.update_info()
-        return ["已添加"]
+        return ["已置入"]
