@@ -16,7 +16,6 @@ class Item:
         self.data.update(data)
         self.user_id = user_id
 
-
     def on_register(self):
         pass
 

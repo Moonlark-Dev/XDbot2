@@ -3,6 +3,7 @@ from . import items
 from . import bag
 from . import economy
 from .item_basic_data import BASIC_DATA
+import asyncio
 
 
 class Pouch(Item):
@@ -14,6 +15,11 @@ class Pouch(Item):
             "max_item_count": 16
         }
         self.item_id = "pouch"
+        asyncio.create_task(self.updinfo())
+
+    async def updinfo(self):
+        await asyncio.sleep(5)
+        self.update_info()
 
     def update_info(self):
         item_list = items.json2items(self.data["items"])
@@ -29,34 +35,54 @@ class Pouch(Item):
         args = args.split(" ")
         # self.data["items"] = self.data["items"].copy()
         if args[0] in ["put", "--put"]:
-            item = bag.get_user_bag(self.user_id)[int(args[1]) + 1]
-            count = item.count
-            item_id = item.item_id
-            if len(args) < 3:
-                args.append(count)
-            if count < int(args[2]):
-                raise economy.IllegalQuantityException(args[2])
+            return self.put_item(args)
+        elif args[0] in ["get", "--get"]:
+            return self.get_item(args)
 
-            # 处理nbt
-            nbt = item.data.copy()
-            for key in list(BASIC_DATA.keys()):
-                try:
-                    if nbt[key] == BASIC_DATA[key]:
-                        nbt.pop(key)
-                except BaseException:
-                    pass
-            for key in list(item.basic_data.keys()):
-                try:
-                    if nbt[key] == item.basic_data[key]:
-                        nbt.pop(key)
-                except BaseException:
-                    pass
+    def get_item(self, args):
+        item = self.data["items"][int(args[1])]
+        if len(args) < 3:
+            count = item["count"]
+        else:
+            count = int(args[2])
+            if count > item["count"] or count < 0:
+                raise economy.IllegalQuantityException(count)
 
-            item.count -= int(args[2])
-            self.data["items"].append({
-                "id": item_id,
-                "count": int(args[2]),
-                "data": nbt
-            })
-            self.update_info()
-            return ["已添加"]
+        bag.add_item(self.user_id, item["id"], item["count"], item["data"])
+        if count == item["count"]:
+            self.data["items"].pop(int(args[1]))
+        else:
+            self.data["items"][int(args[1])]["count"] -= count
+
+    def put_item(self, args):
+        item = bag.get_user_bag(self.user_id)[int(args[1]) + 1]
+        count = item.count
+        item_id = item.item_id
+        if len(args) < 3:
+            args.append(count)
+        if count < int(args[2]) or count < 0:
+            raise economy.IllegalQuantityException(args[2])
+
+        # 处理nbt
+        nbt = item.data.copy()
+        for key in list(BASIC_DATA.keys()):
+            try:
+                if nbt[key] == BASIC_DATA[key]:
+                    nbt.pop(key)
+            except BaseException:
+                pass
+        for key in list(item.basic_data.keys()):
+            try:
+                if nbt[key] == item.basic_data[key]:
+                    nbt.pop(key)
+            except BaseException:
+                pass
+
+        item.count -= int(args[2])
+        self.data["items"].append({
+            "id": item_id,
+            "count": int(args[2]),
+            "data": nbt
+        })
+        self.update_info()
+        return ["已添加"]
