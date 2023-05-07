@@ -3,22 +3,19 @@ from . import items
 from . import bag
 from . import economy
 from .item_basic_data import BASIC_DATA
-import asyncio
 
 
 class Pouch(Item):
     def on_register(self):
         self.basic_data = {
             "display_name": "收纳袋",
-            "display_message": "收纳袋\x00",
+            "display_message": "\x00",
             "items": [],
             "max_item_count": 16
         }
         self.item_id = "pouch"
-        asyncio.create_task(self.updinfo())
 
-    async def updinfo(self):
-        await asyncio.sleep(5)
+    def _after_register(self):
         self.update_info()
 
     def update_info(self):

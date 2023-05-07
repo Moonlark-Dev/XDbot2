@@ -16,7 +16,12 @@ class Item:
         self.data.update(data)
         self.user_id = user_id
 
+        self._after_register()
+
     def on_register(self):
+        pass
+    
+    def _after_register(self):
         pass
 
     def use_item(self):
