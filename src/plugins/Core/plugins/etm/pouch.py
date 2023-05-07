@@ -9,8 +9,9 @@ class Pouch(Item):
     def on_register(self):
         self.basic_data = {
             "display_name": "收纳袋",
-            "display_message": "\x00",
+            "display_message": "收纳物品\n \x00",
             "items": [],
+            "price": 10, 
             "max_item_count": 16
         }
         self.item_id = "pouch"
@@ -21,12 +22,14 @@ class Pouch(Item):
     def update_info(self):
         item_list = items.json2items(self.data["items"])
         display_info = self.data["display_message"].split(
-            "\x00")[0] + "\x00\n物品列表（\x01used/\x01max）："
+            "\x00")[0] + f"\x00\n物品列表（\x01used/{self.data['max_item_count']}）："
         length = 1
+        used = 0
         for i in item_list:
             display_info += f"\n{length}. {i.data['display_name']} x{i.count}"
+            used += i.count
             length += 1
-        self.data["display_message"] = display_info
+        self.data["display_message"] = display_info.replace("\x01used", str(used))
 
     def use(self, args):
         args = args.split(" ")
