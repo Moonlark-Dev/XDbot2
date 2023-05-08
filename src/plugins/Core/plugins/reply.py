@@ -153,9 +153,8 @@ async def repetitionHandle(event: GroupMessageEvent):
                                 * (len(repetitionCache[event.group_id]["message"]) / 2)
                             )
                             await repetition.send(
-                                repetitionCache[event.group_id]["message"]
+                                repetitionCache.pop(event.group_id)["message"]
                             )
-                            repetitionCache.pop(event.group_id)
                             latestSend = time.time()
                 else:
                     try:
