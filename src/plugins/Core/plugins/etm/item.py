@@ -14,6 +14,7 @@ class Item:
         self.data = BASIC_DATA.copy()
         self.data.update(self.basic_data.copy())
         self.data.update(data)
+        self.data = self.data.copy()
         self.user_id = user_id
 
         self._after_register()
