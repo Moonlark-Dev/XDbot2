@@ -97,6 +97,6 @@ class Pouch(Item):
             "count": int(args[2]),
             "data": nbt
         })
-        _item = items.json2items([self.data["items"][-1]])[0]
         self.update_info()
-        return [text("pouch.put", [_item.data['display_name'], count], self.user_id)]
+        _item = items.json2items([self.data["items"][-1]])[0]
+        return [text("pouch.put", [_item.data['display_name'], int(args[2])], self.user_id)]
