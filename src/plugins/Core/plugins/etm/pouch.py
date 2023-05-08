@@ -74,7 +74,7 @@ class Pouch(Item):
         if count < int(args[2]) or count < 0:
             raise economy.IllegalQuantityException(args[2])
         if count > self.get_free_count():
-            return text("pouch.not_enough_space", [], self.user_id)
+            return [text("pouch.not_enough_space", [], self.user_id)]
 
         # 处理nbt
         nbt = item.data.copy()
