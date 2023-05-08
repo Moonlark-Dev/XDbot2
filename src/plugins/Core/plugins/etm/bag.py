@@ -38,15 +38,13 @@ def save_bags():
                 nbt = item.data.copy()
                 for key in list(BASIC_DATA.keys()):
                     try:
-
-                        print(key, nbt[key], BASIC_DATA[key])
                         if nbt[key] == BASIC_DATA[key]:
                             nbt.pop(key)
                     except BaseException:
                         pass
                 for key in list(item.basic_data.keys()):
                     try:
-
+                        print(key, nbt[key], item.basic_data[key])
                         if nbt[key] == item.basic_data[key]:
                             nbt.pop(key)
 
