@@ -3,6 +3,7 @@ from . import items
 from . import bag
 from . import economy
 from .item_basic_data import BASIC_DATA
+from .._lang import text
 
 
 class Pouch(Item):
@@ -41,6 +42,7 @@ class Pouch(Item):
 
     def get_item(self, args):
         item = self.data["items"][int(args[1]) - 1]
+        _item = items.json2items(self.data["itmes"])[int(args[1]) - 1]
         if len(args) < 3:
             count = item["count"]
         else:
@@ -55,7 +57,13 @@ class Pouch(Item):
             self.data["items"][int(args[1]) - 1]["count"] -= count
         
         self.update_info()
-        return ["已取出"]
+        return [text("pouch.got", [_item.data['display_name'], count], self.user_id)]
+
+    def get_free_count(self):
+        used = 0
+        for i in self.data["items"]:
+            used += i["count"]
+        return self.data["max_item_count"] - used
 
     def put_item(self, args):
         item = bag.get_user_bag(self.user_id)[int(args[1]) - 1]
@@ -65,6 +73,8 @@ class Pouch(Item):
             args.append(count)
         if count < int(args[2]) or count < 0:
             raise economy.IllegalQuantityException(args[2])
+        if count > self.get_free_count():
+            return text("pouch.not_enough_space", [], self.user_id)
 
         # 处理nbt
         nbt = item.data.copy()
@@ -87,5 +97,6 @@ class Pouch(Item):
             "count": int(args[2]),
             "data": nbt
         })
+        _item = items.json2items([self.data["items"][-1]])[0]
         self.update_info()
-        return ["已置入"]
+        return [text("pouch.put", [_item.data['display_name'], count], self.user_id)]
