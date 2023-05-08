@@ -12,12 +12,16 @@ class Item:
         self.on_register()
         # 设置 NBT
         self.data = BASIC_DATA.copy()
-        self.data.update(self.basic_data.copy())
+        self.data.update(self.basic_data)
         self.data.update(data)
-        self.data = self.data.copy()
         self.user_id = user_id
-
         self._after_register()
+
+        for key in list(self.data.keys()):
+            try:
+                self.data[key] = self.data[key].copy()
+            except:
+                pass
 
     def on_register(self):
         pass
