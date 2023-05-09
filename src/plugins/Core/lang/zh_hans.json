@@ -170,5 +170,7 @@
   "cave.not_allow_null_cave": "请不要向回声洞投稿空内容！>_<\n正确用法：cave-a <内容...>",
   "pouch.got": "已取出：{} x{}",
   "pouch.not_enough_space": "收纳袋空间不足！",
-  "pouch.put": "已置入：{} x{}"
+  "pouch.put": "已置入：{} x{}",
+  "currency.no_money": "余额不足！（需要 {} vim）",
+  "currency.ok": "完成！"
 }

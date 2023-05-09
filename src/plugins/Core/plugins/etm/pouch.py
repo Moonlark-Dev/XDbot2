@@ -39,6 +39,18 @@ class Pouch(Item):
             return self.put_item(args)
         elif args[0] in ["get", "--get"]:
             return self.get_item(args)
+        elif args[0] in ["upgrade", "--upgrade"]:
+            if len(args) >= 2:
+                count = int(args[1])
+            else:
+                count = 4
+            if economy.use_vimcoin(self.user_id, count * 1.25):
+                self.data["max_item_count"] += count
+            else:
+                return [text("currency.no_money", [1.25*count], self.user_id)]
+            # TODO 测试 upgrade
+        # TODO help
+
 
     def get_item(self, args):
         item = self.data["items"][int(args[1]) - 1]
