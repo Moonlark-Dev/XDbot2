@@ -49,7 +49,7 @@ async def preview_website(event: MessageEvent, message: Message = CommandArg()):
         # 截取网页
         file_name = f"preview.image_{int(time.time())}"
         async with async_playwright() as p:
-            browser = await p.chromium.launch()
+            browser = await p.webkit.launch()
             page = await browser.new_page()
             await page.goto(url)
             await asyncio.sleep(1)      # 等待页面加载完成，参考 Issue#61
