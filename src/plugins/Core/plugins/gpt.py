@@ -47,7 +47,7 @@ async def _(matcher: Matcher, event: MessageEvent):
             session = await openai.ChatCompletion.acreate(
                 model="gpt-3.5-turbo",
                 messages=messages)
-        except:
+        except BaseException:
             await matcher.finish(choice(dictionary["to_me"]))
         reply = session["choices"][0]["message"]
         messages[str(event.group_id)].append(reply)

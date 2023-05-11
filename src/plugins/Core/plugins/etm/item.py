@@ -15,8 +15,18 @@ class Item:
         self.data.update(self.basic_data)
         self.data.update(data)
         self.user_id = user_id
+        self._after_register()
+
+        for key in list(self.data.keys()):
+            try:
+                self.data[key] = self.data[key].copy()
+            except:
+                pass
 
     def on_register(self):
+        pass
+
+    def _after_register(self):
         pass
 
     def use_item(self):

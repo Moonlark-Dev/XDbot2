@@ -165,5 +165,13 @@
   ],
   "chatgpt.cache": "主人与 XDbot 的聊天记录如下：{}",
   "statistics.info": "XDbot2 统计信息：\n用户数量：{}\n加入群聊：{}（{} 成员）\n原创代码：{}行（{}字符）\n产生错误：{}\nXDbot 已经走过了 {}days",
-  "qm_avg.info": "[QUICK MATH]\n平均作答用时：{}s"
+  "qm_avg.info": "[QUICK MATH]\n平均作答用时：{}s",
+  "bag.item_info": "「{} ({})」\n拥有：{}\n \n{}",
+  "cave.not_allow_null_cave": "请不要向回声洞投稿空内容！>_<\n正确用法：cave-a <内容...>",
+  "pouch.got": "已取出：{} x{}",
+  "pouch.not_enough_space": "收纳袋空间不足！",
+  "pouch.put": "已置入：{} x{}",
+  "currency.no_money": "余额不足！（需要 {} vim）",
+  "currency.ok": "完成！",
+  "pouch.help": "用法：\n --put <ID> [数量]：置入物品\n --get <ID> [数量]：取出物品\n --upgrade [数量]：拓展收纳袋（要钱）"
 }

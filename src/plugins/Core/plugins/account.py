@@ -18,7 +18,7 @@ priority_accout = json.load(
         encoding="utf-8"))
 accouts = {}
 multiAccoutData = {}
-accout_manager = on_command("accout", aliases={"多帐号", "account"})
+account_manager = on_command("accout", aliases={"多帐号", "account"})
 driver = get_driver()
 
 
@@ -39,12 +39,12 @@ async def multiAccoutManager(bot: Bot, event: GroupMessageEvent):
 
 
 @su.handle()
-async def get_multiaccout_data(bot: Bot, message: Message = CommandArg()):
+async def get_multiaccount_data(bot: Bot, message: Message = CommandArg()):
     try:
         argument = str(message).split(" ")
-        if argument[0] in ["ma", "multiaccout", "多账户"]:
+        if argument[0] in ["ma", "multiaccout", "account", "多账户"]:
             if argument[1] in ["status", "状态"]:
-                reply = "「XDbot2 Multi-Accout 账户列表」\n"
+                reply = "「XDbot2 Multi-Account 账户列表」\n"
                 bots = get_bots()
                 reply += f"已连接账户：{len(bots.keys())}\n"
                 length = 1
@@ -57,7 +57,7 @@ async def get_multiaccout_data(bot: Bot, message: Message = CommandArg()):
                 await su.send(reply)
                 # 分配情况
                 length = 1
-                reply = "「XDbot2 Multi-Accout 群聊分配」\n"
+                reply = "「XDbot2 Multi-Account 群聊分配」\n"
                 for group in list(multiAccoutData.keys()):
                     reply += f"{length}. {group}: {multiAccoutData[group]}\n"
                     length += 1
@@ -93,7 +93,7 @@ async def reloadMuiltData():
             encoding="utf-8"))
 
 
-@accout_manager.handle()
+@account_manager.handle()
 async def mulitaccout_manager(
         event: GroupMessageEvent,
         message: Message = CommandArg()):
@@ -107,13 +107,14 @@ async def mulitaccout_manager(
                 json.dump(
                     multiAccoutData, open(
                         "data/su.multiaccoutdata.ro.json", "w", encoding="utf-8"))
-                await accout_manager.finish(_lang.text("su.set_accout_success", [argument[1]], qq))
+                await account_manager.finish(_lang.text("su.set_accout_success", [argument[1]], qq))
             else:
-                await accout_manager.finish(_lang.text("su.accout_not_found"), user=qq)
+                await account_manager.finish(_lang.text("su.accout_not_found"), user=qq)
         elif argument[0] == "list":
-            await accout_manager.finish(_lang.text("su.accout_list", [accouts[event.group_id]], qq))
+            await account_manager.finish(_lang.text("su.accout_list", [accouts[event.group_id]], qq))
         elif argument[0] == "reload":
             await reloadMuiltData()
+            await account_manager.finish("已重载多账号分配")
 
     except BaseException:
-        await _error.report(traceback.format_exc(), accout_manager)
+        await _error.report(traceback.format_exc(), account_manager)

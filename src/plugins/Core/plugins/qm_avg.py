@@ -13,7 +13,7 @@ async def qmavg(matcher: Matcher, event: MessageEvent):
         data = json.load(
             open("data/quick_math.average.json", encoding="utf-8"))
         await matcher.send(_lang.text("qm_avg.info", [data["average"]], event.get_user_id()))
-    except:
+    except BaseException:
         await _error.report(traceback.format_exc(), matcher)
 
 # [HELPSTART] Version: 2

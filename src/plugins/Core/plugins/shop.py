@@ -23,6 +23,11 @@ SHOP_ITEMS = {
         "id": "talisman",
         "count": 1,
         "data": {}
+    },
+    "4": {
+        "id": "pouch",
+        "count": 1,
+        "data": {}
     }
 }
 

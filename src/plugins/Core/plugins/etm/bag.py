@@ -1,5 +1,4 @@
 from . import items
-import json
 from .item_basic_data import BASIC_DATA
 from nonebot_plugin_apscheduler import scheduler
 from nonebot import require
@@ -13,7 +12,6 @@ bags = {}
 
 
 def get_bags():
-    data.bags
     for user, bag in list(data.bags.items()):
         bags[user] = items.json2items(bag, user)
 
@@ -46,8 +44,10 @@ def save_bags():
                         pass
                 for key in list(item.basic_data.keys()):
                     try:
+                        # print(key, nbt[key], item.basic_data[key])
                         if nbt[key] == item.basic_data[key]:
                             nbt.pop(key)
+
                     except BaseException:
                         pass
                 bag_data[user_id].append({
