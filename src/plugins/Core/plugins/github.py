@@ -82,8 +82,6 @@ async def github(matcher: Matcher, message: Message = CommandArg()):
         await error.report(traceback.format_exc(), matcher)
 
 
-
-
 @on_regex(r"(github\.com/[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+/issues/[0-9]+)").handle()
 async def get_issue(matcher: Matcher, event: MessageEvent):
     try:
