@@ -13,7 +13,7 @@ import asyncio
 import os.path
 
 preview = on_command("preview", aliases={"预览网页"})
-latest_time = time.time() - 15
+latest_time = time.time() - 10
 builtin_urls = {
     "six": "http://127.0.0.1:38192/six",
     "ban": "http://127.0.0.1:38192/ban/%group_id%",
@@ -33,8 +33,8 @@ builtin_urls = {
 async def preview_website(event: MessageEvent, message: Message = CommandArg()):
     global latest_time
     try:
-        if time.time() - latest_time < 15:
-            await preview.finish(f"冷却中（{15 - time.time() + latest_time}s）")
+        if time.time() - latest_time < 10:
+            await preview.finish(f"冷却中（{10 - time.time() + latest_time}s）")
         latest_time = time.time()
         # 解析参数
         url = str(message)
@@ -49,7 +49,7 @@ async def preview_website(event: MessageEvent, message: Message = CommandArg()):
         # 截取网页
         file_name = f"preview.image_{int(time.time())}"
         async with async_playwright() as p:
-            browser = await p.webkit.launch()
+            browser = await p.firefox.launch()
             page = await browser.new_page()
             await page.goto(url)
             await asyncio.sleep(1)      # 等待页面加载完成，参考 Issue#61
