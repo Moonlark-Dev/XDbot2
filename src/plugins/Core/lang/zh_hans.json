@@ -172,5 +172,6 @@
   "pouch.not_enough_space": "收纳袋空间不足！",
   "pouch.put": "已置入：{} x{}",
   "currency.no_money": "余额不足！（需要 {} vim）",
-  "currency.ok": "完成！"
+  "currency.ok": "完成！",
+  "pouch.help": "用法：\n --put <ID> [数量]：置入物品\n --get <ID> [数量]：取出物品\n --upgrade [数量]：拓展收纳袋（要钱）"
 }

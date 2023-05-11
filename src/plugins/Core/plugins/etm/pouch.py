@@ -46,10 +46,11 @@ class Pouch(Item):
                 count = 4
             if economy.use_vimcoin(self.user_id, count * 1.25):
                 self.data["max_item_count"] += count
+                return [text("currency.ok")]
             else:
                 return [text("currency.no_money", [1.25*count], self.user_id)]
-            # TODO 测试 upgrade
-        # TODO help
+        else:
+            return [text("pouch.help", [], self.user_id)]
 
 
     def get_item(self, args):
