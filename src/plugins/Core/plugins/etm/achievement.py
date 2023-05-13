@@ -11,6 +11,7 @@ ACHIEVEMENTS = json.load(open(
         os.path.dirname(os.path.abspath(__file__)), "achievement.json"),
     encoding="utf-8"))
 
+
 def get_user_achievement(user_id):
     try:
         return data.achi_user_data[user_id]

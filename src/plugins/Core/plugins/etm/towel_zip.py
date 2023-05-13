@@ -2,6 +2,7 @@ from .item import Item
 from . import achievement, bag
 from .. import _lang
 
+
 class TowelZip(Item):
     def on_register(self):
         self.item_id = "towel.zip"
@@ -16,6 +17,7 @@ class TowelZip(Item):
         bag.add_item(self.user_id, "towel", 16, {})
         return _lang.text("towel_zip.used", [], self.user_id)
 
+
 class Towel(Item):
     def on_register(self):
         self.item_id = "towel"
@@ -25,4 +27,3 @@ class Towel(Item):
             "price": 0.62,
             "useable": False
         }
-
