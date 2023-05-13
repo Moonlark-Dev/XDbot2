@@ -117,7 +117,6 @@ async def get_pull(matcher: Matcher, event: MessageEvent):
         await matcher.finish(f"""{pull_data['html_url']}
 标题：{pull_data['title']} ({pull_data['state']})
 创建者：{pull_data['user']['login']}
-创建时间：{pull_data['created_at']}
 最后更新：{pull_data['updated_at']}
 
 {pull_data['body']}""")
