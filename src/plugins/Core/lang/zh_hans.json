@@ -173,5 +173,9 @@
   "pouch.put": "已置入：{} x{}",
   "currency.no_money": "余额不足！（需要 {} vim）",
   "currency.ok": "完成！",
-  "pouch.help": "用法：\n --put <ID> [数量]：置入物品\n --get <ID> [数量]：取出物品\n --upgrade [数量]：拓展收纳袋（要钱）"
+  "currency.unknown_argv": "未知参数：{}",
+  "pouch.help": "用法：\n --put <ID> [数量]：置入物品\n --get <ID> [数量]：取出物品\n --upgrade [数量]：拓展收纳袋（要钱）",
+  "github.open_url": "请在浏览器打开 https://github.com/login/oauth/authorize?client_id={}&scope=repo",
+  "github.login_successful": "已成功登陆到 {}",
+  "towel_zip.used": "你获得了：毛巾 x16"
 }

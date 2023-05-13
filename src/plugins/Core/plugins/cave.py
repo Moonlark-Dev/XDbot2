@@ -7,7 +7,7 @@ import traceback
 import marshal
 import re
 from . import _error
-from .etm import exp
+from .etm import exp, economy
 from . import _lang, _messenger
 import httpx
 from nonebot import on_command, get_app, on_message
@@ -45,7 +45,7 @@ async def cave_comment_writer(event: MessageEvent, bot: Bot):
             await cave_comment.finish()
         reply_message = event.reply.message.extract_plain_text()
         if re.match(
-                r"^.{0,10}——（[0-9]+）\n(.+)\n——(.*)$", reply_message):
+                r"^.{0,10}——（[0-9]+）\n(.+)\n——(.*)", reply_message):
             # 懒得写了就这样吧
             cave_id = re.search(
                 r"（[0-9]+）",
@@ -70,7 +70,7 @@ async def cave_comment_writer(event: MessageEvent, bot: Bot):
                     "w",
                     encoding="utf-8"))
             await _error.report(f"「新回声洞评论（{cave_id}#{data[cave_id]['count'] - 1}）」\n{event.get_message()}\n{event.get_session_id()}")
-            exp.add_exp(event.get_user_id(), 3)
+            exp.add_exp(event.get_user_id(), 2)
             cave_data = json.load(
                 open("data/cave.data.json", encoding="utf-8"))
             if isinstance(cave_data["data"][cave_id]["sender"], int):
@@ -231,7 +231,6 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
             )
 
         elif argument[0] in ["add", "-a", "添加"]:
-            exp.add_exp(event.get_user_id(), 6)
             text = await downloadImages(str(message)[argument[0].__len__():].strip())
             if text == "":
                 await cave.finish(_lang.text("cave.not_allow_null_cave", [], event.get_user_id()))
@@ -242,17 +241,14 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
                 "time": time.time()
             }
             data["count"] += 1
+            exp.add_exp(event.get_user_id(), 5)
+            economy.add_vi(event.get_user_id(), 2)
             # 发送通知
-            await bot.send_group_msg(
-                message=Message(
-                    (
-                        f"{_lang.text('cave.new',[data['count']-1])}"
-                        f"{event.get_session_id()}\n \n"
-                        f"{str(message)[argument[0].__len__():].strip()}"
-                    )
-                ),
-                group_id=ctrlGroup,
-            )
+            await _error.report((
+                f"{_lang.text('cave.new',[data['count']-1])}"
+                f"{event.get_session_id()}\n \n"
+                f"{str(message)[argument[0].__len__():].strip()}"
+            ))
             # 写入数据
             json.dump(data, open("data/cave.data.json", "w", encoding="utf-8"))
             await cave.finish(

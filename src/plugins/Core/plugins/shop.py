@@ -28,6 +28,11 @@ SHOP_ITEMS = {
         "id": "pouch",
         "count": 1,
         "data": {}
+    },
+    "5": {
+        "id": "towel.zip",
+        "count": 1,
+        "data": {}
     }
 }
 
