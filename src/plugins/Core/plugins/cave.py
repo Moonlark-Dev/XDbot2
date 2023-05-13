@@ -45,7 +45,7 @@ async def cave_comment_writer(event: MessageEvent, bot: Bot):
             await cave_comment.finish()
         reply_message = event.reply.message.extract_plain_text()
         if re.match(
-                r"^.{0,10}——（[0-9]+）\n(.+)\n——(.*)$", reply_message):
+                r"^.{0,10}——（[0-9]+）\n(.+)\n——(.*)", reply_message):
             # 懒得写了就这样吧
             cave_id = re.search(
                 r"（[0-9]+）",
