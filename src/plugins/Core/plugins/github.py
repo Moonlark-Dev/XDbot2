@@ -11,6 +11,7 @@ from . import _error as error
 import json
 import urllib.parse
 import re
+from . import _lang
 # import os
 # import os.path
 
@@ -51,12 +52,12 @@ def get_proxy():
 
 
 @on_command("github", aliases={"gh"}).handle()
-async def github(matcher: Matcher, message: Message = CommandArg()):
+async def github(matcher: Matcher, event: MessageEvent, message: Message = CommandArg()):
     try:
         argument = str(message).split(" ")
         if argument[0] == "login":
             if len(argument) == 1:
-                await matcher.send(f'请在浏览器打开 https://github.com/login/oauth/authorize?client_id={config["client_id"]}&scope=repo')
+                await matcher.send(_lang.text("github.open_url", [config["client_id"]], event.get_user_id()))
             else:
                 code = argument[1]
                 async with httpx.AsyncClient(proxies=get_proxy()) as client:
@@ -67,16 +68,19 @@ async def github(matcher: Matcher, message: Message = CommandArg()):
                 config["access_token"] = urllib.parse.parse_qs(content)[
                     "access_token"][0]
                 save_config()
-                await matcher.finish(f"已成功登录到 {(await call_github_api('https://api.github.com/user'))['login']}")
+                await matcher.finish(_lang.text("github.login_successful", [(await call_github_api('https://api.github.com/user'))['login']], event.get_user_id()))
         elif argument[0] == "set":
-            if argument[1] == "id":
+            if argument[1] == "client_id":
                 config["client_id"] = argument[2]
-                await matcher.send("ClientID 已设置")
+                await matcher.send(_lang.text("currency.ok", [], event.get_user_id()))
             elif argument[1] == "secret":
                 config["secret"] = argument[2]
-                await matcher.send("Secret 已设置")
+                await matcher.send(_lang.text("currency.ok", [], event.get_user_id()))
             elif argument[1] == "proxies":
                 config["proxies"] = argument[2]
+                await matcher.send(_lang.text("currency.ok", [], event.get_user_id()))
+            else:
+                await matcher.finish(_lang.text("currency.unknown_argv", [argument[1]], event.get_user_id()))
             save_config()
     except BaseException:
         await error.report(traceback.format_exc(), matcher)
