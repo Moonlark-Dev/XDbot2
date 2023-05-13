@@ -58,7 +58,7 @@ async def sign_handler(event: MessageEvent):
             )), at_sender=True)
             json.dump(data, open("data/etm/sign.json", "w", encoding="utf-8"))
             if add_vi == Decimal(0):
-                achievement.unlck("+0！", event.get_user_id())
+                achievement.unlock("+0！", event.get_user_id())
         else:
             await sign.finish("主人今天已经签到过了喵！")
     except BaseException:

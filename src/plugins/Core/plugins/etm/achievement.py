@@ -22,7 +22,7 @@ def change_user_achievement(user_id, _data):
     data.achi_user_data[user_id] = _data
 
 
-def unlck(name, user_id):
+def unlock(name, user_id):
     user_achievement = get_user_achievement(user_id)
     if name in ACHIEVEMENTS.keys() and name not in user_achievement:
         user_achievement.append(name)
@@ -53,4 +53,4 @@ def increase_unlock_progress(name, user_id, count=1):
         except KeyError:
             data.achi_unlock_progress[user_id] = {name: count}
     if data.achi_unlock_progress[user_id][name] >= ACHIEVEMENTS[name]["need_progress"]:
-        unlck(name, user_id)
+        unlock(name, user_id)
