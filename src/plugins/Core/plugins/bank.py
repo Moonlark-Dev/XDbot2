@@ -10,4 +10,10 @@ bank_command = on_command("bank")
 # Msg: 银行
 # Info: 银行
 # Usage: bank
+# Usage: bank lend [money]：贷款 money vi
+# Usage: bank view：查看需还贷金额
+# Usage: bank repay [money]：还贷
 # [HELPEND]
+
+@bank_command.handle()
+async def 
