@@ -16,13 +16,13 @@ async def group_handler(bot: Bot, event: GroupMessageEvent, message: Message = C
     try:
         argv = message.extract_plain_text()
         if argv == "":
-            data = json.load(open("data/help.json", encoding="utf-8"))
+            commands = json.load(open("data/help.json", encoding="utf-8"))
             messages = []
             self_id = event.self_id
-            for command, d in list(data.items()):
-                content = f"{_lang.text('help.info',[d['info']],event.get_user_id())}\n"
+            for command, data in list(commands.items()):
+                content = f"{_lang.text('help.info',[data['info']],event.get_user_id())}\n"
                 length = 0
-                for usage in d["usage"]:
+                for usage in data["usage"]:
                     length += 1
                     content += f"\n{_lang.text('help.usage',[length, usage],event.get_user_id())}"
                     
