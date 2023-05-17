@@ -25,7 +25,6 @@ async def group_handler(bot: Bot, event: GroupMessageEvent, message: Message = C
                 for usage in data["usage"]:
                     length += 1
                     content += f"\n{_lang.text('help.usage',[length, usage],event.get_user_id())}"
-                    
                 messages.append({
                     "type": "node",
                     "data": {
@@ -36,11 +35,12 @@ async def group_handler(bot: Bot, event: GroupMessageEvent, message: Message = C
                 })
             await bot.call_api(
                 api="send_group_forward_msg",
+                group_id=event.group_id,
                 messages=messages)
             await help.finish()
 
     except:
-        await _error.report(traceback.format_exc(), help)
+        await _error.report(traceback.format_exc())
 
 @help.handle()
 async def helpHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg()):
