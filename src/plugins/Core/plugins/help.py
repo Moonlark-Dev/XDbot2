@@ -11,6 +11,7 @@ ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 command_start = "/"
 help = on_command("help", aliases={"帮助"})
 
+
 @help.handle()
 async def group_handler(bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()):
     try:
@@ -65,6 +66,7 @@ async def group_handler(bot: Bot, event: GroupMessageEvent, message: Message = C
 
     except:
         await _error.report(traceback.format_exc())
+
 
 @help.handle()
 async def helpHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg()):
