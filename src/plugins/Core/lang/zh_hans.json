@@ -5,6 +5,7 @@
   "lang.lang_version": "版本：{}",
   "lang.lang_author": "维护者：{}",
   "lang.compatibility": "兼容性：{} / {} {}%",
+  "help.tips": "<...> 为必要参数\n[...] 为可选参数\n{...|...} 为选择参数\n指令前缀：{}",
   "lang.keylost": "缺失键：{}",
   "lang.empty": "请使用 {} 设置语言",
   "lang.success": "成功设置语言为 {} ",

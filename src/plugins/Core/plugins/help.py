@@ -19,12 +19,36 @@ async def group_handler(bot: Bot, event: GroupMessageEvent, message: Message = C
             commands = json.load(open("data/help.json", encoding="utf-8"))
             messages = []
             self_id = event.self_id
+
+            reply = f"{_lang.text('help.name',[],event.get_user_id())} —— XDbot2\n"
+            for key in list(commands.keys()):
+                reply += f"[√] {key}：{commands[key]['msg']}\n"
+            reply += _lang.text("help.command", [], event.get_user_id())
+            messages.append({
+                "type": "node",
+                "data": {
+                    "uin": self_id,
+                    "name": "XDbot2 Command Help",
+                    "content": reply
+                }
+            })
+            messages.append({
+                "type": "node",
+                "data": {
+                    "uin": self_id,
+                    "name": "Tips",
+                    "content": _lang.text("help.tips", [command_start], event.get_user_id())
+                }
+            })
+
             for command, data in list(commands.items()):
                 content = f"{_lang.text('help.info',[data['info']],event.get_user_id())}\n"
                 length = 0
+                _usage_content = ""
                 for usage in data["usage"]:
                     length += 1
-                    content += f"\n{_lang.text('help.usage',[length, usage],event.get_user_id())}"
+                    _usage_content += f"{length}. {usage}"
+                content += f"\n{_lang.text('help.usage',[length, _usage_content[:-1]],event.get_user_id())}"
                 messages.append({
                     "type": "node",
                     "data": {
