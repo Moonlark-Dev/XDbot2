@@ -3,7 +3,7 @@ from . import _lang
 import json
 import traceback
 from nonebot import on_command
-from nonebot.adapters.onebot.v11 import Bot, Message, MessageEvent
+from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, Message, MessageEvent
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
 
@@ -11,6 +11,32 @@ ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 command_start = "/"
 help = on_command("help", aliases={"帮助"})
 
+@help.handle()
+async def group_handler(bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()):
+    try:
+        argv = message.extract_plain_text()
+        if argv == "":
+            data = json.load(open("data/help.json", encoding="utf-8"))
+            node = []
+            self_id = event.self_id
+            for command, d in list(data.items()):
+                node.append({
+                    "type": "node",
+                    "data": {
+                        "uin": self_id,
+                        "name": f"[XDbot2 Help] {command}",
+                        "content": (
+                            f"{_lang.text('help.info',[d['info']],event.get_user_id())}\n"
+                            f"{_lang.text('help.usage',[length + 1, d['usage'][length]],event.get_user_id())}" for length in range(len(d["usage"])))
+                    }
+                })
+            await bot.call_api(
+                api="send_group_forward_msg",
+                messages=node)
+            await help.finish()
+
+    except:
+        await _error.report(traceback.format_exc(), help)
 
 @help.handle()
 async def helpHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg()):
