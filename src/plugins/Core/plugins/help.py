@@ -47,7 +47,7 @@ async def group_handler(bot: Bot, event: GroupMessageEvent, message: Message = C
                 _usage_content = ""
                 for usage in data["usage"]:
                     length += 1
-                    _usage_content += f"{length}. {usage}"
+                    _usage_content += f"{length}. {usage}\n"
                 content += f"\n{_lang.text('help.usage',[length, _usage_content[:-1]],event.get_user_id())}"
                 messages.append({
                     "type": "node",
