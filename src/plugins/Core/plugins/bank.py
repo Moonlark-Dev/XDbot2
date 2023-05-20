@@ -38,6 +38,7 @@ def lead_money(user_id: str, money: int):
     if get_leaded_money(user_id) + money <= get_max_lead(user_id):
         data.bank_lead_data[user_id].append(
             {"money": money, "time": time.time()})
+        economy.add_vi(user_id, money)
         return True
     return False
 
@@ -47,8 +48,6 @@ async def bank(event: MessageEvent, message: Message = CommandArg()):
     try:
         argv = message.extract_plain_text().split(" ")
         user_id = event.get_user_id()
-        if len(argv) == 0:
-            await bank_command.finish(_lang.text("bank.usage", [], user_id))
         if user_id not in data.bank_lead_data.keys():
             data.bank_lead_data[user_id] = []
 
@@ -59,7 +58,7 @@ async def bank(event: MessageEvent, message: Message = CommandArg()):
                 else:
                     await bank_command.finish(_lang.text("bank.full", [
                         get_max_lead(user_id) - get_leaded_money(user_id)], user_id))
-            case "view":
+            case "view" | "":
                 debt_list = ""
                 length = 0
                 amount_to_be_repaid = 0
@@ -73,9 +72,7 @@ async def bank(event: MessageEvent, message: Message = CommandArg()):
                 await bank_command.finish(_lang.text(
                     "bank.view", [
                         amount_to_be_repaid,
-                        amount_to_be_repaid - get_leaded_money(user_id),
                         debt_list], user_id))
-
             case "repay":
                 debt_info = data.bank_lead_data[user_id][int(argv[1])]
                 interest = round(
