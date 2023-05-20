@@ -56,7 +56,7 @@ def load_data():
                 pass
             try:
                 bank_lead_data[user] = json.load(
-                    open(f"data/etm/{user}/bank_leaded.json", encoding="utf-8"))
+                    open(f"data/etm/{user}/bank_lead_data.json", encoding="utf-8"))
             except BaseException:
                 pass
 
