@@ -15,7 +15,7 @@ vimcoin = {
     "exchange_rate": 1,
     "_exchange_rate": 1
 }
-bank_leaded = {}
+bank_lead_data = {}
 basic_data = {}
 require("nonebot_plugin_apscheduler")
 
@@ -55,7 +55,7 @@ def load_data():
             except BaseException:
                 pass
             try:
-                bank_leaded[user] = json.load(
+                bank_lead_data[user] = json.load(
                     open(f"data/etm/{user}/bank_leaded.json", encoding="utf-8"))
             except BaseException:
                 pass
@@ -83,7 +83,7 @@ def save_data():
     _save_data("bag", bags)
     _save_data("user", basic_data)
     _save_data("buff", buff)
-    _save_data("bank_leaded", bank_leaded)
+    _save_data("bank_lead_data", bank_lead_data)
 
 
 @get_driver().on_shutdown

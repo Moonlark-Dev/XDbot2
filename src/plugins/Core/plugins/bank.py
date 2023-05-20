@@ -4,6 +4,7 @@ from nonebot.params import CommandArg
 from . import _error
 from .etm import economy, data, user
 from . import _lang
+import time
 from nonebot import on_command
 import json
 import traceback
@@ -24,11 +25,15 @@ bank_command = on_command("bank")
 def get_max_lead(user_id: str):
     return CONFIG["max_lead"] - user.get_user_data(user_id)["vimcoin"]
 
+def get_leaded_money(user_id: str):
+    leaded = 0
+    for item in data.bank_lead_data[user_id]:
+        leaded += item["money"]
+    return leaded
+
 def lead_money(user_id: str, money: int):
-    leaded_money = data.bank_leaded.get(user_id) or 0
-    if leaded_money + money <= get_max_lead(user_id):
-        data.bank_leaded[user_id] = leaded_money + money
-        economy.add_vi(user_id, money)
+    if get_leaded_money(user_id) + money <= get_max_lead:
+        data.bank_lead_data[user_id].append({"money": money, "time": time.time()})
         return True
     return False
 
@@ -42,7 +47,9 @@ async def bank(event: MessageEvent, message: Message = CommandArg()):
         match argv[0]:
             case "lend":
                 if lead_money(user_id, int(argv[1])):
-                    pass
+                    await bank_command.finish(_lang.text("currency.ok", [], user_id))
+                else:
+                    await bank_command.finish(_lang.text("bank.full", [get_max_lead(user_id) - get_leaded_money(user_id)], user_id))
             case "view":
                 pass
             case "repay":
