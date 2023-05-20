@@ -35,7 +35,7 @@ def get_leaded_money(user_id: str):
 
 
 def lead_money(user_id: str, money: int):
-    if get_leaded_money(user_id) + money <= get_max_lead():
+    if get_leaded_money(user_id) + money <= get_max_lead(user_id):
         data.bank_lead_data[user_id].append(
             {"money": money, "time": time.time()})
         return True
