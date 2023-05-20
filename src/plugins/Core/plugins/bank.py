@@ -17,9 +17,9 @@ bank_command = on_command("bank")
 # Command: bank
 # Msg: 银行
 # Info: XDbot2 银行
-# Usage: bank lend [money]：贷款 money vi
+# Usage: bank lend <money>：贷款 money vi
 # Usage: bank view：查看需还贷金额
-# Usage: bank repay [money]：还贷
+# Usage: bank repay <ID>：还贷
 # [HELPEND]
 
 def get_max_lead(user_id: str):
@@ -46,17 +46,19 @@ async def bank(event: MessageEvent, message: Message = CommandArg()):
             await bank_command.finish(_lang.text("bank.usage", [], user_id))
         match argv[0]:
             case "lend":
-                if lead_money(user_id, int(argv[1])):
+                if lead_money(user_id, max(int(argv[1]), 0)):
                     await bank_command.finish(_lang.text("currency.ok", [], user_id))
                 else:
-                    await bank_command.finish(_lang.text("bank.full", [get_max_lead(user_id) - get_leaded_money(user_id)], user_id))
+                    await bank_command.finish(_lang.text("bank.full", [
+                        get_max_lead(user_id) - get_leaded_money(user_id)], user_id))
+                    
             case "view":
                 debt_list = ""
                 length = 0
                 amount_to_be_repaid = 0
                 for item in data.bank_lead_data[user_id]:
                     length += 1
-                    interest = interest_rate * (time.time() - item["time"])
+                    interest = round(interest_rate * ((time.time() - item["time"]) / 43200), 3)
                     debt_list += _lang.text(
                         "bank.item", [length, item["money"], interest], user_id)
                     amount_to_be_repaid += item["money"] + interest
@@ -67,7 +69,15 @@ async def bank(event: MessageEvent, message: Message = CommandArg()):
                         debt_list], user_id))
                     
             case "repay":
-                pass
+                debt_info = data.bank_lead_data[user_id][int(argv[1])]
+                interest = round(interest_rate * ((time.time() - debt_info["time"]) / 43200), 3)
+                if user.get_user_data(user_id)["vimcoin"] >= debt_info["money"] + interest:
+                    economy.use_vimcoin(user_id, debt_info["money"] + interest)
+                    data.bank_lead_data[user_id].pop(int(argv[1]))
+                    await bank_command.finish(_lang.text("currency.ok", [], user_id))
+                else:
+                    await bank_command.finish(_lang.text("currency.no_money", [debt_info["money"] + interest], user_id))
+
             case _:
                 await bank_command.finish(_lang.text("bank.usage", [], user_id))
     except:
