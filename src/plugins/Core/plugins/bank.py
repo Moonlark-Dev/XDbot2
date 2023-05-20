@@ -74,7 +74,7 @@ async def bank(event: MessageEvent, message: Message = CommandArg()):
                         amount_to_be_repaid,
                         debt_list], user_id))
             case "repay":
-                debt_info = data.bank_lead_data[user_id][int(argv[1])]
+                debt_info = data.bank_lead_data[user_id][int(argv[1]) + 1]
                 interest = round(
                     interest_rate * ((time.time() - debt_info["time"]) / 43200), 3)
                 if user.get_user_data(user_id)["vimcoin"] >= debt_info["money"] + interest:
