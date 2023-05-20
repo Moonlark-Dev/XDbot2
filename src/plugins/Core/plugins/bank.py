@@ -49,14 +49,16 @@ async def bank(event: MessageEvent, message: Message = CommandArg()):
         user_id = event.get_user_id()
         if len(argv) == 0:
             await bank_command.finish(_lang.text("bank.usage", [], user_id))
+        if user_id not in data.bank_lead_data.keys():
+            data.bank_lead_data[user_id] = []
+            
         match argv[0]:
-            case "lend":
+            case "lead":
                 if lead_money(user_id, max(int(argv[1]), 0)):
                     await bank_command.finish(_lang.text("currency.ok", [], user_id))
                 else:
                     await bank_command.finish(_lang.text("bank.full", [
                         get_max_lead(user_id) - get_leaded_money(user_id)], user_id))
-
             case "view":
                 debt_list = ""
                 length = 0
