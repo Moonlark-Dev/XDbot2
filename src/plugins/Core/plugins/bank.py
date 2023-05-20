@@ -35,7 +35,7 @@ def get_leaded_money(user_id: str):
 
 
 def lead_money(user_id: str, money: int):
-    if get_leaded_money(user_id) + money <= get_max_lead:
+    if get_leaded_money(user_id) + money <= get_max_lead():
         data.bank_lead_data[user_id].append(
             {"money": money, "time": time.time()})
         return True
@@ -51,7 +51,7 @@ async def bank(event: MessageEvent, message: Message = CommandArg()):
             await bank_command.finish(_lang.text("bank.usage", [], user_id))
         if user_id not in data.bank_lead_data.keys():
             data.bank_lead_data[user_id] = []
-            
+
         match argv[0]:
             case "lead":
                 if lead_money(user_id, max(int(argv[1]), 0)):
