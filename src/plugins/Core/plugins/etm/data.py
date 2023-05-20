@@ -2,6 +2,7 @@ import os
 import os.path
 import json
 from nonebot import require
+from nonebot import get_driver
 from nonebot_plugin_apscheduler import scheduler
 
 achi_user_data = {}
@@ -14,6 +15,7 @@ vimcoin = {
     "exchange_rate": 1,
     "_exchange_rate": 1
 }
+bank_lead_data = {}
 basic_data = {}
 require("nonebot_plugin_apscheduler")
 
@@ -52,6 +54,11 @@ def load_data():
                     open(f"data/etm/{user}/buff.json", encoding="utf-8"))
             except BaseException:
                 pass
+            try:
+                bank_lead_data[user] = json.load(
+                    open(f"data/etm/{user}/bank_lead_data.json", encoding="utf-8"))
+            except BaseException:
+                pass
 
 
 load_data()
@@ -76,8 +83,10 @@ def save_data():
     _save_data("bag", bags)
     _save_data("user", basic_data)
     _save_data("buff", buff)
+    _save_data("bank_lead_data", bank_lead_data)
 
 
+@get_driver().on_shutdown
 @scheduler.scheduled_job("cron", second="*/20", id="save_data")
 async def _():
     save_data()
