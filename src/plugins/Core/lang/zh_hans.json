@@ -5,6 +5,7 @@
   "lang.lang_version": "版本：{}",
   "lang.lang_author": "维护者：{}",
   "lang.compatibility": "兼容性：{} / {} {}%",
+  "help.tips": "小贴士：\n<...>：必要参数\n[...]：可选参数\n{...|...}：选择参数\n \n「：」后为指令说明\n指令前缀：{}",
   "lang.keylost": "缺失键：{}",
   "lang.empty": "请使用 {} 设置语言",
   "lang.success": "成功设置语言为 {} ",
@@ -177,5 +178,9 @@
   "bank.full": "失败：超过贷款限制（当前最多可贷：{}vim）",
   "bank.item": "\n{}. {}vim （利息：{}vim）",
   "bank.view": "「银行账户详细信息」\n当前负债：{}vim（利息：{}vim）\n===================={}",
-  "pouch.help": "用法：\n --put <ID> [数量]：置入物品\n --get <ID> [数量]：取出物品\n --upgrade [数量]：拓展收纳袋（要钱）"
+  "pouch.help": "用法：\n --put <ID> [数量]：置入物品\n --get <ID> [数量]：取出物品\n --upgrade [数量]：拓展收纳袋（要钱）",
+  "currency.unknown_argv": "未知参数：{}",
+  "github.open_url": "请在浏览器打开 https://github.com/login/oauth/authorize?client_id={}&scope=repo",
+  "github.login_successful": "已成功登陆到 {}",
+  "towel_zip.used": "你获得了：毛巾 x16"
 }

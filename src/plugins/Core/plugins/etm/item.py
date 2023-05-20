@@ -25,7 +25,7 @@ class Item:
 
     def on_register(self):
         pass
-    
+
     def _after_register(self):
         pass
 

@@ -200,7 +200,7 @@ async def imageSenderHandle(event: GroupMessageEvent):
                     latestSend = time.time()
                 except BaseException:
                     pass
-                if random.random() <= 0.30:  # 清理图库，机率：5% x 5%
+                if random.random() <= 0.10:  # 清理图库，机率：5% x 5%
                     imageData = json.load(
                         open("data/reply.images.json", encoding="utf-8")
                     )
@@ -208,7 +208,8 @@ async def imageSenderHandle(event: GroupMessageEvent):
                         b2cLen = random.randint(0, len(imageData["B"]) - 1)
                         removeLen = random.randint(0, len(imageData["C"]) - 1)
                         imageData["C"].append(imageData["B"].pop(b2cLen))
-                        imageData["C"].pop(removeLen)
+                        if random.random() <= 0.25:
+                            imageData["C"].pop(removeLen)
                     except BaseException:
                         pass
                     json.dump(

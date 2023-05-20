@@ -3,13 +3,69 @@ from . import _lang
 import json
 import traceback
 from nonebot import on_command
-from nonebot.adapters.onebot.v11 import Bot, Message, MessageEvent
+from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, Message, MessageEvent
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
 
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 command_start = "/"
 help = on_command("help", aliases={"帮助"})
+
+
+@help.handle()
+async def group_handler(bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()):
+    try:
+        argv = message.extract_plain_text()
+        if argv == "":
+            commands = json.load(open("data/help.json", encoding="utf-8"))
+            messages = []
+            self_id = event.self_id
+
+            reply = f"{_lang.text('help.name',[],event.get_user_id())} —— XDbot2\n"
+            for key in list(commands.keys()):
+                reply += f"[√] {key}：{commands[key]['msg']}\n"
+            reply += _lang.text("help.command", [], event.get_user_id())
+            messages.append({
+                "type": "node",
+                "data": {
+                    "uin": self_id,
+                    "name": "XDbot2 Command Help",
+                    "content": reply
+                }
+            })
+            messages.append({
+                "type": "node",
+                "data": {
+                    "uin": self_id,
+                    "name": "Tips",
+                    "content": _lang.text("help.tips", [command_start], event.get_user_id())
+                }
+            })
+
+            for command, data in list(commands.items()):
+                content = f"{_lang.text('help.info',[data['info']],event.get_user_id())}\n"
+                length = 0
+                _usage_content = ""
+                for usage in data["usage"]:
+                    length += 1
+                    _usage_content += f"{length}. {usage}\n"
+                content += f"\n{_lang.text('help.usage',[length, _usage_content[:-1]],event.get_user_id())}"
+                messages.append({
+                    "type": "node",
+                    "data": {
+                        "uin": self_id,
+                        "name": f"[XDbot2 Help] {command}",
+                        "content": content
+                    }
+                })
+            await bot.call_api(
+                api="send_group_forward_msg",
+                group_id=event.group_id,
+                messages=messages)
+            await help.finish()
+
+    except:
+        await _error.report(traceback.format_exc())
 
 
 @help.handle()

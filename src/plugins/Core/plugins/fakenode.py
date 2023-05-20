@@ -33,7 +33,7 @@ async def fakenodeHandle(
                         "name": userData["nickname"],
                         "uin": data[0].strip(),
                         "content": data[1].strip(),
-                    },
+                    }
                 }
             ]
         await bot.call_api(

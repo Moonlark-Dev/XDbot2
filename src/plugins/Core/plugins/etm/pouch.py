@@ -12,7 +12,7 @@ class Pouch(Item):
             "display_name": "收纳袋",
             "display_message": "收纳物品\n \x00",
             "items": [],
-            "price": 10, 
+            "price": 10,
             "max_item_count": 16
         }
         self.item_id = "pouch"
@@ -30,7 +30,8 @@ class Pouch(Item):
             display_info += f"\n{length}. {i.data['display_name']} x{i.count}"
             used += i.count
             length += 1
-        self.data["display_message"] = display_info.replace("\x01used", str(used))
+        self.data["display_message"] = display_info.replace(
+            "\x01used", str(used))
 
     def use(self, args):
         args = args.split(" ")
@@ -52,7 +53,6 @@ class Pouch(Item):
         else:
             return [text("pouch.help", [], self.user_id)]
 
-
     def get_item(self, args):
         item = self.data["items"][int(args[1]) - 1]
         _item = items.json2items(self.data["itmes"])[int(args[1]) - 1]
@@ -68,7 +68,7 @@ class Pouch(Item):
             self.data["items"].pop(int(args[1]) - 1)
         else:
             self.data["items"][int(args[1]) - 1]["count"] -= count
-        
+
         self.update_info()
         return [text("pouch.got", [_item.data['display_name'], count], self.user_id)]
 
