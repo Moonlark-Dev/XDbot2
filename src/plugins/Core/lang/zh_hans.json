@@ -177,7 +177,7 @@
   "currency.ok": "完成！",
   "bank.full": "失败：超过贷款限制（当前最多可贷：{}vim）",
   "bank.item": "\n{}. {}vim （利息：{}vim）",
-  "bank.view": "「银行账户详细信息」\n当前负债：{}vim（利息：{}vim）\n===================={}",
+  "bank.view": "「银行账户详细信息」\n当前债务：{}vim\n===================={}",
   "pouch.help": "用法：\n --put <ID> [数量]：置入物品\n --get <ID> [数量]：取出物品\n --upgrade [数量]：拓展收纳袋（要钱）",
   "currency.unknown_argv": "未知参数：{}",
   "github.open_url": "请在浏览器打开 https://github.com/login/oauth/authorize?client_id={}&scope=repo",
