@@ -51,7 +51,21 @@ async def bank(event: MessageEvent, message: Message = CommandArg()):
                 else:
                     await bank_command.finish(_lang.text("bank.full", [get_max_lead(user_id) - get_leaded_money(user_id)], user_id))
             case "view":
-                pass
+                debt_list = ""
+                length = 0
+                amount_to_be_repaid = 0
+                for item in data.bank_lead_data[user_id]:
+                    length += 1
+                    interest = interest_rate * (time.time() - item["time"])
+                    debt_list += _lang.text(
+                        "bank.item", [length, item["money"], interest], user_id)
+                    amount_to_be_repaid += item["money"] + interest
+                await bank_command.finish(_lang.text(
+                    "bank.view", [
+                        amount_to_be_repaid,
+                        amount_to_be_repaid - get_leaded_money(user_id),
+                        debt_list], user_id))
+                    
             case "repay":
                 pass
             case _:
