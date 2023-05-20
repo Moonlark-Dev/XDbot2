@@ -20,6 +20,13 @@ class Config(BaseSettings):
     # 数据文件命名规则：子插件.数据名.json
     FILES = [
         {
+            "path": "data/bank.config.json",
+            "text": json.dumps({
+                "interest_rate": 0.015,
+                "max_lead": 100
+            })
+        },
+        {
             "path": "data/market.average.json",
             "text": "{}"
         },
