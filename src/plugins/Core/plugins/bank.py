@@ -22,8 +22,10 @@ bank_command = on_command("bank")
 # Usage: bank repay <ID>：还贷
 # [HELPEND]
 
+
 def get_max_lead(user_id: str):
     return CONFIG["max_lead"] - user.get_user_data(user_id)["vimcoin"]
+
 
 def get_leaded_money(user_id: str):
     leaded = 0
@@ -31,11 +33,14 @@ def get_leaded_money(user_id: str):
         leaded += item["money"]
     return leaded
 
+
 def lead_money(user_id: str, money: int):
     if get_leaded_money(user_id) + money <= get_max_lead:
-        data.bank_lead_data[user_id].append({"money": money, "time": time.time()})
+        data.bank_lead_data[user_id].append(
+            {"money": money, "time": time.time()})
         return True
     return False
+
 
 @bank_command.handle()
 async def bank(event: MessageEvent, message: Message = CommandArg()):
@@ -51,14 +56,15 @@ async def bank(event: MessageEvent, message: Message = CommandArg()):
                 else:
                     await bank_command.finish(_lang.text("bank.full", [
                         get_max_lead(user_id) - get_leaded_money(user_id)], user_id))
-                    
+
             case "view":
                 debt_list = ""
                 length = 0
                 amount_to_be_repaid = 0
                 for item in data.bank_lead_data[user_id]:
                     length += 1
-                    interest = round(interest_rate * ((time.time() - item["time"]) / 43200), 3)
+                    interest = round(
+                        interest_rate * ((time.time() - item["time"]) / 43200), 3)
                     debt_list += _lang.text(
                         "bank.item", [length, item["money"], interest], user_id)
                     amount_to_be_repaid += item["money"] + interest
@@ -67,10 +73,11 @@ async def bank(event: MessageEvent, message: Message = CommandArg()):
                         amount_to_be_repaid,
                         amount_to_be_repaid - get_leaded_money(user_id),
                         debt_list], user_id))
-                    
+
             case "repay":
                 debt_info = data.bank_lead_data[user_id][int(argv[1])]
-                interest = round(interest_rate * ((time.time() - debt_info["time"]) / 43200), 3)
+                interest = round(
+                    interest_rate * ((time.time() - debt_info["time"]) / 43200), 3)
                 if user.get_user_data(user_id)["vimcoin"] >= debt_info["money"] + interest:
                     economy.use_vimcoin(user_id, debt_info["money"] + interest)
                     data.bank_lead_data[user_id].pop(int(argv[1]))
