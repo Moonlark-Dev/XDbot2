@@ -70,7 +70,7 @@ async def submit_email(mail_data):
 @su.handle()
 async def su_mail(event: MessageEvent, message: Message = CommandArg()) -> None:
     try:
-        argv = message.extract_plain_text().splitlines()[0].split(" ")
+        argv = message.extract_plain_text().splitlines()[0].strip().split(" ")
         if argv[0] in ["mail", "邮箱", "email"]:
             data = json.load(open("data/su.mails.json", encoding="utf-8"))
             if argv[1] in ["create"]:
@@ -98,8 +98,8 @@ async def su_mail(event: MessageEvent, message: Message = CommandArg()) -> None:
             elif argv[1] in ["edit"]:
                 if len(argv) <= 3:
                     await su.finish(f"可编辑内容：{' '.join(data[argv[2]].keys())}")
-                elif len(argv) <= 4:
-                    await su.finish(f"{argv[3]} -> {data[argv[3]]}")
+                elif len(str(message).splitlines()) <= 2:
+                    await su.finish(f"{argv[2]}::{argv[3]} -> {data[argv[2]][argv[3]]}")
                 elif argv[2] in data.keys():
                     data[argv[2]][argv[3]] = json5.loads("\n".join(str(message).splitlines()[1:]))
                     json.dump(data, open("data/su.mails.json", "w", encoding="utf-8"), ensure_ascii=False, indent=4)
