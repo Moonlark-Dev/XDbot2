@@ -22,7 +22,7 @@ class Config(BaseSettings):
         {
             "path": "data/su.mails.json",
             "text": "{}"
-        }
+        },
         {
             "path": "data/bank.config.json",
             "text": json.dumps({
