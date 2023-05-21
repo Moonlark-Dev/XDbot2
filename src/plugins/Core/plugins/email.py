@@ -98,7 +98,7 @@ async def su_mail(event: MessageEvent, message: Message = CommandArg()) -> None:
             elif argv[1] in ["edit"]:
                 if len(argv) <= 3:
                     await su.finish(f"可编辑内容：{' '.join(data[argv[2]].keys())}")
-                elif len(str(message).splitlines()) <= 2:
+                elif len(str(message).splitlines()) < 2:
                     await su.finish(f"{argv[2]}::{argv[3]} -> {data[argv[2]][argv[3]]}")
                 elif argv[2] in data.keys():
                     data[argv[2]][argv[3]] = json5.loads("\n".join(str(message).splitlines()[1:]))
