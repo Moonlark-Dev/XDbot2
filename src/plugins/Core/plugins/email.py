@@ -119,11 +119,11 @@ async def su_mail(event: MessageEvent, message: Message = CommandArg()) -> None:
 @sign.handle()
 async def unread_email_reminder(matcher: Matcher, event: MessageEvent):
     try:
-        data = json.load(open("data/email.reminded.json", encoding="utf-8"))
+        reminded_data = json.load(open("data/email.reminded.json", encoding="utf-8"))
         if data.emails.get(event.get_user_id()):
             email_count = 0
-            for email in data.emails[event.get_user_id()]:
-                if email not in (data.get(event.get_user_id()) or []):
+            for email in reminded_data.emails[event.get_user_id()]:
+                if email not in (reminded_data.get(event.get_user_id()) or []):
                     email_count += 1
             if email_count != 0:
                 await matcher.send(_lang.text("email.remind", [len(data.emails[event.get_user_id()])], event.get_user_id()))
