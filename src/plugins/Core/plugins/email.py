@@ -122,7 +122,7 @@ async def unread_email_reminder(matcher: Matcher, event: MessageEvent):
         reminded_data = json.load(open("data/email.reminded.json", encoding="utf-8"))
         if data.emails.get(event.get_user_id()):
             email_count = 0
-            for email in reminded_data.emails[event.get_user_id()]:
+            for email in data.emails[event.get_user_id()]:
                 if email not in (reminded_data.get(event.get_user_id()) or []):
                     email_count += 1
             if email_count != 0:
