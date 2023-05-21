@@ -1,7 +1,7 @@
 from .etm import items, data
 from .su import su
 import os
-from nonebot import on_command, get_bot
+from nonebot import on_command, get_bot, get_bots
 from nonebot.matcher import Matcher
 from nonebot.adapters.onebot.v11 import MessageEvent
 from nonebot.adapters.onebot.v11 import Bot
@@ -43,13 +43,13 @@ async def submit_email(mail_data):
     for rule in mail_data["rules"]:
         if rule[0] == "group":
             try:
-                bot: Bot = get_bot(multiAccoutData[rule[1]])
+                bot = get_bot(multiAccoutData[rule[1]])
             except:
-                continue
+                bot = list(get_bots().values())[0]
             group_member_list = await bot.get_group_member_list(group_id = rule[1])
             for user in group_member_list:
                 _user.append(str(user["user_id"]))
-                print(_user)
+                # print(_user)
             
     # 比对用户
     for user_id in users:
