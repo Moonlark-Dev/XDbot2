@@ -182,5 +182,7 @@
   "currency.unknown_argv": "未知参数：{}",
   "github.open_url": "请在浏览器打开 https://github.com/login/oauth/authorize?client_id={}&scope=repo",
   "github.login_successful": "已成功登陆到 {}",
-  "towel_zip.used": "你获得了：毛巾 x16"
+  "towel_zip.used": "你获得了：毛巾 x16",
+  "email.email": "「{}」\n日期：{}\n发件：{}\n\t\n{}",
+  "email.items": "\n\t\n所含物品："
 }
