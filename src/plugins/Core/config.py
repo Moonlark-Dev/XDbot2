@@ -65,6 +65,10 @@ class Config(BaseSettings):
             "text": "{}"
         },
         {
+            "path": "data/email.reminded.json",
+            "text": "{}"
+        },
+        {
             "path": "data/github.config.json",
             "text": "{}"
         },
