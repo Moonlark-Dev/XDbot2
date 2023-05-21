@@ -77,7 +77,7 @@ async def su_mail(event: MessageEvent, message: Message = CommandArg()) -> None:
                 mail_id = hashlib.sha1(str(time.time()).encode("utf-8")).hexdigest()[:7]
                 rules = []
                 for arg in argv:
-                    if arg.starts_with("--"):
+                    if arg.startswith("--"):
                         rules.append(arg[2:].split("="))
                 data[mail_id] = {
                     "message": "\n".join(str(message).split("\n")[2:]),
