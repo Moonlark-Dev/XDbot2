@@ -184,5 +184,6 @@
   "github.login_successful": "已成功登陆到 {}",
   "towel_zip.used": "你获得了：毛巾 x16",
   "email.email": "「{}」\n日期：{}\n发件：{}\n\t\n{}",
-  "email.items": "\n\t\n所含物品："
+  "email.items": "\n\t\n所含物品：",
+  "email.remind": "[邮件提醒] 您有 {} 封未读邮件\n使用 /查看邮件 查看这些邮件"
 }
