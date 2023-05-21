@@ -127,7 +127,7 @@ async def unread_email_reminder(matcher: Matcher, event: MessageEvent):
                     email_count += 1
             if email_count != 0:
                 await matcher.send(_lang.text("email.remind", [len(data.emails[event.get_user_id()])], event.get_user_id()))
-                render_email[event.get_user_id()] = data.emails[event.get_user_id()]
+                reminded_data[event.get_user_id()] = data.emails[event.get_user_id()]
     except:
         await _error.report(traceback.format_exc(), matcher)
 
