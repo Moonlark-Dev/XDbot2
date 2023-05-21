@@ -71,7 +71,7 @@ async def submit_email(mail_data):
 async def su_mail(event: MessageEvent, message: Message = CommandArg()) -> None:
     try:
         argv = message.extract_plain_text().splitlines()[0].split(" ")
-        if argv[0] in ["mail", "邮箱"]:
+        if argv[0] in ["mail", "邮箱", "email"]:
             data = json.load(open("data/su.mails.json", encoding="utf-8"))
             if argv[1] in ["create"]:
                 mail_id = hashlib.sha1(str(time.time()).encode("utf-8")).hexdigest()[:7]
