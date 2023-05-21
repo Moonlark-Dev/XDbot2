@@ -43,12 +43,13 @@ async def submit_email(mail_data):
     for rule in mail_data["rules"]:
         if rule[0] == "group":
             try:
-                bot: Bot = get_bot(self_id=multiAccoutData[rule[1]])
+                bot: Bot = get_bot(multiAccoutData[rule[1]])
             except:
                 continue
             group_member_list = await bot.get_group_member_list(group_id = rule[1])
             for user in group_member_list:
                 _user.append(str(user["user_id"]))
+                print(_user)
             
     # 比对用户
     for user_id in users:
