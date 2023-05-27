@@ -148,7 +148,7 @@ async def view_emails(matcher: Matcher, bot: Bot, event: MessageEvent):
                     }
                 })
             await bot.call_api(
-                f"send_{event.get_session_id().split('_')[0]}_forward_msg",
+                f"send_{'group' if event.get_session_id().split('_')[0]  == 'group' else 'private'}_forward_msg",
                 messages=node_messages,
                 user_id=int(event.get_user_id()),
                 group_id=event.dict().get("group_id")
