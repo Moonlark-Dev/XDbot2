@@ -242,10 +242,10 @@ Usage (1):
 1. st
 
 /jrrp
-Description: Calculate your own or someone else's character value, or check today's character group ranking
+Description: Calculate your own or someone else's luck value, or check today's character group ranking
 Usage (3):
-1. jrrp: calculate your own character value
-2. jrrp <QQ number>: calculate others' character values
+1. jrrp: calculate your own luck value
+2. jrrp <QQ number>: calculate others' luck values
 3. jrrp rank [count]: query the ranking of a persona group (see jrrp(1))
 
 /reply
