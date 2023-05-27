@@ -2,6 +2,8 @@ from .dice import Dice
 from .talisman import Talisman
 from .book_and_quill import BookAndQuill
 from .pouch import Pouch
+from .vimcoin import VimCoin
+from .experience import Experience
 from .towel_zip import TowelZip, Towel
 
 ITEMS = {
@@ -10,7 +12,9 @@ ITEMS = {
     "talisman": Talisman,
     "pouch": Pouch,
     "towel.zip": TowelZip,
-    "towel": Towel
+    "towel": Towel,
+    "vimcoin": VimCoin,
+    "exp": Experience
 }
 
 

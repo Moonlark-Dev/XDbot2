@@ -17,6 +17,7 @@ vimcoin = {
 }
 bank_lead_data = {}
 basic_data = {}
+emails = {}
 require("nonebot_plugin_apscheduler")
 
 
@@ -59,6 +60,11 @@ def load_data():
                     open(f"data/etm/{user}/bank_lead_data.json", encoding="utf-8"))
             except BaseException:
                 pass
+            try:
+                emails[user] = json.load(
+                    open(f"data/etm/{user}/emails.json", encoding="utf-8"))
+            except BaseException:
+                pass
 
 
 load_data()
@@ -84,6 +90,7 @@ def save_data():
     _save_data("user", basic_data)
     _save_data("buff", buff)
     _save_data("bank_lead_data", bank_lead_data)
+    _save_data("emails", emails)
 
 
 @get_driver().on_shutdown

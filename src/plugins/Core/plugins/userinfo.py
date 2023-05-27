@@ -27,7 +27,7 @@ async def show_panel(bot: Bot, event: MessageEvent):
         _data = sorted(_data, key=lambda x: x["vimcoin"], reverse=True)
         _rk = _data.index({"user": qq, "vimcoin": data['vimcoin']})
         # 发送
-        await panel.finish((
+        await panel.send((
             f"{lang.text('userinfo.title', [], qq)}\n"
             f"—————————————\n"
             f"{nickname}({qq})\n"
