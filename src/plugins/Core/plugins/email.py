@@ -206,4 +206,4 @@ async def claim_all(matcher: Matcher, event: MessageEvent):
         await matcher.finish(_lang.text("currency.ok", [], user_id))
 
     except:
-        pass
+        await _error.report(traceback.format_exc(), matcher)
