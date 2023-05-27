@@ -4,7 +4,7 @@ from . import economy
 class VimCoin(Item):
     def on_register(self):
         self.item_id = "vimcoin"
-        self.data = {
+        self.basic_data = {
             "display_name": "VimCoin",
             "display_message": "XDbot2 通用货币"
         }

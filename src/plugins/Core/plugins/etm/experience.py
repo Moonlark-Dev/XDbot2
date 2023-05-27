@@ -4,7 +4,7 @@ from . import exp
 class Experience(Item):
     def on_register(self):
         self.item_id = "exp"
-        self.data = {
+        self.basic_data = {
             "display_name": "VimCoin",
             "display_message": "XDbot2 通用货币"
         }
