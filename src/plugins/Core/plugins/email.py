@@ -196,7 +196,7 @@ async def claim_all(matcher: Matcher, event: MessageEvent):
         emails_data = json.load(open("data/su.mails.json", encoding="utf-8"))
         user_id = event.get_user_id()
         for email_id in data.emails[user_id]:
-            all_items.append(emails_data[email_id]["itmes"])
+            all_items.append(emails_data[email_id]["items"])
         for item in all_items:
             bag.add_item(user_id, item["id"], item["count"], item["data"])
         data.emails[user_id] = []
