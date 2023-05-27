@@ -186,5 +186,6 @@
   "email.email": "「{}」\n日期：{}\n发件：{}\n\t\n{}",
   "email.items": "\n\t\n所含物品：",
   "email.remind": "[邮件提醒] 您有 {} 封未读邮件\n使用 /查看邮件 查看这些邮件",
-  "email.id": "邮件ID：{}"
+  "email.id": "邮件ID：{}",
+  "email.all_read": "已将 {} 个邮件设为已读"
 }
