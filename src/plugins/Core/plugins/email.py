@@ -57,19 +57,23 @@ async def submit_email(mail_data):
     # 比对用户
     for user_id in users:
         if os.path.isdir(os.path.join("data", "etm", user_id)):
+            user_can_receive = True
             for rule in mail_data["rules"]:
                 match rule[0]:
                     case "group":
                         if user_id not in _user:
+                            user_can_receive = False
                             break
                     case "user":
                         if user_id != rule[1]:
+                            user_can_receive = False
                             break
                     case "bot":
                         pass  # TODO 按Bot筛选用户
             if user_id not in data.emails.keys():
                 data.emails[user_id] = []
-            data.emails[user_id].append(mail_data["id"])
+            if user_can_receive:
+                data.emails[user_id].append(mail_data["id"])
 
 
 @su.handle()
@@ -151,14 +155,17 @@ async def view_emails(matcher: Matcher, bot: Bot, event: MessageEvent):
         if data.emails.get(user_id):
             node_messages = []
             for email_id in data.emails[user_id]:
-                node_messages.append({
-                    "type": "node",
-                    "data": {
-                        "uin": event.self_id,
-                        "name": _lang.text("email.id", [email_id], user_id),
-                        "content": render_email(json.load(open("data/su.mails.json", encoding="utf-8"))[email_id], user_id)
-                    }
-                })
+                try:
+                    node_messages.append({
+                        "type": "node",
+                        "data": {
+                            "uin": event.self_id,
+                            "name": _lang.text("email.id", [email_id], user_id),
+                            "content": render_email(json.load(open("data/su.mails.json", encoding="utf-8"))[email_id], user_id)
+                        }
+                    })
+                except KeyError:
+                    pass
             await bot.call_api(
                 f"send_{'group' if event.get_session_id().split('_')[0]  == 'group' else 'private'}_forward_msg",
                 messages=node_messages,
@@ -180,10 +187,13 @@ async def all_read(matcher: Matcher, event: MessageEvent):
         length = 0
         number_of_read_emails = 0
         for email_id in data.emails[user_id]:
-            if not emails_data[email_id]["itmes"]:
-                data.emails[user_id].pop(length)
-                number_of_read_emails += 1
-            else:
+            try:
+                if not emails_data[email_id]["itmes"]:
+                    data.emails[user_id].pop(length)
+                    number_of_read_emails += 1
+                else:
+                    length += 1
+            except KeyError:
                 length += 1
         await matcher.finish(_lang.text("email.all_read", [number_of_read_emails], user_id))
     except:
@@ -197,7 +207,10 @@ async def claim_all(matcher: Matcher, event: MessageEvent):
         emails_data = json.load(open("data/su.mails.json", encoding="utf-8"))
         user_id = event.get_user_id()
         for email_id in data.emails[user_id]:
-            all_items += emails_data[email_id]["items"]
+            try:
+                all_items += emails_data[email_id]["items"]
+            except KeyError:
+                pass
         for item in all_items:
             bag.add_item(user_id, item["id"], item["count"], item["data"])
         data.emails[user_id] = []
