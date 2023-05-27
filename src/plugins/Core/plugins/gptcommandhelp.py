@@ -14,7 +14,6 @@ openai.proxy = config["proxy"]
 openai.api_key = config["api_key"]
 
 
-
 def gen_gch_content(cl1, cl2):
     return f'''You are a command assistant being used on a QQ group chat bot program called XDbot2.
 1. The user will type in the XDbot2 functions he needs using natural language (usually Chinese), which you translate into XDbot2 commands. You simply output the translated commands directly without any interpretation of them.
