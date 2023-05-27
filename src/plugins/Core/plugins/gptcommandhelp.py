@@ -12,11 +12,7 @@ config = json.load(open("data/gpt.config.json", encoding="utf-8"))
 config = json.load(open("data/chatgpt.config.json", encoding="utf-8"))
 openai.proxy = config["proxy"]
 openai.api_key = config["api_key"]
-commands = json.load(open("data/help.json", encoding="utf-8"))
-cmd_list = ""
-for key in list(commands.keys()):
-    cmd_list += f"{key}: {commands[key]['msg']}\n"
-cmd_list2 = []
+
 
 
 def gen_gch_content(cl1, cl2):
@@ -44,22 +40,27 @@ Command prefix: /
 
 @on_command("?").handle()
 async def _(matcher: Matcher, event: MessageEvent):
-    for command, data in list(commands.items()):
-        content = f"{_lang.text('help.info', [data['info']], event.get_user_id())}"
-        length = 0
-        _usage_content = ""
-        for usage in data["usage"]:
-            length += 1
-            _usage_content += f"{length}. {usage}\n"
-        content += f"\n{_lang.text('help.usage', [length, _usage_content[:-1]], event.get_user_id())}"
-        cmd_list2.append("/" + command + "\n" + content)
-    gch_messages = [
-        {
-            "role": "system",
-            "content": gen_gch_content(cmd_list, "\n".join(cmd_list2))
-        }
-    ]
     try:
+        commands = json.load(open("data/help.json", encoding="utf-8"))
+        cmd_list = ""
+        for key in list(commands.keys()):
+            cmd_list += f"{key}: {commands[key]['msg']}\n"
+        cmd_list2 = []
+        for command, data in list(commands.items()):
+            content = f"{_lang.text('help.info', [data['info']], event.get_user_id())}"
+            length = 0
+            _usage_content = ""
+            for usage in data["usage"]:
+                length += 1
+                _usage_content += f"{length}. {usage}\n"
+            content += f"\n{_lang.text('help.usage', [length, _usage_content[:-1]], event.get_user_id())}"
+            cmd_list2.append("/" + command + "\n" + content)
+        gch_messages = [
+            {
+                "role": "system",
+                "content": gen_gch_content(cmd_list, "\n".join(cmd_list2))
+            }
+        ]
         message = event.get_message()
         messages = gch_messages.copy()
         messages.append(
