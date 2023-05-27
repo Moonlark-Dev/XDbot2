@@ -304,9 +304,9 @@ async def _(matcher: Matcher, event: MessageEvent):
             messages=messages)
         reply = session["choices"][0]["message"]["content"]
         if "NOT_IN_LIST" in reply:
-            reply = "你需要的功能XDbot2暂时没有。你可以提交issue，在https://github.com/ITCraftDevelopmentTeam/XDbot2"
+            reply = "你需要的功能 XDbot2 暂时没有喵，主人可以在https://github.com/ITCraftDevelopmentTeam/XDbot2提交一个Issue呢……"
         elif "CAN_NOT_UNDERSTAND" in reply:
-            reply = "无法理解你的请求。"
+            reply = "XDbot 目前无法理解主人的请求喵……"
         await matcher.finish(
             MessageSegment.reply(event.message_id) +
             MessageSegment.text(reply),
