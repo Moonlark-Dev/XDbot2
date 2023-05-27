@@ -18,7 +18,8 @@ for key in list(commands.keys()):
     cmd_list += f"{key}: {commands[key]['msg']}\n"
 cmd_list2 = []
 
-def gen_gch_content(cl1,cl2):
+
+def gen_gch_content(cl1, cl2):
     return f'''You are a command assistant being used on a QQ group chat bot program called XDbot2.
 1. The user will type in the XDbot2 functions he needs using natural language (usually Chinese), which you translate into XDbot2 commands. You simply output the translated commands directly without any interpretation of them.
 2. If the user asks a question about yourself or talks about yourself, do not answer it, just output "NOT_IN_LIST".
@@ -41,7 +42,6 @@ Command prefix: /
 '''
 
 
-
 @on_command("?").handle()
 async def _(matcher: Matcher, event: MessageEvent):
     for command, data in list(commands.items()):
@@ -56,7 +56,7 @@ async def _(matcher: Matcher, event: MessageEvent):
     gch_messages = [
         {
             "role": "system",
-            "content": gen_gch_content(cmd_list,"\n".join(cmd_list2))
+            "content": gen_gch_content(cmd_list, "\n".join(cmd_list2))
         }
     ]
     try:
