@@ -67,9 +67,9 @@ async def submit_email(mail_data):
                             break
                     case "bot":
                         pass  # TODO 按Bot筛选用户
-                if user_id not in data.emails.keys():
-                    data.emails[user_id] = []
-                data.emails[user_id].append(mail_data["id"])
+            if user_id not in data.emails.keys():
+                data.emails[user_id] = []
+            data.emails[user_id].append(mail_data["id"])
 
 
 @su.handle()
