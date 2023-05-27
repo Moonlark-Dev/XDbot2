@@ -208,3 +208,12 @@ async def claim_all(matcher: Matcher, event: MessageEvent):
 
     except:
         await _error.report(traceback.format_exc(), matcher)
+
+# [HELPSTART] Version: 2
+# Command: view-emails
+# Usage: view-emails
+# Info: 查看邮件列表
+# Command: claim-all
+# Usage: claim-all
+# Info: 领取邮箱内物品
+# [HELPEND]
