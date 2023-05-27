@@ -57,19 +57,23 @@ async def submit_email(mail_data):
     # 比对用户
     for user_id in users:
         if os.path.isdir(os.path.join("data", "etm", user_id)):
+            user_can_receive = True
             for rule in mail_data["rules"]:
                 match rule[0]:
                     case "group":
                         if user_id not in _user:
+                            user_can_receive = False
                             break
                     case "user":
                         if user_id != rule[1]:
+                            user_can_receive = False
                             break
                     case "bot":
                         pass  # TODO 按Bot筛选用户
             if user_id not in data.emails.keys():
                 data.emails[user_id] = []
-            data.emails[user_id].append(mail_data["id"])
+            if user_can_receive:
+                data.emails[user_id].append(mail_data["id"])
 
 
 @su.handle()
