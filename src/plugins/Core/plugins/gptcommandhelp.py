@@ -28,7 +28,7 @@ Here is the full list of XDbot2 commands:
  bank: bank
  bag: view backpack
  use: Use the items in your backpack
- shop: View the shop
+ shop: View the system shop
  help: view command help
  ghot: get group chat hotness
  cave: echo cave
@@ -103,10 +103,10 @@ Usage (1):
 1. use <ID> [num]
 
 /shop
-Description: View the shop
+Description: View the system shop
 Usage (2):
-1. shop : View the list of items for sale in the shop
-2. shop buy <ID> <num> : Buy items in the shop
+1. shop : View the list of items for sale in the system shop
+2. shop buy <ID> <num> : Buy items in the system shop
 
 /help
 Description: Query the specified command description, or show all command usage if no command name is specified
