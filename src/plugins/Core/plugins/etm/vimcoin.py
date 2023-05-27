@@ -8,6 +8,7 @@ class VimCoin(Item):
             "display_name": "VimCoin",
             "display_message": "XDbot2 通用货币"
         }
+    def _after_register(self):
         if self.user_id:
             economy.add_vi(self.user_id, self.count)
             self.count = 0
