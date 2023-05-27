@@ -188,7 +188,8 @@ async def all_read(matcher: Matcher, event: MessageEvent):
         await matcher.finish(_lang.text("email.all_read", [number_of_read_emails], user_id))
     except:
         await _error.report(traceback.format_exc(), matcher)
-        
+
+
 @on_command("领取全部", aliases={"全部领取", "claim-all", "lqqb", "qblq"}).handle()
 async def claim_all(matcher: Matcher, event: MessageEvent):
     try:
