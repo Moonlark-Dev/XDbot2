@@ -132,3 +132,26 @@ async def unread_email_reminder(matcher: Matcher, event: MessageEvent):
     except:
         await _error.report(traceback.format_exc(), matcher)
 
+@on_command("查看邮件", aliases = {"view-emails", "ve", "ckyj"}).handle()
+async def view_emails(matcher: Matcher, bot: Bot, event: MessageEvent):
+    try:
+        user_id = event.get_user_id()
+        if data.emails.get(user_id):
+            node_messages = []
+            for email_id in data.emails[user_id]:
+                node_messages.append({
+                    "type": "node",
+                    "data": {
+                        "uin": event.self_id,
+                        "name": _lang.text("email.id", [email_id], user_id),
+                        "content": render_email(json.load(open("data/su.mails.json", encoding="utf-8"))[email_id], user_id)
+                    }
+                })
+            await bot.call_api(
+                f"send_{event.get_session_id().split('_')[0]}_forward_msg",
+                messages=node_messages,
+                user_id=int(event.get_user_id()),
+                group_id=event.dict().get("group_id")
+            )
+    except:
+        await _error.report(traceback.format_exc(), matcher)
