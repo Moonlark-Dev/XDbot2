@@ -1,0 +1,24 @@
+name: Welcome Issue
+
+on:
+    issues:
+        types: [opened]
+
+jobs:
+    welcome:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Welcome Issue
+              uses: actions/github-script@v5
+              with:
+                script: |
+                    const issue = context.issue;
+                    const repo = context.repo;
+                    const issueAuthor = context.payload.sender.login;
+                    const welcomeMessage = `您好 @${issueAuthor}！:wave:
+                        感谢您参与 XDbot2 项目，我们会尽快回复您，请留意 GitHub 上的通知。`;
+                    github.rest.issue.createComment({
+                        ...repo,
+                        issue_number: issue.number,
+                        body: welcomeMessage
+                    })

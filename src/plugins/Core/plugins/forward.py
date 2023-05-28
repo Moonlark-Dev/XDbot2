@@ -22,7 +22,8 @@ forwardData = json.load(
 @privateForward.handle()
 async def privateForwardHandle(bot: Bot, event: PrivateMessageEvent):
     try:
-        await _error.report(f"""{_lang.text("forward.private")}
+        if event.get_message().extract_plain_text()[1:11] != "gpt-config":
+            await _error.report(f"""{_lang.text("forward.private")}
 {_lang.text("forward._user")}{(await bot.get_stranger_info(user_id=event.get_user_id()))['nickname']} ({event.get_user_id()})
 {event.get_message()}""")
 

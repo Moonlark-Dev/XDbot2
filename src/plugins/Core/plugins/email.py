@@ -215,7 +215,6 @@ async def claim_all(matcher: Matcher, event: MessageEvent):
             bag.add_item(user_id, item["id"], item["count"], item["data"])
         data.emails[user_id] = []
         # TODO 查看已获得的物品
-        # TODO 保留已读邮件
         # TODO 没有可领取物品的提示
         await matcher.finish(_lang.text("currency.ok", [], user_id))
 

@@ -13,6 +13,9 @@ CONFIG = json.load(open("data/bank.config.json", encoding="utf-8"))
 interest_rate = CONFIG["interest_rate"]
 bank_command = on_command("bank")
 
+# 由于脑子不好在开发过程中把 lend 写成了 lead，懒得重构了，看的时候幸苦下（
+# —— This-is-XiaoDeng 2023-05-27
+
 # [HELPSTART] Version: 2
 # Command: bank
 # Msg: 银行
@@ -52,7 +55,7 @@ async def bank(event: MessageEvent, message: Message = CommandArg()):
             data.bank_lead_data[user_id] = []
 
         match argv[0]:
-            case "lead":
+            case "lead" | "lend":
                 if lead_money(user_id, max(int(argv[1]), 0)):
                     await bank_command.finish(_lang.text("currency.ok", [], user_id))
                 else:
