@@ -1,6 +1,7 @@
 from . import economy
 import random
 from .item import Item
+from .. import _lang
 from . import achievement, buff
 
 
@@ -19,29 +20,29 @@ class Dice(Item):
         c = self.data["int"] or random.randint(1, 20)
         if c == 20:
             economy.add_vi(user_id, 50)
-            return "你买了一个二十面骰子，掷出了 20，大成功！获得了 50vi！"
+            return _lang.text("dice.20", [], self.user_id)
         elif 18 <= c <= 19:
             economy.add_vi(user_id, 20)
-            return f"你买了一个二十面骰子，掷出了 {c}，成功！获得了 20vi！"
+            return _lang.text("dice.18..19", [c], self.user_id)
         elif 15 <= c <= 17:
             economy.add_vi(user_id, 10)
-            return f"你买了一个二十面骰子，掷出了 {c}，获得了 10vi！"
+            return _lang.text("dice.15..17", [c], self.user_id)
         elif 10 <= c <= 14:
             economy.add_vi(user_id, 5)
-            return f"你买了一个二十面骰子，掷出了 {c}，拿回了自己的 5vi！"
+            return _lang.text("dice.10..14", [c], self.user_id)
         elif 2 <= c <= 9:
-            return f"你买了一个二十面骰子，掷出了 {c}，一无所获……"
+            return _lang.text("dice.2..9", [c], self.user_id)
         elif c == 1:
             achievement.increase_unlock_progress("什么欧皇", user_id)
             if buff.can_effect(user_id, "护符") and random.random() <= 0.75:
                 buff.effect_buff(user_id, "护符")
-                return f"你买了一个二十面骰子，掷出了 {c}，大失败！护符生效，扣款已取消"
+                return _lang.text("dice.1-1", [c], self.user_id)
             else:
                 economy._add_vi(user_id, -50)
-                return f"你买了一个二十面骰子，掷出了 {c}，大失败！倾家荡产，丢失了50vi！"
+                return _lang.text("dice.1-2", [c], self.user_id)
         elif c == -1:
             achievement.unlock("特性！特性", user_id)
-            return f"你买了一个二十面骰子，掷……掷……掷出了……………… {c} ？？？？？？？"
+            return _lang.text("dice.else", [c], self.user_id)
         else:
             # 笑死怎么可能掷出来啊（（（
-            return f"你买了一个二十面骰子，掷……掷……掷出了……………… {c} ？？？？？？？"
+            return _lang.text("dice.else", [c], self.user_id)
