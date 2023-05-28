@@ -9,7 +9,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Welcome Issue
-              uses: actions-cool/issues-helper@v1.2
+              uses: actions-cool/issues-helper@v3.4.0
               with:
                 actions: 'create-comment'
                 token: ${{ secrets.GITHUB_TOKEN }}
