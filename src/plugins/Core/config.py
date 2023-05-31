@@ -22,7 +22,7 @@ class Config(BaseSettings):
         {
             "path": "data/su.update_notice.json",
             "text": '{"disabled": []}'
-        }
+        },
         {
             "path": "data/su.mails.json",
             "text": "{}"
