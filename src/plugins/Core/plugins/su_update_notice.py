@@ -46,7 +46,7 @@ async def su_update_notice(message: Message = CommandArg()):
                             continue
                         try:
                             await bots[multiAccoutData[group]].send_group_msg(
-                                message=Message(f"【XDbot2 {time.srtftime('%Y-%m-%d', time.localtime())}】\n{update_notice_cache}"),
+                                message=Message(f"【XDbot2 {time.strftime('%Y-%m-%d', time.localtime())}】\n{update_notice_cache}"),
                                 group_id=group,
                             )
                         except BaseException:
