@@ -13,7 +13,7 @@ import time
 update_notice_cache = ""
 
 
-@on_command("update-notice", aliases={"un", "更新推送"})
+@on_command("update-notice", aliases={"un", "更新推送"}).handle()
 async def _(matcher: Matcher, event: GroupMessageEvent):
     try:
         data = json.load(open("data/su.update_notice.json", encoding="utf-8"))
