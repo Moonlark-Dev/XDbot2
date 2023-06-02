@@ -1,9 +1,12 @@
 nonebot2==2.0.0rc3
+nb-cli==1.0.3
 nonebot-adapter-onebot==2.2.1
 pillow
 psutil
 pyecharts
 nonebot_plugin_apscheduler
 lupa
+playwright
+openai
 sentry_sdk
 sympy
