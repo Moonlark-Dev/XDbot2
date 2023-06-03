@@ -28,7 +28,7 @@ async def _(matcher: Matcher, event: GroupMessageEvent):
                 "data/su.update_notice.json", "w", encoding="utf-8"))
             await matcher.finish(_lang.text("update-notice.disabled", [], str(event.user_id)))
 
-    except:
+    except BaseException:
         await _error.report(traceback.format_exc(), matcher)
 
 
