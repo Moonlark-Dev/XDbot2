@@ -77,7 +77,7 @@ async def buy_item(event: MessageEvent, message: Message = CommandArg()):
                 count = max(argv[2], 1)
             except BaseException:
                 count = 1
-            if count < item_json["count"]:
+            if count <= item_json["count"]:
                 if economy.use_vimcoin(user_id, count * item_json["price"]):
                     bag.add_item(
                         user_id, item_json["item"]["id"], item_json["item"]["count"], item_json["item"]["data"])
@@ -114,7 +114,7 @@ async def sell_item(event: MessageEvent, bot: Bot, message: Message = CommandArg
             if item.data["can_be_sold"]:
                 if count <= item.count:
                     if price <= min(get_average(item.item_id)
-                                    * 2, item.data["price"] * 7):
+                                    * 2, item.data["price"] * 7) or item.item_id == "pouch":
                         id = 1
                         while True:
                             if str(id) not in data.keys():
