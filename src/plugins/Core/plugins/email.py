@@ -19,7 +19,7 @@ import hashlib
 
 try:
     import json5
-except:
+except BaseException:
     json5 = json
 
 
@@ -47,7 +47,7 @@ async def submit_email(mail_data):
         if rule[0] == "group":
             try:
                 bot = get_bot(multiAccoutData[rule[1]])
-            except:
+            except BaseException:
                 bot = list(get_bots().values())[0]
             group_member_list = await bot.get_group_member_list(group_id=rule[1])
             for user in group_member_list:
@@ -123,7 +123,7 @@ async def su_mail(event: MessageEvent, message: Message = CommandArg()) -> None:
             elif argv[1] in ["submit"]:
                 await submit_email(data[argv[2]])
                 await su.finish("完成！")
-    except:
+    except BaseException:
         await _error.report(traceback.format_exc(), su)
 
 
@@ -144,7 +144,7 @@ async def unread_email_reminder(matcher: Matcher, event: MessageEvent):
                 )] = data.emails[event.get_user_id()]
                 json.dump(reminded_data, open(
                     "data/email.reminded.json", "w", encoding="utf-8"))
-    except:
+    except BaseException:
         await _error.report(traceback.format_exc(), matcher)
 
 
@@ -174,7 +174,7 @@ async def view_emails(matcher: Matcher, bot: Bot, event: MessageEvent):
             )
         else:
             pass    # TODO 没有可读邮件的提示
-    except:
+    except BaseException:
         await _error.report(traceback.format_exc(), matcher)
 
 
@@ -196,7 +196,7 @@ async def all_read(matcher: Matcher, event: MessageEvent):
             except KeyError:
                 length += 1
         await matcher.finish(_lang.text("email.all_read", [number_of_read_emails], user_id))
-    except:
+    except BaseException:
         await _error.report(traceback.format_exc(), matcher)
 
 
@@ -218,7 +218,7 @@ async def claim_all(matcher: Matcher, event: MessageEvent):
         # TODO 没有可领取物品的提示
         await matcher.finish(_lang.text("currency.ok", [], user_id))
 
-    except:
+    except BaseException:
         await _error.report(traceback.format_exc(), matcher)
 
 # [HELPSTART] Version: 2

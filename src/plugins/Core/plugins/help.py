@@ -64,7 +64,7 @@ async def group_handler(bot: Bot, event: GroupMessageEvent, message: Message = C
                 messages=messages)
             await help.finish()
 
-    except:
+    except BaseException:
         await _error.report(traceback.format_exc())
 
 

@@ -80,7 +80,8 @@ async def bank(event: MessageEvent, message: Message = CommandArg()):
                 debt_info = data.bank_lead_data[user_id][int(argv[1]) - 1]
                 interest = round(
                     interest_rate * ((time.time() - debt_info["time"]) / 43200), 3)
-                if user.get_user_data(user_id)["vimcoin"] >= debt_info["money"] + interest:
+                if user.get_user_data(
+                        user_id)["vimcoin"] >= debt_info["money"] + interest:
                     economy.use_vimcoin(user_id, debt_info["money"] + interest)
                     data.bank_lead_data[user_id].pop(int(argv[1]))
                     await bank_command.finish(_lang.text("currency.ok", [], user_id))
@@ -89,5 +90,5 @@ async def bank(event: MessageEvent, message: Message = CommandArg()):
 
             case _:
                 await bank_command.finish(_lang.text("bank.usage", [], user_id))
-    except:
+    except BaseException:
         await _error.report(traceback.format_exc(), bank_command)

@@ -28,7 +28,7 @@ async def _(matcher: Matcher, event: GroupMessageEvent):
                 "data/su.update_notice.json", "w", encoding="utf-8"))
             await matcher.finish(_lang.text("update-notice.disabled", [], str(event.user_id)))
 
-    except:
+    except BaseException:
         await _error.report(traceback.format_exc(), matcher)
 
 
@@ -54,7 +54,7 @@ async def su_update_notice(message: Message = CommandArg()):
                         try:
                             await bots[multiAccoutData[group]].send_group_msg(
                                 message=Message(
-                                    f"【XDbot2 {time.strftime('%Y-%m-%d', time.localtime())}】\n{update_notice_cache}"),
+                                    f"【XDbot2 {time.strftime('%Y-%m-%d', time.localtime())} 更新推送】\n{update_notice_cache}"),
                                 group_id=group,
                             )
                         except BaseException:
