@@ -26,6 +26,7 @@ async def _(matcher: Matcher, event: GroupMessageEvent):
     except:
         await _error.report(traceback.format_exc(), matcher)
 
+
 @su.handle()
 async def su_update_notice(message: Message = CommandArg()):
     try:
@@ -34,7 +35,8 @@ async def su_update_notice(message: Message = CommandArg()):
             global update_notice_cache
             text = str(message)[argument[0].__len__() + 1:]
             if text == "submit":
-                disabled_update_notice = json.load(open("data/su.update_notice.json", encoding="utf-8"))["disabled"]
+                disabled_update_notice = json.load(
+                    open("data/su.update_notice.json", encoding="utf-8"))["disabled"]
                 if update_notice_cache != "":
                     multiAccoutData = json.load(
                         open("data/su.multiaccoutdata.ro.json", encoding="utf-8"))
@@ -46,7 +48,8 @@ async def su_update_notice(message: Message = CommandArg()):
                             continue
                         try:
                             await bots[multiAccoutData[group]].send_group_msg(
-                                message=Message(f"【XDbot2 {time.strftime('%Y-%m-%d', time.localtime())}】\n{update_notice_cache}"),
+                                message=Message(
+                                    f"【XDbot2 {time.strftime('%Y-%m-%d', time.localtime())}】\n{update_notice_cache}"),
                                 group_id=group,
                             )
                         except BaseException:
