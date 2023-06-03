@@ -19,7 +19,8 @@ async def _(matcher: Matcher, event: GroupMessageEvent):
         data = json.load(open("data/su.update_notice.json", encoding="utf-8"))
         if str(event.group_id) in data["disabled"]:
             data["disabled"].pop(data["disabled"].index(str(event.group_id)))
-            json.dump(data, open("data/su.update_notice.json", "w", encoding="utf-8"))
+            json.dump(data, open(
+                "data/su.update_notice.json", "w", encoding="utf-8"))
             await matcher.finish(_lang.text("update-notice.enabled", [], str(event.user_id)))
         else:
             data["disabled"].append(str(event.group_id))
