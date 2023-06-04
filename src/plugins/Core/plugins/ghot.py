@@ -71,7 +71,10 @@ async def _(bot: Bot, event: GroupMessageEvent, matcher: Matcher,
         sorted_data = sorted(data.items(), key=lambda x: x[1], reverse=True)
         n = 1
         for group_id, count in sorted_data[:10]:
-            group_name = (await bot.get_group_info(group_id=int(group_id)))["group_name"]
+            try:
+                group_name = (await bot.get_group_info(group_id=int(group_id)))["group_name"]
+            except:
+                group_name = group_id
             reply += f"{n}. {group_name}: {count}\n"
             n += 1
         reply += "-" * 30 + "\n"
