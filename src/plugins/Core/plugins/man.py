@@ -1,4 +1,3 @@
-import markdown2png
 import json
 import re
 import traceback
