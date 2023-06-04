@@ -14,6 +14,9 @@ IT Craft XDBot2（下简称`XDbot2`）是一个简单的QQ功能型机器人，�
 - 功能更丰富：在XDbot的基础上增加了更多功能
 
 [![Build and push Docker image](https://github.com/ITCraftDevelopmentTeam/XDbot2/actions/workflows/build-and-push-docker-image.yml/badge.svg)](https://github.com/ITCraftDevelopmentTeam/XDbot2/actions/workflows/build-and-push-docker-image.yml)
+![](https://img.shields.io/github/repo-size/ITCraftDevelopmentTeam/XDbot2)
+![](https://img.shields.io/docker/image-size/xiaodeng3386/xdbot2?label=Docker%20Image%20Size)
+![](https://img.shields.io/github/v/tag/ITCraftDevelopmentTeam/XDbot2)
 
 ## 使用
 
@@ -23,9 +26,9 @@ IT Craft XDBot2（下简称`XDbot2`）是一个简单的QQ功能型机器人，�
 
 | 节点名称         | 平台  | 账号       | 分支    | 管理者                      | 备注                             |
 |------------------|-------|------------|---------|-----------------------------|----------------------------------|
-| XDbot 0x01       | QQ    | 3407603681 | master  | 这里是小邓QwQ（1744793737） | 暂未开启                         |
+| XDbot 0x01       | QQ    | 3407603681 | master  | 这里是小邓QwQ（1744793737） |                                  |
 | XDbot 0x02       | QQ    | 3457602590 | master  | 这里是小邓QwQ（1744793737） | 与 XDbot 0x01 数据互通           |
-| XDbot 0x03 (Dev) | QQ    | 1552257261 | develop | 这里是小邓QwQ（1744793737） |                                  |
+| XDbot 0x03 (Dev) | QQ    | 1552257261 | develop | 这里是小邓QwQ（1744793737） | 寄了                             |
 
 ## 贡献
 
