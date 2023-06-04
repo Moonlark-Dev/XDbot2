@@ -24,6 +24,14 @@ class Config(BaseSettings):
             "text": '{"disabled": []}'
         },
         {
+            "path": "data/mcver.mc_cache_version.txt",
+            "text": ""
+        },
+        {
+            "path": "data/mcver.mc_update_notice.enabled.json",
+            "text": "[]"
+        },
+        {
             "path": "data/su.mails.json",
             "text": "{}"
         },
