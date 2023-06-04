@@ -7,6 +7,9 @@ from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Bot, Message, MessageEvent
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
+import os.path
+from ..lib.markdown2png import markdown2png
+import time
 
 man = on_command("man", aliases={"手册", "info"})
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
@@ -25,13 +28,6 @@ async def manHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg
                     text = text[:-1]
                 else:
                     break
-            # 发送
-            await man.finish(
-                text.replace("\n", " \n")
-                .replace("#", "  ")
-                .replace("`", " ")
-                .replace(">", "  ")
-            )
         else:
             command = re.search(r"[A-Za-z]+", argument)
             page = re.search(r"[0-9]+", argument) or "0"
@@ -48,10 +44,14 @@ async def manHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg
                     text = text[:-1]
                 else:
                     break
-            # 发送
-            await man.finish(
-                text.replace("\n", " \n").replace("#", " ").replace("`", " ")
-            )
+        # 发送
+        filename = f"data/man.cache_{time.time()}.ro.png"
+        markdown2png.markdown2png(text, filename)
+        _text = text.replace("\n", " \n").replace("#", " ").replace("`", " ")
+        await man.send(
+            Message(f'[CQ:image,file=file://{os.path.abspath(filename)}]{_text}')
+        )
+        os.remove(filename)
 
     except FinishedException:
         raise FinishedException()
