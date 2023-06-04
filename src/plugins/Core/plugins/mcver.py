@@ -1,3 +1,4 @@
+from nonebot_plugin_apscheduler import scheduler
 import traceback
 from nonebot.adapters import Event
 from nonebot import on_command, require, get_bot
@@ -10,7 +11,6 @@ from . import _error
 import json
 
 require("nonebot_plugin_apscheduler")
-from nonebot_plugin_apscheduler import scheduler
 
 
 @on_command("mcver").handle()
@@ -54,7 +54,8 @@ async def get_latest_minecraft_version():
             response = await client.get("http://launchermeta.mojang.com/mc/game/version_manifest.json")
         mc_version_data = json.loads(response.read())
         if mc_version_data["versions"][0]["id"] != mc_cached_version:
-            groups = json.load(open("data/mcver.mc_update_notice.enabled.json", encoding="utf-8"))
+            groups = json.load(
+                open("data/mcver.mc_update_notice.enabled.json", encoding="utf-8"))
             version = mc_version_data["versions"][0]
             for group in groups:
                 try:
@@ -68,4 +69,3 @@ async def get_latest_minecraft_version():
                 f.write(version["id"])
     except:
         await _error.report(traceback.format_exc())
-
