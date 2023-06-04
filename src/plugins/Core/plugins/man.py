@@ -8,8 +8,11 @@ from nonebot.adapters.onebot.v11 import Bot, Message, MessageEvent
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
 import os.path
-from ..lib.markdown2png import markdown2png
 import time
+import sys
+
+sys.path.append("../lib/markdown2png")
+import markdown2png
 
 man = on_command("man", aliases={"手册", "info"})
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
