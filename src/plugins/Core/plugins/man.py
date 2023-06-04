@@ -12,6 +12,7 @@ import time
 import sys
 
 sys.path.append("src/plugins/Core/lib/markdown2png")
+import markdown2png
 
 man = on_command("man", aliases={"手册", "info"})
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
