@@ -16,18 +16,14 @@ async def cave(bot: Bot, message: Message = CommandArg()):
         argument = str(message).split(" ")
         if argument[0] == "cave" or argument[0] == "回声洞":
             if argument[1] in ["ban", "封禁"]:
-                data = json.load(
-                    open("data/cave.banned.json", encoding="utf-8"))
+                data = json.load(open("data/cave.banned.json", encoding="utf-8"))
                 data.append(argument[2])
-                json.dump(data, open(
-                    "data/cave.banned.json", "w", encoding="utf-8"))
+                json.dump(data, open("data/cave.banned.json", "w", encoding="utf-8"))
                 await su.finish(f"已移除 {argument[2]} 的 cave.add 权限")
             elif argument[1] in ["unban", "pardon", "解封"]:
-                data = json.load(
-                    open("data/cave.banned.json", encoding="utf-8"))
+                data = json.load(open("data/cave.banned.json", encoding="utf-8"))
                 data.pop(data.index(argument[2]))
-                json.dump(data, open(
-                    "data/cave.banned.json", "w", encoding="utf-8"))
+                json.dump(data, open("data/cave.banned.json", "w", encoding="utf-8"))
                 await su.finish(f"已为 {argument[2]} 添加 cave.add 权限")
             elif argument[1] in ["comment", "reply", "回复"]:
                 if argument[2] in ["remove", "rm", "删除"]:
