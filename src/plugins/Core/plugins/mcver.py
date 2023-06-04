@@ -33,7 +33,7 @@ async def get_minecraft_latest_version(matcher: Matcher, event: Event):
         await matcher.finish(_lang.text(
             "mcver.mcver", list(
                 mc_version_data["latest"].values()), event.get_user_id()))
-    except:
+    except BaseException:
         await _error.report(traceback.format_exc(), matcher)
 
 
@@ -51,7 +51,7 @@ async def mcupdate(matcher: Matcher, event: GroupMessageEvent):
         await matcher.finish(_lang.text(
             f"mcver.{'enabled' if event.group_id in data else 'disabled'}",
             [], event.get_user_id()))
-    except:
+    except BaseException:
         await _error.report(traceback.format_exc(), matcher)
 
 
@@ -76,9 +76,9 @@ async def get_latest_minecraft_version():
                         group_id=group,
                         message=f'发现MC更新：{version["id"]} ({version["type"]})\n{version["time"]}'
                     )
-                except:
+                except BaseException:
                     await _error.report(traceback.format_exc())
             with open("data/mcver.mc_cache_version.txt", "w", encoding="utf-8") as f:
                 f.write(version["id"])
-    except:
+    except BaseException:
         await _error.report(traceback.format_exc())
