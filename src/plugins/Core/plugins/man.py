@@ -49,7 +49,8 @@ async def manHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg
         markdown2png.markdown2png(text, filename)
         _text = text.replace("\n", " \n").replace("#", " ").replace("`", " ")
         await man.send(
-            Message(f'[CQ:image,file=file://{os.path.abspath(filename)}]{_text}')
+            Message(
+                f'[CQ:image,file=file://{os.path.abspath(filename)}]{_text}')
         )
         os.remove(filename)
 
