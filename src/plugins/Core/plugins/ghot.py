@@ -79,7 +79,10 @@ async def _(bot: Bot, event: GroupMessageEvent, matcher: Matcher,
         count = data[group_id]
         for i in range(len(sorted_data)):
             if sorted_data[i][0] == group_id:
-                group_name = (await bot.get_group_info(group_id=int(group_id)))["group_name"]
+                try:
+                    group_name = (await bot.get_group_info(group_id=int(group_id)))["group_name"]
+                except:
+                    group_name = group_id
                 reply += f"{i + 1}. {group_name}: {count}"
                 break
         await matcher.finish(reply)
