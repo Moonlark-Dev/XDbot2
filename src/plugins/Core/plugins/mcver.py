@@ -22,6 +22,7 @@ require("nonebot_plugin_apscheduler")
 # Usage: mcupdate
 # [HELPEND]
 
+
 @on_command("mcver").handle()
 async def get_minecraft_latest_version(matcher: Matcher, event: Event):
     try:
@@ -63,9 +64,11 @@ async def get_latest_minecraft_version():
             response = await client.get("http://launchermeta.mojang.com/mc/game/version_manifest.json")
         mc_version_data = json.loads(response.read())
         if mc_version_data["versions"][0]["id"] != mc_cached_version:
-            groups = json.load(open("data/mcver.mc_update_notice.enabled.json", encoding="utf-8"))
+            groups = json.load(
+                open("data/mcver.mc_update_notice.enabled.json", encoding="utf-8"))
             version = mc_version_data["versions"][0]
-            multiAccoutData = json.load(open("data/su.multiaccoutdata.ro.json"))
+            multiAccoutData = json.load(
+                open("data/su.multiaccoutdata.ro.json"))
             for group in groups:
                 try:
                     await get_bot(multiAccoutData[str(group)]).call_api(
@@ -79,4 +82,3 @@ async def get_latest_minecraft_version():
                 f.write(version["id"])
     except:
         await _error.report(traceback.format_exc())
-
