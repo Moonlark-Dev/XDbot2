@@ -45,7 +45,10 @@ async def cave_comment_writer(event: MessageEvent, bot: Bot):
             await cave_comment.finish()
         reply_message = event.reply.message.extract_plain_text()
         if re.match(
-                r"^.{0,10}——（[0-9]+）\n(.+)\n——(.*)", reply_message):
+                r"^.{0,10}——（[0-9]+）\n(.+)\n——(.+)", reply_message):
+            # 判断是否被封禁
+            if str(event.user_id) in json.load(open("data/cave.banned.json", encoding="utf-8")):
+                await cave_comment.finish(_lang.text("cave.cannot_comment", [], str(event.user_id)))
             # 懒得写了就这样吧
             cave_id = re.search(
                 r"（[0-9]+）",
@@ -231,6 +234,8 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
             )
 
         elif argument[0] in ["add", "-a", "添加"]:
+            if str(event.user_id) in json.load(open("data/cave.banned.json", encoding="utf-8")):
+                await cave.finish(_lang.text("cave.cannot_add", [], str(event.user_id)))
             text = await downloadImages(str(message)[argument[0].__len__():].strip())
             if text == "":
                 await cave.finish(_lang.text("cave.not_allow_null_cave", [], event.get_user_id()))

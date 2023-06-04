@@ -28,6 +28,10 @@ class Config(BaseSettings):
             "text": "{}"
         },
         {
+            "path": "data/cave.banned.json",
+            "text": "[]"
+        },
+        {
             "path": "data/bank.config.json",
             "text": json.dumps({
                 "interest_rate": 0.015,

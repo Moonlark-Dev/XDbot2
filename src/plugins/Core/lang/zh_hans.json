@@ -17,6 +17,8 @@
   "cave.new": "「回声洞新投稿（{}）」\n",
   "cave.added": "回声洞（{}）已添加",
   "cave.data_collecting": "收集数据ing",
+  "cave.cannot_comment": "评论失败：权限不足（需要 cave.add）",
+  "cave.cannot_add": "投稿失败：权限不足（需要 cave.add）",
   "cave.data_finish": "总数：{}\n有效：{}\n图片：{}",
   "cave.notfound": "回声洞（{}）不存在",
   "ct.nodata": "暂无数据",
