@@ -1,3 +1,6 @@
 [submodule "src/plugins/Core/plugins/rulev3c"]
 	path = src/plugins/Core/plugins/rulev3c
 	url = https://github.com/ITCraftDevelopmentTeam/XDbot2-Rule-V3.git
+[submodule "src/plugins/Core/lib/markdown2png"]
+	path = src/plugins/Core/lib/markdown2png
+	url = https://github.com/This-is-XiaoDeng/markdown2png.git
