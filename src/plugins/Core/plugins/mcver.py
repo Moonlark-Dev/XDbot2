@@ -2,7 +2,7 @@ from nonebot_plugin_apscheduler import scheduler
 import traceback
 from nonebot.adapters import Event
 from nonebot import on_command, require, get_bot
-from .account import multiAccoutData
+# from .account import multiAccoutData
 import httpx
 from nonebot.adapters.onebot.v11 import GroupMessageEvent
 from nonebot.matcher import Matcher
@@ -54,18 +54,20 @@ async def get_latest_minecraft_version():
             response = await client.get("http://launchermeta.mojang.com/mc/game/version_manifest.json")
         mc_version_data = json.loads(response.read())
         if mc_version_data["versions"][0]["id"] != mc_cached_version:
-            groups = json.load(
-                open("data/mcver.mc_update_notice.enabled.json", encoding="utf-8"))
+            groups = json.load(open("data/mcver.mc_update_notice.enabled.json", encoding="utf-8"))
             version = mc_version_data["versions"][0]
+            multiAccoutData = json.load(open("data/su.multiaccoutdata.ro.json"))
             for group in groups:
                 try:
-                    await get_bot(multiAccoutData[group]).call_api(
+                    await get_bot(multiAccoutData[str(group)]).call_api(
                         "send_group_msg",
+                        group_id=group,
                         message=f'发现MC更新：{version["id"]} ({version["type"]})\n{version["time"]}'
                     )
                 except:
-                    pass
+                    await _error.report(traceback.format_exc())
             with open("data/mcver.mc_cache_version.txt", "w", encoding="utf-8") as f:
                 f.write(version["id"])
     except:
         await _error.report(traceback.format_exc())
+
