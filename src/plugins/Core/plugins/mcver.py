@@ -12,6 +12,15 @@ import json
 
 require("nonebot_plugin_apscheduler")
 
+# [HELPSTART] Version: 2
+# Command: mcver
+# Info: 获取当前最新 Minecraft 版本
+# Msg: 获取MC版本
+# Usage: mcver
+# Command: mcupdate
+# Msg: MC更新推送
+# Usage: mcupdate
+# [HELPEND]
 
 @on_command("mcver").handle()
 async def get_minecraft_latest_version(matcher: Matcher, event: Event):
