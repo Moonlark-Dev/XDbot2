@@ -13,6 +13,8 @@ IT Craft XDBot2（下简称`XDbot2`）是一个简单的QQ功能型机器人，�
 - 易于使用：更详细的指令文档和更易用的指令
 - 功能更丰富：在XDbot的基础上增加了更多功能
 
+[![Build and push Docker image](https://github.com/ITCraftDevelopmentTeam/XDbot2/actions/workflows/build-and-push-docker-image.yml/badge.svg)](https://github.com/ITCraftDevelopmentTeam/XDbot2/actions/workflows/build-and-push-docker-image.yml)
+
 ## 使用
 
 您可以加入 XDbot用户群（159910125）以体验 XDbot2
