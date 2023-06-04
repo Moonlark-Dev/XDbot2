@@ -23,4 +23,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/XDbot2:${{ github.sha }}
+          tags: ${{ secrets.DOCKER_USERNAME }}/xdbot2:${{ github.sha }}
