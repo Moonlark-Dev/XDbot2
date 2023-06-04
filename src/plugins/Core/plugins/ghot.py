@@ -73,7 +73,7 @@ async def _(bot: Bot, event: GroupMessageEvent, matcher: Matcher,
         for group_id, count in sorted_data[:10]:
             try:
                 group_name = (await bot.get_group_info(group_id=int(group_id)))["group_name"]
-            except:
+            except BaseException:
                 group_name = group_id
             reply += f"{n}. {group_name}: {count}\n"
             n += 1
@@ -84,7 +84,7 @@ async def _(bot: Bot, event: GroupMessageEvent, matcher: Matcher,
             if sorted_data[i][0] == group_id:
                 try:
                     group_name = (await bot.get_group_info(group_id=int(group_id)))["group_name"]
-                except:
+                except BaseException:
                     group_name = group_id
                 reply += f"{i + 1}. {group_name}: {count}"
                 break
