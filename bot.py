@@ -15,7 +15,7 @@ try:
     os.mkdir("data")
 except Exception:
     pass
-os.system("git submodule init src/plugins/Core/lib/markdown2png")
+os.system("git submodule update")
 
 logger.add("./data/error.log",
            rotation="00:00",
