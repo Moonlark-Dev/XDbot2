@@ -23,7 +23,7 @@
   "cave.notfound": "回声洞（{}）不存在",
   "ct.nodata": "暂无数据",
   "mcver.mcver": "最新版本：{}\n最新快照：{}",
-  "mcver.enbaled": "Minecraft 更新推送 已启用",
+  "mcver.enabled": "Minecraft 更新推送 已启用",
   "mcver.disabled": "Minecraft 更新推送 已禁用",
   "ct.rank": "发言排名 —— {}\n",
   "ct.usage": "用法：ct [group] ",
