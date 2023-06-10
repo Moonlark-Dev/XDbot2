@@ -68,7 +68,7 @@ async def bank(event: MessageEvent, message: Message = CommandArg()):
                 for item in data.bank_lead_data[user_id]:
                     length += 1
                     interest = round(
-                        interest_rate * ((time.time() - item["time"]) / 43200), 3)
+                        interest_rate * ((time.time() - item["time"]) / 43200) * item["money"], 3)
                     debt_list += _lang.text(
                         "bank.item", [length, item["money"], interest], user_id)
                     amount_to_be_repaid += item["money"] + interest
@@ -79,7 +79,7 @@ async def bank(event: MessageEvent, message: Message = CommandArg()):
             case "repay":
                 debt_info = data.bank_lead_data[user_id][int(argv[1]) - 1]
                 interest = round(
-                    interest_rate * ((time.time() - debt_info["time"]) / 43200), 3)
+                    interest_rate * ((time.time() - debt_info["time"]) / 43200) * debt_info["money"], 3)
                 if user.get_user_data(
                         user_id)["vimcoin"] >= debt_info["money"] + interest:
                     economy.use_vimcoin(user_id, debt_info["money"] + interest)
