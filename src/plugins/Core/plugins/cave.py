@@ -106,8 +106,11 @@ async def downloadImages(message: str):
         imageID = str(time.time())
         async with httpx.AsyncClient() as client:
             response = await client.get(url)
-            with open(f"data/caveImages/{imageID}.png", "wb") as f:
-                f.write(response.read())
+        content = response.read()
+        if not content:
+            return False
+        with open(f"data/caveImages/{imageID}.png", "wb") as f:
+            f.write(content)
         return await downloadImages(
             message.replace(
                 message[cqStart: message.find(
@@ -241,6 +244,8 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
             text = await downloadImages(str(message)[argument[0].__len__():].strip())
             if text == "":
                 await cave.finish(_lang.text("cave.not_allow_null_cave", [], event.get_user_id()))
+            elif not text:
+                await cave.finish(_lang.text("cave.error_to_download_images", [], event.get_user_id()))
             data["data"][data["count"]] = {
                 "id": data["count"],
                 "text": text,

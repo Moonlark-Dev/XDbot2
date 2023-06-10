@@ -4,10 +4,11 @@
 import json
 from nonebot import get_bots
 import random
-from nonebot.exception import FinishedException
+# from nonebot.exception import FinishedException
 from nonebot.log import logger
 # from nonebot.adapters.onebot.v11 import GroupMessageEvent, MessageEvent, MessageSegment
 from nonebot.matcher import Matcher
+# from nonebot.params import Matc
 from . import _lang
 
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
@@ -18,14 +19,14 @@ IGNORED_EXCEPTION = [
 
 
 # , event: MessageEvent | GroupMessageEvent | None = None):
-async def report(err: str, matcher: None | Matcher = None, *args, **params):
+async def report(err: str, matcher: Matcher = Matcher(), *_args, **_params):
     error = err.splitlines()[-1]
     logger.debug(error)
     # 过滤错误
-    if "FinishedException" in error:
-        raise FinishedException()
+    if "FinishedException" in error and matcher is not None:
+        await matcher.finish()
     # 反馈错误
-    if matcher is not None:
+    if err.startswith("Traceback"):
         # reply = MessageSegment.text("") if not event else MessageSegment.reply(event.message_id)
         await matcher.send(
             f"处理失败！\n{error}",
@@ -47,7 +48,7 @@ async def report(err: str, matcher: None | Matcher = None, *args, **params):
     bot = get_bots()[json.load(
         open("data/su.multiaccoutdata.ro.json", encoding="utf-8"))[ctrlGroup]]
     await bot.send_group_msg(message=err, group_id=ctrlGroup)
-    if ("「" in err or "su img" in err) and matcher is None:
+    if not err.startswith("Traceback"):
         return None
     logger.error(err)
     # 记录错误
