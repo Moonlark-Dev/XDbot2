@@ -5,6 +5,7 @@ import traceback
 import json
 from nonebot.adapters import Message
 
+
 @su.handle()
 async def su_plugin(message: Message = CommandArg()):
     try:
