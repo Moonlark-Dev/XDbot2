@@ -1,5 +1,5 @@
 {
-    "lang.version": "23w23a",
+    "lang.version": "23w23b",
     "lang.author": "Laman28",
     "lang.intro": "[Language details]",
     "lang.lang_name": "Name: {}",
@@ -203,5 +203,6 @@
     "dice.1-2": "You bought a twenty-side dice, number is {}, big failure! You lost 50vi!",
     "dice.else": "You bought a twenty-side dice, number is ... what? {} ??????",
     "update-notice.enabled": "XDbot2 update push is enabled for this group",
-    "update-notice.disabled": "XDbot2 update push is disabled for this group"
+    "update-notice.disabled": "XDbot2 update push is disabled for this group",
+    "cave.error_to_download_images": "Submission Failed: Error while downloading, please try again later"
 }
