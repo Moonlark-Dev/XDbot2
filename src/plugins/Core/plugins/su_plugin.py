@@ -32,5 +32,5 @@ async def su_plugin(message: Message = CommandArg()):
                     "data/init.disabled.json",
                     "w",
                     encoding="utf-8"))
-    except:
+    except BaseException:
         await _error.report(traceback.format_exc(), su)
