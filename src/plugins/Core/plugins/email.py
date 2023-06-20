@@ -75,6 +75,27 @@ async def submit_email(mail_data):
             if user_can_receive:
                 data.emails[user_id].append(mail_data["id"])
 
+# 供其他插件调用
+
+
+async def send_email(receive: str, subject: str, message: str, items: list = [], data: dict = {}) -> str:
+    data = json.load(open("data/su.mails.json", encoding="utf-8"))
+    mail_id = hashlib.sha1(
+        str(time.time()).encode("utf-8")).hexdigest()[:7]
+    data[mail_id] = {
+        "message": message,
+        "subject": subject,
+        "rules": [["user", receive]],
+        "items": items,
+        "time": time.time(),
+        "id": mail_id
+    }
+    data[mail_id].update(data)
+    json.dump(data, open("data/su.mails.json", "w",
+              encoding="utf-8"), ensure_ascii=False, indent=4)
+    await submit_email(data[mail_id])
+    return mail_id
+
 
 @su.handle()
 async def su_mail(event: MessageEvent, message: Message = CommandArg()) -> None:
