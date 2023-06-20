@@ -19,7 +19,7 @@ except:
     json.dump(defaultConfig, open("data/essencemsg.config.json", "w", encoding="utf-8"))
 def writeConfig(cfg):
     json.dump(cfg, open("data/essencemsg.config.json", "w", encoding="utf-8"))
-configCommand = on_command("essencemsg", permission=SUPERUSER)
+configCommand = on_command("essencemsg",aliases={"essmsg"} ,permission=SUPERUSER)
 @configCommand.handle()
 async def _(bot: Bot, event: GroupMessageEvent, matcher: Matcher, message: Message = CommandArg()):
     try:
