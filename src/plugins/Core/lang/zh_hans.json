@@ -203,5 +203,15 @@
   "dice.1-2": "你买了一个二十面骰子，掷出了 {}，大失败！倾家荡产，丢失了50vi！",
   "dice.else": "你买了一个二十面骰子，掷……掷……掷出了……………… {} ？？？？？？？",
   "update-notice.enabled": "XDbot2 更新推送已在本群 启用",
-  "update-notice.disabled": "XDbot2 更新推送已在本群 禁用"
+  "update-notice.disabled": "XDbot2 更新推送已在本群 禁用",
+  "groupwelcome.group.enabled": "入群欢迎已在本群 启用",
+  "groupwelcome.group.disabled": "入群欢迎已在本群 禁用",
+  "groupwelcome.global.enabled": "入群欢迎已设置为 全局启用",
+  "groupwelcome.global.disabled": "入群欢迎已设置为 仅单独群启用",
+  "groupwelcome.application.enabled": "入群欢迎-ITC申请检查已在本群 启用",
+  "groupwelcome.application.disabled": "入群欢迎-ITC申请检查已在本群 禁用",
+  "groupwelcome.message.wm.edited": "入群欢迎消息已修改为：\n\n[@] {}",
+  "groupwelcome.message.aam.edited": "入群欢迎-ITC申请检查通过提示消息已修改为：\n\n[@] {}",
+  "groupwelcome.message.anm.edited": "入群欢迎-ITC申请检查未找到提示消息已修改为：\n\n[@] {}",
+  "groupwelcome.reset_config": "入群欢迎的所有配置已重置为默认"
 }
