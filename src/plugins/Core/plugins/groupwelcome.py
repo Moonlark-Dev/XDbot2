@@ -77,7 +77,7 @@ async def _(bot: Bot, event: GroupMessageEvent, matcher: Matcher, message: Messa
                 await configCommand.finish(_lang.text("groupwelcome.message.anm.edited",[args[1]],event.get_user_id))
             elif args[0] == "confirm_reset_config":
                 writeConfig(defaultConfig)
-                await configCommand.finish(_lang.text("groupwelcome.reset_config",[],event.get_user_id))
+                await configCommand.finish(_lang.text("groupwelcome.config.reset",[],event.get_user_id))
             elif args[0] in ["application_approved_list","aal"]:
                 await configCommand.finish(str(await getAcceptedQQList()))
     except BaseException:
