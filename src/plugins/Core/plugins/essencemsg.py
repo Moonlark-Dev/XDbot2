@@ -54,5 +54,6 @@ async def _(bot: Bot, matcher: Matcher, event: MessageEvent):
         for word in config["keywords_list"]:
             if word in msg:
                 await bot.call_api("set_essence_msg", message_id=event.message_id)
+                break
     except BaseException:
         await error.report(traceback.format_exc(), matcher, event, feedback=False)
