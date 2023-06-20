@@ -22,5 +22,3 @@ async def _(matcher: Matcher, event: MessageEvent, message: Message = CommandArg
                 await matcher.finish("完成")
     except:
         await _error.report()
-
-

@@ -6,7 +6,7 @@ import time
 class Config(BaseSettings):
     # Your Config Here
     # 版本常量
-    VERSION = "v2.8.178"
+    VERSION = "v2.8.271"
     # 控制中心
     CONTROL_GROUP = "598443695"
 
