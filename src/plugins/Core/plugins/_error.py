@@ -19,7 +19,7 @@ IGNORED_EXCEPTION = [
 
 
 # , event: MessageEvent | GroupMessageEvent | None = None):
-async def report(err: str, matcher: Matcher = Matcher(), *_args, **_params):
+async def report(err: str, matcher: Matcher = Matcher(), event=None, feedback=True):
     error = err.splitlines()[-1]
     logger.debug(error)
     # 过滤错误
@@ -28,18 +28,19 @@ async def report(err: str, matcher: Matcher = Matcher(), *_args, **_params):
     # 反馈错误
     if err.startswith("Traceback"):
         # reply = MessageSegment.text("") if not event else MessageSegment.reply(event.message_id)
-        await matcher.send(
-            f"处理失败！\n{error}",
-            at_sender=True)
-        if random.random() <= 0.35:
+        if feedback:
             await matcher.send(
-                _lang.text(
-                    "_error.github",
-                    [
-                        "https://github.com/ITCraftDevelopmentTeam/XDbot2/issues/new?assignees=&labels=%C2%B7+Bug&template=bug.yml"
-                    ],
+                f"处理失败！\n{error}",
+                at_sender=True)
+            if random.random() <= 0.35:
+                await matcher.send(
+                    _lang.text(
+                        "_error.github",
+                        [
+                            "https://github.com/ITCraftDevelopmentTeam/XDbot2/issues/new?assignees=&labels=%C2%B7+Bug&template=bug.yml"
+                        ],
+                    )
                 )
-            )
     # 过滤错误
     for e in IGNORED_EXCEPTION:
         if e in error:  # Issue #120
