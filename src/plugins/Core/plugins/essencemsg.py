@@ -37,11 +37,11 @@ async def _(bot: Bot, event: GroupMessageEvent, matcher: Matcher, message: Messa
         elif args[0] in ["add", "append"]:
             config["keywords_list"].append(args[1])
             writeConfig(config)
-            await configCommand.finish(_lang.text("essencemsg.added", [args[1]], event.get_user_id()))
+            await configCommand.finish(_lang.text("essencemsg.keyword.added", [args[1]], event.get_user_id()))
         elif args[0] in ["remove", "delete", "rm"]:
             config["keywords_list"].remove(args[1])
             writeConfig(config)
-            await configCommand.finish(_lang.text("essencemsg.removed", [args[1]], event.get_user_id()))
+            await configCommand.finish(_lang.text("essencemsg.keyword.removed", [args[1]], event.get_user_id()))
     except BaseException:
         await error.report(traceback.format_exc(), matcher, event)
 
