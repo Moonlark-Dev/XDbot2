@@ -4,6 +4,7 @@
 import json
 from nonebot import get_bots
 import random
+import traceback
 # from nonebot.exception import FinishedException
 from nonebot.log import logger
 # from nonebot.adapters.onebot.v11 import GroupMessageEvent, MessageEvent, MessageSegment
@@ -19,7 +20,8 @@ IGNORED_EXCEPTION = [
 
 
 # , event: MessageEvent | GroupMessageEvent | None = None):
-async def report(err: str, matcher: Matcher = Matcher(), event=None, feedback=True):
+async def report(_err: str | None, matcher: Matcher = Matcher(), event=None, feedback=True):
+    err = _err or traceback.format_exc()
     error = err.splitlines()[-1]
     logger.debug(error)
     # 过滤错误
