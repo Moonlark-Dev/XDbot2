@@ -79,8 +79,7 @@ async def get_start_time() -> dict | None:
     except Exception:
         await _error.report(traceback.format_exc())
 
-
-@app.get("/six", response_class=HTMLResponse)
+@app.get("/six/full", response_class=HTMLResponse)
 async def pie():
     """生成并反回饼图"""
     try:
@@ -98,12 +97,66 @@ async def pie():
         user_list = list(data.keys())
 
         for i in range(len(user_list)):
-            user_data.append(
-                (
-                    (await bot.get_stranger_info(user_id=user_list[i]))["nickname"],
-                    data[user_list[i]],
+            
+                user_data.append(
+                    (
+                        (await bot.get_stranger_info(user_id=user_list[i]))["nickname"],
+                        data[user_list[i]],
+                    )
                 )
-            )
+        
+
+        file_path = (
+            Pie(init_opts=opts.InitOpts(bg_color="rgba(255,255,255,1)"))
+            .add("", user_data)
+            .set_global_opts(
+                title_opts=opts.TitleOpts(
+                    title="6", subtitle=start_time + " 至今"),
+                legend_opts=opts.LegendOpts(is_show=False))
+
+            .set_series_opts(label_opts=opts.LabelOpts(formatter="{b}: {c}"))
+        ).render(path="data/sixcount.render.ro.html")
+
+        with open(file_path, encoding="utf-8") as f:
+            html = f.read()
+
+        return html
+    except Exception:
+        await _error.report(traceback.format_exc())
+
+@app.get("/six", response_class=HTMLResponse)
+async def pie():
+    """生成并反回饼图"""
+    try:
+        data = json.load(open("data/sixcount.data.json", encoding="utf-8"))
+        start_time = time.strftime(
+            "%Y-%m-%d %H:%M:%S",
+            time.localtime(
+                json.load(
+                    open("data/sixcount.starttime.json", encoding="utf-8"))["time"]),
+        )
+
+        user_data = []
+        bots = get_bots()
+        bot = bots[list(bots.keys())[0]]
+        user_list = list(data.keys())
+        other_count = 0
+
+        for i in range(len(user_list)):
+            # See https://github.com/ITCraftDevelopmentTeam/XDbot2/issues/245
+            if len(user_list) >= 20 and data[user_list[i]] <= 10:
+                other_count += data[user_list[i]]
+            else:
+                user_data.append(
+                    (
+                        (await bot.get_stranger_info(user_id=user_list[i]))["nickname"],
+                        data[user_list[i]],
+                    )
+                )
+        if other_count > 0:
+            user_data.append((
+                "Other", other_count
+            ))
 
         file_path = (
             Pie(init_opts=opts.InitOpts(bg_color="rgba(255,255,255,1)"))
