@@ -45,9 +45,14 @@ async def auto_sign_coupon():
         ub = bag.get_user_bag(u)
         for i in ub:
             if i.item_id == "auto_sign_coupon_actived":
+                info = sign._sign(u)
+                if info != "主人今天已经签到过了喵！":
+                    i.count -= 1
+                    _info = _lang.text("asc.signed_2", [], u)+"\n"+info
+                else:
+                    _info = _lang.text("asc.signed_3", [], u)
                 await email.send_email(
                     u,
                     _lang.text("asc.signed_1", [time.strftime("%Y-%m-%d")], u),
-                    _lang.text("asc.signed_2", [], u)+"\n"+sign._sign(u)
+                    _info
                 )
-                i.count -= 1
