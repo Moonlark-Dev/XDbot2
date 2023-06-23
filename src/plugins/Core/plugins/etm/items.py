@@ -14,7 +14,9 @@ ITEMS = {
     "towel.zip": TowelZip,
     "towel": Towel,
     "vimcoin": VimCoin,
-    "exp": Experience
+    "exp": Experience,
+    "auto_sign_coupon": AutoSignCoupon,
+    "auto_sign_coupon_actived": AutoSignCouponActived
 }
 
 
