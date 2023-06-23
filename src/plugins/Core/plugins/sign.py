@@ -13,6 +13,7 @@ from decimal import Decimal
 sign = on_regex("^(签到|.sign)$")
 sign_rank = on_command("sign-rank")
 
+
 def _sign(qq):
     data = json.load(open("data/etm/sign.json", encoding="utf-8"))
     date = int((time.time() + 28800) / 86400)
@@ -54,6 +55,7 @@ def _sign(qq):
         ])
     else:
         return "主人今天已经签到过了喵！"
+
 
 @sign.handle()
 async def sign_handler(event: MessageEvent):

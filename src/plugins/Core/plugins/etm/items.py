@@ -1,4 +1,5 @@
 from .dice import Dice
+from .auto_sign_coupon import AutoSignCoupon, AutoSignCouponActived
 from .talisman import Talisman
 from .book_and_quill import BookAndQuill
 from .pouch import Pouch

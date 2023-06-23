@@ -7,6 +7,7 @@ import json
 import traceback
 import os
 import os.path
+from .etm import data as etmdata
 import time
 
 START_TIME = 1656345600
@@ -18,15 +19,16 @@ def get_run_time():
 
 
 def get_user_count():
-    count = 0
-    for file in os.listdir("data/etm"):
-        if os.path.isdir(os.path.join("./data/etm", file)):
-            try:
-                int(file)
-                count += 1
-            except BaseException:
-                pass
-    return count
+    # count = 0
+    # for file in os.listdir("data/etm"):
+    #     if os.path.isdir(os.path.join("./data/etm", file)):
+    #         try:
+    #             int(file)
+    #             count += 1
+    #         except BaseException:
+    #             pass
+    # return count
+    return len(list(etmdata.basic_data.keys()))
 
 
 def get_lines(top="./src/plugins/Core"):

@@ -9,6 +9,7 @@ from nonebot import require
 from nonebot_plugin_apscheduler import scheduler
 require("nonebot_plugin_apscheduler")
 
+
 class AutoSignCoupon(Item):
     def on_register(self):
         self.item_id = "auto_sign_coupon"
@@ -21,7 +22,8 @@ class AutoSignCoupon(Item):
     def use_item(self):
         bag.add_item(self.user_id, "auto_sign_coupon_actived", 1, {})
         return _lang.text("asc.actived", [], self.user_id)
-        
+
+
 class AutoSignCouponActived(Item):
     def on_register(self):
         self.item_id = "auto_sign_coupon_actived"
@@ -35,9 +37,10 @@ class AutoSignCouponActived(Item):
         bag.add_item(self.user_id, "auto_sign_coupon", 1, {})
         return _lang.text("asc.inactived", [], self.user_id)
 
-@scheduler.scheduled_job("cron",second="0",minute="55",hour="23",day="*",id="auto_sign_coupon")
+
+@scheduler.scheduled_job("cron", second="0", minute="55", hour="23", day="*", id="auto_sign_coupon")
 async def auto_sign_coupon():
-    users=_data.basic_data.keys()
+    users = _data.basic_data.keys()
     for u in users:
         ub = bag.get_user_bag(u)
         for i in ub:
