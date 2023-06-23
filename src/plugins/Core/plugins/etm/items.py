@@ -1,4 +1,5 @@
 from .dice import Dice
+from .auto_sign_coupon import AutoSignCoupon, AutoSignCouponActived
 from .talisman import Talisman
 from .book_and_quill import BookAndQuill
 from .pouch import Pouch
@@ -14,7 +15,9 @@ ITEMS = {
     "towel.zip": TowelZip,
     "towel": Towel,
     "vimcoin": VimCoin,
-    "exp": Experience
+    "exp": Experience,
+    "auto_sign_coupon": AutoSignCoupon,
+    "auto_sign_coupon_actived": AutoSignCouponActived
 }
 
 

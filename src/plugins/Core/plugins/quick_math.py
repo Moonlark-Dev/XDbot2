@@ -51,7 +51,7 @@ def render_text_as_image(_string):
     # Draw the text on the image
     draw = ImageDraw.Draw(image)
     if random.random() <= 0.05:
-        string = "undefined+undefined=?"
+        string = "undefined"
     draw.text((0, 17), string, fill='black', font=font)
     draw.text((0, 0), "[QUICK MATH]", fill='black', font=title_font)
     # Remove any extra white space in the image
