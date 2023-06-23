@@ -79,6 +79,7 @@ async def get_start_time() -> dict | None:
     except Exception:
         await _error.report(traceback.format_exc())
 
+
 @app.get("/six/full", response_class=HTMLResponse)
 async def pie():
     """生成并反回饼图"""
@@ -97,14 +98,13 @@ async def pie():
         user_list = list(data.keys())
 
         for i in range(len(user_list)):
-            
-                user_data.append(
-                    (
-                        (await bot.get_stranger_info(user_id=user_list[i]))["nickname"],
-                        data[user_list[i]],
-                    )
+
+            user_data.append(
+                (
+                    (await bot.get_stranger_info(user_id=user_list[i]))["nickname"],
+                    data[user_list[i]],
                 )
-        
+            )
 
         file_path = (
             Pie(init_opts=opts.InitOpts(bg_color="rgba(255,255,255,1)"))
@@ -123,6 +123,7 @@ async def pie():
         return html
     except Exception:
         await _error.report(traceback.format_exc())
+
 
 @app.get("/six", response_class=HTMLResponse)
 async def pie():
