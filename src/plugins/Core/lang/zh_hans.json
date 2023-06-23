@@ -215,5 +215,9 @@
   "groupwelcome.message.anm.edited": "入群欢迎-ITC申请检查未找到提示消息已修改为：\n\n[@] {}",
   "groupwelcome.config.reset": "入群欢迎的所有配置已重置为默认",
   "essencemsg.keyword.added": "已为自动设置精华消息添加关键词：{}",
-  "essencemsg.keyword.removed": "已为自动设置精华消息移除关键词：{}"
+  "essencemsg.keyword.removed": "已为自动设置精华消息移除关键词：{}",
+  "asc.actived": "自动签到券已激活1个",
+  "asc.inactived": "自动签到券已取消激活1个",
+  "asc.signed_1": "{} 自动签到完成",
+  "asc.signed_2": "已消耗1个[自动签到券（激活）]"
 }
