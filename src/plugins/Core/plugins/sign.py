@@ -37,6 +37,9 @@ def _sign(qq):
         economy.add_vi(qq, int(add_vi))
         data["latest"][qq] = date
         now_data = user.get_user_data(qq)
+        json.dump(data, open("data/etm/sign.json", "w", encoding="utf-8"))
+        if add_vi == Decimal(0):
+            achievement.unlock("+0！", event.get_user_id())
         return "\n".join([
             lang.text("sign.success", [], qq),
             lang.text("sign.hr", [], qq),
@@ -49,9 +52,6 @@ def _sign(qq):
             lang.text("sign.hr", [], qq),
             lang.text("sign.days", [data["days"][qq]], qq)
         ])
-        json.dump(data, open("data/etm/sign.json", "w", encoding="utf-8"))
-        if add_vi == Decimal(0):
-            achievement.unlock("+0！", event.get_user_id())
     else:
         return "主人今天已经签到过了喵！"
 
