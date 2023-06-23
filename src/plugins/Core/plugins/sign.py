@@ -41,6 +41,7 @@ def _sign(qq):
         json.dump(data, open("data/etm/sign.json", "w", encoding="utf-8"))
         if add_vi == Decimal(0):
             achievement.unlock("+0！", event.get_user_id())
+
         return "\n".join([
             lang.text("sign.success", [], qq),
             lang.text("sign.hr", [], qq),
