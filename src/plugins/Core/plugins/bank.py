@@ -83,7 +83,7 @@ async def bank(event: MessageEvent, message: Message = CommandArg()):
                 if user.get_user_data(
                         user_id)["vimcoin"] >= debt_info["money"] + interest:
                     economy.use_vimcoin(user_id, debt_info["money"] + interest)
-                    data.bank_lead_data[user_id].pop(int(argv[1]))
+                    data.bank_lead_data[user_id].pop(int(argv[1]) - 1)
                     await bank_command.finish(_lang.text("currency.ok", [], user_id))
                 else:
                     await bank_command.finish(_lang.text("currency.no_money", [debt_info["money"] + interest], user_id))
