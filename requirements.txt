@@ -8,5 +8,6 @@ nonebot_plugin_apscheduler
 lupa
 openai
 sentry_sdk
+playwright
 sympy
-pygame
+
