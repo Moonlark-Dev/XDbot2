@@ -85,6 +85,7 @@ async def send_email(receive: str, subject: str, message: str, items: list = [],
     data[mail_id] = {
         "message": message,
         "subject": subject,
+        "from": "XDBOT",
         "rules": [["user", receive]],
         "items": items,
         "time": time.time(),
