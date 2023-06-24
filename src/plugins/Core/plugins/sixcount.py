@@ -143,9 +143,15 @@ async def pie():
         user_list = list(data.keys())
         other_count = 0
 
+        # 计算保留阈值
+        total_count = 0
+        for value in list(data.values()):
+            total_count += value
+        retention_threshold = int(total_count / len(user_list)) * 0.25
+
         for i in range(len(user_list)):
             # See https://github.com/ITCraftDevelopmentTeam/XDbot2/issues/245
-            if len(user_list) >= 20 and data[user_list[i]] <= 10:
+            if len(user_list) >= 20 and data[user_list[i]] <= retention_threshold:
                 other_count += data[user_list[i]]
             else:
                 user_data.append(
