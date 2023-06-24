@@ -19,7 +19,7 @@ on_six = on_startswith("6")
 app = get_app()
 
 
-@on_command("6-count").handle()
+@on_command("6-count", aliases={"sixcount"}).handle()
 async def _(matcher: Matcher, event: MessageEvent, bot: Bot):
     try:
         data = json.load(open("data/sixcount.data.json", encoding="utf-8"))
@@ -41,6 +41,12 @@ async def _(matcher: Matcher, event: MessageEvent, bot: Bot):
         await matcher.send(s)
     except Exception:
         await _error.report(traceback.format_exc(), matcher)
+
+# [HELPSTART] Version: 2
+# Command: sixcount
+# Info: 「6」排行榜
+# Usage: sixcount
+# [HELPEND]
 
 
 @on_six.handle()
