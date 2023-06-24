@@ -6,7 +6,6 @@ psutil
 pyecharts
 nonebot_plugin_apscheduler
 lupa
-playwright
 openai
 sentry_sdk
 sympy
