@@ -10,4 +10,4 @@ openai
 sentry_sdk
 playwright
 sympy
-
+pygame

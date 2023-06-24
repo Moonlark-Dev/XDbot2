@@ -1,4 +1,4 @@
-FROM python:3.10-alpine
+FROM python:latest
 WORKDIR /code
 EXPOSE 8080
 
