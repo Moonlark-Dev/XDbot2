@@ -78,7 +78,7 @@ async def submit_email(mail_data):
 # 供其他插件调用
 
 
-async def send_email(receive: str, subject: str, message: str, items: list = [], data: dict = {}) -> str:
+async def send_email(receive: str, subject: str, message: str, items: list = [], **params) -> str:
     data = json.load(open("data/su.mails.json", encoding="utf-8"))
     mail_id = hashlib.sha1(
         str(time.time()).encode("utf-8")).hexdigest()[:7]
@@ -90,7 +90,7 @@ async def send_email(receive: str, subject: str, message: str, items: list = [],
         "time": time.time(),
         "id": mail_id
     }
-    data[mail_id].update(data)
+    data[mail_id].update(params)
     json.dump(data, open("data/su.mails.json", "w",
               encoding="utf-8"), ensure_ascii=False, indent=4)
     await submit_email(data[mail_id])
