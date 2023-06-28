@@ -148,7 +148,7 @@ async def _(matcher: Matcher, event: GroupMessageEvent):
         await error.report(traceback.format_exc())
 
 
-@on_regex(r"^-?[0-9]+((\.|/)[0-9]+)?$").handle()#r"^-?[0-9]+((\/[0-9]+)|\.[0-9]+)?$").handle()
+@on_regex(r"^(-?[0-9]+((\.|/)[0-9]+)?)|nan|inf$").handle()#r"^-?[0-9]+((\/[0-9]+)|\.[0-9]+)?$").handle()
 async def quick_math(matcher: Matcher, event: GroupMessageEvent):
     global group, answer, group_unanswered
     try:
