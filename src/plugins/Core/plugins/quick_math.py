@@ -54,7 +54,7 @@ def render_text_as_image(_string):
     if random.random() <= 0.01:
         string = "0/0"
         global answer
-        answer = "regex>[iI][nN][fF]([iI][nN][iI][tT][yY])?"
+        answer = "regex>([iI][nN][fF]([iI][nN][iI][tT][yY])?)|([nN][aA][nN])|(ZeroDivisionError)"
     elif random.random() <= 0.02:
         string = "creeper?"
         global answer
@@ -62,7 +62,7 @@ def render_text_as_image(_string):
     elif random.random() <= 0.03:
         string = "undefined"
         global answer
-        answer = "regex>114(514(1919810)?)?"
+        answer = "regex>(114(514(1919810)?)?)|([iI][nN][fF]([iI][nN][iI][tT][yY])?)|([nN][aA][nN])|([uU][nN][dD][fF][iI][nN][eE][dD])"
     draw.text((0, 17), string, fill='black', font=font)
     draw.text((0, 0), "[QUICK MATH]", fill='black', font=title_font)
     # Remove any extra white space in the image
