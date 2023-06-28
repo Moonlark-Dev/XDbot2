@@ -42,6 +42,15 @@ def render_text_as_image(_string):
         "./src/plugins/Core/font/sarasa-fixed-cl-regular.ttf", font_size[0])
     title_font = ImageFont.truetype(
         "./src/plugins/Core/font/sarasa-fixed-cl-regular.ttf", font_size[1])
+    # 彩蛋
+    if random.random() <= 0.01:
+        string = f"{random.randint(0, 114514)}/0=?"
+        global answer
+        answer = "inf"
+    elif random.random() <= 0.01:
+        string = "undefined+undefined=?"
+        global answer
+        answer = "nan"
     # Get the size of the text
     width1, height1 = font.getsize(string)
     width2, height2 = title_font.getsize("[QUICK MATH]")
@@ -49,15 +58,7 @@ def render_text_as_image(_string):
     image = Image.new('RGB', (max(width1, width2), max(
         height1, height2) + 18), color='white')
     # Draw the text on the image
-    draw = ImageDraw.Draw(image)
-    if random.random() <= 0.001:
-        string = "0/0"
-        global answer
-        answer = "inf"
-    elif random.random() <= 0.03:
-        string = "undefined"
-        global answer
-        answer = "114514"
+    draw = ImageDraw.Draw(image) 
     draw.text((0, 17), string, fill='black', font=font)
     draw.text((0, 0), "[QUICK MATH]", fill='black', font=title_font)
     # Remove any extra white space in the image
@@ -147,7 +148,7 @@ async def _(matcher: Matcher, event: GroupMessageEvent):
         await error.report(traceback.format_exc())
 
 
-@on_regex(r"^-?[0-9]+((\/[0-9]+)|\.[0-9]+)?$").handle()
+@on_regex(r"^-?[0-9]+((\.|/)[0-9]+)?$").handle()#r"^-?[0-9]+((\/[0-9]+)|\.[0-9]+)?$").handle()
 async def quick_math(matcher: Matcher, event: GroupMessageEvent):
     global group, answer, group_unanswered
     try:
@@ -163,7 +164,7 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
                 await matcher.finish()
 
             if _answ == str(answer) or\
-                    ("/" not in str(answer) and
+                    ("/" not in str(_answ) and
                         run_sandbox(_answ) == run_sandbox(str(answer))):
                 group_unanswered[event.group_id] = 0
                 add = [random.randint(1, 13), random.randint(1, 15)]
