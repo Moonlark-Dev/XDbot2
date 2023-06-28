@@ -51,7 +51,9 @@ def render_text_as_image(_string):
     # Draw the text on the image
     draw = ImageDraw.Draw(image)
     if random.random() <= 0.001:
-        string = "Never gonna give you up"
+        string = "0/0"
+        global answer
+        answer = "inf"
     elif random.random() <= 0.03:
         string = "undefined"
         global answer
