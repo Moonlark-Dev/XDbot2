@@ -141,6 +141,7 @@ def test_regex(pattern: str, string: str) -> bool:
         return bool(re.match(pattern, string))
     return False
 
+
 @on_message().handle()
 async def _(matcher: Matcher, event: GroupMessageEvent):
     global group, answer, send_time
