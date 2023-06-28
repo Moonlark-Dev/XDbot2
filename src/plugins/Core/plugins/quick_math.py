@@ -50,12 +50,12 @@ def render_text_as_image(_string):
         height1, height2) + 18), color='white')
     # Draw the text on the image
     draw = ImageDraw.Draw(image)
-    if random.random() >= 9.97:
+    if random.random() <= 0.001:
+        string = "Never gonna give you up"
+    elif random.random() <= 0.03:
         string = "undefined"
         global answer
         answer = "114514"
-    if random.random() <= 0.001:
-        string = "Never gonna give you up"
     draw.text((0, 17), string, fill='black', font=font)
     draw.text((0, 0), "[QUICK MATH]", fill='black', font=title_font)
     # Remove any extra white space in the image
