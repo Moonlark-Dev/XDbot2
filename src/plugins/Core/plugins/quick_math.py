@@ -62,7 +62,7 @@ def render_text_as_image(_string):
     elif random.random() <= 0.03:
         string = "undefined"
         global answer
-        answer = "regex>(114(514(1919810)?)?)|([iI][nN][fF]([iI][nN][iI][tT][yY])?)|([nN][aA][nN])|([uU][nN][dD][fF][iI][nN][eE][dD])"
+        answer = "regex>(114(514)?(1919810)?)|([iI][nN][fF]([iI][nN][iI][tT][yY])?)|([nN][aA][nN])|([uU][nN][dD][fF][iI][nN][eE][dD])"
     draw.text((0, 17), string, fill='black', font=font)
     draw.text((0, 0), "[QUICK MATH]", fill='black', font=title_font)
     # Remove any extra white space in the image
