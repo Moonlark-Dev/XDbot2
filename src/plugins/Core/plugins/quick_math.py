@@ -58,7 +58,7 @@ def render_text_as_image(_string):
     image = Image.new('RGB', (max(width1, width2), max(
         height1, height2) + 18), color='white')
     # Draw the text on the image
-    draw = ImageDraw.Draw(image) 
+    draw = ImageDraw.Draw(image)
     draw.text((0, 17), string, fill='black', font=font)
     draw.text((0, 0), "[QUICK MATH]", fill='black', font=title_font)
     # Remove any extra white space in the image
@@ -148,7 +148,8 @@ async def _(matcher: Matcher, event: GroupMessageEvent):
         await error.report(traceback.format_exc())
 
 
-@on_regex(r"^(-?[0-9]+((\.|/)[0-9]+)?)|nan|inf$").handle()#r"^-?[0-9]+((\/[0-9]+)|\.[0-9]+)?$").handle()
+# r"^-?[0-9]+((\/[0-9]+)|\.[0-9]+)?$").handle()
+@on_regex(r"^(-?[0-9]+((\.|/)[0-9]+)?)|nan|inf$").handle()
 async def quick_math(matcher: Matcher, event: GroupMessageEvent):
     global group, answer, group_unanswered
     try:
