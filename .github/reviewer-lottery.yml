@@ -4,5 +4,4 @@ groups:
     internal_reviewers: 1 # how many reviewers do you want to assign when the PR author belongs to this group?
     usernames: # github usernames of the reviewers
       - xxtg666
-      - XieXiLin2
       - This-is-XiaoDeng
