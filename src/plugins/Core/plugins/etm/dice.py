@@ -17,7 +17,10 @@ class Dice(Item):
 
     def use_item(self):
         user_id = self.user_id
-        c = self.data["int"] or random.randint(1, 200)
+        if self.data["int"] is not None:
+            c = self.data["int"]*10+3
+        else:
+            c = random.randint(1, 200)
         if 192 <= c <= 200:  # 20
             economy.add_vi(user_id, 50)
             return _lang.text("dice.20", [], self.user_id)
