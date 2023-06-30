@@ -142,7 +142,7 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
             argument = argument[0].split(" ")
         if argument[0] not in ["add", "添加", "-a"] and time.time() - \
                 latest_use < 1:
-            await cave.finish(f"冷却中（{round(1 - (time.time() - latest_use), 3)}s）", at_sender=True)
+            await cave.finish(_lang.text("cave.cd", [str(round(1 - (time.time() - latest-use), 3))], event.get_user_id()), at_sender=True)
         else:
             latest_use = time.time()
         if argument[0] == "":
