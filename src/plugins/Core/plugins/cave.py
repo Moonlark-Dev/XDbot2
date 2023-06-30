@@ -200,6 +200,8 @@ async def cave_handle(bot: Bot, event: MessageEvent, message: Message = CommandA
         elif argument[0] in ["query", "-q", "查询"]:
             start_id = int(argument[1])
             end_id = int(argument[2])
+            if end_id - start_id >= 175:
+                await cave.finish(_lang.text("cave.query_too_many", [175], event.get_user_id()))
             node_message = []
             user_info = await bot.get_login_info()
 
