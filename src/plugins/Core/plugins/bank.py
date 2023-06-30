@@ -2,7 +2,7 @@ from nonebot.adapters.onebot.v11 import MessageEvent
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.params import CommandArg
 from . import _error
-from .etm import economy, data, user
+from .etm import economy, data, user, exp
 from . import _lang
 import time
 from nonebot import on_command
@@ -84,6 +84,7 @@ async def bank(event: MessageEvent, message: Message = CommandArg()):
                         user_id)["vimcoin"] >= debt_info["money"] + interest:
                     economy.use_vimcoin(user_id, debt_info["money"] + interest)
                     data.bank_lead_data[user_id].pop(int(argv[1]) - 1)
+                    exp.add_exp(event.get_user_id(), 2)
                     await bank_command.finish(_lang.text("currency.ok", [], user_id))
                 else:
                     await bank_command.finish(_lang.text("currency.no_money", [debt_info["money"] + interest], user_id))
