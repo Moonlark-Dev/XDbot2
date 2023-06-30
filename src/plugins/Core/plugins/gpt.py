@@ -50,7 +50,7 @@ async def _(matcher: Matcher, event: MessageEvent):
         except BaseException:
             await matcher.finish(choice(dictionary["to_me"]))
         reply = session["choices"][0]["message"]
-        messages[str(event.group_id)].append(reply)
+        # messages[str(event.group_id)].append(reply)
         await matcher.finish(
             MessageSegment.reply(event.message_id) +
             MessageSegment.text(reply["content"]),
