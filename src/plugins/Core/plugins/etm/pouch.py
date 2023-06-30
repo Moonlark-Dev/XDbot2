@@ -55,7 +55,7 @@ class Pouch(Item):
 
     def get_item(self, args):
         item = self.data["items"][int(args[1]) - 1]
-        _item = items.json2items(self.data["itmes"])[int(args[1]) - 1]
+        _item = items.json2items(self.data["items"])[int(args[1]) - 1]
         if len(args) < 3:
             count = item["count"]
         else:
