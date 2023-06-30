@@ -15,29 +15,29 @@ class Dice(Item):
             "int": None
         }
 
-    def result(self,c,is_data=False):
+    def result(self, c, is_data=False):
         if is_data:
             return c
         if 193 <= c <= 200:  # 20
             return 20
         elif 183 <= c <= 192:  # 18-19
-            return random.randint(18,19)
+            return random.randint(18, 19)
         elif 153 <= c <= 182:  # 15-17
-            return random.randint(15,17)
+            return random.randint(15, 17)
         elif 106 <= c <= 152:  # 10-14
-            return random.randint(10,14)
+            return random.randint(10, 14)
         elif 16 <= c <= 105:  # 2-9
-            return random.randint(2,9)
+            return random.randint(2, 9)
         elif c <= 15:  # 1
             return 1
-    
+
     def use_item(self):
         user_id = self.user_id
         if self.data["int"] is not None:
             c = self.data["int"]
         else:
             c = random.randint(1, 200)
-        c = self.result(c,self.data["int"] is not None)
+        c = self.result(c, self.data["int"] is not None)
         if c == 20:  # 20
             economy.add_vi(user_id, 50)
             return _lang.text("dice.20", [c], self.user_id)
