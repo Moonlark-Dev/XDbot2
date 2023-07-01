@@ -92,6 +92,33 @@ refresh_group_unanswered()
 
 
 @on_command("new-quick-math", aliases={"nqm"}).handle()
+async def _(matcher: Matcher, event: GroupMessageEvent):
+    global group, answer, send_time
+    try:
+        group = event.group_id
+        if random.random() <= 0.5:
+            question = f"{random.randint(0, 40)} {random.choice('+-*')} {random.randint(0, 35)}"
+            answer = eval(question)
+            question += " = ?"
+        else:
+            question, answer = generate_equation()
+            question = latex(question)
+            answer = str(answer).replace("[", "").replace("]", "")
+        bot = get_bot(accout_data[str(group)])
+        send_time = time.time()
+        msg_id = (await bot.send_group_msg(
+            group_id=group,
+            message=MessageSegment.image(render_text_as_image(f"{question}"))))["message_id"]
+        await asyncio.sleep(20)
+        if None not in [group, answer]:
+            await bot.delete_msg(message_id=msg_id)
+            group_unanswered[group] += 1
+            group = None
+            answer = None
+    except BaseException:
+        await error.report(format_exc())
+
+
 @scheduler.scheduled_job("cron", minute="*/2", id="send_quick_math")
 async def send_quick_math():
     global group, answer, send_time
