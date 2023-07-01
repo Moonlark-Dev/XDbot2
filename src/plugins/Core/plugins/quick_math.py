@@ -95,6 +95,10 @@ refresh_group_unanswered()
 async def _(matcher: Matcher, event: GroupMessageEvent):
     global group, answer, send_time
     try:
+        accout_data = json.load(
+            open(
+                "data/su.multiaccoutdata.ro.json",
+                encoding="utf-8"))
         group = event.group_id
         if random.random() <= 0.5:
             question = f"{random.randint(0, 40)} {random.choice('+-*')} {random.randint(0, 35)}"
