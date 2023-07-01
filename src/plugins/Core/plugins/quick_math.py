@@ -150,7 +150,7 @@ async def _(matcher: Matcher, event: GroupMessageEvent):
         if group == event.group_id:
             _answ = event.get_plaintext()
             if (test_regex(_answ, answer)
-                or (str(answer) in _answ and str(answer) != _answ)):
+                    or (str(answer) in _answ and str(answer) != _answ)):
                 data = json.load(
                     open("data/quick_math.average.json", encoding="utf-8"))
                 if time.time() - send_time <= data["average"] / 2:
