@@ -2,10 +2,10 @@ import random
 from traceback import format_exc
 import asyncio
 import traceback
-from nonebot.adapters.onebot.v11 import GroupMessageEvent
+from nonebot.adapters.onebot.v11 import GroupMessageEvent, MessageSegment
 from nonebot.matcher import Matcher
 from . import _lang as lang
-from sympy import *
+from sympy import Symbol, Eq, solve, latex
 from . import _error as error
 from .etm import achievement, economy, exp
 from nonebot_plugin_apscheduler import scheduler
@@ -13,8 +13,8 @@ from nonebot import get_bot, on_message, require, on_command, on_regex
 import json
 from PIL import Image, ImageDraw, ImageFont
 import time
+from io import BytesIO
 from lupa import LuaRuntime
-import os.path
 import re
 
 require("nonebot_plugin_apscheduler")
@@ -28,7 +28,7 @@ run_sandbox = lua.eval("run_sandbox")
 
 
 def generate_equation():
-    x = symbols('x')
+    x = Symbol('x')
     a, b = random.randint(1, 10), random.randint(1, 10)
     eq = Eq(a * x + b, random.randint(1, 50))
     ans = solve(eq)
@@ -36,19 +36,17 @@ def generate_equation():
 
 
 def render_text_as_image(_string):
+    global answer
     string = _string.replace(" ", "")
     # 处理彩蛋，https://github.com/ITCraftDevelopmentTeam/XDbot2/pull/291
     if random.random() <= 0.01:
         string = "0/0=?"
-        global answer
         answer = "regex>([iI][nN][fF]([iI][nN][iI][tT][yY])?)|([nN][aA][nN])|(ZeroDivisionError)"
     elif random.random() <= 0.02:
         string = "creeper?"
-        global answer
         answer = "[aA][wW]+(.*?)[mM][aA][N](.*?)"
     elif random.random() <= 0.03:
         string = "undefined+undefined=?"
-        global answer
         answer = "regex>(114(514)?(1919810)?)|([iI][nN][fF]([iI][nN][iI][tT][yY])?)|([nN][aA][nN])|([uU][nN][dD][fF][iI][nN][eE][dD])"
     # Set the font size and the font type
     font_size = 20, 16
@@ -69,8 +67,12 @@ def render_text_as_image(_string):
     # Remove any extra white space in the image
     bbox = image.getbbox()
     image = image.crop(bbox)
-    # Save the image to the local system
-    image.save('data/quick_math.image.png')
+   # # Save the image to the local system
+   # image.save('data/quick_math.image.png')
+    io = BytesIO()
+    image.save(io, format="PNG")
+    return io.getvalue()
+
 
 # render_text_as_image("[QUICK MATH] 29 + 1 = ?")
 
@@ -99,8 +101,9 @@ async def delete_msg(bot, message_id):
         answer = None
 
 
+@on_command("quick-math-new", aliases={"qm-n"}).handle()
 @scheduler.scheduled_job("cron", minute="*/2", id="send_quick_math")
-async def send_quick_math():
+async def send_quick_math(matcher: Matcher):
     global group, answer, send_time
     try:
         accout_data = json.load(
@@ -127,10 +130,7 @@ async def send_quick_math():
             answer = str(answer).replace("[", "").replace("]", "")
         bot = get_bot(accout_data[str(group)])
         send_time = time.time()
-        render_text_as_image(f"{question}")
-        msg_id = (await bot.send_group_msg(
-            group_id=group,
-            message="[CQ:image,file=file://{}]".format(os.path.abspath("./data/quick_math.image.png"))))["message_id"]
+        msg_id = await matcher.send(MessageSegment.image(render_text_as_image(f"{question}")))
         asyncio.create_task(delete_msg(bot, msg_id))
     except BaseException:
         await error.report(format_exc())
@@ -149,8 +149,8 @@ async def _(matcher: Matcher, event: GroupMessageEvent):
     try:
         if group == event.group_id:
             _answ = event.get_plaintext()
-            if test_regex(_answ, answer)
-            or (str(answer) in _answ and str(answer) != _answ):
+            if (test_regex(_answ, answer)
+                    or (str(answer) in _answ and str(answer) != _answ)):
                 data = json.load(
                     open("data/quick_math.average.json", encoding="utf-8"))
                 if time.time() - send_time <= data["average"] / 2:
