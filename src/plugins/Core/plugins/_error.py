@@ -28,7 +28,7 @@ IGNORED_EXCEPTION = [
     "IllegalQuantityException"
 ]
 ehm = {}
-ehm["errors"] = []
+ehm["errors"] = {}
 for file in os.listdir(os.path.abspath("src/plugins/Core/ehm")):
     try:
         data = json.load(open(os.path.join(os.path.abspath(
