@@ -90,8 +90,10 @@ def refresh_group_unanswered(groups=[]):
 
 refresh_group_unanswered()
 
+# TODO Only SU
+# @on_command("new-quick-math", aliases={"nqm"}).handle()
 
-@on_command("new-quick-math", aliases={"nqm"}).handle()
+
 async def _(matcher: Matcher, event: GroupMessageEvent):
     global group, answer, send_time
     try:
