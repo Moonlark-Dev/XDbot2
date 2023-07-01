@@ -65,8 +65,8 @@ async def report(_err: str | None = None, matcher: Matcher = Matcher(), event=No
                 filename = f"data/_error.cache_{time.time()}.ro.png"
                 markdown2image.md2img(
                     ehm["templ"].replace("%error%", error)
-                    .replace("%because%", "- ".join(data["because"]))
-                    .replace("%do%", "- ".join(data["do"]))
+                    .replace("%because%", "- " + "\n- ".join(data["because"]))
+                    .replace("%do%", "- " + "\n- ".join(data["do"]))
                     .replace("%log%", err),
                     filename
                 )
