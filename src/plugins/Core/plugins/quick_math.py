@@ -118,6 +118,7 @@ async def _(matcher: Matcher, event: GroupMessageEvent):
     except BaseException:
         await error.report(format_exc())
 
+
 @scheduler.scheduled_job("cron", minute="*/2", id="send_quick_math")
 async def send_quick_math():
     global group, answer, send_time
