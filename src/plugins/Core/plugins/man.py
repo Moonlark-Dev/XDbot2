@@ -1,4 +1,4 @@
-import markdown2png
+import markdown2image
 import json
 import re
 import traceback
@@ -12,7 +12,7 @@ import os.path
 import time
 import sys
 
-sys.path.append("src/plugins/Core/lib/markdown2png")
+sys.path.append(os.path.abspath("src/plugins/Core/lib/md2img"))
 
 man = on_command("man", aliases={"手册", "info"})
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
@@ -49,7 +49,7 @@ async def manHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg
                     break
         # 发送
         filename = f"data/man.cache_{time.time()}.ro.png"
-        markdown2png.markdown2png(text, filename)
+        markdown2image.md2img(text, filename)
         _text = text.replace("\n", " \n").replace("#", " ").replace("`", " ")
         await man.send(
             Message(

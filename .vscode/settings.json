@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./src/plugins/Core/lib/md2img"
+    ]
+}
