@@ -16,7 +16,7 @@ markdown2image = __import__("markdown2image")
 md2img = on_command("md2img", aliases={"markdown渲染", "md渲染"})
 
 
-@md2ing.handle()
+@md2img.handle()
 async def md2imgHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg()):
     try:
         markdown = message.extract_plain_text()
