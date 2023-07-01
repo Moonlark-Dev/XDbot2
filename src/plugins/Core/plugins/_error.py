@@ -64,15 +64,16 @@ async def report(_err: str | None = None, matcher: Matcher = Matcher(), event=No
                     data = ehm["unknown"]
                 filename = f"data/_error.cache_{time.time()}.ro.png"
                 markdown2image.md2img(
-                    ehm["templ"].replace("%error%", err)
-                    .replace("%because%", "- ".join(data["because"]))
-                    .replace("%do%", "- ".join(data["do"]))
-                    .replace("%log%", _err),
+                    ehm["templ"].replace("%error%", error)
+                    .replace("%because%", "\n".join(data["because"]))
+                    .replace("%do%", "- " + "\n- ".join(data["do"]))
+                    .replace("%log%", err),
                     filename
                 )
                 await matcher.send(
                     Message(
-                        f'[CQ:image,file=file://{os.path.abspath(filename)}]')
+                        f'[CQ:image,file=file://{os.path.abspath(filename)}]'),
+                    at_sender=True
                 )
                 os.remove(filename)
             except:
