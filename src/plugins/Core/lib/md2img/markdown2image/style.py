@@ -146,7 +146,7 @@ def get_size(ast: list) -> tuple[int, int]:  # , list]:
             case "text":
                 widget_size = list(ImageFont.truetype(
                     item["style"].get("font-family") or os.path.join(
-                        path, "font/SourceHanSansCN-VF.ttf"),
+                        path, "font/HYRunYuan-55W.ttf"),
                     item["style"].get("font-size") or
                     default_style["text"].get("font-size") or 20)
                     .getsize(item["innerHTML"][0]))
@@ -184,7 +184,7 @@ def draw(ast: dict, size: tuple, background_color: tuple = (255, 255, 255, 0)) -
             case "text":
                 font = ImageFont.truetype(item["style"].get(
                     "font-family") or os.path.join(
-                        path, "font/SourceHanSansCN-VF.ttf"
+                        path, "font/HYRunYuan-55W.ttf"
                 ), item["style"].get(
                         "font-size"
                 ) or default_style["text"].get(
