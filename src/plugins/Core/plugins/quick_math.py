@@ -51,9 +51,9 @@ def render_text_as_image(_string):
     # Set the font size and the font type
     font_size = 20, 16
     font = ImageFont.truetype(
-        "./src/plugins/Core/font/sarasa-fixed-cl-regular.ttf", font_size[0])
+        "./src/plugins/Core/font/SourceHanSansCN-VF.ttf", font_size[0])
     title_font = ImageFont.truetype(
-        "./src/plugins/Core/font/sarasa-fixed-cl-regular.ttf", font_size[1])
+        "./src/plugins/Core/font/SourceHanSansCN-VF.ttf", font_size[1])
     # Get the size of the text
     width1, height1 = font.getsize(string)
     width2, height2 = title_font.getsize("[QUICK MATH]")
