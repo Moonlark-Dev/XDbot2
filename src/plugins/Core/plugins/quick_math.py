@@ -120,9 +120,9 @@ async def send_quick_math():
             answer = str(answer).replace("[", "").replace("]", "")
         bot = get_bot(accout_data[str(group)])
         send_time = time.time()
-        msg_id = await bot.send_group_msg(
+        msg_id = (await bot.send_group_msg(
             group_id=group,
-            message=MessageSegment.image(render_text_as_image(f"{question}")))
+            message=MessageSegment.image(render_text_as_image(f"{question}"))))["message_id"]
         await asyncio.sleep(20)
         if None not in [group, answer]:
             await bot.delete_msg(message_id=msg_id)
