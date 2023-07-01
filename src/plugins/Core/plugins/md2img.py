@@ -23,7 +23,7 @@ async def md2imgHandle(bot: Bot, event: MessageEvent, message: Message = Command
         # 发送
         filename = f"data/md2img.cache_{time.time()}.ro.png"
         markdown2image.md2img(markdown, filename)
-        await man.send(
+        await md2img.send(
             Message(
                 f'[CQ:image,file=file://{os.path.abspath(filename)}]')
         )
