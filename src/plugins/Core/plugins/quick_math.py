@@ -37,6 +37,19 @@ def generate_equation():
 
 def render_text_as_image(_string):
     string = _string.replace(" ", "")
+    # 处理彩蛋，https://github.com/ITCraftDevelopmentTeam/XDbot2/pull/291
+    if random.random() <= 0.01:
+        string = "0/0=?"
+        global answer
+        answer = "regex>([iI][nN][fF]([iI][nN][iI][tT][yY])?)|([nN][aA][nN])|(ZeroDivisionError)"
+    elif random.random() <= 0.02:
+        string = "creeper?"
+        global answer
+        answer = "[aA][wW]+(.*?)[mM][aA][N](.*?)"
+    elif random.random() <= 0.03:
+        string = "undefined+undefined=?"
+        global answer
+        answer = "regex>(114(514)?(1919810)?)|([iI][nN][fF]([iI][nN][iI][tT][yY])?)|([nN][aA][nN])|([uU][nN][dD][fF][iI][nN][eE][dD])"
     # Set the font size and the font type
     font_size = 20, 16
     font = ImageFont.truetype(
@@ -51,18 +64,6 @@ def render_text_as_image(_string):
         height1, height2) + 18), color='white')
     # Draw the text on the image
     draw = ImageDraw.Draw(image)
-    if random.random() <= 0.01:
-        string = "0/0"
-        global answer
-        answer = "regex>([iI][nN][fF]([iI][nN][iI][tT][yY])?)|([nN][aA][nN])|(ZeroDivisionError)"
-    elif random.random() <= 0.02:
-        string = "creeper?"
-        global answer
-        answer = "[aA][wW]+(.*?)[mM][aA][N](.*?)"
-    elif random.random() <= 0.03:
-        string = "undefined"
-        global answer
-        answer = "regex>(114(514)?(1919810)?)|([iI][nN][fF]([iI][nN][iI][tT][yY])?)|([nN][aA][nN])|([uU][nN][dD][fF][iI][nN][eE][dD])"
     draw.text((0, 17), string, fill='black', font=font)
     draw.text((0, 0), "[QUICK MATH]", fill='black', font=title_font)
     # Remove any extra white space in the image
