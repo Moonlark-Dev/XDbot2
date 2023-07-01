@@ -13,7 +13,7 @@ import sys
 
 sys.path.append(os.path.abspath("src/plugins/Core/lib/md2img"))
 markdown2image = __import__("markdown2image")
-md2img = on_command("md2img")
+md2img = on_command("md2img", aliases={"markdown渲染", "md渲染"})
 
 
 @md2ing.handle()
