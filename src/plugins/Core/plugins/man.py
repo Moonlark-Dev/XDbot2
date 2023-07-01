@@ -1,4 +1,3 @@
-import markdown2image
 import json
 import re
 import traceback
@@ -13,6 +12,7 @@ import time
 import sys
 
 sys.path.append(os.path.abspath("src/plugins/Core/lib/md2img"))
+__import__("markdown2image")
 
 man = on_command("man", aliases={"手册", "info"})
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
