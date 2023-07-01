@@ -42,10 +42,10 @@ def render_text_as_image(_string):
     if random.random() <= 0.01:
         string = "0/0=?"
         answer = "regex>([iI][nN][fF]([iI][nN][iI][tT][yY])?)|([nN][aA][nN])|(ZeroDivisionError)"
-    elif random.random() <= 0.02:
+    elif random.random() <= 0.01:
         string = "creeper?"
         answer = "[aA][wW]+(.*?)[mM][aA][N](.*?)"
-    elif random.random() <= 0.03:
+    elif random.random() <= 0.01:
         string = "undefined+undefined=?"
         answer = "regex>(114(514)?(1919810)?)|([iI][nN][fF]([iI][nN][iI][tT][yY])?)|([nN][aA][nN])|([uU][nN][dD][fF][iI][nN][eE][dD])"
     # Set the font size and the font type
