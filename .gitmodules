@@ -4,3 +4,6 @@
 [submodule "src/plugins/Core/lib/markdown2png"]
 	path = src/plugins/Core/lib/markdown2png
 	url = https://github.com/This-is-XiaoDeng/markdown2png.git
+[submodule "src/plugins/Core/lib/md2img"]
+	path = src/plugins/Core/lib/md2img
+	url = https://github.com/ITCraftDevelopmentTeam/MarkDown2Image.git
