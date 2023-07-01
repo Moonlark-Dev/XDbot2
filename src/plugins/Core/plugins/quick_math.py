@@ -91,17 +91,7 @@ def refresh_group_unanswered(groups=[]):
 refresh_group_unanswered()
 
 
-async def delete_msg(bot, message_id):
-    global group, answer
-    await asyncio.sleep(20)
-    if None not in [group, answer]:
-        await bot.delete_msg(message_id=message_id)
-        group_unanswered[group] += 1
-        group = None
-        answer = None
-
-
-@on_command("quick-math-new", aliases={"qm-n"}).handle()
+@on_command("new-quick-math", aliases={"nqm"}).handle()
 @scheduler.scheduled_job("cron", minute="*/2", id="send_quick_math")
 async def send_quick_math():
     global group, answer, send_time
@@ -133,7 +123,12 @@ async def send_quick_math():
         msg_id = await bot.send_group_msg(
             group_id=group,
             message=MessageSegment.image(render_text_as_image(f"{question}")))
-        asyncio.create_task(delete_msg(bot, msg_id))
+        await asyncio.sleep(20)
+        if None not in [group, answer]:
+            await bot.delete_msg(message_id=msg_id)
+            group_unanswered[group] += 1
+            group = None
+            answer = None
     except BaseException:
         await error.report(format_exc())
 
