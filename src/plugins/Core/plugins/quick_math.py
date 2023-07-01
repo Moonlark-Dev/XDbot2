@@ -15,6 +15,7 @@ from PIL import Image, ImageDraw, ImageFont
 import time
 from lupa import LuaRuntime
 import os.path
+import re
 
 require("nonebot_plugin_apscheduler")
 group = None
@@ -36,21 +37,25 @@ def generate_equation():
 
 def render_text_as_image(_string):
     string = _string.replace(" ", "")
+    # 处理彩蛋，https://github.com/ITCraftDevelopmentTeam/XDbot2/pull/291
+    if random.random() <= 0.01:
+        string = "0/0=?"
+        global answer
+        answer = "regex>([iI][nN][fF]([iI][nN][iI][tT][yY])?)|([nN][aA][nN])|(ZeroDivisionError)"
+    elif random.random() <= 0.02:
+        string = "creeper?"
+        global answer
+        answer = "[aA][wW]+(.*?)[mM][aA][N](.*?)"
+    elif random.random() <= 0.03:
+        string = "undefined+undefined=?"
+        global answer
+        answer = "regex>(114(514)?(1919810)?)|([iI][nN][fF]([iI][nN][iI][tT][yY])?)|([nN][aA][nN])|([uU][nN][dD][fF][iI][nN][eE][dD])"
     # Set the font size and the font type
     font_size = 20, 16
     font = ImageFont.truetype(
         "./src/plugins/Core/font/sarasa-fixed-cl-regular.ttf", font_size[0])
     title_font = ImageFont.truetype(
         "./src/plugins/Core/font/sarasa-fixed-cl-regular.ttf", font_size[1])
-    # 彩蛋
-    if random.random() <= 0.01:
-        string = f"{random.randint(0, 114514)}/0=?"
-        global answer
-        answer = "inf"
-    elif random.random() <= 0.01:
-        string = "undefined+undefined=?"
-        global answer
-        answer = "nan"
     # Get the size of the text
     width1, height1 = font.getsize(string)
     width2, height2 = title_font.getsize("[QUICK MATH]")
@@ -131,13 +136,21 @@ async def send_quick_math():
         await error.report(format_exc())
 
 
+def test_regex(pattern: str, string: str) -> bool:
+    if pattern.startswith("regex>"):
+        pattern = pattern[6:]
+        return bool(re.match(pattern, string))
+    return False
+
+
 @on_message().handle()
 async def _(matcher: Matcher, event: GroupMessageEvent):
     global group, answer, send_time
     try:
         if group == event.group_id:
-            if str(answer) in event.get_plaintext()\
-                    and str(answer) != event.get_plaintext():
+            _answ = event.get_plaintext()
+            if test_regex(_answ, answer)
+            or (str(answer) in _answ and str(answer) != _answ):
                 data = json.load(
                     open("data/quick_math.average.json", encoding="utf-8"))
                 if time.time() - send_time <= data["average"] / 2:
@@ -148,8 +161,7 @@ async def _(matcher: Matcher, event: GroupMessageEvent):
         await error.report(traceback.format_exc())
 
 
-# r"^-?[0-9]+((\/[0-9]+)|\.[0-9]+)?$").handle()
-@on_regex(r"^(-?[0-9]+((\.|/)[0-9]+)?)|nan|inf$").handle()
+@on_message().handle()
 async def quick_math(matcher: Matcher, event: GroupMessageEvent):
     global group, answer, group_unanswered
     try:
@@ -163,9 +175,8 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
                 _answ = event.get_plaintext().strip().replace("x=", "")
             except ValueError:
                 await matcher.finish()
-
-            if _answ == str(answer) or\
-                    ("/" not in str(_answ) and
+            if test_regex(_answ, answer) or _answ == str(answer) or\
+                    ("/" not in str(answer) and
                         run_sandbox(_answ) == run_sandbox(str(answer))):
                 group_unanswered[event.group_id] = 0
                 add = [random.randint(1, 13), random.randint(1, 15)]

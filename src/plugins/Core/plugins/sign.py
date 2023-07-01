@@ -40,7 +40,7 @@ def _sign(qq):
         now_data = user.get_user_data(qq)
         json.dump(data, open("data/etm/sign.json", "w", encoding="utf-8"))
         if add_vi == Decimal(0):
-            achievement.unlock("+0！", event.get_user_id())
+            achievement.unlock("+0！", qq)
 
         return "\n".join([
             lang.text("sign.success", [], qq),
