@@ -1,5 +1,8 @@
 {
     "python.analysis.extraPaths": [
         "./src/plugins/Core/lib/md2img"
-    ]
+    ],
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.autopep8"
+    }
 }

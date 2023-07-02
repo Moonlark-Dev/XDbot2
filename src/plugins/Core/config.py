@@ -20,6 +20,10 @@ class Config(BaseSettings):
     # 数据文件命名规则：子插件.数据名.json
     FILES = [
         {
+            "path": "data/cave.latest_use.json",
+            "text": "{}"
+        },
+        {
             "path": "data/su.update_notice.json",
             "text": '{"disabled": []}'
         },
