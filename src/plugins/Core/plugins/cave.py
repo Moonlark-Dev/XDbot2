@@ -20,6 +20,7 @@ from nonebot.rule import to_me
 cave_comment = on_message(rule=to_me())
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 latest_use = time.time()
+cave_messages = []
 path = os.path.abspath(os.path.dirname("."))
 app = get_app()
 commandHelp = {
@@ -44,8 +45,7 @@ async def cave_comment_writer(event: GroupMessageEvent, bot: Bot):
         if not event.reply:
             await cave_comment.finish()
         reply_message = event.reply.message.extract_plain_text()
-        if re.match(
-                r"^.{0,10}——（[0-9]+）\n(.+)\n——(.+)", reply_message):
+        if event.reply.message_id == cave_messages:
             # 判断是否被封禁
             if str(event.user_id) in json.load(
                     open("data/cave.banned.json", encoding="utf-8")):
@@ -322,11 +322,15 @@ async def cave_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent):
                 senderData = {"nickname": "未知"}
         else:
             senderData = await bot.get_stranger_info(user_id=caveData["sender"])
-        await cave.send(
-            Message((
+        cave_messages.append((await bot.send_group_msg(
+            message=Message((
                 f'{_lang.text("cave.name",[],event.get_user_id())}——（{caveData["id"]}）\n'
                 f'{text}\n'
-                f"——{senderData['nickname']}")))
+                f"——{senderData['nickname']}")),
+            group_id=event.group_id
+        ))["message_id"])
+        if len(cave_messages) >= 10:
+            cave_messages.pop(0)
         latest_use[str(event.group_id)] = time.time()
         json.dump(latest_use, open("data/cave.latest_use.json", "w", encoding="utf-8"))
         # 发送评论
