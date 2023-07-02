@@ -7,12 +7,12 @@ import traceback
 import marshal
 import re
 from . import _error
-from .etm import exp, economy
+from .etm import exp
 from . import _lang, _messenger
 import httpx
 from nonebot import on_command, get_app, on_message
 from nonebot.adapters.onebot.v11 import Bot, Message, GroupMessageEvent
-from nonebot.exception import FinishedException
+from nonebot.permission import SUPERUSER
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
 from nonebot.rule import to_me
@@ -31,12 +31,10 @@ commandHelp = {
         "usage": [
             "cave：随机一条回声洞",
             "cave-a <内容>：投稿一条回声洞（见cave(1)）",
-            "cave-g <回声洞ID>：查看指定回声洞",
-            "cave-q <开始ID> <结束ID>：查询指定范围内的回声洞"
         ],
     }
 }
-MAX_NODE_MESSAGE = 200
+MAX_NODE_MESSAGE = 100
 
 
 @cave_comment.handle()
@@ -45,7 +43,7 @@ async def cave_comment_writer(event: GroupMessageEvent, bot: Bot):
         if not event.reply:
             await cave_comment.finish()
         reply_message = event.reply.message.extract_plain_text()
-        if event.reply.message_id == cave_messages:
+        if event.reply.message_id in cave_messages:
             # 判断是否被封禁
             if str(event.user_id) in json.load(
                     open("data/cave.banned.json", encoding="utf-8")):
@@ -127,7 +125,7 @@ def parseCave(text: str):
         return parseCave(text.replace(f"[[Img:{imageID}]]]", str(imageCQ)))
 
 
-@on_command("cave-g").handle()
+@on_command("cave-g", permission=SUPERUSER).handle()
 async def cave_get_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()):
     try:
         argument = message.extract_plain_text().split(" ")
@@ -181,7 +179,7 @@ async def cave_get_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent, me
         await _error.report()
 
 
-@on_command("cave-q").handle()
+@on_command("cave-q", permission=SUPERUSER).handle()
 async def cave_query_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()):
     try:
         argument = message.extract_plain_text().split(" ")
