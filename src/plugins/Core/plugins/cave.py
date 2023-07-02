@@ -303,7 +303,7 @@ async def cave_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent):
             await cave.finish(
                 _lang.text(
                     "cave.cd",
-                    [str(round(cd_time - (time.time() - latest_use), 3))],
+                    [str(round(cd_time - (time.time() - latest_use[str(event.group_id)]), 3))],
                     event.get_user_id()
                 ),
                 at_sender=True
