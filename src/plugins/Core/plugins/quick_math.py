@@ -206,7 +206,7 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
             except ValueError:
                 await matcher.finish()
             if test_regex(_answ, answer) or _answ == str(answer) or\
-                    ("/" not in str(answer) and
+                    ("/" not in str(_answ) and
                         run_sandbox(_answ) == run_sandbox(str(answer))):
                 group_unanswered[event.group_id] = 0
                 add = [random.randint(1, 13), random.randint(1, 15)]
