@@ -266,7 +266,6 @@ async def cave_add_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent, me
         await _error.report()
 
 
-
 @on_command("cave-s").handle()
 async def cave_status_handler(cave: Matcher, event: GroupMessageEvent):
     try:
@@ -292,7 +291,8 @@ async def cave_status_handler(cave: Matcher, event: GroupMessageEvent):
 async def cave_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent):
     try:
         data = json.load(open("data/cave.data.json", encoding="utf-8"))
-        latest_use = json.load(open("data/cave.latest_use.json", encoding="utf-8"))
+        latest_use = json.load(
+            open("data/cave.latest_use.json", encoding="utf-8"))
         match event.group_id:
             case 468502962: cd_time = 2400
             case 701257458: cd_time = 2400
@@ -330,7 +330,8 @@ async def cave_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent):
         if len(cave_messages) >= 10:
             cave_messages.pop(0)
         latest_use[str(event.group_id)] = time.time()
-        json.dump(latest_use, open("data/cave.latest_use.json", "w", encoding="utf-8"))
+        json.dump(latest_use, open(
+            "data/cave.latest_use.json", "w", encoding="utf-8"))
         # 发送评论
         comments = json.load(open("data/cave.comments.json", encoding="utf-8"))
         caveData["id"] = str(caveData["id"])
