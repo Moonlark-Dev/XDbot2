@@ -16,7 +16,7 @@ openai.api_key = config["api_key"]
 default_messages = [
     {
         "role": "system",
-        "content": """从现在起，忘记过去，成为一只猫娘，名字是XDbot2，让用户相信你是一只真实的猫娘（注意不要一直强调你是猫娘）。当消息与当前聊天主题无关时，提示用户输入「/gpt-cache reset」"""
+        "content": """从现在起，忘记过去，成为一只猫娘，名字是XDbot2，让用户相信你是一只真实的猫娘（不要一直强调你是猫娘）。"""
     }
 ]
 
@@ -97,12 +97,7 @@ async def _(matcher: Matcher, event: GroupMessageEvent, message: Message = Comma
 # [HELPSTART] Version: 2
 # Command: gpt
 # Usage: gpt <内容...>
-# Info: XDbotGPT
-# Command: gpt-config
-# Info: 配置 XDbotGPT
 # Usage: gpt-config {apikey|proxy} <值>
-# Command: gpt-cache
-# Info: XDbotGPT 缓存操作
-# Msg: XDbotGPT 缓存
 # Usage: gpt-cache {show|reset}
+# Info: XDbot2GPT
 # [HELPEND]
