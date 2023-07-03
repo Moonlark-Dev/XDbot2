@@ -8,6 +8,7 @@ from . import _lang as lang
 from sympy import Symbol, Eq, solve, latex
 from . import _error as error
 from .etm import achievement, economy, exp
+from nonebot.permission import SUPERUSER
 from nonebot_plugin_apscheduler import scheduler
 from nonebot import get_bot, on_message, require, on_command, on_regex
 import json
@@ -41,13 +42,13 @@ def render_text_as_image(_string):
     # 处理彩蛋，https://github.com/ITCraftDevelopmentTeam/XDbot2/pull/291
     if random.random() <= 0.01:
         string = "0/0=?"
-        answer = "regex>([iI][nN][fF]([iI][nN][iI][tT][yY])?)|([nN][aA][nN])|(ZeroDivisionError)"
+        answer = "regex>(I|i)(n|N)(f|F)"
     elif random.random() <= 0.01:
         string = "creeper?"
-        answer = "[aA][wW]+(.*?)[mM][aA][N](.*?)"
+        answer = "(a|A)(w|W)(,?)( *)(M|m)(A|a)(N|n)"
     elif random.random() <= 0.01:
         string = "undefined+undefined=?"
-        answer = "regex>(114(514)?(1919810)?)|([iI][nN][fF]([iI][nN][iI][tT][yY])?)|([nN][aA][nN])|([uU][nN][dD][fF][iI][nN][eE][dD])"
+        answer = "regex>(n|N)(a|A)(n|N)"
     # Set the font size and the font type
     font_size = 20, 16
     font = ImageFont.truetype(
@@ -90,10 +91,8 @@ def refresh_group_unanswered(groups=[]):
 
 refresh_group_unanswered()
 
-# TODO Only SU
-# @on_command("new-quick-math", aliases={"nqm"}).handle()
 
-
+@on_command("new-quick-math", aliases={"nqm"}, permission=SUPERUSER).handle()
 async def _(matcher: Matcher, event: GroupMessageEvent):
     global group, answer, send_time
     try:
@@ -169,10 +168,10 @@ async def send_quick_math():
 def test_regex(pattern: str, string: str) -> bool:
     if pattern.startswith("regex>"):
         pattern = pattern[6:]
-        return bool(re.match(pattern, string))
+        return bool(re.match(f"^{pattern}$", string))
     return False
 
-
+"""
 @on_message().handle()
 async def _(matcher: Matcher, event: GroupMessageEvent):
     global group, answer, send_time
@@ -189,7 +188,7 @@ async def _(matcher: Matcher, event: GroupMessageEvent):
                     await matcher.send("[反作弊] 疑似发现外挂，本题无效")
     except BaseException:
         await error.report(traceback.format_exc())
-
+"""
 
 @on_message().handle()
 async def quick_math(matcher: Matcher, event: GroupMessageEvent):
