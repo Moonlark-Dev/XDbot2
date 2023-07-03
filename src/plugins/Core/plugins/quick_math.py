@@ -171,6 +171,7 @@ def test_regex(pattern: str, string: str) -> bool:
         return bool(re.match(f"^{pattern}$", string))
     return False
 
+
 """
 @on_message().handle()
 async def _(matcher: Matcher, event: GroupMessageEvent):
@@ -189,6 +190,7 @@ async def _(matcher: Matcher, event: GroupMessageEvent):
     except BaseException:
         await error.report(traceback.format_exc())
 """
+
 
 @on_message().handle()
 async def quick_math(matcher: Matcher, event: GroupMessageEvent):
