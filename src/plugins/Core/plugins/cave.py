@@ -31,6 +31,7 @@ commandHelp = {
         "usage": [
             "cave：随机一条回声洞",
             "cave-a <内容>：投稿一条回声洞（见cave(1)）",
+            "cave-s：查看回声洞状态"
         ],
     }
 }
@@ -184,8 +185,8 @@ async def cave_query_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent, 
     try:
         argument = message.extract_plain_text().split(" ")
         data = json.load(open("data/cave.data.json", encoding="utf-8"))
-        start_id = int(argument[1])
-        end_id = int(argument[2])
+        start_id = int(argument[0])
+        end_id = int(argument[1])
         if end_id - start_id >= 175:
             await cave.finish(_lang.text("cave.query_too_many", [175], event.get_user_id()))
         node_message = []
