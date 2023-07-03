@@ -43,6 +43,8 @@ def get_plugin_help(plugin_name: str, module: any) -> dict:
                         r"\n", "\n")
                 elif line_splited[0] in ["Msg", "概述"]:
                     command_help[now_command]["msg"] = line_splited[1]
+                elif line_splited[0] in ["Check", "检查"]:
+                    command_help[now_command]["status"] = getattr(module, line_splited[1])
         elif help_version == 1:
             commands = dict()
             # print(lines[1:])
@@ -81,5 +83,7 @@ def get_plugin_help(plugin_name: str, module: any) -> dict:
             command_help[key]["msg"] = command_help[key]["info"]
         if "from" not in command_help[key].keys():
             command_help[key]["from"] = plugin_name
+        if "status" not in command_help[key].keys():
+            command_help[key]["status"] = True
     # 返回
     return command_help
