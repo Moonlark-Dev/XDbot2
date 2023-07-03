@@ -49,7 +49,7 @@ async def report(_err: str | None = None, matcher: Matcher = Matcher(), event=No
     error = err.splitlines()[-1]
     logger.debug(error)
     # 过滤错误
-    if ("finishedexception" in error.lower()) or ("NetWorkError" in error.lower()) and matcher is not None:
+    if ("finishedexception" in error.lower()) or ("networkerror" in error.lower()) and matcher is not None:
         await matcher.finish()
     # 反馈错误
     if err.startswith("Traceback"):
