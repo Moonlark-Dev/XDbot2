@@ -35,7 +35,7 @@ async def show_achievement(matcher: Matcher, event: MessageEvent, message: Messa
             await matcher.finish(lang.text(
                 "achi.info",
                 [achi_data['name'], achi_data['condition'], unlck_status],
-                event.get_user_id()) + f"\n{achi_data['info']}" if 'info' in achi_data.keys() else '')
+                event.get_user_id()) + (f"\n{achi_data['info']}" if 'info' in achi_data.keys() else ''))
         # elif argv[0] in ["all", "全部"]:
         #     reply = lang.text("achi.title_all", [], event.get_user_id())
         #     length = 1

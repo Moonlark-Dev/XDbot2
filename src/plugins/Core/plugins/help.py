@@ -23,7 +23,12 @@ async def group_handler(bot: Bot, event: GroupMessageEvent, message: Message = C
 
             reply = f"{_lang.text('help.name',[],event.get_user_id())} —— XDbot2\n"
             for key in list(commands.keys()):
-                reply += f"[√] {key}：{commands[key]['msg']}\n"
+                cmd_status = {
+                    True:  '√',
+                    False: 'X',
+                    None:  'O'
+                }[commands[key]['status']]
+                reply += f"[{cmd_status}] {key}：{commands[key]['msg']}\n"
             reply += _lang.text("help.command", [], event.get_user_id())
             messages.append({
                 "type": "node",
