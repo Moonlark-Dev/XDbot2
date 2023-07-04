@@ -44,7 +44,8 @@ def get_plugin_help(plugin_name: str, module: any) -> dict:
                 elif line_splited[0] in ["Msg", "概述"]:
                     command_help[now_command]["msg"] = line_splited[1]
                 elif line_splited[0] in ["Check", "检查"]:
-                    command_help[now_command]["status"] = getattr(module, line_splited[1])()
+                    command_help[now_command]["status"] = getattr(
+                        module, line_splited[1])()
         elif help_version == 1:
             commands = dict()
             # print(lines[1:])
