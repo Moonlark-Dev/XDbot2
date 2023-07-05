@@ -22,7 +22,7 @@ async def at_handle(bot: Bot, event: GroupMessageEvent):
         messages = []
         _messages = (await bot.call_api(
             "get_group_msg_history",
-            message_seq=event.message_id,
+            # message_seq=event.message_id,
             group_id=event.group_id
         ))["messages"]
         for message in _messages:
