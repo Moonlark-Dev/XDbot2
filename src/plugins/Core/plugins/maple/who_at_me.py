@@ -98,7 +98,7 @@ async def who_at_me_handle(event: GroupMessageEvent) -> None:
 
     async def subs(content: str) -> str:
         for matched in re.findall(AT_PATTERN, content):
-            content = content.replace(f"[CQ:at,qq={matched}]", "[@{}]".format(
+            content = content.replace(f"[CQ:at,qq={matched}]", "[[@{}]]".format(
                 "全体成员" if matched == "all"
                 else await get_user_name(matched, event.group_id)
             ))
