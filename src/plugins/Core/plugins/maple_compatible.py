@@ -9,7 +9,7 @@ import traceback
 # 允许在 XDbot2 加载部分 Maple-Bot 插件
 
 # 加载 Maple 插件
-path = os.path.join(os.path.abspath(__file__), "maple")
+path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "maple")
 plugin_list = os.listdir(path)
 logger.info(f"找到 {len(plugin_list)} 个 Maple 移植插件：{plugin_list}")
 plugins = {}
