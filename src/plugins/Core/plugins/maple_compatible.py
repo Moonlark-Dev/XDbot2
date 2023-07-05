@@ -27,6 +27,7 @@ for plugin in plugin_list:
             logger.error(f"加载插件 {plugin} (maple) 失败：{traceback.format_exc()}")
 logger.info("Maple 兼容插件加载完成！")
 
+
 def check_wam():
     return "who_at_me.py" in plugins.keys()
 

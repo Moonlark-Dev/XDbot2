@@ -8,7 +8,8 @@ from typing import cast
 UserID = GroupID = MessageID = str | int
 AnyMessage = str | Message | MessageSegment | MessageTemplate
 MessageType = Dict[str, int | str | Dict[str, int | str]]
-ForwardNode = Dict[str, str | Dict[str, str | int | AnyMessage | List["ForwardNode"]]]
+ForwardNode = Dict[str, str | Dict[str, str |
+                                   int | AnyMessage | List["ForwardNode"]]]
 
 
 async def send_group_msg(group_id: GroupID, message: AnyMessage) -> MessageID:
@@ -32,6 +33,7 @@ async def get_group_member_info(
         user_id=int(user_id),
         no_cache=no_cache
     )
+
 
 async def get_stranger_info(
     user_id: UserID,
@@ -65,7 +67,7 @@ async def custom_forward_node(
     return node
 
 
-def referencing_forward_node(id: MessageID)-> ForwardNode:
+def referencing_forward_node(id: MessageID) -> ForwardNode:
     return {
         "type": "node",
         "data": {
@@ -103,4 +105,3 @@ async def get_user_name(
     else:
         info = await get_group_member_info(group_id, user_id)
         return info["card"] or info["nickname"]
-
