@@ -9,12 +9,13 @@ import traceback
 # 允许在 XDbot2 加载部分 Maple-Bot 插件
 
 # 加载 Maple 插件
-plugin_list = os.listdir(os.path.abspath("./maple"))
+path = os.path.join(os.path.abspath(__file__), "maple")
+plugin_list = os.listdir(path)
 logger.info(f"找到 {len(plugin_list)} 个 Maple 移植插件：{plugin_list}")
 plugins = {}
 
 for plugin in plugin_list:
-    if os.path.isfile(os.path.join(os.path.abspath("./maple"), plugin))\
+    if os.path.isfile(os.path.join(path, plugin))\
             and not plugin.startswith("_"):
         try:
             plugins[plugin] = {
