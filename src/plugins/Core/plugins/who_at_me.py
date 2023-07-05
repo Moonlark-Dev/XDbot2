@@ -64,7 +64,14 @@ async def whoatme_handler(bot: Bot, event: GroupMessageEvent):
                         "id": messages
                     }
                 })
-            node_messages.append(sub_node)
+            node_messages.append({
+                "type": "node",
+                "data": {
+                    "uin": item["user_id"],
+                    "name": (await bot.get_stranger_info(user_id=item["user_id"]))["nickname"],
+                    "content": sub_node
+                }
+            })
         await bot.call_api(
             "send_group_forward_msg",
             group_id=event.group_id,
