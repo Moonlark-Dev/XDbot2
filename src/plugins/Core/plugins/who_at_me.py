@@ -57,11 +57,18 @@ async def whoatme_handler(bot: Bot, event: GroupMessageEvent):
                     }
                 }
             ]
-            for messages in item["messages"]:
+            for message in item["messages"]:
+                message_data = (await bot.get_msg(message_id=message))
                 sub_node.append({
                     "type": "node",
                     "data": {
-                        "id": messages
+                        "uin": message_data["sender"]["user_id"],
+                        "name": message_data["sender"]["nickname"],
+                        "time": message_data["time"],
+                        "content": str(message_data["message"]).replace(
+                            f"[CQ:at,qq={event.user_id}]",
+                            f"[[@{(await bot.get_stranger_info(user_id=event.user_id))['nickname']}]] "
+                        )
                     }
                 })
             node_messages.append({
@@ -77,5 +84,6 @@ async def whoatme_handler(bot: Bot, event: GroupMessageEvent):
             group_id=event.group_id,
             messages=node_messages
         )
+        Json("who_at_me.data.json")[str(event.user_id)] = []
     except:
         await _error.report()
