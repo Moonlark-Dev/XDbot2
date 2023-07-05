@@ -27,7 +27,7 @@ IT Craft XDBot2（下简称`XDbot2`）是一个简单的QQ功能型机器人，�
 | 节点名称         | 平台  | 账号       | 分支    | 管理者                      | 备注                             |
 |------------------|-------|------------|---------|-----------------------------|----------------------------------|
 | XDbot 0x01       | QQ    | 3407603681 | master  | 这里是小邓QwQ（1744793737） |                                  |
-| XDbot 0x02       | QQ    | 3457602590 | master  | 这里是小邓QwQ（1744793737） | 与 XDbot 0x01 数据互通           |
+| XDbot 0x02       | QQ    | 3457602590 | master  | 这里是小邓QwQ（1744793737） | 与 XDbot 0x01 数据互通，寄了           |
 | XDbot 0x03 (Dev) | QQ    | 1552257261 | develop | 这里是小邓QwQ（1744793737） | 寄了                             |
 
 ## 贡献
@@ -38,9 +38,14 @@ IT Craft XDBot2（下简称`XDbot2`）是一个简单的QQ功能型机器人，�
 
 > 建议阅读： [附录：贡献 | XDbot2 Wiki](https://github.com/ITCraftDevelopmentTeam/XDbot2/wiki/%E9%99%84%E5%BD%95%EF%BC%9A%E8%B4%A1%E7%8C%AE) 
 
-# 鸣谢
+# 鸣谢（排名不分先后）
 
 - [IT Craft Development Team](https://itcdt.top)
+- [Maple-Bot](https://github.com/ITCraftDevelopmentTeam/Maple-Bot)：提供部分代码参考
+- Sugar：提供部分功能灵感
+- XTbot：提供部分功能灵感
+- [NoneBot2](https://github.com/nonebot/nonebot2)：超好用的机器人框架
+- [VSCode](https://github.com/microsoft/vscode)：~~VSCode天下第一~~
 
 ----
 

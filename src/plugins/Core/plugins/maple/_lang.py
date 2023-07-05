@@ -13,7 +13,7 @@ from ._onebot import UserID
 
 
 Tree: TypeAlias = Dict[str, Union["Tree", str]]
-LangTag = Literal["en", "zh-hans"] # TODO: 与`./lang/`文件夹下语言文件同步
+LangTag = Literal["en", "zh-hans"]  # TODO: 与`./lang/`文件夹下语言文件同步
 
 langs: Dict[LangTag, Tree] = {}
 lang_use = JsonDict("lang_use.json", lambda: "zh-hans")
