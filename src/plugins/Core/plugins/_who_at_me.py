@@ -1,4 +1,6 @@
+"""
 from . import _error
+from nonebot.matcher import Matcher
 from . import _lang
 from nonebot import on_command, on_regex, on_message
 from nonebot.adapters.onebot.v11 import GroupMessageEvent, Bot
@@ -29,10 +31,16 @@ async def at_handle(bot: Bot, event: GroupMessageEvent):
         for message in _messages:
             messages.append(message["message_id"])
         event_data["messages"] = messages
-
         data = Json("who_at_me.data.json")
         data.get(at_user_id, []).append(event_data)
+
+        need_message = 19
         
+        @on_message().handle()
+        async def _(matcher: Matcher, sub_event: GroupMessageEvent):
+            try:
+                if sub_event.group_id == event.group_id:
+                    
     except: 
         await _error.report()
 
@@ -87,3 +95,4 @@ async def whoatme_handler(bot: Bot, event: GroupMessageEvent):
         Json("who_at_me.data.json")[str(event.user_id)] = []
     except:
         await _error.report()
+"""
