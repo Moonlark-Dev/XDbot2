@@ -7,7 +7,7 @@ class Json:
         if not os.path.isfile(self.path):
             self.data = {}
         else:
-            self.data = json.load(open(path, encoding="utf-8"))
+            self.data = json.load(open(self.path, encoding="utf-8"))
     
     def __getitem__(self, key: str) -> any:
         return self.get(key)
@@ -22,10 +22,13 @@ class Json:
     
     def __setitem__(self, key: str, value: any) -> None:
         self.data[str(key)] = value
-        self.__del__()
+        self.save()
+    
+    def save(self):
+        json.dump(self.data, open(self.path, "w", encoding="utf-8"))
     
     def __del__(self):
-        json.dump(self.data, open(self.path, "w", encoding="utf-8"))
+        self.save()
 
     def items(self):
         return list(self.data.items())
