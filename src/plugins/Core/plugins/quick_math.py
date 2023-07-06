@@ -168,7 +168,7 @@ async def send_quick_math():
 def test_regex(pattern: str, string: str) -> bool:
     if pattern.startswith("regex>"):
         pattern = pattern[6:]
-        return bool(re.match(f"^{pattern}$", string))
+        return bool(re.match(f"^({pattern})$", string.strip()))
     return False
 
 
@@ -206,7 +206,7 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
                 _answ = event.get_plaintext().strip().replace("x=", "")
             except ValueError:
                 await matcher.finish()
-            if test_regex(_answ, answer) or _answ == str(answer) or\
+            if test_regex(answer, _answ) or _answ == str(answer) or\
                     ("/" not in str(_answ) and
                         run_sandbox(_answ) == run_sandbox(str(answer))):
                 group_unanswered[event.group_id] = 0
