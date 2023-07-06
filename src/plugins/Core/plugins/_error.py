@@ -77,6 +77,7 @@ async def report(_err: str | None = None, matcher: Matcher = Matcher(), event=No
                 )
                 os.remove(filename)
             except:
+                logger.warning(f"渲染图片失败：{traceback.format_exc()}")
                 await matcher.send(f"处理失败！\n{error}", at_sender=True)
 
     # 过滤错误

@@ -1,3 +1,4 @@
+from ._utils import Json
 import importlib
 from nonebot.log import logger
 import os
@@ -25,6 +26,7 @@ for plugin in plugin_list:
             logger.success(f"成功加载插件：{plugin} (maple)")
         except:
             logger.error(f"加载插件 {plugin} (maple) 失败：{traceback.format_exc()}")
+            Json("_error.count.json")["count"] += 1
 logger.info("Maple 兼容插件加载完成！")
 
 
