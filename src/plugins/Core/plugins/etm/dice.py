@@ -71,6 +71,7 @@ class Dice(Item):
         else:
             c = random.randint(1, 200)
         c = self.result(c, self.data["int"] is not None)
+        self.count -= 1
         if c == 20:  # 20
             economy.add_vi(user_id, 50)
             return _lang.text("dice.20", [c], self.user_id), c, 50
