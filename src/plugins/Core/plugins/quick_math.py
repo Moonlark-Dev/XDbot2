@@ -1,4 +1,5 @@
 import random
+import lupa
 from traceback import format_exc
 import asyncio
 import traceback
@@ -226,9 +227,10 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
                 answer = None
                 achievement.increase_unlock_progress(
                     "我爱数学", event.get_user_id())
-
     except BaseException:
-        await error.report(format_exc())
+        error = format_exc()
+        if "LuaError" not in error:
+            await error.report(error)
 
 
 @on_command("quick-math", aliases={"qm"}).handle()
