@@ -162,7 +162,7 @@ async def send_quick_math():
             group = None
             answer = None
     except BaseException:
-        await error.report(format_exc())
+        await error.report()
 
 
 def test_regex(pattern: str, string: str) -> bool:
