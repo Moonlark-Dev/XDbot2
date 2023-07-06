@@ -15,7 +15,6 @@ class Dice(Item):
             "maximum_stack": 32,
             "int": None
         }
-        
 
     def result(self, c, is_data=False):
         if is_data:
@@ -56,13 +55,10 @@ class Dice(Item):
                 elif res[1] == 1:
                     big_lose_count += 1
             return [_lang.text("dice.somedice", [
-                count, total_vim, 
+                count, total_vim,
                 big_success_count, round(big_success_count / count, 1),
-                big_lose_count, round(big_lose_count / count , 1)
+                big_lose_count, round(big_lose_count / count, 1)
             ], str(self.user_id))]
-
-
-
 
     def use_item(self):
         user_id = self.user_id
