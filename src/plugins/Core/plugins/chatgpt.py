@@ -89,6 +89,7 @@ async def _(matcher: Matcher, event: GroupMessageEvent, message: Message = Comma
     except:
         await _error.report()
 
+
 @on_command("gpt-cache").handle()
 async def _(matcher: Matcher, event: GroupMessageEvent, message: Message = CommandArg()):
     try:
@@ -109,6 +110,7 @@ async def _(matcher: Matcher, event: GroupMessageEvent, message: Message = Comma
                 MessageSegment.reply(event.message_id) + MessageSegment.text(reply))
     except BaseException:
         await _error.report(format_exc(), matcher)
+
 
 def check_gpt():
     try:
