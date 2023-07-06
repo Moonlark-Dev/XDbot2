@@ -124,7 +124,7 @@ def check_gpt():
 # Usage: gpt <内容...>：与 XDbot2GPT 对话（20vi/次）
 # Usage: gpt-config {apikey|proxy} <值>：配置 XDbot2GPT （不建议）
 # Usage: gpt-cache {show|reset}：展示/重置 XDbot2GPT 会话缓存
-# Usage: gpt-reset-as <内容>：以 <内容> 作为默认系统消息并重置会话（45vi/次）
+# Usage: gpt-reset-as <内容>：以 <内容> 作为设定并重置会话（45vi/次）
 # Info: XDbot2GPT
 # Check: check_gpt
 # [HELPEND]
