@@ -206,6 +206,7 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
                 _answ = event.get_plaintext().strip().replace("x=", "")
             except ValueError:
                 await matcher.finish()
+            answer = str(answer)
             if test_regex(answer, _answ) or _answ == str(answer) or\
                     ("/" not in str(_answ) and
                         run_sandbox(_answ) == run_sandbox(str(answer))):

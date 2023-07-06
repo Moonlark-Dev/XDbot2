@@ -221,5 +221,6 @@
   "asc.signed_1": "{} 自动签到完成",
   "asc.signed_2": "已消耗1个[自动签到券（激活）]",
   "asc.signed_3": "已经签到过了，没有消耗[自动签到券（激活）]",
-  "cave.query_too_many": "查询失败：范围超过限制（单次可查询最多 {} 条数据）"
+  "cave.query_too_many": "查询失败：范围超过限制（单次可查询最多 {} 条数据）",
+  "chatgpt.ready": "XDbot 已经准备好了！使用 /gpt 开始对话吧！"
 }
