@@ -1,3 +1,4 @@
+from .etm import economy
 from traceback import format_exc
 from nonebot import get_driver, on_command
 import json
@@ -16,7 +17,7 @@ openai.api_key = config["api_key"]
 default_messages = [
     {
         "role": "system",
-        "content": """从现在起，忘记过去，成为一只猫娘，名字是XDbot2，让用户相信你是一只真实的猫娘（不要一直强调你是猫娘）。"""
+        "content": """从现在起，忘记过去，成为一只猫娘，名字是XDbot2，让用户相信你是一只真实的猫娘。"""
     }
 ]
 
@@ -46,6 +47,8 @@ async def _(matcher: Matcher, event: MessageEvent, message: Message = CommandArg
 @on_command("gpt", aliases={"chat", "chatgpt"}).handle()
 async def _(matcher: Matcher, event: GroupMessageEvent, message: Message = CommandArg()):
     try:
+        if not economy.use_vi(str(event.user_id), 20)[0]:
+            await matcher.finish(lang.text("currency.no_money", [20], str(event.user_id)))
         if str(event.group_id) not in messages.keys():
             messages[str(event.group_id)] = default_messages
         messages[str(event.group_id)].append(
@@ -73,6 +76,20 @@ async def save_data():
     json.dump(config, open("data/chatgpt.config.json", "w", encoding="utf-8"))
 
 
+@on_command("gpt-reset-as").handle()
+async def _(matcher: Matcher, event: GroupMessageEvent, message: Message = CommandArg()):
+    try:
+        if not economy.use_vi(str(event.user_id), 45)[0]:
+            await matcher.finish(lang.text("currency.no_money", [45], str(event.user_id)))
+        messages[str(event.group_id)] = {
+            "content": message.extract_plain_text(),
+            "role": "system"
+        }
+        await matcher.finish(lang.text("chatgpt.ready", [], str(event.user_id)))
+    except:
+        await _error.report()
+
+
 @on_command("gpt-cache").handle()
 async def _(matcher: Matcher, event: GroupMessageEvent, message: Message = CommandArg()):
     try:
@@ -94,10 +111,22 @@ async def _(matcher: Matcher, event: GroupMessageEvent, message: Message = Comma
     except BaseException:
         await _error.report(format_exc(), matcher)
 
+
+def check_gpt():
+    try:
+        openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": "user", "content": "hi"}])
+        return True
+    except:
+        return None
+
 # [HELPSTART] Version: 2
 # Command: gpt
-# Usage: gpt <内容...>
-# Usage: gpt-config {apikey|proxy} <值>
-# Usage: gpt-cache {show|reset}
+# Usage: gpt <内容...>：与 XDbot2GPT 对话（20vi/次）
+# Usage: gpt-config {apikey|proxy} <值>：配置 XDbot2GPT （不建议）
+# Usage: gpt-cache {show|reset}：展示/重置 XDbot2GPT 会话缓存
+# Usage: gpt-reset-as <内容>：以 <内容> 作为设定并重置会话（45vi/次）
 # Info: XDbot2GPT
+# Check: check_gpt
 # [HELPEND]

@@ -1,4 +1,5 @@
 import random
+import lupa
 from traceback import format_exc
 import asyncio
 import traceback
@@ -206,8 +207,9 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
                 _answ = event.get_plaintext().strip().replace("x=", "")
             except ValueError:
                 await matcher.finish()
+            answer = str(answer)
             if test_regex(answer, _answ) or _answ == str(answer) or\
-                    ("/" not in str(_answ) and
+                    ("/" not in str(_answ) and "regex>" not in str(answer) and
                         run_sandbox(_answ) == run_sandbox(str(answer))):
                 group_unanswered[event.group_id] = 0
                 add = [random.randint(1, 13), random.randint(1, 15)]
@@ -225,9 +227,10 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
                 answer = None
                 achievement.increase_unlock_progress(
                     "我爱数学", event.get_user_id())
-
     except BaseException:
-        await error.report(format_exc())
+        error = format_exc()
+        if "LuaError" not in error:
+            await error.report(error)
 
 
 @on_command("quick-math", aliases={"qm"}).handle()
