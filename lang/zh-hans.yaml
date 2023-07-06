@@ -1,0 +1,6 @@
+quick-math:
+  question: "{{ a }} {{ op }} {{ b }} = ?"
+  correct: |
+    回答正确！
+    恭喜你获得了{{ got }}点credit！
+    你当前拥有{{ total }}点credit！
