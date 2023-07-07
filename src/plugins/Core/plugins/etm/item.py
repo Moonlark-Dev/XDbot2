@@ -24,13 +24,13 @@ class Item:
                 pass
 
     def on_register(self):
-        pass
+        ...
 
     def _after_register(self):
-        pass
+        ...
 
     def use_item(self):
-        pass
+        ...
 
     def use(self, args):
         if not self.data["useable"]:

@@ -2,6 +2,7 @@ from .dice import Dice
 from .auto_sign_coupon import AutoSignCoupon, AutoSignCouponActived
 from .talisman import Talisman
 from .book_and_quill import BookAndQuill
+from .pawcoin import PawCoin
 from .pouch import Pouch
 from .vimcoin import VimCoin
 from .experience import Experience
@@ -15,6 +16,7 @@ ITEMS = {
     "towel.zip": TowelZip,
     "towel": Towel,
     "vimcoin": VimCoin,
+    "pawcoin": PawCoin,
     "exp": Experience,
     "auto_sign_coupon": AutoSignCoupon,
     "auto_sign_coupon_actived": AutoSignCouponActived
