@@ -202,7 +202,7 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
     except BaseException:
         pass
     try:
-        if event.group_id == group:
+        if event.group_id == group and answer is not None:
             try:
                 _answ = event.get_plaintext().strip().replace("x=", "")
             except ValueError:
