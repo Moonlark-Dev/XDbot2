@@ -210,7 +210,7 @@ async def all_read(matcher: Matcher, event: MessageEvent):
         number_of_read_emails = 0
         for email_id in data.emails[user_id]:
             try:
-                if not emails_data[email_id]["itmes"]:
+                if not self.emails[user_id][email_id]["itmes"]:
                     data.emails[user_id].pop(length)
                     number_of_read_emails += 1
                 else:
