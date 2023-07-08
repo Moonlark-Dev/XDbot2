@@ -108,7 +108,6 @@
   "vote.time_1h_end": "投票「{}」将在 1 小时后截止",
   "whoAtme.notice": "XDBot2 温馨提示",
   "whoAtme.title": "请从下往上读（越近排序越靠前）\nXDBOT2 最多为每个用户单个群聊保存98条消息",
-  "who_at_me.info": "来自：{} ({})\n时间：{}",
   "su.set_accout_success": "成功将本群响应帐号设为：{}",
   "su.accout_not_found": "帐号不存在！",
   "su.accout_list": "本群可用帐号：{}",
