@@ -33,6 +33,9 @@ class AutoSignCouponActived(Item):
             "maximum_stack": 64,
         }
 
+    def used(self):
+        self.count -= 1
+
     def use_item(self):
         bag.add_item(self.user_id, "auto_sign_coupon", 1, {})
         return _lang.text("asc.inactived", [], self.user_id)
@@ -48,7 +51,7 @@ async def auto_sign_coupon():
             if i.item_id == "auto_sign_coupon_actived":
                 info = sign._sign(u)
                 if info != "主人今天已经签到过了喵！":
-                    ub[l].count -= 1
+                    ub[l].used()
                     _info = _lang.text("asc.signed_2", [], u)+"\n"+info
                 else:
                     _info = _lang.text("asc.signed_3", [], u)

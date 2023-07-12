@@ -141,7 +141,7 @@ async def send_quick_math():
             group = random.choice(groups)
         except BaseException:
             return None
-        if group_unanswered[group] >= 3:
+        if group_unanswered[group] >= 2:
             return None
         if random.random() <= 0.5:
             question = f"{random.randint(0, 40)} {random.choice('+-*')} {random.randint(0, 35)}"
@@ -197,8 +197,8 @@ async def _(matcher: Matcher, event: GroupMessageEvent):
 async def quick_math(matcher: Matcher, event: GroupMessageEvent):
     global group, answer, group_unanswered
     try:
-        if group_unanswered[event.group_id] >= 3:
-            group_unanswered[event.group_id] = int(random.choice("0122233333"))
+        if group_unanswered[event.group_id] >= 2:
+            group_unanswered[event.group_id] = int(random.choice("0111122222"))
     except BaseException:
         pass
     try:
