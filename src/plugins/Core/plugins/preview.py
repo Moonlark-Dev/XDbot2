@@ -17,7 +17,8 @@ latest_time = time.time() - 10
 builtin_urls = {
     "six": "http://127.0.0.1:38192/six",
     "ban": "http://127.0.0.1:38192/ban/%group_id%",
-    "setu": "http://127.0.0.1:38192/setu"
+    "setu": "http://127.0.0.1:38192/setu",
+    "xtbot": "https://xtbot-status.xxtg666.top/?r=5"
 }
 
 # [HELPSTART] Version: 2
