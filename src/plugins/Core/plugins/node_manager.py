@@ -1,7 +1,8 @@
 
 from nonebot.exception import IgnoredException
 from nonebot.message import event_preprocessor
-from nonebot.adapters.onebot.v11.permission import GROUP_ADMIN
+from nonebot.adapters.onebot.v11.permission import GROUP_ADMIN, GROUP_OWNER
+from nonebot.permission import SUPERUSER
 from . import _error as error
 from . import _lang as lang
 import os
@@ -32,7 +33,7 @@ async def update_xdbot(matcher: Matcher, event: MessageEvent):
         await error.report()
 
 
-@on_command("checkout", permission=GROUP_ADMIN).handle()
+@on_command("checkout", permission=GROUP_ADMIN | GROUP_OWNER | SUPERUSER).handle()
 async def checkout_xdbot(matcher: Matcher, event: GroupMessageEvent, node: Message = CommandArg()):
     try:
         if node.extract_plain_text() == "develop":
