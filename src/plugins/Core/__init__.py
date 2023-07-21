@@ -84,7 +84,7 @@ def check_plugin(plugin: str) -> bool:
 # 导入插件（此导入方式不可调用）
 sys.path.append(path)
 for plugin in pluginList:
-    if check_plugin(plugin)
+    if check_plugin(plugin):
         try:
             pluginsModule[plugin] = getattr(__import__(
                 f"plugins.{plugin[:-3]}"), plugin[:-3])
