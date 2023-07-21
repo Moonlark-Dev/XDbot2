@@ -50,7 +50,7 @@ async def _(event: GroupMessageEvent):
     try:
         if event.get_plaintext()[1:].startswith("checkout"):
             return
-        if Json("node_manager.groups.json").get(str(event.group_id), False):
+        if not Json("node_manager.groups.json").get(str(event.group_id), False):
             raise IgnoredException("多节点：未启用 DEVELOP 节点")
 
     except IgnoredException as e:
