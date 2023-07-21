@@ -11,7 +11,6 @@ class Json:
 
     def __setitem__(self, key: str, value: any) -> None:
         self.data[str(key)] = value
-        self.save()
 
     def __getattr__(self, item: str) -> any:
         return self.get(item)
