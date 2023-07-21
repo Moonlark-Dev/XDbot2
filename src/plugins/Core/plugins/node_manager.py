@@ -39,7 +39,7 @@ async def checkout_xdbot(matcher: Matcher, event: GroupMessageEvent, node: Messa
             Json("node_manager.groups.json")[str(event.group_id)] = True
             await matcher.finish(lang.text("node_manager.enabled", [], event.user_id))
         else:
-            Json("node_manager.groups.json")[str(event.group_id)] = False
+            Json("node_manager.groups.json")[str(event.group_id)] = None
             await matcher.finish(lang.text("node_manager.disabled", [], event.user_id))
     except:
         await error.report()
@@ -50,7 +50,7 @@ async def _(event: GroupMessageEvent):
     try:
         if event.get_plaintext()[1:].startswith("checkout"):
             return
-        if not Json("node_manager.groups.json").get(str(event.group_id), False):
+        if not Json("node_manager.groups.json").get(str(event.group_id), None):
             raise IgnoredException("多节点：未启用 DEVELOP 节点")
 
     except IgnoredException as e:

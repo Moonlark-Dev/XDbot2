@@ -10,6 +10,11 @@ class Json:
             self.data = json.load(open(self.path, encoding="utf-8"))
 
     def __setitem__(self, key: str, value: any) -> None:
+        if value == None:
+            try:
+                self.data.pop(str(key))
+            except:
+                pass
         self.data[str(key)] = value
 
     def __getattr__(self, item: str) -> any:
@@ -25,6 +30,8 @@ class Json:
         try:
             return self.data[key]
         except:
+            if default == None:
+                return None
             self.data[key] = default
             return self.get(key, default)
 
