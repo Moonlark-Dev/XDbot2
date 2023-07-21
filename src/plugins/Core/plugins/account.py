@@ -35,7 +35,7 @@ async def multiAccoutManager(bot: Bot, event: GroupMessageEvent):
     except IgnoredException as e:
         raise IgnoredException(e)
     except Exception:
-        await bot.send_group_msg(message=traceback.format_exc(), group_id=ctrlGroup)
+        await _error.report()
 
 
 @su.handle()
