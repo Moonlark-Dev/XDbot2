@@ -46,7 +46,5 @@ async def _(matcher: Matcher, event: MessageEvent, message: Message = CommandArg
 # Usage: gpt retry
 # Usage: gpt back
 # Usage: gpt switch {global|group|private}
-# Usage: gpt token
 # Usage: gpt token buy <数量>
-# Usage: gpt time
 # [HELPEND]
