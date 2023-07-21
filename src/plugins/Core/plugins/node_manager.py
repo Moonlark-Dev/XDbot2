@@ -32,6 +32,11 @@ async def update_xdbot(matcher: Matcher, event: MessageEvent):
     except BaseException:
         await error.report()
 
+# [HELPSTART] Version: 2
+# Command: checkout
+# Usage: checkout
+# Msg: 切换 XDbot2 节点
+# Info: 切换 XDbot2 节点（详见 node(0)）
 
 @on_command("checkout", permission=GROUP_ADMIN | GROUP_OWNER | SUPERUSER).handle()
 async def checkout_xdbot(matcher: Matcher, event: GroupMessageEvent, node: Message = CommandArg()):
