@@ -8,7 +8,7 @@ import os
 from nonebot import on_command
 from ._utils import Json
 from nonebot.matcher import Matcher
-from nonebot.adapters import MessageEvent
+from nonebot.adapters.onebot.v11 import MessageEvent
 from nonebot.adapters.onebot.v11 import GroupMessageEvent
 from nonebot.adapters import Message
 from nonebot.params import CommandArg
