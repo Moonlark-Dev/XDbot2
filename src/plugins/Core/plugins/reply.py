@@ -215,6 +215,8 @@ async def imageSenderHandle(event: GroupMessageEvent):
                             "data/reply.images.json", "w", encoding="utf-8")
                     )
 
+    except IndexError:
+        pass
     except FinishedException:
         raise FinishedException()
     except Exception:
