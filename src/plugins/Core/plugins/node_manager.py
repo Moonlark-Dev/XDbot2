@@ -53,6 +53,8 @@ async def checkout_xdbot(matcher: Matcher, event: GroupMessageEvent, node: Messa
 @event_preprocessor
 async def _(event: GroupMessageEvent):
     try:
+        if event.get_plaintext()[1:].startswith("checkout"):
+            return
         if event.group_id not in Json("node_manager.enabled_groups.json").get("groups", []):
             raise IgnoredException("多节点：未启用 DEVELOP 节点")
 
