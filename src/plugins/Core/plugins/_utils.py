@@ -23,12 +23,11 @@ class Json:
         json.dump(self.data, open(self.path, "w", encoding="utf-8"))
 
     def get(self, key: str, default: any = None) -> None:
-        item = self.data.get(key)
-        if item is None:
+        try:
+            return self.data[key]
+        except:
             self.data[key] = default
             return self.get(key, default)
-        else:
-            return item
 
     def items(self):
         return list(self.data.items())
