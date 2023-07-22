@@ -19,7 +19,8 @@ from nonebot.params import CommandArg
 async def update_xdbot(matcher: Matcher, event: MessageEvent):
     try:
         await matcher.send(lang.text("update.checking", [], event.get_user_id()))
-        old_commit = os.popen("git log").read().split("\n")[0].split(" ")[1][:7]
+        old_commit = os.popen("git log").read().split("\n")[
+            0].split(" ")[1][:7]
         os.system("python3 update.py")
         await matcher.finish(lang.text(
             "update.finish",
@@ -37,6 +38,7 @@ async def update_xdbot(matcher: Matcher, event: MessageEvent):
 # Usage: checkout
 # Msg: 切换 XDbot2 节点
 # Info: 切换 XDbot2 节点（详见 node(0)）
+
 
 @on_command("checkout", permission=GROUP_ADMIN | GROUP_OWNER | SUPERUSER).handle()
 async def checkout_xdbot(matcher: Matcher, event: GroupMessageEvent, node: Message = CommandArg()):

@@ -74,12 +74,14 @@ logger.debug(pluginList)
 helpData = {}
 pluginsModule = dict()
 
+
 def check_plugin(plugin: str) -> bool:
     if is_develop and plugin == "node_manager.py":
         return False
     return plugin.endswith(".py")\
         and plugin not in disablePlugins\
         and not plugin.startswith("_")
+
 
 # 导入插件（此导入方式不可调用）
 sys.path.append(path)

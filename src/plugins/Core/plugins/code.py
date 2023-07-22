@@ -83,8 +83,6 @@ async def code_handler(event: MessageEvent, message: Message = CommandArg()):
         await _error.report(traceback.format_exc())
 
 
-
-
 # [HELPSTART] Version: 2
 # Command: code
 # Info: 在线代码运行器

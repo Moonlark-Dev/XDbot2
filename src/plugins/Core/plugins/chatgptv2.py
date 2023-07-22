@@ -10,6 +10,7 @@ base_message = [
     }
 ]
 
+
 @on_command("gpt", aliases={"chatgpt"}).handle()
 async def _(matcher: Matcher, event: MessageEvent, message: Message = CommandArg()):
     try:
