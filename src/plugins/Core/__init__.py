@@ -43,6 +43,10 @@ try:
                                 encoding="utf-8"))
 except BaseException:
     pass
+try:
+    is_develop = global_config.NODE_ID == "develop"
+except:
+    is_develop = False
 
 # 初始化
 # XDbot2 版本 1.0.0
@@ -70,11 +74,19 @@ logger.debug(pluginList)
 helpData = {}
 pluginsModule = dict()
 
+
+def check_plugin(plugin: str) -> bool:
+    if is_develop and plugin == "node_manager.py":
+        return False
+    return plugin.endswith(".py")\
+        and plugin not in disablePlugins\
+        and not plugin.startswith("_")
+
+
 # 导入插件（此导入方式不可调用）
 sys.path.append(path)
 for plugin in pluginList:
-    if plugin.endswith(
-            ".py") and plugin not in disablePlugins and not plugin.startswith("_"):
+    if check_plugin(plugin):
         try:
             pluginsModule[plugin] = getattr(__import__(
                 f"plugins.{plugin[:-3]}"), plugin[:-3])

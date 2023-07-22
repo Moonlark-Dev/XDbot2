@@ -7,7 +7,7 @@ import traceback
 import marshal
 import re
 from . import _error
-from .etm import exp
+from .etm import exp, economy
 from . import _lang, _messenger
 import httpx
 from nonebot import on_command, get_app, on_message
@@ -333,6 +333,9 @@ async def cave_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent):
         latest_use[str(event.group_id)] = time.time()
         json.dump(latest_use, open(
             "data/cave.latest_use.json", "w", encoding="utf-8"))
+        if random.random() <= 0.25:
+            economy.add_vi(str(event.user_id), t := random.randint(1, 10))
+            await cave.finish(_lang.text("cave.getvim", [t], event.user_id))
         # 发送评论
         comments = json.load(open("data/cave.comments.json", encoding="utf-8"))
         caveData["id"] = str(caveData["id"])

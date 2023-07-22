@@ -1,7 +1,7 @@
 import traceback
 import httpx
 from nonebot import on_command
-from nonebot.adapters.onebot.v11 import ActionFailed, Bot, Message, GroupMessageEvent, PrivateMessageEvent
+from nonebot.adapters.onebot.v11 import ActionFailed, Bot, Message, MessageEvent
 from nonebot.adapters.onebot.v11.message import MessageSegment
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
@@ -37,13 +37,8 @@ async def run_code(message: Message):
         file_type = file_types[language]
     else:
         file_type = ""
-    src = "\n".join(
-        str(message).split("\n")[
-            1:]).replace(
-        "&#91;",
-        "[").replace(
-                "&#93;",
-        "]")
+    src = "\n".join(str(message).split("\n")[1:])
+    src = src.replace("&#91;", "[").replace("&#93;", "]")
     # 请求数据
     request_data = {
         "files": [
@@ -74,35 +69,19 @@ async def run_code(message: Message):
 
 
 @code.handle()
-async def code_handler(bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()):
+async def code_handler(event: MessageEvent, message: Message = CommandArg()):
     try:
         try:
-            message_id = (await bot.send_group_msg(
-                message=await run_code(message),
-                group_id=event.group_id,
-                auto_escape=True))["message_id"]
-
+            await code.finish(MessageSegment.reply(id_=event.message_id) + MessageSegment.text(text=await run_code(message)))
         except ActionFailed:
             await code.finish(_lang.text("code.too_long", [], str(event.user_id)))
-        await asyncio.sleep(60)
-        await bot.delete_msg(message_id=message_id)
+        # await asyncio.sleep(60)
+        # await bot.delete_msg(message_id=message_id)
     except FinishedException:
         raise FinishedException()
     except BaseException:
-        await _error.report(traceback.format_exc(), code)
+        await _error.report(traceback.format_exc())
 
-
-@code.handle()
-async def code_private_handler(event: PrivateMessageEvent, message: Message = CommandArg()):
-    try:
-        try:
-            await code.finish(await run_code(message))
-        except ActionFailed:
-            await code.finish(_lang.text("code.too_long", [], str(event.user_id)))
-    except FinishedException:
-        raise FinishedException()
-    except BaseException:
-        await _error.report(traceback.format_exc(), code)
 
 # [HELPSTART] Version: 2
 # Command: code

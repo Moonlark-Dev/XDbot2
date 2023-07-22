@@ -1,0 +1,8 @@
+{
+    "match": "KeyError: 'access_token'",
+    "because": ["此问题可能是由于 __XDbot2 没有登录一个可用的 GitHub 账号导致的__"],
+    "do": [
+        "使用 /gh auth login 并按照提示登录一个 GitHub 账号（注意节点的指令前缀）",
+        "通知 XDbot2 Team 处理此问题"
+    ]
+}
