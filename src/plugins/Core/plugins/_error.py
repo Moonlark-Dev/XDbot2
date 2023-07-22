@@ -58,7 +58,7 @@ async def report(_err: str | None = None, matcher: Matcher = Matcher(), event=No
             try:
                 data = None
                 for reg, _data in list(ehm["errors"].items()):
-                    if re.match(reg, _err):
+                    if re.match(reg, err):
                         data = _data
                 if not data:
                     data = ehm["unknown"]
