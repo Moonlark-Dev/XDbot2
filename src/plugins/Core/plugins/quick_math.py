@@ -29,10 +29,11 @@ lua.require("src.plugins.Core.lua.calc")
 run_sandbox = lua.eval("run_sandbox")
 
 eggs = {
-    "0/0=?": "regex>[iI][nN][fF]([iI][nN][iI][tT][yY])?|[nN]a[nN]|ZeroDivisionError",
+    "0/0=?": "regex>([nN][aA][nN])|(0)",
+    "1/0=?": "regex>[iI][nN][fF]",
     "creeper?": "regex>[aA][wW]+.*?[mM][aA][N](.*?)",
-    "undefined+undefined=?": "regex>[iI][nN][fF]([iI][nN][iI][tT][yY])?|[nN][aA][nN]|[uU][nN][dD][fF][iI][nN][eE][dD]",
-    "114+514=?": "regex>哼啊+|114|514|114514|1919|810|1919810"
+    "undefined+undefined=?": "regex>[nN][aA][nN]|[uU][nN][dD][fF][iI][nN][eE][dD]",
+    "114+514=?": "regex>哼+啊+|114|514|114514|1919|810|1919810"
 }
 
 
