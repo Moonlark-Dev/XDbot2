@@ -4,46 +4,46 @@
   },
   "h1": {
     "font-size": 64,
-    "margin": 16,
+    "margin": 32,
     "font-weight": "bold"
   },
   "h2": {
     "font-size": 48,
-    "margin": 12,
+    "margin": 24,
     "font-weight": "bold"
   },
   "h3": {
     "font-size": 36,
-    "margin": 9,
+    "margin": 18,
     "font-weight": "bold"
   },
   "h4": {
     "font-size": 32,
-    "margin": 8,
+    "margin": 16,
     "font-weight": "bold"
   },
   "h5": {
     "font-size": 28,
-    "margin": 7,
+    "margin": 14,
     "font-weight": "bold"
   },
   "h6": {
     "font-size": 24,
-    "margin": 6,
+    "margin": 12,
     "font-weight": "bold"
   },
   "p": {
     "font-size": 32,
-    "margin": 4
+    "margin": 8
   },
   "strong": {
     "font-weight": "bold"
   },
   "html": {
-    "margin-top": 8,
-    "margin-bottom": 8,
-    "margin-left": 8,
-    "margin-right": 8
+    "margin-top": 16,
+    "margin-bottom": 16,
+    "margin-left": 16,
+    "margin-right": 16
   },
   "code": {
     "color": "#ff0000",
@@ -52,13 +52,13 @@
   "pre": {
     "width": "100%",
     "background-color": "#ccc",
-    "margin": 5
+    "margin": 10
   },
   "ul": {
-    "margin": 10
+    "margin": 20
   },
   "ol": {
-    "margin": 10
+    "margin": 20
   },
   "blockquote": {
     "background-color": "#ccc",
