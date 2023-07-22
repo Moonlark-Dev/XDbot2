@@ -1,6 +1,6 @@
 {
     "match": "openai\\.error\\.APIConnectionError",
-    "because": "此问题可能是由于 __XDbot2 服务器代理暴毙__ 或 __OpenAI 服务器暴毙__ 导致 __无法连接到 OpenAI 服务器__ 导致的",
+    "because": ["此问题可能是由于 __XDbot2 服务器代理暴毙__ 或 __OpenAI 服务器暴毙__ 导致 __无法连接到 OpenAI 服务器__ 导致的"],
     "do": [
         "静下心，稍安勿躁，几分钟后重试",
         "提醒 XDbot2 Team 更换服务器代理"
