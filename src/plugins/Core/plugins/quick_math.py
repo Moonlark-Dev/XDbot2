@@ -28,6 +28,13 @@ lua = LuaRuntime(unpack_returned_tuples=True)
 lua.require("src.plugins.Core.lua.calc")
 run_sandbox = lua.eval("run_sandbox")
 
+eggs = {
+    "0/0=?": "regex>[iI][nN][fF]([iI][nN][iI][tT][yY])?|[nN]a[nN]|ZeroDivisionError",
+    "creeper?": "regex>[aA][wW]+.*?[mM][aA][N](.*?)",
+    "undefined+undefined=?": "regex>[iI][nN][fF]([iI][nN][iI][tT][yY])?|[nN][aA][nN]|[uU][nN][dD][fF][iI][nN][eE][dD]",
+    "114+514=?": "regex>哼啊+|114|514|114514|1919|810|1919810"
+}
+
 
 def generate_equation():
     x = Symbol('x')
@@ -41,15 +48,8 @@ def render_text_as_image(_string):
     global answer
     string = _string.replace(" ", "")
     # 处理彩蛋，https://github.com/ITCraftDevelopmentTeam/XDbot2/pull/291
-    if random.random() <= 0.01:
-        string = "0/0=?"
-        answer = "regex>(I|i)(n|N)(f|F)"
-    elif random.random() <= 0.01:
-        string = "creeper?"
-        answer = "(a|A)(w|W)(,?)( *)(M|m)(A|a)(N|n)"
-    elif random.random() <= 0.01:
-        string = "undefined+undefined=?"
-        answer = "regex>(n|N)(a|A)(n|N)"
+    if random.random() <= 0.03:
+        string, answer = random.choice(list(eggs.items()))
     # Set the font size and the font type
     font_size = 20, 16
     font = ImageFont.truetype(
