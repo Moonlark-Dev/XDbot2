@@ -1,10 +1,10 @@
-from .items import json2items
 from . import bag
 import random
 from .item import Item
 from src.plugins.Core.plugins.shop import SHOP_ITEMS
 from .nbt import NbtDict
 
+json2items = None
 
 class MysteryBoxLevel1(Item):
 
