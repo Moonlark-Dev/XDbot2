@@ -4,7 +4,7 @@ from .item import Item
 from src.plugins.Core.plugins.shop import SHOP_ITEMS
 from .nbt import NbtDict
 
-json2items = None
+def json2items(items, user_id=None): ...
 
 class MysteryBoxLevel1(Item):
 
