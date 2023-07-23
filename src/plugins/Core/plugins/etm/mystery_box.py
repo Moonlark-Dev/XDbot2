@@ -1,3 +1,5 @@
+import traceback
+from .economy import IllegalQuantityException
 from . import bag
 from src.plugins.Core.plugins import _lang
 import random
@@ -62,10 +64,35 @@ class MysteryBoxLevel1(Item):
             })
 
         items = json2items(items)
-        length = 1
-        reply_text = _lang.text("mystery_box.get", [], self.user_id)
+        if not self.length:
+            self.length = 1
+            reply_text = _lang.text("mystery_box.get", [], self.user_id)
         for item in items:
             bag.add_item(self.user_id, item.item_id, item.count, item.data)
             reply_text += f"\n{length}. {item.data['display_name']} x{item.count}"
             length += 1
-        return reply_text
+        return reply_text[1:]
+    
+    def use(self, args):
+        if not self.data["useable"]:
+            return ["失败：物品无法被使用"]
+
+        try:
+            count = int(args)
+        except BaseException:
+            count = 1
+
+        if count <= 0 or count >= 200:
+            raise IllegalQuantityException(count)
+        self.length = 0
+        msg = []
+        if self.count >= count:
+            for _ in range(count):
+                try:
+                    msg.append(self.use_item())
+                except BaseException:
+                    msg.append(f"发生错误：{traceback.format_exc()}")
+            self.count -= count
+        else:
+            msg = [f"错误：数量不足（拥有 {self.count} 个）"]
+        return msg
