@@ -24,20 +24,39 @@ class MysteryBoxLevel1(Item):
         # 普通物品
         items.append({
             "id": "vimcoin",
-            "count": random.randint(30, 60),
+            "count": random.randint(27, 60),
             "data": {}
         })
         items.append({
             "id": "exp",
-            "count": random.randint(1, 50),
+            "count": random.randint(1, 42),
             "data": {}
         })
         # 商店物品
-        for _ in range(random.randint(1, 5)):
+        for _ in range(random.randint(1, random.randint(4, 5))):
             item: Item = json2items([random.choice(list(SHOP_ITEMS.values()))])[0]
             items.append({
                 "id": item.item_id,
                 "count": random.randint(1, min(item.data["maximum_stack"], max(2, int(64 / item.data["price"])))),
+                "data": {}
+            })
+        # 大紫（确信
+        if random.random() <= 0.15:
+            items.append({
+                "id": "auto_sign_coupon",
+                "count": random.randint(1, 5),
+                "data": {}
+            })
+        if random.random() <= 0.12:
+            items.append({
+                "id": "talisman",
+                "count": 1,
+                "data": {}
+            })
+        if random.random() <= 0.17:
+            items.append({
+                "id": "pawcoin",
+                "count": random.randint(1, 7),
                 "data": {}
             })
 
