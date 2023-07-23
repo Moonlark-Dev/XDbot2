@@ -37,7 +37,7 @@ class MysteryBoxLevel1(Item):
             item: Item = json2items([random.choice(list(SHOP_ITEMS.values()))])[0]
             items.append({
                 "id": item.item_id,
-                "count": random.randint(1, max(2, int(64 / item.data["price"]))),
+                "count": random.randint(1, min(item.data["maximum_stack"], max(2, int(64 / item.data["price"])))),
                 "data": {}
             })
 
