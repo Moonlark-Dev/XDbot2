@@ -66,7 +66,9 @@ class MysteryBoxLevel1(Item):
         items = json2items(items)
         if not self.length:
             self.length = 1
-            reply_text = _lang.text("mystery_box.get", [], self.user_id)
+            reply_text = " " + _lang.text("mystery_box.get", [], self.user_id)
+        else:
+            reply_text = ""
         for item in items:
             bag.add_item(self.user_id, item.item_id, item.count, item.data)
             reply_text += f"\n{length}. {item.data['display_name']} x{item.count}"
