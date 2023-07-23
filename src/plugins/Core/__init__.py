@@ -2,7 +2,7 @@ import json
 import os
 import os.path
 import time
-
+from . import get_version
 import sys
 import re
 
@@ -118,7 +118,7 @@ logger.info(f"已成功加载 {loadedPlugins.__len__()} 个插件，{len(helpDat
 # 写入加载数据文件
 json.dump(
     {
-        "version": config.VERSION,
+        "version": get_version.get_version(is_develop),
         "plugins": loadedPlugins,
         "time": time.time(),
         "config": {

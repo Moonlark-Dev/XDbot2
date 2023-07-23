@@ -6,6 +6,7 @@ from . import _lang as lang
 from . import _error as error
 import json
 import traceback
+from .etm import mystery_box
 
 shop = on_command("shop", aliases={"系统商店", "systemshop", "ss"})
 SHOP_ITEMS = {
@@ -33,8 +34,14 @@ SHOP_ITEMS = {
         "id": "towel.zip",
         "count": 1,
         "data": {}
+    },
+    "6": {
+        "id": "mysterybox_lv1",
+        "count": 1,
+        "data": {}
     }
 }
+mystery_box.SHOP_ITEMS = SHOP_ITEMS
 
 
 @shop.handle()
