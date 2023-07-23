@@ -76,7 +76,7 @@ pluginsModule = dict()
 
 
 def check_plugin(plugin: str) -> bool:
-    if is_develop and plugin == "node_manager.py":
+    if (not is_develop) and plugin == "node_manager.py":
         return False
     return plugin.endswith(".py")\
         and plugin not in disablePlugins\
