@@ -1,4 +1,5 @@
 from . import bag
+from src.plugins.Core.plugins import _lang
 import random
 from .item import Item
 from .nbt import NbtDict
@@ -62,7 +63,7 @@ class MysteryBoxLevel1(Item):
 
         items = json2items(items)
         length = 1
-        reply_text = "你获得了："
+        reply_text = _lang.text("mystery_box.get", [], self.user_id)
         for item in items:
             bag.add_item(self.user_id, item.item_id, item.count, item.data)
             reply_text += f"\n{length}. {item.data['display_name']} x{item.count}"
