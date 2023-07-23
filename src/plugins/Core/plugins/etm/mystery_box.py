@@ -18,7 +18,7 @@ class MysteryBoxLevel1(Item):
             "price": 32
         }
         self.item_id = "mysterybox_lv1"
-    
+
     def use_item(self):
         items = []
         # 普通物品
