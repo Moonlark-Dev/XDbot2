@@ -71,7 +71,7 @@ class MysteryBoxLevel1(Item):
             reply_text = ""
         for item in items:
             bag.add_item(self.user_id, item.item_id, item.count, item.data)
-            reply_text += f"\n{length}. {item.data['display_name']} x{item.count}"
+            reply_text += f"\n{self.length}. {item.data['display_name']} x{item.count}"
             self.length += 1
         return reply_text[1:]
     
