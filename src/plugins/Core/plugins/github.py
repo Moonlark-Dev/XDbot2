@@ -82,6 +82,7 @@ async def get_repo_info(matcher: Matcher, event: MessageEvent):
         repo_data['updated_at'],
         repo_data['description']], event.get_user_id()))
 
+
 @on_command("github", aliases={"gh"}).handle()
 async def github(matcher: Matcher, event: MessageEvent, message: Message = CommandArg()):
     try:
