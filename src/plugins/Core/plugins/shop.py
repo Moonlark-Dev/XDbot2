@@ -34,6 +34,11 @@ SHOP_ITEMS = {
         "id": "towel.zip",
         "count": 1,
         "data": {}
+    },
+    "6": {
+        "id": "mysterybox_lv1",
+        "count": 1,
+        "data": {}
     }
 }
 mystery_box.SHOP_ITEMS = SHOP_ITEMS
