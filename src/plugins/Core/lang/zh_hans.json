@@ -231,5 +231,5 @@
   "github.pr_info": "{}\n标题：{} ({})\n创建者：{}\n最后更新：{}\n\n{}",
   "github.repo_info": "{}\n全名：{} {}\n所有者：{}\n星标：{} | 议题：{} | 拉取请求：{}\n查看：{} | 复刻：{} | 语言：{}\n许可证：{}\n创建日期：{}\n更新日期：{}\n简介：{}",
   "github.repo_archived": "(只读)",
-  "verison.version": "当前版本：{}\n{}"
+  "version.version": "当前版本：{}\n{}"
 }
