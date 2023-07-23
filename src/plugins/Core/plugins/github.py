@@ -82,6 +82,13 @@ async def get_repo_info(matcher: Matcher, event: MessageEvent):
         repo_data['updated_at'],
         repo_data['description']], event.get_user_id()))
 
+# [HELPSTART] Version: 2
+# Command: github
+# Msg: GitHub解析
+# Usage: gh login
+# Usage: gh login <code>
+# Usage: gh set {client_id|secret|proxies} <值>
+# Usage: gh <owner>/<repo>
 
 @on_command("github", aliases={"gh"}).handle()
 async def github(matcher: Matcher, event: MessageEvent, message: Message = CommandArg()):
