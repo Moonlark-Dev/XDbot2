@@ -89,6 +89,7 @@ async def get_repo_info(matcher: Matcher, event: MessageEvent):
 # Usage: gh login <code>
 # Usage: gh set {client_id|secret|proxies} <值>
 # Usage: gh <owner>/<repo>
+# [HELPEND]
 
 @on_command("github", aliases={"gh"}).handle()
 async def github(matcher: Matcher, event: MessageEvent, message: Message = CommandArg()):
