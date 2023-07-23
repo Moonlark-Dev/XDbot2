@@ -25,18 +25,21 @@ try:
 except:
     import json
 
-su = on_command("su")
+give = on_command("give")
 
-@su.handle()
-async def _(message: Message = CommandArg()):
+@give.handle()
+async def _(event: GroupMessageEvent, message: Message = CommandArg()):
     try:
         args = str(message).strip().split(" ")
+        args.insert(0, str(event.user_id))
+        args.insert(0, "give")
+
         if args[0] in ["give", "给"]:
             bag.add_item(args[1].replace("[CQ:at,qq=", "").replace("]", ""), args[2],
                          int(args[3]) if len(
                              args) >= 4 and args[3][0] != "{" else 1,
                          json.loads(" ".join(args[4:]) if len(args) >= 5 else "{}"))
-            await su.finish("完成！")
+            await give.finish("完成！")
     except:
         await _error.report()
 
