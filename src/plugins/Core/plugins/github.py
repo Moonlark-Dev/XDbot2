@@ -51,6 +51,37 @@ def get_proxy():
         return None
 
 
+async def get_repo_info(matcher: Matcher, event: MessageEvent):
+    repo = re.search(
+            r"[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+",
+            event.get_plaintext().replace("github.com", ""))[0]
+    repo_data = await call_github_api(f"https://api.github.com/repos/{repo}")
+    # 发送
+    await matcher.send(_lang.text("github.repo_info", [
+        repo_data['html_url'],
+        repo_data['full_name'],
+
+        _lang.text(
+            "github.repo_archived",
+            [],
+            event.get_user_id()
+        ) if repo_data['archived'] else "",
+
+        repo_data['owner']['login'],
+        repo_data['stargazers_count'],
+        repo_data['open_issues'],
+        
+        len(await call_github_api(
+            repo_data['pulls_url'].replace("{/number}", ""))),
+        
+        repo_data['watchers'],
+        repo_data['forks'],
+        repo_data['language'],
+        repo_data['license']['name'],
+        repo_data["created_at"],
+        repo_data['updated_at'],
+        repo_data['description']], event.get_user_id()))
+
 @on_command("github", aliases={"gh"}).handle()
 async def github(matcher: Matcher, event: MessageEvent, message: Message = CommandArg()):
     try:
@@ -82,6 +113,9 @@ async def github(matcher: Matcher, event: MessageEvent, message: Message = Comma
             else:
                 await matcher.finish(_lang.text("currency.unknown_argv", [argument[1]], event.get_user_id()))
             save_config()
+        else:
+            await get_repo_info(matcher, event)
+        
     except BaseException:
         await error.report(traceback.format_exc(), matcher)
 
@@ -133,36 +167,8 @@ async def get_repo(matcher: Matcher, event: MessageEvent):
         if ("pull" in event.get_plaintext().split("/") or
                 "issues" in event.get_plaintext().split("/")):
             await matcher.finish()
-        repo = re.search(
-            r"[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+",
-            event.get_plaintext().replace("github.com", ""))[0]
-        repo_data = await call_github_api(f"https://api.github.com/repos/{repo}")
-        # 发送
         try:
-            await matcher.send(_lang.text("github.repo_info", [
-                repo_data['html_url'],
-                repo_data['full_name'],
-
-                _lang.text(
-                    "github.repo_archived",
-                    [],
-                    event.get_user_id()
-                ) if repo_data['archived'] else "",
-
-                repo_data['owner']['login'],
-                repo_data['stargazers_count'],
-                repo_data['open_issues'],
-                
-                len(await call_github_api(
-                    repo_data['pulls_url'].replace("{/number}", ""))),
-                
-                repo_data['watchers'],
-                repo_data['forks'],
-                repo_data['language'],
-                repo_data['license']['name'],
-                repo_data["created_at"],
-                repo_data['updated_at'],
-                repo_data['description']], event.get_user_id()))
+            get_repo_info(matcher, event)
         except BaseException:
             pass
         # 删除缓存
