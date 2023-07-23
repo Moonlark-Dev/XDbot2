@@ -4,7 +4,7 @@ from .item import Item
 from .nbt import NbtDict
 
 def json2items(items, user_id=None): ...
-SHOP_ITEMS = []
+SHOP_ITEMS = {}
 
 class MysteryBoxLevel1(Item):
 
@@ -34,7 +34,7 @@ class MysteryBoxLevel1(Item):
         })
         # 商店物品
         for _ in range(random.randint(1, 5)):
-            item: Item = json2items([random.choice(SHOP_ITEMS)])[0]
+            item: Item = json2items([random.choice(list(SHOP_ITEMS.values()))])[0]
             items.append({
                 "id": item.item_id,
                 "count": random.randint(1, max(2, int(64 / item.data["price"]))),
