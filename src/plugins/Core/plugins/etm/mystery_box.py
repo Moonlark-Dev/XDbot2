@@ -72,7 +72,7 @@ class MysteryBoxLevel1(Item):
         for item in items:
             bag.add_item(self.user_id, item.item_id, item.count, item.data)
             reply_text += f"\n{length}. {item.data['display_name']} x{item.count}"
-            length += 1
+            self.length += 1
         return reply_text[1:]
     
     def use(self, args):
