@@ -139,15 +139,30 @@ async def get_repo(matcher: Matcher, event: MessageEvent):
         repo_data = await call_github_api(f"https://api.github.com/repos/{repo}")
         # 发送
         try:
-            await matcher.send(Message(f"""{repo_data['html_url']}
-全名：{repo_data['full_name']} {"(只读)" if repo_data['archived'] else ""}
-所有者：{repo_data['owner']['login']}
-星标：{repo_data['stargazers_count']} | 议题：{repo_data['open_issues']} | 拉取请求：{len(await call_github_api(repo_data['pulls_url'].replace("{/number}", "")))}
-查看：{repo_data['watchers']} | 复刻：{repo_data['forks']} | 语言：{repo_data['language']}
-许可证：{repo_data['license']['name']}
-创建日期：{repo_data["created_at"]}
-更新日期：{repo_data['updated_at']}
-简介：{repo_data['description']}"""))
+            await matcher.send(_lang.text("github.repo_info", [
+                repo_data['html_url'],
+                repo_data['full_name'],
+
+                _lang.text(
+                    "github.repo_archived",
+                    [],
+                    event.get_user_id()
+                ) if repo_data['archived'] else "",
+
+                repo_data['owner']['login'],
+                repo_data['stargazers_count'],
+                repo_data['open_issues'],
+                
+                len(await call_github_api(
+                    repo_data['pulls_url'].replace("{/number}", ""))),
+                
+                repo_data['watchers'],
+                repo_data['forks'],
+                repo_data['language'],
+                repo_data['license']['name'],
+                repo_data["created_at"],
+                repo_data['updated_at'],
+                repo_data['description']], event.get_user_id()))
         except BaseException:
             pass
         # 删除缓存
