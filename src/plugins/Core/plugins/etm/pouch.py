@@ -13,7 +13,7 @@ class Pouch(Item):
             "display_message": "收纳物品\n \x00",
             "items": [],
             "price": 10,
-            "maximum_stack": 1
+            "maximum_stack": 1,
             "max_item_count": 16
         }
         self.item_id = "pouch"
