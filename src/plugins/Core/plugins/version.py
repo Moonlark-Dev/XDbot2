@@ -10,7 +10,8 @@ from nonebot.matcher import Matcher
 async def show_version(matcher: Matcher):
     try:
 
-        git_log = os.popen(r"git log --pretty=format:%B").read().splitlines()[0]
+        git_log = os.popen(
+            r"git log --pretty=format:%B").read().splitlines()[0]
         await matcher.finish(lang.text("version.version", [Json("init.json")["version"], git_log]))
     except BaseException:
         await error.report(traceback.format_exc(), matcher)

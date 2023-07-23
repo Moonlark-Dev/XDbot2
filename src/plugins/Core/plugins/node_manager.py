@@ -27,6 +27,7 @@ except:
 
 give = on_command("give")
 
+
 @give.handle()
 async def _(event: GroupMessageEvent, message: Message = CommandArg()):
     try:
@@ -42,6 +43,7 @@ async def _(event: GroupMessageEvent, message: Message = CommandArg()):
             await give.finish("完成！")
     except:
         await _error.report()
+
 
 @on_command("update", aliases={"检查更新"}).handle()
 async def update_xdbot(matcher: Matcher, event: MessageEvent):

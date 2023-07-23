@@ -53,8 +53,8 @@ def get_proxy():
 
 async def get_repo_info(matcher: Matcher, event: MessageEvent):
     repo = re.search(
-            r"[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+",
-            event.get_plaintext().replace("github.com", ""))[0]
+        r"[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+",
+        event.get_plaintext().replace("github.com", ""))[0]
     repo_data = await call_github_api(f"https://api.github.com/repos/{repo}")
     # 发送
     await matcher.send(_lang.text("github.repo_info", [
@@ -70,10 +70,10 @@ async def get_repo_info(matcher: Matcher, event: MessageEvent):
         repo_data['owner']['login'],
         repo_data['stargazers_count'],
         repo_data['open_issues'],
-        
+
         len(await call_github_api(
             repo_data['pulls_url'].replace("{/number}", ""))),
-        
+
         repo_data['watchers'],
         repo_data['forks'],
         repo_data['language'],
@@ -90,6 +90,7 @@ async def get_repo_info(matcher: Matcher, event: MessageEvent):
 # Usage: gh set {client_id|secret|proxies} <值>
 # Usage: gh <owner>/<repo>
 # [HELPEND]
+
 
 @on_command("github", aliases={"gh"}).handle()
 async def github(matcher: Matcher, event: MessageEvent, message: Message = CommandArg()):
@@ -124,7 +125,7 @@ async def github(matcher: Matcher, event: MessageEvent, message: Message = Comma
             save_config()
         else:
             await get_repo_info(matcher, event)
-        
+
     except BaseException:
         await error.report(traceback.format_exc(), matcher)
 

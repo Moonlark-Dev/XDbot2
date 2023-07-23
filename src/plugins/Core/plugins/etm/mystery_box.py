@@ -6,8 +6,12 @@ import random
 from .item import Item
 from .nbt import NbtDict
 
+
 def json2items(items, user_id=None): ...
+
+
 SHOP_ITEMS = {}
+
 
 class MysteryBoxLevel1(Item):
 
@@ -37,7 +41,8 @@ class MysteryBoxLevel1(Item):
         })
         # 商店物品
         for _ in range(random.randint(1, random.randint(4, 5))):
-            item: Item = json2items([random.choice(list(SHOP_ITEMS.values()))])[0]
+            item: Item = json2items(
+                [random.choice(list(SHOP_ITEMS.values()))])[0]
             items.append({
                 "id": item.item_id,
                 "count": random.randint(1, min(item.data["maximum_stack"], max(2, int(64 / item.data["price"])))),
@@ -74,7 +79,7 @@ class MysteryBoxLevel1(Item):
             reply_text += f"\n{self.length}. {item.data['display_name']} x{item.count}"
             self.length += 1
         return reply_text[1:]
-    
+
     def use(self, args):
         if not self.data["useable"]:
             return ["失败：物品无法被使用"]
