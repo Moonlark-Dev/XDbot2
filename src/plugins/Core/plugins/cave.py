@@ -335,7 +335,7 @@ async def cave_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent):
             "data/cave.latest_use.json", "w", encoding="utf-8"))
         if random.random() <= 0.25:
             economy.add_vi(str(event.user_id), t := random.randint(1, 10))
-            await cave.finish(_lang.text("cave.getvim", [t], event.user_id))
+            await cave.send(_lang.text("cave.getvim", [t], event.user_id))
         # 发送评论
         comments = json.load(open("data/cave.comments.json", encoding="utf-8"))
         caveData["id"] = str(caveData["id"])
