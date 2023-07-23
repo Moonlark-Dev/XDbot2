@@ -226,5 +226,7 @@
   "dice.somedice": "你扔了 {} 个二十面骰子，共获得 {}vi\n大成功（+50）：{} ({}%)\n大失败（-50）：{} ({}%)",
   "node_manager.enabled": "Develop 节点已在本群启用",
   "node_manager.disabled": "Develop 节点已在本群禁用",
-  "cave.getvim": "你在回声洞里发现了 {}vi"
+  "cave.getvim": "你在回声洞里发现了 {}vi",
+  "github.issue_info": "{}\n标题：{} ({})\n创建者：{}\n创建时间：{}\n标签：{}\n \n{}",
+  "github.pr_info": "{}\n标题：{} ({})\n创建者：{}\n最后更新：{}\n\n{}"
 }

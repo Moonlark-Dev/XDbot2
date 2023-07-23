@@ -96,13 +96,14 @@ async def get_issue(matcher: Matcher, event: MessageEvent):
         labels = ""
         for label in issue_data["labels"]:
             labels += f"{label['name']}, "
-        await matcher.finish(f"""{issue_data['html_url']}
-标题：{issue_data['title']} ({issue_data['state']})
-创建者：{issue_data['user']['login']}
-创建时间：{issue_data['created_at']}
-标签：{labels[:-2]}
-
-{issue_data['body']}""")
+        await matcher.finish(_lang.text("github.issue_info", [
+            issue_data['html_url'],
+            issue_data['title'],
+            issue_data['state'],
+            issue_data['user']['login'],
+            issue_data['created_at'],
+            labels[:-2],
+            issue_data['body']], event.get_user_id()))
 
     except BaseException:
         await error.report(traceback.format_exc(), matcher)
@@ -114,12 +115,13 @@ async def get_pull(matcher: Matcher, event: MessageEvent):
         repo, pull_id = re.search(r"[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+/pull/[0-9]+",
                                   event.get_plaintext().replace("github.com", ""))[0].split("/pull/")
         pull_data = await call_github_api(f"https://api.github.com/repos/{repo}/pulls/{pull_id}")
-        await matcher.finish(f"""{pull_data['html_url']}
-标题：{pull_data['title']} ({pull_data['state']})
-创建者：{pull_data['user']['login']}
-最后更新：{pull_data['updated_at']}
-
-{pull_data['body']}""")
+        await matcher.finish(_lang.text("github.pr_info", [
+            pull_data['html_url'],
+            pull_data['title'],
+            pull_data['state'],
+            pull_data['user']['login'],
+            pull_data['updated_at'],
+            pull_data['body']], event.get_user_id()))
 
     except BaseException:
         await error.report(traceback.format_exc(), matcher)
