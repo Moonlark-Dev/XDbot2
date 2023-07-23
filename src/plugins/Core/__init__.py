@@ -44,7 +44,7 @@ try:
 except BaseException:
     pass
 try:
-    is_develop = global_config.NODE_ID == "develop"
+    is_develop = global_config.node_id == "develop"
 except:
     is_develop = False
 
