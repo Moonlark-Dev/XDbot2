@@ -48,7 +48,10 @@ async def cave(bot: Bot, message: Message = CommandArg()):
                     await su.send(f"已删除 Cave{argument[3]}#{argument[4]}")
             elif argument[1] == "remove" or argument[1] == "移除":
                 data = json.load(open("data/cave.data.json", encoding="utf-8"))
+                restore_data = json.load(
+                    open("data/cave.data.restore.json", encoding="utf-8"))
                 cave_data = data["data"].pop(argument[2])
+                restore_data[argument[2]] = cave_data
                 await su.send(Message((
                     f"回声洞——（{cave_data['id']}）\n"
                     f"{parseCave(cave_data['text'])}\n"
@@ -61,6 +64,12 @@ async def cave(bot: Bot, message: Message = CommandArg()):
                     data,
                     open(
                         "data/cave.data.json",
+                        "w",
+                        encoding="utf-8"))
+                json.dump(
+                    restore_data,
+                    open(
+                        "data/cave.data.restore.json",
                         "w",
                         encoding="utf-8"))
                 await su.send(f"已删除回声洞（{cave_data['id']}）")
@@ -101,5 +110,21 @@ async def cave(bot: Bot, message: Message = CommandArg()):
                         "data/cave.data.json",
                         "w",
                         encoding="utf-8"))
+            elif argument[1] in ["restore", "恢复"]:
+                data = json.load(open("data/cave.data.json", encoding="utf-8"))
+                restore_data = json.load(
+                    open("data/cave.data.restore.json", encoding="utf-8"))
+                cave_data = restore_data.pop(argument[2])
+                data["data"][argument[2]] = cave_data
+                await su.send("已恢复回声洞（{cave_data['id']}）")
+                await su.send(Message((
+                    f"回声洞——（{cave_data['id']}）\n"
+                    f"{parseCave(cave_data['text'])}\n"
+                    f"——{(await bot.get_stranger_info(user_id=cave_data['sender']))['nickname']}（{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(cave_data['time']))}）"
+                )))
+                json.dump(data, open(
+                    "data/cave.data.json", "w", encoding="utf-8"))
+                json.dump(restore_data, open(
+                    "data/cave.data.restore.json", "w", encoding="utf-8"))
     except BaseException:
         await report(traceback.format_exc(), su)
