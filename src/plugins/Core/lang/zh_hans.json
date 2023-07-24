@@ -232,5 +232,8 @@
   "github.repo_info": "{}\n全名：{} {}\n所有者：{}\n星标：{} | 议题：{} | 拉取请求：{}\n查看：{} | 复刻：{} | 语言：{}\n许可证：{}\n创建日期：{}\n更新日期：{}\n简介：{}",
   "github.repo_archived": "(只读)",
   "version.version": "当前版本：{}\n{}",
-  "mystery_box.get": "你获得了："
+  "mystery_box.get": "你获得了：",
+  "chatgpt.userinfo": "[XDbot2GPT]\n「剩余 Token 查询」\n总数：{}\n已用：{}\n剩余：{}\n限免（次）：{}",
+  "chatgpt.templ": "{}模板",
+  "chatgpt.reset_successful": "[XDbot2GPT]\n成功以 {} 重置 {}"
 }
