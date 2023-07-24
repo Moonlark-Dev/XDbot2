@@ -116,7 +116,7 @@ async def cave(bot: Bot, message: Message = CommandArg()):
                     open("data/cave.data.restore.json", encoding="utf-8"))
                 cave_data = restore_data.pop(argument[2])
                 data["data"][argument[2]] = cave_data
-                await su.send("已恢复回声洞（{cave_data['id']}）")
+                await su.send(f"已恢复回声洞（{cave_data['id']}）")
                 await su.send(Message((
                     f"回声洞——（{cave_data['id']}）\n"
                     f"{parseCave(cave_data['text'])}\n"
