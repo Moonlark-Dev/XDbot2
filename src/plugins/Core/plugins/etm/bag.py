@@ -27,12 +27,14 @@ def get_items_count_in_bag(user_id):
     return count
 
 
-@scheduler.scheduled_job("cron", second="*/15", id="save_bags")
+@scheduler.scheduled_job("cron", second="*/5", id="save_bags")
 def save_bags():
     bag_data = {}
     for user_id, bag in list(bags.items()):
         bag_data[user_id] = []
         for item in bag:
+            if item.item_id == "pouch" and item.count >= 1:
+                item.count = 1
             if item.count > 0:
                 # 处理nbt
                 nbt = item.data.copy()
