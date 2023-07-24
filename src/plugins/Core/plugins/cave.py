@@ -131,7 +131,7 @@ async def cave_get_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent, me
     try:
         argument = message.extract_plain_text().split(" ")
         data = json.load(open("data/cave.data.json", encoding="utf-8"))
-        caveData = data["data"][argument[1]]
+        caveData = data["data"][argument[0]]
         text = parseCave(caveData["text"])
 
         if isinstance(caveData["sender"], dict):
