@@ -31,21 +31,21 @@ class MysteryBoxLevel1(Item):
         # 普通物品
         items.append({
             "id": "vimcoin",
-            "count": random.randint(27, 60),
+            "count": random.randint(15, 60),
             "data": {}
         })
         items.append({
             "id": "exp",
-            "count": random.randint(1, 42),
+            "count": random.randint(1, 30),
             "data": {}
         })
         # 商店物品
-        for _ in range(random.randint(1, random.randint(4, 5))):
+        for _ in range(random.randint(0, 5)):
             item: Item = json2items(
                 [random.choice(list(SHOP_ITEMS.values()))])[0]
             items.append({
                 "id": item.item_id,
-                "count": random.randint(1, min(item.data["maximum_stack"], max(2, int(64 / item.data["price"])))),
+                "count": random.randint(1, min(item.data["maximum_stack"], max(1, int(32 / item.data["price"])))),
                 "data": {}
             })
         # 大紫（确信
@@ -65,6 +65,12 @@ class MysteryBoxLevel1(Item):
             items.append({
                 "id": "pawcoin",
                 "count": random.randint(1, 7),
+                "data": {}
+            })
+        if random.random() <= 0.75:
+            items.append({
+                "id": "mysterious_shard",
+                "count": random.randint(1, 25),
                 "data": {}
             })
 
@@ -103,3 +109,14 @@ class MysteryBoxLevel1(Item):
         else:
             msg = [f"错误：数量不足（拥有 {self.count} 个）"]
         return msg
+
+
+class MysteriousShard(Item):
+    
+    def on_register(self):
+        self.item_id = "mysterious_shard"
+        self.basic_data: NbtDict = {
+            "display_name": "神秘碎片",
+            "display_message": "与 Mystery Box 差不多神秘的碎片（尚未完成）",
+            "price": 2
+        }
