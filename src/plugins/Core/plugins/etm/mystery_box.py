@@ -112,7 +112,7 @@ class MysteryBoxLevel1(Item):
 
 
 class MysteriousShard(Item):
-    
+
     def on_register(self):
         self.item_id = "mysterious_shard"
         self.basic_data: NbtDict = {

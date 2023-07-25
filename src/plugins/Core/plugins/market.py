@@ -46,9 +46,9 @@ async def item_list(bot: Bot, event: GroupMessageEvent, message: Message = Comma
         argv = str(message).split(" ")
         if argv[0] in ["", "list"]:
             # for id, item_json in list(data.items()):
-                # item = items.json2items([item_json["item"]])[0]
-                # reply += _lang.text("market.list_item", [
-                    # id, item.data["display_name"], item_json["price"]], user_id)
+            # item = items.json2items([item_json["item"]])[0]
+            # reply += _lang.text("market.list_item", [
+            # id, item.data["display_name"], item_json["price"]], user_id)
             # await market.finish(reply)
             try:
                 page = int(argv[1])
