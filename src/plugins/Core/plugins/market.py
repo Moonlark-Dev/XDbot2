@@ -78,7 +78,7 @@ async def item_list(bot: Bot, event: GroupMessageEvent, message: Message = Comma
                                 item.item_id,
                                 item_data["price"],
                                 min(int(user.get_user_data(user_id)[
-                                    "vimcoin"] / item_data["price"]), item_data["count"]),
+                                    "vimcoin"] / max(1, item_data["price"])), item_data["count"]),
                                 item_data["count"],
                                 item_data["seller"]["nickname"],
                                 item_data["seller"]["user_id"],
@@ -110,7 +110,7 @@ async def view_item(event: MessageEvent, message: Message = CommandArg()):
                 item.item_id,
                 item_data["price"],
                 min(int(user.get_user_data(user_id)[
-                    "vimcoin"] / item_data["price"]), item_data["count"]),
+                    "vimcoin"] / max(item_data["price"])), item_data["count"]),
                 item_data["count"],
                 item_data["seller"]["nickname"],
                 item_data["seller"]["user_id"],
