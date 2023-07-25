@@ -4,7 +4,7 @@ from .talisman import Talisman
 from .book_and_quill import BookAndQuill
 from .pawcoin import PawCoin
 from .pouch import Pouch
-from .mystery_box import MysteryBoxLevel1
+from .mystery_box import MysteryBoxLevel1, MysteriousShard
 from .vimcoin import VimCoin
 from .experience import Experience
 from .towel_zip import TowelZip, Towel
@@ -20,6 +20,7 @@ ITEMS = {
     "vimcoin": VimCoin,
     "pawcoin": PawCoin,
     "exp": Experience,
+    "mysterious_shard": MysteriousShard,
     "auto_sign_coupon": AutoSignCoupon,
     "auto_sign_coupon_actived": AutoSignCouponActived
 }
