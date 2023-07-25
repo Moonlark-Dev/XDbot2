@@ -1,6 +1,8 @@
+import math
 import json
 from nonebot import on_command
-from nonebot.adapters.onebot.v11 import Bot, Message, MessageEvent
+from nonebot.adapters.onebot.v11 import Bot, Message, MessageEvent, GroupMessageEvent
+from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot.params import CommandArg
 from .etm import items, user, economy, bag, exp
 from . import _error, _lang
@@ -38,17 +40,58 @@ def save_data():
 
 
 @market.handle()
-async def item_list(event: MessageEvent, message: Message = CommandArg()):
+async def item_list(bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()):
     try:
         user_id = event.get_user_id()
         argv = str(message).split(" ")
-        if argv[0] == "":
-            reply = _lang.text("market.list_title", [], user_id)
-            for id, item_json in list(data.items()):
-                item = items.json2items([item_json["item"]])[0]
-                reply += _lang.text("market.list_item", [
-                    id, item.data["display_name"], item_json["price"]], user_id)
-            await market.finish(reply)
+        if argv[0] in ["", "list"]:
+            # for id, item_json in list(data.items()):
+                # item = items.json2items([item_json["item"]])[0]
+                # reply += _lang.text("market.list_item", [
+                    # id, item.data["display_name"], item_json["price"]], user_id)
+            # await market.finish(reply)
+            try:
+                page = int(argv[1])
+            except:
+                page = 1
+            node_messages = [
+                {
+                    "type": "node",
+                    "data": {
+                        "uin": event.self_id,
+                        "nickname": "XDBOT2",
+                        "content": _lang.text("market.list_title", [page, math.ceil(len(list(data.items())) / 100)], user_id)
+                    }
+                }
+            ]
+            for item_data in list(data.values())[page*100-100:page*100]:
+                item = items.json2items([item_data["item"]])[0]
+                node_messages.append(
+                    {
+                        "type": "node",
+                        "data": {
+                            "uin": event.self_id,
+                            "nickname": "XDBOT2",
+                            "content": _lang.text("market.view", [
+                                item_data["id"],
+                                item.data["display_name"],
+                                item.item_id,
+                                item_data["price"],
+                                min(int(user.get_user_data(user_id)[
+                                    "vimcoin"] / item_data["price"]), item_data["count"]),
+                                item_data["count"],
+                                item_data["seller"]["nickname"],
+                                item_data["seller"]["user_id"],
+                                item.data["display_message"]], user_id)
+                        }
+                    }
+                )
+            await bot.call_api(
+                "send_group_forward_msg",
+                messages=node_messages,
+                group_id=event.group_id
+            )
+            await market.finish()
     except BaseException:
         await _error.report(traceback.format_exc(), market)
 
