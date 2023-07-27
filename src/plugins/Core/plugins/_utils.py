@@ -1,4 +1,5 @@
 import json
+import os
 import os.path
 
 # 快捷访问
@@ -14,11 +15,18 @@ from nonebot.adapters.onebot.v11 import GroupMessageEvent
 from nonebot.adapters.onebot.v11 import MessageEvent
 from nonebot.adapters.onebot.v11 import Message
 
+# import traceback
 
 class Json:
 
     def __init__(self, path: str) -> None:
         self.path = os.path.join("data", path)
+        
+        try:
+            os.makedirs(os.path.dirname(self.path))
+        except:
+            pass
+
         if not os.path.isfile(self.path):
             self.data = {}
         else:
@@ -26,7 +34,7 @@ class Json:
 
     def __setitem__(self, key: str, value: any) -> None:
         if value == None:
-            self.pop(str(key))
+            self.data.pop(str(key))
         self.data[str(key)] = value
 
     def pop(self, key: str) -> any:
@@ -35,8 +43,8 @@ class Json:
         except:
             return None
 
-    def __getattr__(self, item: str) -> any:
-        return self.get(item)
+    # def __getattr__(self, item: str) -> any:
+        # return self.get(item)
 
     def __getitem__(self, key: str) -> any:
         return self.get(key)
