@@ -17,11 +17,12 @@ from nonebot.adapters.onebot.v11 import Message
 
 # import traceback
 
+
 class Json:
 
     def __init__(self, path: str) -> None:
         self.path = os.path.join("data", path)
-        
+
         try:
             os.makedirs(os.path.dirname(self.path))
         except:
