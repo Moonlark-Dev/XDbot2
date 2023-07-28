@@ -233,11 +233,16 @@
   "github.repo_archived": "(只读)",
   "version.version": "当前版本：{}\n{}",
   "mystery_box.get": "你获得了：",
-  "chatgpt.userinfo": "[XDbot2GPT]\n「剩余 Token 查询」\n总数：{}\n已用：{}\n剩余：{}\n限免（次）：{}",
-  "chatgpt.templ": "{}模板",
-  "chatgpt.reset_successful": "[XDbot2GPT]\n成功以 {} 重置 {}",
+
+  "chatgpt.userinfo": "[XDbot2GPT] 用户信息\n剩余：{}\n限免（次）：{}",
   "chatgpt.session_changed": "[XDbot2GPT]\n已切换到会话：{}",
   "chatgpt.chatgpt": "[XDbot2GPT]\n{}\n{}",
   "chatgpt.gpt_token_used": "Tokens: {} (-{})",
-  "chatgpt.gpt_free": "限免：{} (-1)"
+  "chatgpt.gpt_free": "限免：{} (-1)",
+  "chatgpt.reset_successful": "[XDbot2GPT]\n已成功重置会话 {}",
+  "chatgpt.reset_error": "[XDbot2GPT]\n重置会话失败：无法解开会话锁（有请求正在进行中）\n如有疑问请向 XDbot2 Team 寻求帮助",
+  "chatgpt.need_session_argv": "[XDbot2GPT]\n切换会话失败：请指定一个会话",
+  "chatgpt.session_not_available": "[XDbot2GPT]\n切换会话失败：无效会话类型\n可用的会话类型：global group private",
+  "chatgpt.switched_to_another_session": "[XDbot2GPT]\n已成功切换到会话： {}"
+  
 }

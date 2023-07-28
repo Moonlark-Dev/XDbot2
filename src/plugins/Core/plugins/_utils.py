@@ -1,6 +1,7 @@
 import json
 import os
 import os.path
+from typing import Any
 
 # 快捷访问
 from nonebot import on_shell_command
@@ -16,6 +17,20 @@ from nonebot.adapters.onebot.v11 import MessageEvent
 from nonebot.adapters.onebot.v11 import Message
 
 # import traceback
+
+SUCCESS: bool = True
+ERROR: bool = False
+
+
+async def send_text(key: str, _format: list = [], user_id: str | int = "default", at_sender: bool = False, matcher: Matcher = Matcher()) -> None:
+    await matcher.send(lang.text(key, _format, user_id), at_sender=at_sender)
+
+
+def get_list_item(l: list, index: int, default: Any = None) -> Any:
+    try:
+        return l[index]
+    except IndexError:
+        return default
 
 
 class Json:
