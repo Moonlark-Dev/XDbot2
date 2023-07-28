@@ -1,6 +1,5 @@
 from ._utils import *
 import openai
-import tiktoken
 
 openai.proxy = Json("chatgpt.config.json")["proxy"]
 openai.api_key = Json("chatgpt.config.json")["api_key"]
