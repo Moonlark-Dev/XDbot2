@@ -1,4 +1,3 @@
-
 from ._utils import *
 import openai
 
@@ -101,6 +100,9 @@ async def handle_gpt_command(matcher: Matcher, event: GroupMessageEvent, message
                 except IndexError:
                     await matcher.finish(lang.text("chatgpt.session_not_available", [], user_id))
                 await matcher.finish(lang.text("chatgpt.switched_to_another_session", [argv[1]], user_id))
+
+            case _:
+                pass
 
     except BaseException:
         await error.report()
