@@ -13,5 +13,6 @@ def get_version(is_develop):
     # print(latest_tags, start_tag)
     commit_count = int(
         os.popen(f'git rev-list --no-merges --count {start_tag}..').read()) - 1
-    all_commit_count = int(os.popen(f'git rev-list --no-merges --count HEAD').read())
+    all_commit_count = int(
+        os.popen(f'git rev-list --no-merges --count HEAD').read())
     return f"v2.{v1}.{commit_count}{'-dev' if is_develop else ''} ({all_commit_count})"

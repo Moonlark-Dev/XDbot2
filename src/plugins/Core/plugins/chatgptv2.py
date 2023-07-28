@@ -19,6 +19,7 @@ openai.api_key = Json("chatgpt.config.json")["api_key"]
 # Usage: gpt token buy <数量>
 # [HELPEND]
 
+
 def get_user_info(user_id: str) -> str:
     user_data = Json(f"gpt/users/{user_id}.json")
     return lang.text("chatgpt.user_info", [
@@ -55,7 +56,6 @@ def reset_session(session_name: str, template: str | None = None, force_unlock: 
     return init_session(session_name, system_message, force_unlock)
 
 
-
 def get_user_session(user_id: str) -> str:
     return Json(f"gpt/users/{user_id}.json")["session"] or f"u{user_id}"
 
@@ -88,7 +88,7 @@ async def handle_gpt_command(matcher: Matcher, event: GroupMessageEvent, message
                 else:
                     await matcher.finish(
                         lang.text("chatgpt.reset_error", [], user_id))
-                
+
             case "switch":
                 try:
                     change_session(user_id, {
@@ -101,8 +101,6 @@ async def handle_gpt_command(matcher: Matcher, event: GroupMessageEvent, message
                 except IndexError:
                     await matcher.finish(lang.text("chatgpt.session_not_available", [], user_id))
                 await matcher.finish(lang.text("chatgpt.switched_to_another_session", [argv[1]], user_id))
-            
-                
 
     except BaseException:
         await error.report()
