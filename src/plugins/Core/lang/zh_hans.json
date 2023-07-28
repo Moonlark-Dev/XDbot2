@@ -235,5 +235,9 @@
   "mystery_box.get": "你获得了：",
   "chatgpt.userinfo": "[XDbot2GPT]\n「剩余 Token 查询」\n总数：{}\n已用：{}\n剩余：{}\n限免（次）：{}",
   "chatgpt.templ": "{}模板",
-  "chatgpt.reset_successful": "[XDbot2GPT]\n成功以 {} 重置 {}"
+  "chatgpt.reset_successful": "[XDbot2GPT]\n成功以 {} 重置 {}",
+  "chatgpt.session_changed": "[XDbot2GPT]\n已切换到会话：{}",
+  "chatgpt.chatgpt": "[XDbot2GPT]\n{}\n{}",
+  "chatgpt.gpt_token_used": "Tokens: {} (-{})",
+  "chatgpt.gpt_free": "限免：{} (-1)"
 }
