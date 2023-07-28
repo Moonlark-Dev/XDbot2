@@ -234,7 +234,7 @@
   "version.version": "当前版本：{}\n{}",
   "mystery_box.get": "你获得了：",
 
-  "chatgpt.userinfo": "[XDbot2GPT] 用户信息\n剩余：{}\n限免（次）：{}",
+  "chatgpt.user_info": "[XDbot2GPT] 用户信息\n剩余：{}\n限免（次）：{}",
   "chatgpt.session_changed": "[XDbot2GPT]\n已切换到会话：{}",
   "chatgpt.chatgpt": "[XDbot2GPT]\n{}\n{}",
   "chatgpt.gpt_token_used": "Tokens: {} (-{})",
