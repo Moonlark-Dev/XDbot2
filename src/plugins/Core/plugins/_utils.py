@@ -19,7 +19,7 @@ from nonebot.adapters.onebot.v11 import Message
 # import traceback
 
 SUCCESS: bool = True
-ERROR: bool = False
+FAILED: bool = False
 
 
 async def send_text(key: str, _format: list = [], user_id: str | int = "default", at_sender: bool = False, matcher: Matcher = Matcher()) -> None:
@@ -48,12 +48,14 @@ class Json:
         else:
             self.data = json.load(open(self.path, encoding="utf-8"))
 
-    def __setitem__(self, key: str, value: any) -> None:
+    def __setitem__(self, key: str, value: Any) -> None:
         if value == None:
             self.data.pop(str(key))
         self.data[str(key)] = value
+        self.save()  # 保存
 
-    def pop(self, key: str) -> any:
+
+    def pop(self, key: str) -> Any:
         try:
             return self.data.pop(key)
         except:
@@ -62,13 +64,16 @@ class Json:
     # def __getattr__(self, item: str) -> any:
         # return self.get(item)
 
-    def __getitem__(self, key: str) -> any:
+    def __getitem__(self, key: str) -> Any:
         return self.get(key)
 
     def __del__(self) -> None:
+        self.save()
+
+    def save(self) -> None:
         json.dump(self.data, open(self.path, "w", encoding="utf-8"))
 
-    def get(self, key: str, default: any = None) -> None:
+    def get(self, key: str, default: Any = None) -> Any:
         try:
             return self.data[key]
         except:

@@ -234,7 +234,7 @@
   "version.version": "当前版本：{}\n{}",
   "mystery_box.get": "你获得了：",
 
-  "chatgpt.user_info": "[XDbot2GPT] 用户信息\n剩余：{}\n限免（次）：{}",
+  "chatgpt.user_info": "[XDbot2GPT] 用户信息：\n剩余：{}\n限免（次）：{}",
   "chatgpt.session_changed": "[XDbot2GPT]\n已切换到会话：{}",
   "chatgpt.chatgpt": "[XDbot2GPT]\n{}\n{}",
   "chatgpt.gpt_token_used": "Tokens: {} (-{})",
@@ -243,6 +243,11 @@
   "chatgpt.reset_error": "[XDbot2GPT]\n重置会话失败：无法解开会话锁（有请求正在进行中）\n如有疑问请向 XDbot2 Team 寻求帮助",
   "chatgpt.need_session_argv": "[XDbot2GPT]\n切换会话失败：请指定一个会话",
   "chatgpt.session_not_available": "[XDbot2GPT]\n切换会话失败：无效会话类型\n可用的会话类型：global group private",
-  "chatgpt.switched_to_another_session": "[XDbot2GPT]\n已成功切换到会话： {}"
+  "chatgpt.switched_to_another_session": "[XDbot2GPT]\n已成功切换到会话： {}",
+  "chatgpt.no_enough_token": "[XDbot2GPT]\n错误：剩余 Tokens 不足！",
+  "chatgpt.session_locked": "[XDbot2GPT]\n错误：无法解开会话锁（有请求正在进行中）",
+  "chatgpt.reply": "[XDbot2GPT] {}\n{}",
+  "chatgpt.used_token": "Token: {} (-{})",
+  "chatgpt.free": "限免：{} (-1)"
   
 }
