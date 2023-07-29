@@ -196,7 +196,7 @@ async def handle_gpt_command(matcher: Matcher, event: GroupMessageEvent, message
                     reply["choices"][0]["message"]["content"],
                     reduce_tokens(user_id, reply["usage"]["total_tokens"]),
                     user_id
-                ), at_send=True)
+                ), at_sender=True)
 
 
 
