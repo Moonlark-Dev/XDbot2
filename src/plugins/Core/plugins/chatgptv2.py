@@ -105,8 +105,8 @@ def generate_gpt_reply(gpt_reply: str, used_token: int, user_id: str) -> str:
         token_usage_msg = lang.text(
             "chatgpt.used_token", 
             [
-                Json(f"gpt/users/{user_id}.json")["tokens"],
-                user_id
+                Json(f"gpt/users/{user_id}.json")["token"],
+                used_token
             ],
             user_id
         )
