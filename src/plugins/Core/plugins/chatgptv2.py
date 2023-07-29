@@ -1,3 +1,4 @@
+from .su import su
 from ._utils import *
 import openai
 
@@ -89,7 +90,6 @@ def add_message_to_session(session_id: str, role: str, content: str) -> None:
     })
 
 
-
 def reduce_tokens(user_id: str, token_count: int) -> int:
     user_data = Json(f"gpt/users/{user_id}")
     if user_data["free"] > 0:
@@ -127,6 +127,19 @@ def generate_gpt_reply(gpt_reply: str, used_token: int, user_id: str) -> str:
         user_id
     )
 
+
+@su.handle()
+async def handle_su_gpt(message: Message = CommandArg()) -> None:
+    try:
+        arguments = message.extract_plain_text().split(" ")
+        if arguments[0] == "gpt":
+            if arguments[0] in ["tokens", "token", "t"]:
+                if arguments[0] in ["add"]:
+                    user_data = Json(f"gpt/users/{arguments[1]}.json")
+                    user_data["token"] = user_data.get("token", 0) + 1
+    except:
+        await error.report()
+            
 
 @on_command("gpt2").handle()
 async def handle_gpt_command(matcher: Matcher, event: GroupMessageEvent, message: Message = CommandArg()) -> None:
