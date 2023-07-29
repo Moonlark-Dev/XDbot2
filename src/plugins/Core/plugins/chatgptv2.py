@@ -191,8 +191,9 @@ async def handle_gpt_command(matcher: Matcher, event: GroupMessageEvent, message
                 add_message_to_session(session_id, "user", " ".join(argv))
                 reply = await get_chatgpt_reply(get_session_messages(session_id))
                 session["is_locked"] = False
+                add_message_to_session(session_id, reply["choices"][0]["message"]["role"], reply["choices"][0]["content"])
                 await matcher.finish(generate_gpt_reply(
-                    reply["choices"][0]["message"],
+                    reply["choices"][0]["message"]["content"],
                     reduce_tokens(user_id, reply["usage"]["total_tokens"]),
                     user_id
                 ))
