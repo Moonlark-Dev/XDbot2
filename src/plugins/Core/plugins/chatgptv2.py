@@ -2,8 +2,8 @@ from .su import su
 from ._utils import *
 import openai
 
-openai.proxy = json.load(open("data/chatgpt.config.json", encoding="utf-8"))["proxy"]
-openai.api_key = json.load(open("data/chatgpt.config.json", encoding="utf-8"))["api_key"]
+openai.proxy = Json("chatgpt.config.json")["proxy"]
+openai.api_key = Json("chatgpt.config.json")["api_key"]
 
 # [HELPSTART] Version: 2
 # Command: gpt2
@@ -193,7 +193,7 @@ async def handle_gpt_command(matcher: Matcher, event: GroupMessageEvent, message
                 session["is_locked"] = False
                 await matcher.finish(generate_gpt_reply(
                     reply["choices"][0]["message"],
-                    reduce_tokens(user_id, reply["used"]),
+                    reduce_tokens(user_id, reply["usage"]),
                     user_id
                 ))
 
