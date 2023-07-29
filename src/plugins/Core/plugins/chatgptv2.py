@@ -7,18 +7,21 @@ openai.proxy = Json("chatgpt.config.json")["proxy"]
 openai.api_key = Json("chatgpt.config.json")["api_key"]
 
 # [HELPSTART] Version: 2
-# Command: gpt2
-# Info: 还在测试，请用 !gpt2 触发
+# Command: gpt
+# Info: XDbot2GPT
 # Usage: gpt info
 # Usage: gpt reset [模板]
+# Usage: gpt switch {global|group|private}
+# Usage: gpt token buy <数量>
+# Usage: gpt <内容>
+# [HELPEND]
+# TODO 未完成内容：
 # Usage: gpt show [会话ID]
 # Usage: gpt load <会话永久ID>
 # Usage: gpt upload [会话ID]
 # Usage: gpt retry
 # Usage: gpt back
-# Usage: gpt switch {global|group|private}
-# Usage: gpt token buy <数量>
-# [HELPEND]
+
 
 
 def get_user_info(user_id: str) -> str:
@@ -144,7 +147,7 @@ async def handle_su_gpt(message: Message = CommandArg()) -> None:
         await error.report()
             
 
-@on_command("gpt2").handle()
+@on_command("gpt").handle()
 async def handle_gpt_command(matcher: Matcher, event: GroupMessageEvent, message: Message = CommandArg()) -> None:
     try:
         argv = message.extract_plain_text().split(" ")
