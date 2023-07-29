@@ -2,8 +2,8 @@ from .su import su
 from ._utils import *
 import openai
 
-openai.proxy = Json("chatgpt.config.json")["proxy"]
-openai.api_key = Json("chatgpt.config.json")["api_key"]
+openai.proxy = json.load(open("data/chatgpt.config.json", encoding="utf-8"))["proxy"]
+openai.api_key = json.load(open("data/chatgpt.config.json", encoding="utf-8"))["api_key"]
 
 # [HELPSTART] Version: 2
 # Command: gpt2
