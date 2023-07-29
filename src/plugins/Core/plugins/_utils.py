@@ -37,6 +37,7 @@ class Json:
 
     def __init__(self, path: str) -> None:
         self.path = os.path.join("data", path)
+        self.changed_key = set()
 
         try:
             os.makedirs(os.path.dirname(self.path))
@@ -46,12 +47,14 @@ class Json:
         if not os.path.isfile(self.path):
             self.data = {}
         else:
-            self.data = json.load(open(self.path, encoding="utf-8"))
+            self.data = json.load(open(file=self.path, encoding="utf-8"))
 
     def __setitem__(self, key: str, value: Any) -> None:
         if value == None:
             self.data.pop(str(key))
-        self.data[str(key)] = value
+        else:
+            self.data[str(key)] = value
+        self.changed_key.add(key)
         self.save()  # 保存
 
 
@@ -71,7 +74,14 @@ class Json:
         self.save()
 
     def save(self) -> None:
-        json.dump(self.data, open(self.path, "w", encoding="utf-8"))
+        try:
+            local_data = json.load(open(file=self.path, encoding="utf-8"))
+        except FileNotFoundError:
+            local_data = {}
+        for key in list(self.changed_key):
+            local_data[key] = self.data[key]
+        json.dump(local_data, open(self.path, "w", encoding="utf-8"))
+        self.changed_key = set()
 
     def get(self, key: str, default: Any = None) -> Any:
         try:
@@ -80,6 +90,7 @@ class Json:
             if default is None:
                 return None
             self.data[key] = default
+            self.changed_key.add(key)
             return self.get(key, default)
 
     def items(self):
