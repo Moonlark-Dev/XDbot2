@@ -19,7 +19,7 @@ from nonebot.adapters.onebot.v11 import Message
 # import traceback
 
 SUCCESS: bool = True
-ERROR: bool = False
+FAILED: bool = False
 
 
 async def send_text(key: str, _format: list = [], user_id: str | int = "default", at_sender: bool = False, matcher: Matcher = Matcher()) -> None:
@@ -37,6 +37,7 @@ class Json:
 
     def __init__(self, path: str) -> None:
         self.path = os.path.join("data", path)
+        self.changed_key = set()
 
         try:
             os.makedirs(os.path.dirname(self.path))
@@ -46,14 +47,17 @@ class Json:
         if not os.path.isfile(self.path):
             self.data = {}
         else:
-            self.data = json.load(open(self.path, encoding="utf-8"))
+            self.data = json.load(open(file=self.path, encoding="utf-8"))
 
-    def __setitem__(self, key: str, value: any) -> None:
+    def __setitem__(self, key: str, value: Any) -> None:
         if value == None:
             self.data.pop(str(key))
-        self.data[str(key)] = value
+        else:
+            self.data[str(key)] = value
+        self.changed_key.add(key)
+        self.save()  # 保存
 
-    def pop(self, key: str) -> any:
+    def pop(self, key: str) -> Any:
         try:
             return self.data.pop(key)
         except:
@@ -62,19 +66,30 @@ class Json:
     # def __getattr__(self, item: str) -> any:
         # return self.get(item)
 
-    def __getitem__(self, key: str) -> any:
+    def __getitem__(self, key: str) -> Any:
         return self.get(key)
 
     def __del__(self) -> None:
-        json.dump(self.data, open(self.path, "w", encoding="utf-8"))
+        self.save()
 
-    def get(self, key: str, default: any = None) -> None:
+    def save(self) -> None:
+        try:
+            local_data = json.load(open(file=self.path, encoding="utf-8"))
+        except FileNotFoundError:
+            local_data = {}
+        for key in list(self.changed_key):
+            local_data[key] = self.data[key]
+        json.dump(local_data, open(self.path, "w", encoding="utf-8"))
+        self.changed_key = set()
+
+    def get(self, key: str, default: Any = None) -> Any:
         try:
             return self.data[key]
         except:
-            if default == None:
+            if default is None:
                 return None
             self.data[key] = default
+            self.changed_key.add(key)
             return self.get(key, default)
 
     def items(self):
