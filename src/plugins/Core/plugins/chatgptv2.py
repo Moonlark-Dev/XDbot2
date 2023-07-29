@@ -33,7 +33,7 @@ def init_session(session_id: str, system_message: str | None, force_unlock: bool
         Json(f"gpt/sessions/{session_id}.json")["is_locked"] = False
     if Json(f"gpt/sessions/{session_id}.json")["is_locked"]:
         return FAILED
-    if system_message is not None:
+    if not system_message:
         Json(f"gpt/sessions/{session_id}.json")["messages"] = []
     else:
         Json(f"gpt/sessions/{session_id}.json")["messages"] = [{
