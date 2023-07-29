@@ -137,6 +137,7 @@ async def handle_su_gpt(message: Message = CommandArg()) -> None:
                 if arguments[2] in ["add"]:
                     user_data = Json(f"gpt/users/{arguments[3]}.json")
                     user_data["token"] = user_data.get("token", 0) + int(arguments[4])
+                    await matcher.finish("完成！")
     except:
         await error.report()
             
