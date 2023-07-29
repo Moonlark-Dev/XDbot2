@@ -248,6 +248,7 @@
   "chatgpt.session_locked": "[XDbot2GPT]\n错误：无法解开会话锁（有请求正在进行中）",
   "chatgpt.reply": "[XDbot2GPT]\n{}\n \n{}",
   "chatgpt.used_token": "Token: {} (-{})",
-  "chatgpt.free": "限免：{} (-1)"
+  "chatgpt.free": "限免：{} (-1)",
+  "chatgpt.buy_success": "[XDbot2GPT]\n成功购买 {} Tokens"
   
 }

@@ -1,3 +1,4 @@
+from .etm import economy
 from .su import su
 from ._utils import *
 import openai
@@ -181,6 +182,15 @@ async def handle_gpt_command(matcher: Matcher, event: GroupMessageEvent, message
                     await matcher.finish(lang.text("chatgpt.session_not_available", [], user_id))
                 await matcher.finish(lang.text("chatgpt.switched_to_another_session", [argv[1]], user_id))
 
+            case "token" | "tokens":
+                if argv[1] in ["buy", "购买"]:
+                    count = max(int(argv[2]), 0)
+                    if economy.use_vimcoin(user_id, 0.04 * count):
+                        Json(f"gpt/users/{user_id}.json")["token"] = Json(f"gpt/users/{user_id}.json").get("token", 0) + count
+                        await send_text("chatgpt.buy_success", [count], user_id)
+                    else:
+                        await send_text("currency.no_money", [0.04 * count], user_id)
+                    await matcher.finish()
             case _:
                 if not check_user_tokens(user_id):
                     await matcher.finish(lang.text("chatgpt.no_enough_token", [], user_id))
