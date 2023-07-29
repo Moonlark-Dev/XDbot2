@@ -246,7 +246,7 @@
   "chatgpt.switched_to_another_session": "[XDbot2GPT]\n已成功切换到会话： {}",
   "chatgpt.no_enough_token": "[XDbot2GPT]\n错误：剩余 Tokens 不足！",
   "chatgpt.session_locked": "[XDbot2GPT]\n错误：无法解开会话锁（有请求正在进行中）",
-  "chatgpt.reply": "[XDbot2GPT] {}\n{}",
+  "chatgpt.reply": "[XDbot2GPT]\n{}\n \n{}",
   "chatgpt.used_token": "Token: {} (-{})",
   "chatgpt.free": "限免：{} (-1)"
   
