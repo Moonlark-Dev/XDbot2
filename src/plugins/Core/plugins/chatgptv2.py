@@ -67,7 +67,7 @@ def change_session(user_id: str, session: str) -> None:
 
 def check_user_tokens(user_id: str) -> bool:
     user_data = Json(f"gpt/users/{user_id}.json")
-    return user_data.get("token", 0) > 0 or user_data.get("free") > 0
+    return user_data.get("token", 0) > 0 or user_data.get("free", 0) > 0
 
 
 def get_session_messages(session_id: str) -> list[dict]:
