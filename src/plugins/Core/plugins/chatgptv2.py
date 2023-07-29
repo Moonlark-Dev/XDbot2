@@ -100,7 +100,7 @@ def reduce_tokens(user_id: str, token_count: int) -> int:
         return token_count
 
 
-def generate_gpt_reply(gpt_reply: str, used_token: int, user_id: str):
+def generate_gpt_reply(gpt_reply: str, used_token: int, user_id: str) -> str:
     if used_token > 0:
         token_usage_msg = lang.text(
             "chatgpt.used_token", 
