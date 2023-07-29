@@ -91,7 +91,7 @@ def add_message_to_session(session_id: str, role: str, content: str) -> None:
 
 
 def reduce_tokens(user_id: str, token_count: int) -> int:
-    user_data = Json(f"gpt/users/{user_id}")
+    user_data = Json(f"gpt/users/{user_id}.json")
     if user_data.get("free", 0) > 0:
         user_data["free"] -= 1
         return 0
