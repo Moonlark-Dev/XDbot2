@@ -193,7 +193,7 @@ async def handle_gpt_command(matcher: Matcher, event: GroupMessageEvent, message
                 session["is_locked"] = False
                 await matcher.finish(generate_gpt_reply(
                     reply["choices"][0]["message"],
-                    reduce_tokens(user_id, reply["usage"]),
+                    reduce_tokens(user_id, reply["usage"]["total_tokens"]),
                     user_id
                 ))
 
