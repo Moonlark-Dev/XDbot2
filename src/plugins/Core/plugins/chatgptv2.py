@@ -133,10 +133,10 @@ async def handle_su_gpt(message: Message = CommandArg()) -> None:
     try:
         arguments = message.extract_plain_text().split(" ")
         if arguments[0] == "gpt":
-            if arguments[0] in ["tokens", "token", "t"]:
-                if arguments[0] in ["add"]:
-                    user_data = Json(f"gpt/users/{arguments[1]}.json")
-                    user_data["token"] = user_data.get("token", 0) + 1
+            if arguments[1] in ["tokens", "token", "t"]:
+                if arguments[2] in ["add"]:
+                    user_data = Json(f"gpt/users/{arguments[3]}.json")
+                    user_data["token"] = user_data.get("token", 0) + int(arguments[4])
     except:
         await error.report()
             
