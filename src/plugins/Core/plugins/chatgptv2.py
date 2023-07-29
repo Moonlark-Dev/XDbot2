@@ -84,7 +84,7 @@ async def get_chatgpt_reply(messages: list[dict], model: str = "gpt-3.5-turbo"):
 
 
 def add_message_to_session(session_id: str, role: str, content: str) -> None:
-    get_session_by_id(session_id)["messages"].append({
+    get_session_by_id(session_id).get("messages", []).append({
         "role": role,
         "content": content
     })
