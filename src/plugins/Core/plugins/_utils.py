@@ -77,7 +77,7 @@ class Json:
         try:
             return self.data[key]
         except:
-            if default == None:
+            if default is None:
                 return None
             self.data[key] = default
             return self.get(key, default)
