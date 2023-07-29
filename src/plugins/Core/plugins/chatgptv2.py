@@ -23,7 +23,7 @@ openai.api_key = Json("chatgpt.config.json")["api_key"]
 def get_user_info(user_id: str) -> str:
     user_data = Json(f"gpt/users/{user_id}.json")
     return lang.text("chatgpt.user_info", [
-        user_data["tokens"] or 0,
+        user_data["token"] or 0,
         user_data["free"] or 0
     ], user_id)
 
@@ -137,7 +137,7 @@ async def handle_su_gpt(message: Message = CommandArg()) -> None:
                 if arguments[2] in ["add"]:
                     user_data = Json(f"gpt/users/{arguments[3]}.json")
                     user_data["token"] = user_data.get("token", 0) + int(arguments[4])
-                    await matcher.finish("完成！")
+                    await su.finish("完成！")
     except:
         await error.report()
             
