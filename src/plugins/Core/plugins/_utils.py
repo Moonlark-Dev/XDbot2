@@ -57,7 +57,6 @@ class Json:
         self.changed_key.add(key)
         self.save()  # 保存
 
-
     def pop(self, key: str) -> Any:
         try:
             return self.data.pop(key)

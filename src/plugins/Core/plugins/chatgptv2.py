@@ -23,7 +23,6 @@ openai.api_key = Json("chatgpt.config.json")["api_key"]
 # Usage: gpt back
 
 
-
 def get_user_info(user_id: str) -> str:
     user_data = Json(f"gpt/users/{user_id}.json")
     return lang.text("chatgpt.user_info", [
@@ -56,15 +55,18 @@ def get_template_by_name(template_name: str) -> str | None:
 
 
 def reset_session(session_id: str, template: str | None = None, force_unlock: bool = False, _system_message: str | None = None) -> bool:
-    system_message = get_template_by_name(template) or _system_message # type: ignore
+    system_message = get_template_by_name(
+        template) or _system_message  # type: ignore
     return init_session(session_id, system_message, force_unlock)
 
 
 def get_user_session(user_id: str) -> str:
     return Json(f"gpt/users/{user_id}.json")["session"] or f"u{user_id}"
 
+
 def get_session_by_id(session_id: str) -> Json:
     return Json(f"gpt/sessions/{session_id}.json")
+
 
 def change_session(user_id: str, session: str) -> None:
     Json(f"gpt/users/{user_id}.json")["session"] = session
@@ -108,7 +110,7 @@ def reduce_tokens(user_id: str, token_count: int) -> int:
 def generate_gpt_reply(gpt_reply: str, used_token: int, user_id: str) -> str:
     if used_token > 0:
         token_usage_msg = lang.text(
-            "chatgpt.used_token", 
+            "chatgpt.used_token",
             [
                 Json(f"gpt/users/{user_id}.json")["token"],
                 used_token
@@ -124,7 +126,7 @@ def generate_gpt_reply(gpt_reply: str, used_token: int, user_id: str) -> str:
             user_id
         )
     return lang.text(
-        "chatgpt.reply", 
+        "chatgpt.reply",
         [
             token_usage_msg,
             gpt_reply
@@ -141,11 +143,12 @@ async def handle_su_gpt(message: Message = CommandArg()) -> None:
             if arguments[1] in ["tokens", "token", "t"]:
                 if arguments[2] in ["add"]:
                     user_data = Json(f"gpt/users/{arguments[3]}.json")
-                    user_data["token"] = user_data.get("token", 0) + int(arguments[4])
+                    user_data["token"] = user_data.get(
+                        "token", 0) + int(arguments[4])
                     await su.finish("完成！")
     except:
         await error.report()
-            
+
 
 @on_command("gpt").handle()
 async def handle_gpt_command(matcher: Matcher, event: GroupMessageEvent, message: Message = CommandArg()) -> None:
@@ -189,7 +192,8 @@ async def handle_gpt_command(matcher: Matcher, event: GroupMessageEvent, message
                 if argv[1] in ["buy", "购买"]:
                     count = max(int(argv[2]), 0)
                     if economy.use_vimcoin(user_id, 0.04 * count):
-                        Json(f"gpt/users/{user_id}.json")["token"] = Json(f"gpt/users/{user_id}.json").get("token", 0) + count
+                        Json(f"gpt/users/{user_id}.json")["token"] = Json(
+                            f"gpt/users/{user_id}.json").get("token", 0) + count
                         await send_text("chatgpt.buy_success", [count], user_id)
                     else:
                         await send_text("currency.no_money", [0.04 * count], user_id)
@@ -205,14 +209,13 @@ async def handle_gpt_command(matcher: Matcher, event: GroupMessageEvent, message
                 add_message_to_session(session_id, "user", " ".join(argv))
                 reply = await get_chatgpt_reply(get_session_messages(session_id))
                 session["is_locked"] = False
-                add_message_to_session(session_id, reply["choices"][0]["message"]["role"], reply["choices"][0]["message"]["content"])
+                add_message_to_session(
+                    session_id, reply["choices"][0]["message"]["role"], reply["choices"][0]["message"]["content"])
                 await matcher.finish(generate_gpt_reply(
                     reply["choices"][0]["message"]["content"],
                     reduce_tokens(user_id, reply["usage"]["total_tokens"]),
                     user_id
                 ), at_sender=True)
-
-
 
     except BaseException:
         await error.report()
