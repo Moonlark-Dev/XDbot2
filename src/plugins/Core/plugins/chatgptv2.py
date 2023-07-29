@@ -72,8 +72,8 @@ def check_user_tokens(user_id: str) -> bool:
 
 
 def get_session_messages(session_id: str) -> list[dict]:
-    if messages := Json(f"gpt/sessions/{session_id}.json")["messages"]:
-        return messages
+    if Json(f"gpt/sessions/{session_id}.json")["messages"]:
+        return Json(f"gpt/sessions/{session_id}.json")["messages"]
     else:
         reset_session(session_id, "default", True)
         return get_session_messages(session_id)
