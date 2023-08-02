@@ -48,7 +48,6 @@ async def showEula(user_id, matcher=Matcher()):
 @cave_comment.handle()
 async def cave_comment_writer(event: GroupMessageEvent, bot: Bot):
     try:
-        await showEula(event.get_user_id())
         if not event.reply:
             await cave_comment.finish()
         reply_message = event.reply.message.extract_plain_text()
@@ -58,6 +57,8 @@ async def cave_comment_writer(event: GroupMessageEvent, bot: Bot):
                     open("data/cave.banned.json", encoding="utf-8")):
                 await cave_comment.finish(_lang.text("cave.cannot_comment", [], str(event.user_id)))
             # 懒得写了就这样吧
+            await showEula(event.get_user_id())
+
             cave_id = re.search(
                 r"（[0-9]+）",
                 reply_message)[0].replace(
