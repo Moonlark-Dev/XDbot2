@@ -38,10 +38,12 @@ commandHelp = {
 }
 MAX_NODE_MESSAGE = 100
 
-async def showEula(user_id, matcher = Matcher()):
+
+async def showEula(user_id, matcher=Matcher()):
     if not Json("cave.showeula.json")[user_id]:
         await matcher.send("如果开始使用 回声洞，即代表您同意《XDbot2 回声洞 用户协议》（https://github.com/ITCraftDevelopmentTeam/XDbot2/discussions/370）", at_sender=True)
         Json("cave.showeula.json")[user_id] = True
+
 
 @cave_comment.handle()
 async def cave_comment_writer(event: GroupMessageEvent, bot: Bot):
