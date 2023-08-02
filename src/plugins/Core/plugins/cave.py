@@ -10,6 +10,7 @@ from . import _error
 from .etm import exp, economy
 from . import _lang, _messenger
 import httpx
+from ._utils import Json
 from nonebot import on_command, get_app, on_message
 from nonebot.adapters.onebot.v11 import Bot, Message, GroupMessageEvent
 from nonebot.permission import SUPERUSER
@@ -37,10 +38,15 @@ commandHelp = {
 }
 MAX_NODE_MESSAGE = 100
 
+async def showEula(user_id, matcher = Matcher()):
+    if not Json("cave.showeula.json")[user_id]:
+        await matcher.send("如果开始使用 回声洞，即代表您同意《XDbot2 回声洞 用户协议》（https://github.com/ITCraftDevelopmentTeam/XDbot2/discussions/370）", at_sender=True)
+        Json("cave.showeula.json")[user_id] = True
 
 @cave_comment.handle()
 async def cave_comment_writer(event: GroupMessageEvent, bot: Bot):
     try:
+        await showEula(event.get_user_id())
         if not event.reply:
             await cave_comment.finish()
         reply_message = event.reply.message.extract_plain_text()
@@ -129,6 +135,8 @@ def parseCave(text: str):
 @on_command("cave-g", permission=SUPERUSER).handle()
 async def cave_get_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()):
     try:
+        await showEula(event.get_user_id())
+
         argument = message.extract_plain_text().split(" ")
         data = json.load(open("data/cave.data.json", encoding="utf-8"))
         caveData = data["data"][argument[0]]
@@ -183,6 +191,8 @@ async def cave_get_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent, me
 @on_command("cave-q", permission=SUPERUSER).handle()
 async def cave_query_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()):
     try:
+        await showEula(event.get_user_id())
+
         argument = message.extract_plain_text().split(" ")
         data = json.load(open("data/cave.data.json", encoding="utf-8"))
         start_id = int(argument[0])
@@ -232,6 +242,8 @@ async def cave_query_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent, 
 @on_command("cave-a").handle()
 async def cave_add_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()):
     try:
+        await showEula(event.get_user_id())
+
         data = json.load(open("data/cave.data.json", encoding="utf-8"))
         if str(event.user_id) in json.load(
                 open("data/cave.banned.json", encoding="utf-8")):
@@ -270,6 +282,8 @@ async def cave_add_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent, me
 @on_command("cave-s").handle()
 async def cave_status_handler(cave: Matcher, event: GroupMessageEvent):
     try:
+        await showEula(event.get_user_id())
+
         data = json.load(open("data/cave.data.json", encoding="utf-8"))
         count = data["count"]
         canReadCount = len(data["data"].keys())
@@ -291,6 +305,8 @@ async def cave_status_handler(cave: Matcher, event: GroupMessageEvent):
 @on_command("cave").handle()
 async def cave_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent):
     try:
+        await showEula(event.get_user_id())
+
         data = json.load(open("data/cave.data.json", encoding="utf-8"))
         latest_use = json.load(
             open("data/cave.latest_use.json", encoding="utf-8"))
