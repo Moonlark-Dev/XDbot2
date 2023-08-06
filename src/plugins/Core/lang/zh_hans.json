@@ -233,7 +233,6 @@
   "github.repo_archived": "(只读)",
   "version.version": "当前版本：{}\n{}",
   "mystery_box.get": "你获得了：",
-
   "chatgpt.user_info": "[XDbot2GPT] 用户信息：\n剩余：{}\n限免（次）：{}",
   "chatgpt.session_changed": "[XDbot2GPT]\n已切换到会话：{}",
   "chatgpt.chatgpt": "[XDbot2GPT]\n{}\n{}",
@@ -249,6 +248,7 @@
   "chatgpt.reply": "[XDbot2GPT]\n{}\n \n{}",
   "chatgpt.used_token": "Token: {} (-{})",
   "chatgpt.free": "限免：{} (-1)",
-  "chatgpt.buy_success": "[XDbot2GPT]\n成功购买 {} Tokens"
-  
+  "chatgpt.buy_success": "[XDbot2GPT]\n成功购买 {} Tokens",
+  "pay.vim_not_enough": "错误：vim余额不足",
+  "pay.sucess": "完成"
 }
