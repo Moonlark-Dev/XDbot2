@@ -250,5 +250,6 @@
   "chatgpt.free": "限免：{} (-1)",
   "chatgpt.buy_success": "[XDbot2GPT]\n成功购买 {} Tokens",
   "pay.vim_not_enough": "错误：vim余额不足",
-  "pay.sucess": "完成"
+  "pay.sucess": "完成",
+  "pacman.need_pkg_name": "错误：请附上需要搜索的包名进行搜索"
 }
