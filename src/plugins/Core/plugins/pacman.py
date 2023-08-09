@@ -72,9 +72,9 @@ def parse_packages_data(packages: list):
 
 
 @pacman.handle()
-async def search_package(message: Message = CommandArg()):
+async def search_package(event: MessageEvent, message: Message = CommandArg()):
     if str(message) == "":
-        await pacman.finish("请附上需要搜索的内容进行搜索。")
+        await pacman.finish(lang.text("pacman.need_pkg_name", [], event.get_user_id()))
     try:
         packages = parse_packages_data(
             get_packages_list(
