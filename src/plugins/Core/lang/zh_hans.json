@@ -252,5 +252,5 @@
   "pay.vim_not_enough": "错误：vim余额不足",
   "pay.sucess": "完成",
   "pacman.need_pkg_name": "错误：请附上需要搜索的包名进行搜索",
-  "pacman.pkg_info": "包名：{}\n版本：{}\n架构：{}\n简介：{}\n仓库：{}\n最后更新：{}\n{}"
+  "pacman.pkg_info": "包名：{}\n版本：{}\n架构：{}\n简介：{}\n最后更新：{}\n{}"
 }
