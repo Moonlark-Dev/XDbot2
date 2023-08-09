@@ -82,15 +82,15 @@ async def search_package(event: MessageEvent, message: Message = CommandArg()):
             )
         )
         for package in packages:
-#             await pacman.send(
-#                 f"包名：{package['name']}\n"
-#                 f"版本：{package['ver']}\n"
-#                 f"架构：{package['arch']}\n"
-#                 f"简介：{package['info']}\n"
-#                 #                 f"仓库：{package['repo']}\n"
-#                 f"最后更新：{package['latest_update']}\n"
-#                 f"{package['url']}"
-#             )
+            #             await pacman.send(
+            #                 f"包名：{package['name']}\n"
+            #                 f"版本：{package['ver']}\n"
+            #                 f"架构：{package['arch']}\n"
+            #                 f"简介：{package['info']}\n"
+            #                 #                 f"仓库：{package['repo']}\n"
+            #                 f"最后更新：{package['latest_update']}\n"
+            #                 f"{package['url']}"
+            #             )
             await pacman.send(lang.text("pacman.pkg_info", [package['name'], package['ver'], package['arch'], package['info'], package['latest_update'], package['url']], event.get_user_id()))
         await pacman.finish()
     except FinishedException:
