@@ -72,9 +72,9 @@ def parse_packages_data(packages: list):
 
 
 @pacman.handle()
-async def search_package(message: Message = CommandArg()):
+async def search_package(event: MessageEvent, message: Message = CommandArg()):
     if str(message) == "":
-        await pacman.finish("请附上需要搜索的内容进行搜索。")
+        await pacman.finish(lang.text("pacman.need_pkg_name", [], event.user_id))
     try:
         packages = parse_packages_data(
             get_packages_list(
@@ -82,15 +82,14 @@ async def search_package(message: Message = CommandArg()):
             )
         )
         for package in packages:
-            await pacman.send(
-                f"包名：{package['name']}\n"
-                f"版本：{package['ver']}\n"
-                f"架构：{package['arch']}\n"
-                f"简介：{package['info']}\n"
-                #                 f"仓库：{package['repo']}\n"
-                f"最后更新：{package['latest_update']}\n"
-                f"{package['url']}"
-            )
+            await pacman.send(lang.text("pacman.pkg_info", [
+                package['name'],
+                package['ver'],
+                package['arch'],
+                package['info'],
+                package['latest_update'],
+                package['url']
+            ], event.user_id))
         await pacman.finish()
     except FinishedException:
         raise FinishedException()
