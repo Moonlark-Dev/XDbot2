@@ -10,22 +10,19 @@ import json
 
 
 @su.handle()
-async def set_forward(matcher: Matcher,
-                      bot: Bot,
-                      message: Message = CommandArg()):
+async def set_forward(matcher: Matcher, bot: Bot, message: Message = CommandArg()):
     try:
         argument = message.extract_plain_text().split(" ")
         if argument[0] == "forward" or argument[0] == "消息转发":
-            data = json.load(
-                open("data/forward.groupList.json", encoding="utf-8"))
+            data = json.load(open("data/forward.groupList.json", encoding="utf-8"))
             if argument[1] == "add" or argument[1] == "添加群":
                 data += [argument[2]]
                 try:
                     await bot.set_group_card(
                         group_id=int(argument[2]),
                         user_id=(await bot.get_login_info())["user_id"],
-                        card=(await bot.get_login_info())["nickname"] +
-                        "（监听中）")
+                        card=(await bot.get_login_info())["nickname"] + "（监听中）",
+                    )
                 except BaseException:
                     pass
             elif argument[1] == "remove" or argument[1] == "删除群":
@@ -36,22 +33,19 @@ async def set_forward(matcher: Matcher,
                         try:
                             await bot.set_group_card(
                                 group_id=int(argument[2]),
-                                user_id=(await
-                                         bot.get_login_info())["user_id"],
-                                card=(await
-                                      bot.get_login_info())["nickname"][:-5])
+                                user_id=(await bot.get_login_info())["user_id"],
+                                card=(await bot.get_login_info())["nickname"][:-5],
+                            )
                         except BaseException:
                             pass
 
                     else:
                         length += 1
             await matcher.send("完成")
-            json.dump(
-                data, open("data/forward.groupList.json",
-                           "w",
-                           encoding="utf-8"))
+            json.dump(data, open("data/forward.groupList.json", "w", encoding="utf-8"))
             forward.forwardData = json.load(
-                open("data/forward.groupList.json", encoding="utf-8"))
+                open("data/forward.groupList.json", encoding="utf-8")
+            )
 
     except BaseException:
         await _error.report(traceback.format_exc(), matcher)

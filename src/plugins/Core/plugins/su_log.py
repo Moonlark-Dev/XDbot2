@@ -105,8 +105,7 @@ def su_log_match(match, pf=""):
     except IndexError:
         reply += f"{pf}{tY}/{tM}/{tD}\n"
         for i in logs:
-            if i["time"]["Y"] == tY and i["time"]["M"] == tM and i["time"][
-                    "D"] == tD:
+            if i["time"]["Y"] == tY and i["time"]["M"] == tM and i["time"]["D"] == tD:
                 reply += f"{i['time']['h']}:{i['time']['m']}:{i['time']['s']} - {i['user']['name']}({i['user']['id']}) - {i['command']}\n"
         return reply
     try:
@@ -114,8 +113,12 @@ def su_log_match(match, pf=""):
     except IndexError:
         reply += f"{pf}{tY}/{tM}/{tD} {th}\n"
         for i in logs:
-            if i["time"]["Y"] == tY and i["time"]["M"] == tM and i["time"][
-                    "D"] == tD and i["time"]["h"] == th:
+            if (
+                i["time"]["Y"] == tY
+                and i["time"]["M"] == tM
+                and i["time"]["D"] == tD
+                and i["time"]["h"] == th
+            ):
                 reply += f"{i['time']['h']}:{i['time']['m']}:{i['time']['s']} - {i['user']['name']}({i['user']['id']}) - {i['command']}\n"
         return reply
     try:
@@ -123,16 +126,25 @@ def su_log_match(match, pf=""):
     except IndexError:
         reply += f"{pf}{tY}/{tM}/{tD} {th}:{tm}\n"
         for i in logs:
-            if i["time"]["Y"] == tY and i["time"]["M"] == tM and i["time"][
-                    "D"] == tD and i["time"]["h"] == th and i["time"][
-                        "m"] == tm:
+            if (
+                i["time"]["Y"] == tY
+                and i["time"]["M"] == tM
+                and i["time"]["D"] == tD
+                and i["time"]["h"] == th
+                and i["time"]["m"] == tm
+            ):
                 reply += f"{i['time']['h']}:{i['time']['m']}:{i['time']['s']} - {i['user']['name']}({i['user']['id']}) - {i['command']}\n"
         return reply
     reply += f"{pf}{tY}/{tM}/{tD} {th}:{tm}:{ts}\n"
     for i in logs:
-        if i["time"]["Y"] == tY and i["time"]["M"] == tM and i["time"][
-                "D"] == tD and i["time"]["h"] == th and i["time"][
-                    "m"] == tm and i["time"]["s"] == ts:
+        if (
+            i["time"]["Y"] == tY
+            and i["time"]["M"] == tM
+            and i["time"]["D"] == tD
+            and i["time"]["h"] == th
+            and i["time"]["m"] == tm
+            and i["time"]["s"] == ts
+        ):
             reply += f"{i['user']['name']}({i['user']['id']}) - {i['command']}\n"
     return reply
 
@@ -163,20 +175,19 @@ async def su_log(argument: list = str(Command()).split(" ")):
                 "D": time.strftime("%d", _log_time),
                 "h": time.strftime("%H", _log_time),
                 "m": time.strftime("%M", _log_time),
-                "s": time.strftime("%S", _log_time)
+                "s": time.strftime("%S", _log_time),
             }
             if argn == 1:
                 reply += su_log_match(
-                    ["", "", log_time["Y"], log_time["M"], log_time["D"]],
-                    "今日 ")
+                    ["", "", log_time["Y"], log_time["M"], log_time["D"]], "今日 "
+                )
             elif argn == 2:
                 if argument[1] in ["day", "今日", "本日", "日", "d", "D"]:
                     reply += su_log_match(
-                        ["", "", log_time["Y"], log_time["M"], log_time["D"]],
-                        "今日 ")
+                        ["", "", log_time["Y"], log_time["M"], log_time["D"]], "今日 "
+                    )
                 elif argument[1] in ["month", "本月", "月", "m", "M"]:
-                    reply += su_log_match(
-                        ["", "", log_time["Y"], log_time["M"]], "本月 ")
+                    reply += su_log_match(["", "", log_time["Y"], log_time["M"]], "本月 ")
                 elif argument[1] in ["all", "所有", "全部", "a", "A"]:
                     # ********** xd我建议你过来写个合并转发 reply是全部文本(建议按行数分割) **********
                     reply += su_log_match(["", ""], "全部 ")
@@ -191,9 +202,9 @@ async def su_log(argument: list = str(Command()).split(" ")):
 
 
 @su.handle()
-async def write_su_logger(bot: Bot,
-                          event: MessageEvent,
-                          message: Message = CommandArg()):
+async def write_su_logger(
+    bot: Bot, event: MessageEvent, message: Message = CommandArg()
+):
     log_msg = str(message)
     logger.debug(f"[su] 用户 {event.get_user_id()} 使用：{message}")
     try:
@@ -202,27 +213,28 @@ async def write_su_logger(bot: Bot,
                 json.dump([], open("data/su.log.json", "w", encoding="utf-8"))
             log = json.load(open("data/su.log.json", encoding="utf-8"))
             log_time = time.localtime()
-            log.append({
-                "user": {
-                    "id":
-                    event.get_user_id(),
-                    "name":
-                    (await
-                     bot.get_stranger_info(user_id=int(event.get_user_id())
-                                           ))["nickname"],
-                    "group":
-                    event.get_session_id().split("_")[1]
-                },
-                "time": {
-                    "Y": time.strftime("%Y", log_time),
-                    "M": time.strftime("%m", log_time),
-                    "D": time.strftime("%d", log_time),
-                    "h": time.strftime("%H", log_time),
-                    "m": time.strftime("%M", log_time),
-                    "s": time.strftime("%S", log_time)
-                },
-                "command": log_msg
-            })
+            log.append(
+                {
+                    "user": {
+                        "id": event.get_user_id(),
+                        "name": (
+                            await bot.get_stranger_info(
+                                user_id=int(event.get_user_id())
+                            )
+                        )["nickname"],
+                        "group": event.get_session_id().split("_")[1],
+                    },
+                    "time": {
+                        "Y": time.strftime("%Y", log_time),
+                        "M": time.strftime("%m", log_time),
+                        "D": time.strftime("%d", log_time),
+                        "h": time.strftime("%H", log_time),
+                        "m": time.strftime("%M", log_time),
+                        "s": time.strftime("%S", log_time),
+                    },
+                    "command": log_msg,
+                }
+            )
             json.dump(log, open("data/su.log.json", "w", encoding="utf-8"))
     except BaseException:
         logger.warning("[WARN] 记录su审核日志失败")

@@ -8,7 +8,7 @@ from . import _error as error
 from . import _lang as lang
 import traceback
 
-random_plugin = on_command('random', aliases={"rd", "随机数"})
+random_plugin = on_command("random", aliases={"rd", "随机数"})
 
 # [HELPSTART] Version: 2
 # Command: random
@@ -38,7 +38,8 @@ async def random_handle(event: MessageEvent, message: Message = CommandArg()):
             else:
                 # 参数错误
                 await random_plugin.finish(
-                    lang.text("random_number.argerr", [], event.get_user_id()))
+                    lang.text("random_number.argerr", [], event.get_user_id())
+                )
         # 返回结果
         await random_plugin.finish(str(result))
     except FinishedException:

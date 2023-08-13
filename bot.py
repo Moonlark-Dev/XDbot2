@@ -11,17 +11,20 @@ from nonebot.adapters.onebot.v11 import Adapter as ONEBOT_V11Adapter
 from nonebot.log import logger, default_format
 
 import os
+
 try:
     os.mkdir("data")
 except Exception:
     pass
 os.system("git submodule update")
 
-logger.add("./data/error.log",
-           rotation="00:00",
-           diagnose=False,
-           level="WARNING",
-           format=default_format)
+logger.add(
+    "./data/error.log",
+    rotation="00:00",
+    diagnose=False,
+    level="WARNING",
+    format=default_format,
+)
 
 # You can pass some keyword args config to init function
 nonebot.init()
@@ -42,5 +45,6 @@ nonebot.load_from_toml("pyproject.toml")
 
 if __name__ == "__main__":
     nonebot.logger.warning(
-        "Always use `nb run` to start the bot instead of manually running!")
+        "Always use `nb run` to start the bot instead of manually running!"
+    )
     nonebot.run(app="__mp_main__:app")

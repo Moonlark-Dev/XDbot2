@@ -15,7 +15,7 @@ openai.api_key = config["api_key"]
 
 
 def gen_gch_content(cl1, cl2):
-    return f'''You are a command assistant being used on a QQ group chat bot program called XDbot2.
+    return f"""You are a command assistant being used on a QQ group chat bot program called XDbot2.
 1. The user will type in the XDbot2 functions he needs using natural language (usually Chinese), which you translate into XDbot2 commands. You simply output the translated commands directly without any interpretation of them.
 2. If the user asks a question about yourself or talks about yourself, do not answer it, just output "NOT_IN_LIST".
 3. If you do not understand what the user is saying, or are unsure how to translate what the user is saying into XDbot2 commands, simply output "CAN_NOT_UNDERSTAND" without any further explanation.
@@ -34,7 +34,7 @@ The following are the detailed parameters and instructions for each command, whi
 Command prefix: /
 
 {cl2}
-'''
+"""
 
 
 @on_command("?").handle()
@@ -54,28 +54,27 @@ async def _(matcher: Matcher, event: MessageEvent):
                 _usage_content += f"{length}. {usage}\n"
             content += f"\n{_lang.text('help.usage', [length, _usage_content[:-1]], event.get_user_id())}"
             cmd_list2.append("/" + command + "\n" + content)
-        gch_messages = [{
-            "role":
-            "system",
-            "content":
-            gen_gch_content(cmd_list, "\n".join(cmd_list2))
-        }]
+        gch_messages = [
+            {
+                "role": "system",
+                "content": gen_gch_content(cmd_list, "\n".join(cmd_list2)),
+            }
+        ]
         message = event.get_message()
         messages = gch_messages.copy()
-        messages.append({
-            "role": "user",
-            "content": message.extract_plain_text()
-        })
-        session = await openai.ChatCompletion.acreate(model="gpt-3.5-turbo",
-                                                      messages=messages)
+        messages.append({"role": "user", "content": message.extract_plain_text()})
+        session = await openai.ChatCompletion.acreate(
+            model="gpt-3.5-turbo", messages=messages
+        )
         reply = session["choices"][0]["message"]["content"]
         if "NOT_IN_LIST" in reply:
             reply = "你需要的功能 XDbot2 暂时没有喵，主人可以在https://github.com/ITCraftDevelopmentTeam/XDbot2提交一个Issue呢……"
         elif "CAN_NOT_UNDERSTAND" in reply:
             reply = "XDbot 目前无法理解主人的请求喵……"
-        await matcher.finish(MessageSegment.reply(event.message_id) +
-                             MessageSegment.text(reply),
-                             at_sender=True)
+        await matcher.finish(
+            MessageSegment.reply(event.message_id) + MessageSegment.text(reply),
+            at_sender=True,
+        )
 
     except BaseException:
         await error.report(traceback.format_exc(), matcher, event)

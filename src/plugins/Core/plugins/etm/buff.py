@@ -20,7 +20,8 @@ def effect_buff(user_id, buff_id):
     try:
         data.buff[user_id][buff_id]["effect_count"] += 1
         if data.buff[user_id][buff_id]["effect_count"] >= BUFFERS[buff_id][
-                "max_effect"](data.buff[user_id][buff_id]["level"]):
+            "max_effect"
+        ](data.buff[user_id][buff_id]["level"]):
             data.buff[user_id].pop(buff_id)
         return True
     except BaseException:
@@ -30,7 +31,8 @@ def effect_buff(user_id, buff_id):
 def can_effect(user_id, buff_id):
     try:
         if data.buff[user_id][buff_id]["effect_count"] >= BUFFERS[buff_id][
-                "max_effect"](data.buff[user_id][buff_id]["level"]):
+            "max_effect"
+        ](data.buff[user_id][buff_id]["level"]):
             return False
         return True
     except BaseException:
@@ -43,6 +45,6 @@ def give_buff(user_id, buff_id, buff_level, endtime=None, effect_count=0):
     data.buff[user_id][buff_id] = {
         "level": buff_level,
         "endtime": endtime,
-        "effect_count": effect_count
+        "effect_count": effect_count,
     }
     data.save_data()
