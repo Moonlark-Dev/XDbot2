@@ -27,7 +27,8 @@ async def send_text(
     _format: list = [],
     user_id: str | int = "default",
     at_sender: bool = False,
-    matcher: Matcher = Matcher()) -> None:
+    matcher: Matcher = Matcher(),
+) -> None:
     await matcher.send(lang.text(key, _format, user_id), at_sender=at_sender)
 
 
@@ -39,7 +40,6 @@ def get_list_item(l: list, index: int, default: Any = None) -> Any:
 
 
 class Json:
-
     def __init__(self, path: str) -> None:
         self.path = os.path.join("data", path)
         self.changed_key = set()

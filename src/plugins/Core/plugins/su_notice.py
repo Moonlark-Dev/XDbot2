@@ -13,15 +13,14 @@ su_notice_cache = ""
 async def su_primary_notice(message: Message = CommandArg()):
     try:
         argument = str(message).split(" ")
-        if argument[0] == "notice" or argument[0] == "超级广播" or argument[
-                0] == "广播":
+        if argument[0] == "notice" or argument[0] == "超级广播" or argument[0] == "广播":
             global su_notice_cache
-            text = str(message)[argument[0].__len__() + 1:]
+            text = str(message)[argument[0].__len__() + 1 :]
             if text == "submit":
                 if su_notice_cache != "":
                     multiAccoutData = json.load(
-                        open("data/su.multiaccoutdata.ro.json",
-                             encoding="utf-8"))
+                        open("data/su.multiaccoutdata.ro.json", encoding="utf-8")
+                    )
                     groupList = list(multiAccoutData.keys())
                     bots = get_bots()
                     # 开始广播
@@ -33,7 +32,8 @@ async def su_primary_notice(message: Message = CommandArg()):
                             )
                         except BaseException:
                             await su.send(
-                                f"在 {group} 广播消息失败：\n{traceback.format_exc()}")
+                                f"在 {group} 广播消息失败：\n{traceback.format_exc()}"
+                            )
                     su_notice_cache = ""
                 else:
                     await su.finish("请先使用 /su notice <context> 设定超级广播内容")

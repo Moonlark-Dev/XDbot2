@@ -10,9 +10,9 @@ from . import _lang as lang
 
 
 @on_command("achievement", aliases={"成就", "achi"}).handle()
-async def show_achievement(matcher: Matcher,
-                           event: MessageEvent,
-                           message: Message = CommandArg()):
+async def show_achievement(
+    matcher: Matcher, event: MessageEvent, message: Message = CommandArg()
+):
     try:
         argv = str(message).split(" ")
         if argv[0] in ["list", "列表", ""]:
@@ -26,28 +26,28 @@ async def show_achievement(matcher: Matcher,
         elif argv[0] in ["view", "show", "查看"]:
             achi_data = achievement.ACHIEVEMENTS[" ".join(argv[1:])]
             if achi_data["name"] in achievement.get_user_achievement(
-                    event.get_user_id()):
-                unlck_status = lang.text("achi.unlocked", [],
-                                         event.get_user_id())
-            elif achievement.get_unlck_progress(achi_data['name'],
-                                                event.get_user_id()):
+                event.get_user_id()
+            ):
+                unlck_status = lang.text("achi.unlocked", [], event.get_user_id())
+            elif achievement.get_unlck_progress(achi_data["name"], event.get_user_id()):
                 unlck_status = f"{achievement.get_unlck_progress(achi_data['name'], event.get_user_id())} / {achi_data['need_progress']} {(achievement.get_unlck_progress(achi_data['name'], event.get_user_id()) / achi_data['need_progress']) * 100}%"
             else:
-                unlck_status = lang.text("achi.locked", [],
-                                         event.get_user_id())
+                unlck_status = lang.text("achi.locked", [], event.get_user_id())
             await matcher.finish(
-                lang.text("achi.info", [
-                    achi_data['name'], achi_data['condition'], unlck_status
-                ], event.get_user_id()) +
-                (f"\n{achi_data['info']}" if 'info' in achi_data.keys() else ''
-                 ))
+                lang.text(
+                    "achi.info",
+                    [achi_data["name"], achi_data["condition"], unlck_status],
+                    event.get_user_id(),
+                )
+                + (f"\n{achi_data['info']}" if "info" in achi_data.keys() else "")
+            )
         # elif argv[0] in ["all", "全部"]:
         #     reply = lang.text("achi.title_all", [], event.get_user_id())
         #     length = 1
         #     for item in list(achievement.ACHIEVEMENTS.values()):
         #         reply += f"\n{length}. {item['name']}"
         #         length += 1
-#             await matcher.finish(reply)
+    #             await matcher.finish(reply)
     except BaseException:
         await error.report(format_exc(), matcher)
 

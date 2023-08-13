@@ -5,7 +5,6 @@ from . import exp
 
 
 class BookAndQuill(Item):
-
     def on_register(self):
         self.item_id = "book_and_quill"
         self.basic_data = {
@@ -15,7 +14,7 @@ class BookAndQuill(Item):
             "maximum_stack": 1,
             "data": "",
             "author": None,
-            "saved": False
+            "saved": False,
         }
 
     async def async_use(self, _argv=""):
@@ -31,19 +30,23 @@ class BookAndQuill(Item):
                 self.data["author"] = self.user_id
                 self.data["saved"] = True
                 self.data["display_name"] = " ".join(
-                    _argv.splitlines()[0].split(" ")[1:])
-                self.data["display_message"] = "\n".join(
-                    _argv.splitlines()[1:])
+                    _argv.splitlines()[0].split(" ")[1:]
+                )
+                self.data["display_message"] = "\n".join(_argv.splitlines()[1:])
                 exp.add_exp(self.user_id, 4)
                 return [text("etm.book_savesuccess", [], self.user_id)]
             else:
                 return [text("etm.book_saved", [], self.user_id)]
         else:
-            author_nickname = (await (list(
-                nonebot.get_bots().values())[0].get_stranger_info(
-                    user_id=self.data['author'])))['nickname']
+            author_nickname = (
+                await list(nonebot.get_bots().values())[0].get_stranger_info(
+                    user_id=self.data["author"]
+                )
+            )["nickname"]
             author = f"{author_nickname} ({self.data['author']})"
             return [
-                text("etm.book_read",
-                     [self.data['display_name'], author, self.data['data']])
+                text(
+                    "etm.book_read",
+                    [self.data["display_name"], author, self.data["data"]],
+                )
             ]

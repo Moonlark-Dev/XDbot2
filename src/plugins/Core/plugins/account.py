@@ -11,8 +11,7 @@ import json
 from .su import su
 
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
-priority_accout = json.load(
-    open("data/su.priority_accout.json", encoding="utf-8"))
+priority_accout = json.load(open("data/su.priority_accout.json", encoding="utf-8"))
 accouts = {}
 multiAccoutData = {}
 account_manager = on_command("accout", aliases={"多帐号", "account"})
@@ -23,8 +22,10 @@ driver = get_driver()
 async def multiAccoutManager(bot: Bot, event: GroupMessageEvent):
     try:
         if event.group_id in multiAccoutData.keys():
-            if (str((await bot.get_login_info())["user_id"])
-                    != multiAccoutData[event.group_id]):
+            if (
+                str((await bot.get_login_info())["user_id"])
+                != multiAccoutData[event.group_id]
+            ):
                 raise IgnoredException("多帐号：忽略")
 
     except IgnoredException as e:
@@ -44,8 +45,9 @@ async def get_multiaccount_data(bot: Bot, message: Message = CommandArg()):
                 reply += f"已连接账户：{len(bots.keys())}\n"
                 length = 1
                 for accout in list(bots.keys()):
-                    userData = await bot.get_stranger_info(user_id=(
-                        await bots[accout].get_login_info())["user_id"])
+                    userData = await bot.get_stranger_info(
+                        user_id=(await bots[accout].get_login_info())["user_id"]
+                    )
                     reply += (
                         f"{length}. {userData['nickname']} ({userData['user_id']})\n"
                     )
@@ -81,13 +83,15 @@ async def reloadMuiltData():
                 multiAccoutData[group["group_id"]] = key
             elif key in priority_accout["accouts"]:
                 multiAccoutData[group["group_id"]] = key
-    json.dump(multiAccoutData,
-              open("data/su.multiaccoutdata.ro.json", "w", encoding="utf-8"))
+    json.dump(
+        multiAccoutData, open("data/su.multiaccoutdata.ro.json", "w", encoding="utf-8")
+    )
 
 
 @account_manager.handle()
-async def mulitaccout_manager(event: GroupMessageEvent,
-                              message: Message = CommandArg()):
+async def mulitaccout_manager(
+    event: GroupMessageEvent, message: Message = CommandArg()
+):
     global multiAccoutData
     try:
         argument = str(message).split(" ")
@@ -97,17 +101,17 @@ async def mulitaccout_manager(event: GroupMessageEvent,
                 multiAccoutData[event.group_id] = argument[1]
                 json.dump(
                     multiAccoutData,
-                    open("data/su.multiaccoutdata.ro.json",
-                         "w",
-                         encoding="utf-8"))
+                    open("data/su.multiaccoutdata.ro.json", "w", encoding="utf-8"),
+                )
                 await account_manager.finish(
-                    _lang.text("su.set_accout_success", [argument[1]], qq))
+                    _lang.text("su.set_accout_success", [argument[1]], qq)
+                )
             else:
-                await account_manager.finish(_lang.text("su.accout_not_found"),
-                                             user=qq)
+                await account_manager.finish(_lang.text("su.accout_not_found"), user=qq)
         elif argument[0] == "list":
             await account_manager.finish(
-                _lang.text("su.accout_list", [accouts[event.group_id]], qq))
+                _lang.text("su.accout_list", [accouts[event.group_id]], qq)
+            )
         elif argument[0] == "reload":
             await reloadMuiltData()
             await account_manager.finish("已重载多账号分配")

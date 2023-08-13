@@ -24,11 +24,16 @@ except BaseException:
 
 
 def render_email(data, user_id):
-    email = _lang.text("email.email", [
-        data['subject'],
-        time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime()), data['from'],
-        data["message"]
-    ], user_id)
+    email = _lang.text(
+        "email.email",
+        [
+            data["subject"],
+            time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime()),
+            data["from"],
+            data["message"],
+        ],
+        user_id,
+    )
 
     if data["items"]:
         email += _lang.text("email.items", [], user_id)
@@ -49,8 +54,7 @@ async def submit_email(mail_data):
                 bot = get_bot(multiAccoutData[rule[1]])
             except BaseException:
                 bot = list(get_bots().values())[0]
-            group_member_list = await bot.get_group_member_list(
-                group_id=rule[1])
+            group_member_list = await bot.get_group_member_list(group_id=rule[1])
             for user in group_member_list:
                 _user.append(str(user["user_id"]))
                 # print(_user)
@@ -80,11 +84,9 @@ async def submit_email(mail_data):
 # 供其他插件调用
 
 
-async def send_email(receive: str,
-                     subject: str,
-                     message: str,
-                     items: list = [],
-                     **params) -> str:
+async def send_email(
+    receive: str, subject: str, message: str, items: list = [], **params
+) -> str:
     data = json.load(open("data/su.mails.json", encoding="utf-8"))
     mail_id = hashlib.sha1(str(time.time()).encode("utf-8")).hexdigest()[:7]
     data[mail_id] = {
@@ -94,27 +96,27 @@ async def send_email(receive: str,
         "rules": [["user", receive]],
         "items": items,
         "time": time.time(),
-        "id": mail_id
+        "id": mail_id,
     }
     data[mail_id].update(params)
-    json.dump(data,
-              open("data/su.mails.json", "w", encoding="utf-8"),
-              ensure_ascii=False,
-              indent=4)
+    json.dump(
+        data,
+        open("data/su.mails.json", "w", encoding="utf-8"),
+        ensure_ascii=False,
+        indent=4,
+    )
     await submit_email(data[mail_id])
     return mail_id
 
 
 @su.handle()
-async def su_mail(
-    event: MessageEvent, message: Message = CommandArg()) -> None:
+async def su_mail(event: MessageEvent, message: Message = CommandArg()) -> None:
     try:
         argv = message.extract_plain_text().splitlines()[0].strip().split(" ")
         if argv[0] in ["mail", "邮箱", "email"]:
             data = json.load(open("data/su.mails.json", encoding="utf-8"))
             if argv[1] in ["create"]:
-                mail_id = hashlib.sha1(str(
-                    time.time()).encode("utf-8")).hexdigest()[:7]
+                mail_id = hashlib.sha1(str(time.time()).encode("utf-8")).hexdigest()[:7]
                 rules = []
                 for arg in argv:
                     if arg.startswith("--"):
@@ -126,40 +128,43 @@ async def su_mail(
                     "rules": rules,
                     "items": [],
                     "time": time.time(),
-                    "id": mail_id
+                    "id": mail_id,
                 }
-                json.dump(data,
-                          open("data/su.mails.json", "w", encoding="utf-8"),
-                          ensure_ascii=False,
-                          indent=4)
+                json.dump(
+                    data,
+                    open("data/su.mails.json", "w", encoding="utf-8"),
+                    ensure_ascii=False,
+                    indent=4,
+                )
                 await su.finish(f"邮件 {mail_id} 创建成功")
             elif argv[1] in ["delete"]:
                 if argv[2] in data.keys():
                     data.pop(argv[2])
-                    json.dump(data,
-                              open("data/su.mails.json", "w",
-                                   encoding="utf-8"),
-                              ensure_ascii=False,
-                              indent=4)
+                    json.dump(
+                        data,
+                        open("data/su.mails.json", "w", encoding="utf-8"),
+                        ensure_ascii=False,
+                        indent=4,
+                    )
                     await su.finish(f"邮件 {argv[2]} 删除成功")
             elif argv[1] in ["edit"]:
                 if len(argv) <= 3:
                     await su.finish(f"可编辑内容：{' '.join(data[argv[2]].keys())}")
                 elif len(str(message).splitlines()) < 2:
-                    await su.finish(
-                        f"{argv[2]}::{argv[3]} -> {data[argv[2]][argv[3]]}")
+                    await su.finish(f"{argv[2]}::{argv[3]} -> {data[argv[2]][argv[3]]}")
                 elif argv[2] in data.keys():
-                    data[argv[2]][argv[3]] = json5.loads("\n".join(
-                        message.extract_plain_text().splitlines()[1:]))
-                    json.dump(data,
-                              open("data/su.mails.json", "w",
-                                   encoding="utf-8"),
-                              ensure_ascii=False,
-                              indent=4)
+                    data[argv[2]][argv[3]] = json5.loads(
+                        "\n".join(message.extract_plain_text().splitlines()[1:])
+                    )
+                    json.dump(
+                        data,
+                        open("data/su.mails.json", "w", encoding="utf-8"),
+                        ensure_ascii=False,
+                        indent=4,
+                    )
                     await su.finish(f"邮件 {argv[2]} 编辑成功")
             elif argv[1] in ["view"]:
-                await su.finish(
-                    render_email(data[argv[2]], event.get_user_id()))
+                await su.finish(render_email(data[argv[2]], event.get_user_id()))
             elif argv[1] in ["submit"]:
                 await submit_email(data[argv[2]])
                 await su.finish("完成！")
@@ -171,8 +176,7 @@ async def su_mail(
 @sign.handle()
 async def unread_email_reminder(matcher: Matcher, event: MessageEvent):
     try:
-        reminded_data = json.load(
-            open("data/email.reminded.json", encoding="utf-8"))
+        reminded_data = json.load(open("data/email.reminded.json", encoding="utf-8"))
         if data.emails.get(event.get_user_id()):
             email_count = 0
             for email in data.emails[event.get_user_id()]:
@@ -180,14 +184,17 @@ async def unread_email_reminder(matcher: Matcher, event: MessageEvent):
                     email_count += 1
             if email_count != 0:
                 await matcher.send(
-                    _lang.text("email.remind",
-                               [len(data.emails[event.get_user_id()])],
-                               event.get_user_id()))
-                reminded_data[event.get_user_id()] = data.emails[
-                    event.get_user_id()]
+                    _lang.text(
+                        "email.remind",
+                        [len(data.emails[event.get_user_id()])],
+                        event.get_user_id(),
+                    )
+                )
+                reminded_data[event.get_user_id()] = data.emails[event.get_user_id()]
                 json.dump(
                     reminded_data,
-                    open("data/email.reminded.json", "w", encoding="utf-8"))
+                    open("data/email.reminded.json", "w", encoding="utf-8"),
+                )
     except BaseException:
         await _error.report(traceback.format_exc(), matcher)
 
@@ -200,27 +207,29 @@ async def view_emails(matcher: Matcher, bot: Bot, event: MessageEvent):
             node_messages = []
             for email_id in data.emails[user_id]:
                 try:
-                    node_messages.append({
-                        "type": "node",
-                        "data": {
-                            "uin":
-                            event.self_id,
-                            "name":
-                            _lang.text("email.id", [email_id], user_id),
-                            "content":
-                            render_email(
-                                json.load(
-                                    open("data/su.mails.json",
-                                         encoding="utf-8"))[email_id], user_id)
+                    node_messages.append(
+                        {
+                            "type": "node",
+                            "data": {
+                                "uin": event.self_id,
+                                "name": _lang.text("email.id", [email_id], user_id),
+                                "content": render_email(
+                                    json.load(
+                                        open("data/su.mails.json", encoding="utf-8")
+                                    )[email_id],
+                                    user_id,
+                                ),
+                            },
                         }
-                    })
+                    )
                 except KeyError:
                     pass
             await bot.call_api(
                 f"send_{'group' if event.get_session_id().split('_')[0]  == 'group' else 'private'}_forward_msg",
                 messages=node_messages,
                 user_id=int(event.get_user_id()),
-                group_id=event.dict().get("group_id"))
+                group_id=event.dict().get("group_id"),
+            )
         else:
             pass  # TODO 没有可读邮件的提示
     except BaseException:
@@ -245,7 +254,8 @@ async def all_read(matcher: Matcher, event: MessageEvent):
             except KeyError:
                 length += 1
         await matcher.finish(
-            _lang.text("email.all_read", [number_of_read_emails], user_id))
+            _lang.text("email.all_read", [number_of_read_emails], user_id)
+        )
     except BaseException:
         await _error.report(traceback.format_exc(), matcher)
 

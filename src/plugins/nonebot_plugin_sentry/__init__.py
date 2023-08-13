@@ -27,8 +27,9 @@ def init_sentry(config: Config):
         key[7:]: value
         for key, value in config.dict(exclude={"sentry_environment"}).items()
     }
-    sentry_sdk.init(**sentry_config,
-                    environment=config.sentry_environment or driver.env)
+    sentry_sdk.init(
+        **sentry_config, environment=config.sentry_environment or driver.env
+    )
 
     logger.add(
         EventHandler("ERROR"),

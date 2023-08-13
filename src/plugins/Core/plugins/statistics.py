@@ -62,8 +62,9 @@ async def _(matcher: Matcher, event: MessageEvent):
                     pass
                 else:
                     groups.append(group["group_id"])
-                    group_member_count += (await bot.get_group_info(
-                        group_id=group["group_id"]))["member_count"]
+                    group_member_count += (
+                        await bot.get_group_info(group_id=group["group_id"])
+                    )["member_count"]
 
         friends = []
         for bot in bots:
@@ -72,15 +73,22 @@ async def _(matcher: Matcher, event: MessageEvent):
                     friends.append(friend["user_id"])
 
         await matcher.finish(
-            lang.text("statistics.info", [
-                get_user_count(),
-                len(groups), group_member_count,
-                get_lines()[0],
-                get_lines()[1],
-                json.load(open("data/_error.count.json",
-                               encoding="utf-8"))["count"],
-                get_run_time()
-            ], event.get_user_id()))
+            lang.text(
+                "statistics.info",
+                [
+                    get_user_count(),
+                    len(groups),
+                    group_member_count,
+                    get_lines()[0],
+                    get_lines()[1],
+                    json.load(open("data/_error.count.json", encoding="utf-8"))[
+                        "count"
+                    ],
+                    get_run_time(),
+                ],
+                event.get_user_id(),
+            )
+        )
 
     except BaseException:
         await error.report(traceback.format_exc(), matcher)

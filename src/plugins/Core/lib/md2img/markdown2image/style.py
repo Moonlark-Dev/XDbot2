@@ -4,13 +4,25 @@ import os.path
 
 path: str = os.path.dirname(os.path.abspath(__file__))
 default_style: dict = json.load(
-    open(os.path.join(path, "default_style/style.json"), encoding="utf-8"))
+    open(os.path.join(path, "default_style/style.json"), encoding="utf-8")
+)
 nodes_needed_nl: list = [
-    "h1", "h2", "h3", "h4", "h5", "h6", "p", "pre", "ol", "ul", "li",
-    "blockquote"
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "h6",
+    "p",
+    "pre",
+    "ol",
+    "ul",
+    "li",
+    "blockquote",
 ]
 css_not_passed: dict = json.load(
-    open(os.path.join(path, "css_not_passed.json"), encoding="utf-8"))
+    open(os.path.join(path, "css_not_passed.json"), encoding="utf-8")
+)
 
 
 def parse_style(item: dict | str | None) -> dict:
@@ -29,13 +41,13 @@ def init_links(_ast: list) -> list:
         if isinstance(item, dict):
             if item["type"] == "a":
                 item["style"] = {"color": "#0000ff"}
-                item["innerHTML"].append({
-                    "type": "span",
-                    "style": {
-                        "color": "#00ff00"
-                    },
-                    "innerHTML": [" (", item["href"], ")"]
-                })
+                item["innerHTML"].append(
+                    {
+                        "type": "span",
+                        "style": {"color": "#00ff00"},
+                        "innerHTML": [" (", item["href"], ")"],
+                    }
+                )
             else:
                 item["innerHTML"] = init_links(item["innerHTML"])
     return ast
@@ -107,7 +119,7 @@ def init_style(_ast: list, inherited_style: dict = {}) -> list:
                 "padding-top": 0,
                 "padding-bottom": 0,
                 "padding-left": 0,
-                "padding-right": 0
+                "padding-right": 0,
             }
             temp2.update(item["style"])
             temp2["margin-top"] += temp2.pop("padding-top")
@@ -125,18 +137,10 @@ def init_style(_ast: list, inherited_style: dict = {}) -> list:
             _style = (default_style.get("text") or {}).copy()
             _style.update(inherited_style.copy())
             # print(_style)
-            ast[i] = {
-                "type": "text",
-                "style": _style.copy(),
-                "innerHTML": [item]
-            }
+            ast[i] = {"type": "text", "style": _style.copy(), "innerHTML": [item]}
     temp1 = 0
     for pos in nlpos:
-        ast.insert(pos + temp1 + 1, {
-            "type": "br",
-            "style": {},
-            "innerHTML": {}
-        })
+        ast.insert(pos + temp1 + 1, {"type": "br", "style": {}, "innerHTML": {}})
         temp1 += 1
     return ast
 
@@ -156,7 +160,9 @@ def get_size(ast: list) -> tuple[int, int]:  # , list]:
                         or os.path.join(path, "font/HYRunYuan-55W.ttf"),
                         item["style"].get("font-size")
                         or default_style["text"].get("font-size")
-                        or 20).getsize(item["innerHTML"][0]))
+                        or 20,
+                    ).getsize(item["innerHTML"][0])
+                )
             case "br":
                 size[0] = max(size[0], line_size[0])
                 size[1] += line_size[1]
@@ -165,9 +171,11 @@ def get_size(ast: list) -> tuple[int, int]:  # , list]:
             case _:
                 widget_size = list(get_size(item["innerHTML"]))
                 widget_size[0] += (item["style"].get("margin-left") or 0) + (
-                    item["style"].get("margin-right") or 0)
+                    item["style"].get("margin-right") or 0
+                )
                 widget_size[1] += (item["style"].get("margin-top") or 0) + (
-                    item["style"].get("margin-bottom") or 0)
+                    item["style"].get("margin-bottom") or 0
+                )
         item["size"] = widget_size
         line_size[0] += widget_size[0]
         line_size[1] = max(line_size[1], widget_size[1])
@@ -176,8 +184,7 @@ def get_size(ast: list) -> tuple[int, int]:  # , list]:
     return tuple(size)
 
 
-def draw(ast: dict, size: tuple,
-         background_color: tuple = (255, 255, 255, 0)) -> Image:
+def draw(ast: dict, size: tuple, background_color: tuple = (255, 255, 255, 0)) -> Image:
     img = Image.new("RGBA", size, background_color)
     dr = ImageDraw.Draw(img)
     pos = [0, 0]
@@ -185,9 +192,10 @@ def draw(ast: dict, size: tuple,
     for item in ast:
         # 渲染背景
         if item["style"].get("background-color"):
-            dr.rectangle((pos[0], pos[1], pos[0] + item["size"][0],
-                          pos[1] + item["size"][1]),
-                         fill=item["style"]["background-color"])
+            dr.rectangle(
+                (pos[0], pos[1], pos[0] + item["size"][0], pos[1] + item["size"][1]),
+                fill=item["style"]["background-color"],
+            )
         # 渲染内容
         match item["type"]:
             case "text":
@@ -195,18 +203,21 @@ def draw(ast: dict, size: tuple,
                     item["style"].get("font-family")
                     or os.path.join(path, "font/HYRunYuan-55W.ttf"),
                     item["style"].get("font-size")
-                    or default_style["text"].get("font-size") or 20)
+                    or default_style["text"].get("font-size")
+                    or 20,
+                )
                 # 处理外边距
                 pos[0] += item["style"].get("margin-left") or 0
                 pos[1] += item["style"].get("margin-top") or 0
                 # 绘制
-                dr.text(tuple(pos),
-                        item["innerHTML"][0],
-                        font=font,
-                        fill=item["style"].get("color") or "#000",
-                        stroke_width=1
-                        if item["style"].get("font-weight") == "bold" else 0,
-                        stroke_fill=item["style"].get("color") or "#000")
+                dr.text(
+                    tuple(pos),
+                    item["innerHTML"][0],
+                    font=font,
+                    fill=item["style"].get("color") or "#000",
+                    stroke_width=1 if item["style"].get("font-weight") == "bold" else 0,
+                    stroke_fill=item["style"].get("color") or "#000",
+                )
                 pos[0] += item["size"][0]
                 line_height = max(line_height, item["size"][1])
             case "br":
@@ -217,8 +228,7 @@ def draw(ast: dict, size: tuple,
                 # 处理外边距
                 pos[0] += item["style"].get("margin-left") or 0
                 pos[1] += item["style"].get("margin-top") or 0
-                img.alpha_composite(draw(item["innerHTML"], item["size"]),
-                                    tuple(pos))
+                img.alpha_composite(draw(item["innerHTML"], item["size"]), tuple(pos))
                 # 处理外边距
                 pos[0] -= item["style"].get("margin-left") or 0
                 pos[1] -= item["style"].get("margin-top") or 0

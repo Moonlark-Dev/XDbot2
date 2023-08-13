@@ -5,5 +5,5 @@ BASIC_DATA = {
     "maximum_stack": 64,
     "price": 5,
     "display_name": "",
-    "display_message": ""
+    "display_message": "",
 }

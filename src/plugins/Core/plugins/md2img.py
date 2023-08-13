@@ -17,16 +17,15 @@ md2img = on_command("md2img", aliases={"markdown渲染", "md渲染"})
 
 
 @md2img.handle()
-async def md2imgHandle(bot: Bot,
-                       event: MessageEvent,
-                       message: Message = CommandArg()):
+async def md2imgHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg()):
     try:
         markdown = message.extract_plain_text()
         # 发送
         filename = f"data/md2img.cache_{time.time()}.ro.png"
         markdown2image.md2img(markdown, filename)
         await md2img.send(
-            Message(f'[CQ:image,file=file://{os.path.abspath(filename)}]'))
+            Message(f"[CQ:image,file=file://{os.path.abspath(filename)}]")
+        )
         os.remove(filename)
 
     except FinishedException:
