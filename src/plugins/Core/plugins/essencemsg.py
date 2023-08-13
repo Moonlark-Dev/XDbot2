@@ -1,7 +1,8 @@
 from nonebot.adapters.onebot.v11 import Bot, Message
-from nonebot import on_command, on_message
+from nonebot import on_command, on_message, on_fullmatch
 from nonebot.params import CommandArg
 from nonebot.adapters.onebot.v11.event import GroupMessageEvent, MessageEvent
+from nonebot.adapters.onebot.v11.permission import GROUP_ADMIN, GROUP_OWNER
 from nonebot.permission import SUPERUSER
 from nonebot.matcher import Matcher
 import traceback
@@ -26,6 +27,8 @@ def writeConfig(cfg):
 
 configCommand = on_command("essencemsg", aliases={
                            "essmsg"}, permission=SUPERUSER)
+essencemsgCommand = on_fullmatch(
+    {"精华", "设为精华"}, permission=GROUP_ADMIN | GROUP_OWNER | SUPERUSER)
 
 
 @configCommand.handle()
@@ -43,6 +46,14 @@ async def _(bot: Bot, event: GroupMessageEvent, matcher: Matcher, message: Messa
             writeConfig(config)
             await configCommand.finish(_lang.text("essencemsg.keyword.removed", [args[1]], event.get_user_id()))
     except BaseException:
+        await error.report(traceback.format_exc(), matcher, event)
+
+
+@essencemsgCommand.handle()
+async def _(bot: Bot, event: GroupMessageEvent, matcher: Matcher):
+    try:
+        await bot.call_api("set_essence_msg", message_id=event.reply.message_id)
+    except:
         await error.report(traceback.format_exc(), matcher, event)
 
 
