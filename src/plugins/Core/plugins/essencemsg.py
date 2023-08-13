@@ -54,7 +54,7 @@ async def _(bot: Bot, event: GroupMessageEvent, matcher: Matcher):
     try:
         await bot.call_api("set_essence_msg", message_id=event.reply.message_id)
     except:
-        await error.report(traceback.format_exc(), matcher, event)
+        await error.report(traceback.format_exc(), matcher, event, False)
 
 
 @on_message().handle()
