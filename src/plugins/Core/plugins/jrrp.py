@@ -152,11 +152,7 @@ async def jrrpHandle(
             qq = argument[0]
             qq = qq.replace("[CQ:at,qq=", "").replace("]", "")
             await jrrp.finish(
-                _lang.text(
-                    "jrrp.other",
-                    [qq, await getJrrp(qq)],
-                    event.get_user_id(),
-                )
+                _lang.text("jrrp.other", [qq, await getJrrp(qq)], event.get_user_id())
             )
 
     except FinishedException:

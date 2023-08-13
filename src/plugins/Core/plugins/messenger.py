@@ -42,8 +42,7 @@ async def messengerHandle(
             sender = await bot.get_stranger_info(user_id=event.get_user_id())
             data += [{"recv": qq, "text": text, "sender": sender}]
             json.dump(
-                data,
-                open("data/messenger.messageList.json", "w", encoding="utf-8"),
+                data, open("data/messenger.messageList.json", "w", encoding="utf-8")
             )
             await bot.send_group_msg(
                 message=("[信鸽] 收到新任务：\n" f"收件：{qq}\n发件：{sender['user_id']}\n内容：{text}"),

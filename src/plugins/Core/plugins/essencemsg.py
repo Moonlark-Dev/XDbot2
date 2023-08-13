@@ -10,9 +10,7 @@ import json
 from . import _error as error
 from . import _lang
 
-defaultConfig = {
-    "keywords_list": ["我是傻逼"],
-}
+defaultConfig = {"keywords_list": ["我是傻逼"]}
 try:
     config = json.load(open("data/essencemsg.config.json", encoding="utf-8"))
 except:
