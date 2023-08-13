@@ -10,6 +10,6 @@ repos:
       - id: flake8
         args: [--select=E9]
   - repo: https://github.com/hhatto/autopep8
-    rev: main
+    rev: v2.0.2
     hooks:
       - id: autopep8
