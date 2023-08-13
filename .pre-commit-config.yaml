@@ -10,6 +10,6 @@ repos:
       - id: flake8
         args: [--select=E9]
   - repo: https://github.com/pre-commit/mirrors-autopep8
-    rev: v2.0.1
+    rev: ''
     hooks:
       - id: autopep8
