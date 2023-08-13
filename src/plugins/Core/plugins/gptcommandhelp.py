@@ -54,28 +54,28 @@ async def _(matcher: Matcher, event: MessageEvent):
                 _usage_content += f"{length}. {usage}\n"
             content += f"\n{_lang.text('help.usage', [length, _usage_content[:-1]], event.get_user_id())}"
             cmd_list2.append("/" + command + "\n" + content)
-        gch_messages = [
-            {
-                "role": "system",
-                "content": gen_gch_content(cmd_list, "\n".join(cmd_list2))
-            }
-        ]
+        gch_messages = [{
+            "role":
+            "system",
+            "content":
+            gen_gch_content(cmd_list, "\n".join(cmd_list2))
+        }]
         message = event.get_message()
         messages = gch_messages.copy()
-        messages.append(
-            {"role": "user", "content": message.extract_plain_text()})
-        session = await openai.ChatCompletion.acreate(
-            model="gpt-3.5-turbo",
-            messages=messages)
+        messages.append({
+            "role": "user",
+            "content": message.extract_plain_text()
+        })
+        session = await openai.ChatCompletion.acreate(model="gpt-3.5-turbo",
+                                                      messages=messages)
         reply = session["choices"][0]["message"]["content"]
         if "NOT_IN_LIST" in reply:
             reply = "你需要的功能 XDbot2 暂时没有喵，主人可以在https://github.com/ITCraftDevelopmentTeam/XDbot2提交一个Issue呢……"
         elif "CAN_NOT_UNDERSTAND" in reply:
             reply = "XDbot 目前无法理解主人的请求喵……"
-        await matcher.finish(
-            MessageSegment.reply(event.message_id) +
-            MessageSegment.text(reply),
-            at_sender=True)
+        await matcher.finish(MessageSegment.reply(event.message_id) +
+                             MessageSegment.text(reply),
+                             at_sender=True)
 
     except BaseException:
         await error.report(traceback.format_exc(), matcher, event)

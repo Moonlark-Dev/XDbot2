@@ -2,6 +2,7 @@ from .item import Item
 
 
 class PawCoin(Item):
+
     def on_register(self):
         self.basic_data = {
             "display_name": "猫爪币",

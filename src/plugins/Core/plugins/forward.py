@@ -13,10 +13,7 @@ from nonebot.adapters.onebot.v11 import (
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 privateForward = on_message()
 groupForward = on_message()
-forwardData = json.load(
-    open(
-        "data/forward.groupList.json",
-        encoding="utf-8"))
+forwardData = json.load(open("data/forward.groupList.json", encoding="utf-8"))
 
 
 @privateForward.handle()

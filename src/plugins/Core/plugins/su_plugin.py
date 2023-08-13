@@ -12,9 +12,7 @@ async def su_plugin(message: Message = CommandArg()):
         argument = str(message).split(" ")
         if argument[0] in ["plugins", "插件管理", "plugin"]:
             config = json.load(
-                open(
-                    "data/init.disabled.json",
-                    encoding="utf-8"))
+                open("data/init.disabled.json", encoding="utf-8"))
             if argument[1] == "disable" or argument[1] == "禁用":
                 if argument[2] not in config:
                     config += [argument[2]]
@@ -26,11 +24,7 @@ async def su_plugin(message: Message = CommandArg()):
                         config.pop(length)
                         break
                     await su.send("完成")
-            json.dump(
-                config,
-                open(
-                    "data/init.disabled.json",
-                    "w",
-                    encoding="utf-8"))
+            json.dump(config,
+                      open("data/init.disabled.json", "w", encoding="utf-8"))
     except BaseException:
         await _error.report(traceback.format_exc(), su)

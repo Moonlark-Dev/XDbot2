@@ -50,10 +50,12 @@ async def show_setu_ranking(bot: Bot, event: MessageEvent):
 
         reply = lang.text("setu_rank.title", [], str(event.user_id))
         for user in ranking[:12]:
-            nickname = (await bot.get_stranger_info(user_id=user["user"]))["nickname"]
+            nickname = (await bot.get_stranger_info(user_id=user["user"]
+                                                    ))["nickname"]
             reply += f"\n{user['rank']}. {nickname}: {user['count']}"
         reply += "\n" + "-" * 30
-        nickname = (await bot.get_stranger_info(user_id=my_data["user"]))["nickname"]
+        nickname = (await
+                    bot.get_stranger_info(user_id=my_data["user"]))["nickname"]
         reply += f"\n{my_data['rank']}. {nickname}: {my_data['count']}"
 
         await setu_rank.finish(reply)

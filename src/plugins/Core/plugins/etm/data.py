@@ -9,12 +9,7 @@ achi_user_data = {}
 achi_unlock_progress = {}
 bags = {}
 buff = {}
-vimcoin = {
-    "in": 0,
-    "out": 0,
-    "exchange_rate": 1,
-    "_exchange_rate": 1
-}
+vimcoin = {"in": 0, "out": 0, "exchange_rate": 1, "_exchange_rate": 1}
 bank_lead_data = {}
 basic_data = {}
 emails = {}
@@ -33,21 +28,18 @@ def load_data():
                 pass
             try:
                 achi_unlock_progress[user] = json.load(
-                    open(f"data/etm/{user}/achi_unlock_progress.json", encoding="utf-8"))
+                    open(f"data/etm/{user}/achi_unlock_progress.json",
+                         encoding="utf-8"))
             except BaseException:
                 pass
             try:
                 bags[user] = json.load(
-                    open(
-                        f"data/etm/{user}/bag.json",
-                        encoding="utf-8"))
+                    open(f"data/etm/{user}/bag.json", encoding="utf-8"))
             except BaseException:
                 pass
             try:
                 basic_data[user] = json.load(
-                    open(
-                        f"data/etm/{user}/user.json",
-                        encoding="utf-8"))
+                    open(f"data/etm/{user}/user.json", encoding="utf-8"))
             except BaseException:
                 pass
             try:
@@ -57,7 +49,8 @@ def load_data():
                 pass
             try:
                 bank_lead_data[user] = json.load(
-                    open(f"data/etm/{user}/bank_lead_data.json", encoding="utf-8"))
+                    open(f"data/etm/{user}/bank_lead_data.json",
+                         encoding="utf-8"))
             except BaseException:
                 pass
             try:
@@ -75,12 +68,8 @@ def _save_data(name, data):
     for user in users:
         if not os.path.isdir(f"data/etm/{user}"):
             os.mkdir(f"data/etm/{user}")
-        json.dump(
-            data[user],
-            open(
-                f"data/etm/{user}/{name}.json",
-                "w",
-                encoding="utf-8"))
+        json.dump(data[user],
+                  open(f"data/etm/{user}/{name}.json", "w", encoding="utf-8"))
 
 
 def save_data():

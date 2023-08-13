@@ -13,7 +13,6 @@ from nonebot.params import CommandArg
 
 jrrp = on_command("jrrp")
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
-
 """
 实验性的，炸了当场reset
 async def getQQID(msgs: GroupMessageEvent):
@@ -38,8 +37,7 @@ async def getJrrp(qq: str):
     luck = random.randint(0, 100)
     if luck > data[qq]["max"]:
         await jrrp.send(
-            Message(f"[CQ:at,qq={qq}] {_lang.text('jrrp.new_record',[],qq)}")
-        )
+            Message(f"[CQ:at,qq={qq}] {_lang.text('jrrp.new_record',[],qq)}"))
         data[qq]["max"] = luck
         json.dump(data, open("data/jrrp.users.json", "w", encoding="utf-8"))
     # 生成提示文本
@@ -66,9 +64,9 @@ async def getJrrp(qq: str):
 
 
 @jrrp.handle()
-async def jrrpHandle(
-    bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()
-):
+async def jrrpHandle(bot: Bot,
+                     event: GroupMessageEvent,
+                     message: Message = CommandArg()):
     try:
         argument = str(message).split(" ")
         if argument[0] == "":
@@ -83,7 +81,8 @@ async def jrrpHandle(
         elif argument[0] == "rank" or argument[0] == "今日排名":
             # 限时开启
             if time.localtime().tm_hour < 16:
-                await jrrp.finish(_lang.text("jrrp.rank_time", [], event.get_user_id()))
+                await jrrp.finish(
+                    _lang.text("jrrp.rank_time", [], event.get_user_id()))
             # 开始计算
             if argument.__len__() >= 2:
                 count = int(argument[1])
@@ -91,8 +90,7 @@ async def jrrpHandle(
                 count = 10
             # 群成员列表
             userList = await bot.get_group_member_list(
-                group_id=int(event.get_session_id().split("_")[1])
-            )
+                group_id=int(event.get_session_id().split("_")[1]))
             # 计算排名
             jrrpRank = []
             for user in userList:
@@ -114,13 +112,11 @@ async def jrrpHandle(
                         break
                     length += 1
                 if not inserted:
-                    jrrpRank += [
-                        {
-                            "username": user["nickname"],
-                            "user_id": user["user_id"],
-                            "jrrp": luck,
-                        }
-                    ]
+                    jrrpRank += [{
+                        "username": user["nickname"],
+                        "user_id": user["user_id"],
+                        "jrrp": luck,
+                    }]
             # 生成rank
             nowRank = 0
             length = 0
@@ -157,15 +153,13 @@ async def jrrpHandle(
                     "jrrp.other",
                     [qq, await getJrrp(qq)],
                     event.get_user_id(),
-                )
-            )
+                ))
 
     except FinishedException:
         raise FinishedException()
     except ValueError:
-        await jrrp.finish(
-            _lang.text("jrrp.error", [], event.get_user_id()), at_sender=True
-        )
+        await jrrp.finish(_lang.text("jrrp.error", [], event.get_user_id()),
+                          at_sender=True)
     except Exception:
         await _error.report(traceback.format_exc(), jrrp)
 

@@ -7,10 +7,12 @@ from .. import email
 import time
 from nonebot import require
 from nonebot_plugin_apscheduler import scheduler
+
 require("nonebot_plugin_apscheduler")
 
 
 class AutoSignCoupon(Item):
+
     def on_register(self):
         self.item_id = "auto_sign_coupon"
         self.basic_data = {
@@ -25,6 +27,7 @@ class AutoSignCoupon(Item):
 
 
 class AutoSignCouponActived(Item):
+
     def on_register(self):
         self.item_id = "auto_sign_coupon_actived"
         self.basic_data = {
@@ -41,7 +44,12 @@ class AutoSignCouponActived(Item):
         return _lang.text("asc.inactived", [], self.user_id)
 
 
-@scheduler.scheduled_job("cron", second="0", minute="55", hour="23", day="*", id="auto_sign_coupon")
+@scheduler.scheduled_job("cron",
+                         second="0",
+                         minute="55",
+                         hour="23",
+                         day="*",
+                         id="auto_sign_coupon")
 async def auto_sign_coupon():
     users = _data.basic_data.keys()
     for u in users:
@@ -52,11 +60,10 @@ async def auto_sign_coupon():
                 info = sign._sign(u)
                 if info != "主人今天已经签到过了喵！":
                     ub[l].used()
-                    _info = _lang.text("asc.signed_2", [], u)+"\n"+info
+                    _info = _lang.text("asc.signed_2", [], u) + "\n" + info
                 else:
                     _info = _lang.text("asc.signed_3", [], u)
                 await email.send_email(
                     u,
                     _lang.text("asc.signed_1", [time.strftime("%Y-%m-%d")], u),
-                    _info
-                )
+                    _info)

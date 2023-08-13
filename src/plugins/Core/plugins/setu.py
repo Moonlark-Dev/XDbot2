@@ -44,8 +44,7 @@ async def delete_msg(bot: Bot, message: int) -> None:
 
 @setu.handle()
 async def setu_handler(
-    bot: Bot, event: MessageEvent, message: Message = CommandArg()
-) -> None:
+    bot: Bot, event: MessageEvent, message: Message = CommandArg()) -> None:
     global latest_send, image_path
     try:
         # 冷却
@@ -55,8 +54,7 @@ async def setu_handler(
                     "setu.cd",
                     [config["sleep"] - (time.time() - latest_send)],
                     event.get_user_id(),
-                )
-            )
+                ))
 
         temp = economy.use_vi(event.get_user_id(), 1.2)
         if not temp[0]:
@@ -76,29 +74,27 @@ async def setu_handler(
                     r18 = 1
                 else:
                     await setu.finish(
-                        _lang.text("setu.no_r18", [], event.get_user_id())
-                    )
+                        _lang.text("setu.no_r18", [], event.get_user_id()))
             else:
                 tags += f"&tag={argv}"
 
         # 发起请求
         async with httpx.AsyncClient() as client:
-            req = await client.get(f"https://api.lolicon.app/setu/v2?r18={r18}{tags}")
+            req = await client.get(
+                f"https://api.lolicon.app/setu/v2?r18={r18}{tags}")
             data = json.loads(req.read())
         if data["error"]:
             await setu.send(
-                _lang.text(
-                    "setu.api_error", [
-                        data["error"]], event.get_user_id())
-            )
+                _lang.text("setu.api_error", [data["error"]],
+                           event.get_user_id()))
 
         # 分析数据
         try:
             data = data["data"][0]
         except IndexError:
-            await setu.finish(
-                _lang.text("setu.index_error", [], event.get_user_id()), at_sender=True
-            )
+            await setu.finish(_lang.text("setu.index_error", [],
+                                         event.get_user_id()),
+                              at_sender=True)
         img_url = data["urls"]["original"]
 
         # 下载图片
@@ -113,8 +109,7 @@ async def setu_handler(
         msg += data["title"]
         msg += _lang.text("setu.msg1", [data["pid"]], event.get_user_id())
         msg += _lang.text("setu.msg2", [data["author"]], event.get_user_id())
-        msg += _lang.text("setu.msg3",
-                          [config["delete_sleep"]],
+        msg += _lang.text("setu.msg3", [config["delete_sleep"]],
                           event.get_user_id())
         msg = Message(msg)
         # pid = copy.deepcopy(data["pid"])
@@ -122,24 +117,18 @@ async def setu_handler(
         # 发送文本
         try:
             try:
-                message_id = (
-                    await bot.send_group_msg(
-                        group_id=int(event.get_session_id().split("_")[1]), message=msg
-                    )
-                )["message_id"]
+                message_id = (await bot.send_group_msg(
+                    group_id=int(event.get_session_id().split("_")[1]),
+                    message=msg))["message_id"]
             except IndexError:
-                message_id = (
-                    await bot.send_private_msg(
-                        user_id=int(event.get_user_id()), message=msg
-                    )
-                )["message_id"]
+                message_id = (await
+                              bot.send_private_msg(user_id=int(
+                                  event.get_user_id()),
+                                                   message=msg))["message_id"]
         except ActionFailed:
             await setu.finish(
-                (
-                    f"{_lang.text('setu.action_failed',[],event.get_user_id())}"
-                    f"https://xdbot2.thisisxd.top/setu"
-                )
-            )
+                (f"{_lang.text('setu.action_failed',[],event.get_user_id())}"
+                 f"https://xdbot2.thisisxd.top/setu"))
             economy.add_vimcoin(used)
 
         # 启动删除任务

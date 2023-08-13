@@ -26,10 +26,7 @@ async def st_handle():
         await st.finish(
             nonebot.adapters.onebot.v11.message.Message(
                 nonebot.adapters.onebot.v11.MessageSegment.image(
-                    random.choice(api_list)
-                )
-            )
-        )
+                    random.choice(api_list))))
 
     except FinishedException:
         raise FinishedException()

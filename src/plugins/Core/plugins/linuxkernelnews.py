@@ -24,8 +24,8 @@ async def linuxkernelnewsHandle(bot: Bot, event: MessageEvent):
             req = await client.get("https://www.kernel.org/feeds/kdist.xml")
             data = req.read().decode("utf-8")
         data = re.findall(
-            r'https://cdn.kernel.org/pub/linux/kernel/.*/linux-.*.tar.xz"', data
-        )
+            r'https://cdn.kernel.org/pub/linux/kernel/.*/linux-.*.tar.xz"',
+            data)
         kernels = ""
         for i in range(len(data)):
             kernels += f"{i+1}. {data[i][:-1].replace('cdn.kernel.org/pub','mirrors.ustc.edu.cn/kernel.org')}\n"

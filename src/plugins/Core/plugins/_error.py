@@ -23,33 +23,38 @@ except:
     pass
 
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
-IGNORED_EXCEPTION = [
-    "NetWorkError",
-    "IllegalQuantityException"
-]
+IGNORED_EXCEPTION = ["NetWorkError", "IllegalQuantityException"]
 ehm = {}
 ehm["errors"] = {}
 for file in os.listdir(os.path.abspath("src/plugins/Core/ehm")):
     try:
-        data = json.load(open(os.path.join(os.path.abspath(
-            "src/plugins/Core/ehm"), file), encoding="utf-8"))
+        data = json.load(
+            open(os.path.join(os.path.abspath("src/plugins/Core/ehm"), file),
+                 encoding="utf-8"))
         ehm["errors"][data.pop("match")] = data
     except:
         pass
-ehm["unknown"] = json.load(open(os.path.join(os.path.abspath(
-    "src/plugins/Core/ehm"), "unknown_error.json"), encoding="utf-8"))
-ehm["templ"] = open(os.path.join(os.path.abspath(
-    "src/plugins/Core/ehm"), "template.md"), encoding="utf-8").read()
+ehm["unknown"] = json.load(
+    open(os.path.join(os.path.abspath("src/plugins/Core/ehm"),
+                      "unknown_error.json"),
+         encoding="utf-8"))
+ehm["templ"] = open(os.path.join(os.path.abspath("src/plugins/Core/ehm"),
+                                 "template.md"),
+                    encoding="utf-8").read()
+
 
 # , event: MessageEvent | GroupMessageEvent | None = None):
-
-
-async def report(_err: str | None = None, matcher: Matcher = Matcher(), event=None, feedback=True):
+async def report(_err: str | None = None,
+                 matcher: Matcher = Matcher(),
+                 event=None,
+                 feedback=True):
     err = _err or traceback.format_exc()
     error = err.splitlines()[-1]
     logger.debug(error)
     # 过滤错误
-    if ("finishedexception" in error.lower()) or ("networkerror" in error.lower()) and matcher is not None:
+    if ("finishedexception"
+            in error.lower()) or ("networkerror"
+                                  in error.lower()) and matcher is not None:
         await matcher.finish()
     # 反馈错误
     if err.startswith("Traceback"):
@@ -64,17 +69,13 @@ async def report(_err: str | None = None, matcher: Matcher = Matcher(), event=No
                     data = ehm["unknown"]
                 filename = f"data/_error.cache_{time.time()}.ro.png"
                 markdown2image.md2img(
-                    ehm["templ"].replace("%error%", error)
-                    .replace("%because%", "\n".join(data["because"]))
-                    .replace("%do%", "- " + "\n- ".join(data["do"]))
-                    .replace("%log%", err),
-                    filename
-                )
-                await matcher.send(
-                    Message(
-                        f'[CQ:image,file=file://{os.path.abspath(filename)}]'),
-                    at_sender=True
-                )
+                    ehm["templ"].replace("%error%", error).replace(
+                        "%because%", "\n".join(data["because"])).replace(
+                            "%do%", "- " + "\n- ".join(data["do"])).replace(
+                                "%log%", err), filename)
+                await matcher.send(Message(
+                    f'[CQ:image,file=file://{os.path.abspath(filename)}]'),
+                                   at_sender=True)
                 os.remove(filename)
             except:
                 logger.warning(f"渲染图片失败：{traceback.format_exc()}")

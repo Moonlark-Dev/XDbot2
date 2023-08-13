@@ -27,10 +27,7 @@ def parse_dom(nodes: list, parent_node: str | None = None) -> list:
                 item = node.data.replace("\n", "")
             else:
                 _item = node.data.splitlines()
-                item = {
-                    "type": "span",
-                    "innerHTML": []
-                }
+                item = {"type": "span", "innerHTML": []}
                 for i in _item:
                     item["innerHTML"].append(i)
                     item["innerHTML"].append({"type": "br", "innerHTML": []})

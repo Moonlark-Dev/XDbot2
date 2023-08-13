@@ -8,7 +8,9 @@ from . import _error
 
 
 @su.handle()
-async def _(matcher: Matcher, event: MessageEvent, message: Message = CommandArg()):
+async def _(matcher: Matcher,
+            event: MessageEvent,
+            message: Message = CommandArg()):
     try:
         argument = str(message).split(" ")
         if argument[0] in ["reply", "调教"]:
@@ -17,8 +19,8 @@ async def _(matcher: Matcher, event: MessageEvent, message: Message = CommandArg
                 smart_reply.global_reply(reply_id)
                 await matcher.finish("完成")
             elif argument[1] in ["remove", "rm", "删除"]:
-                smart_reply.remove_reply(
-                    argument[2], event.get_user_id(), True)
+                smart_reply.remove_reply(argument[2], event.get_user_id(),
+                                         True)
                 await matcher.finish("完成")
     except:
         await _error.report()
