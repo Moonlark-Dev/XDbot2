@@ -24,7 +24,7 @@ def writeConfig(cfg):
 
 configCommand = on_command("essencemsg", aliases={"essmsg"}, permission=SUPERUSER)
 essencemsgCommand = on_regex(
-    "^\[CQ:at,qq=.*\].*精华", permission=GROUP_ADMIN | GROUP_OWNER | SUPERUSER
+    ".*精华", permission=GROUP_ADMIN | GROUP_OWNER | SUPERUSER
 )
 
 
