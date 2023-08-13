@@ -2,6 +2,14 @@
 
 ![](https://socialify.git.ci/ITCraftDevelopmentTeam/XDbot2/image?description=1&forks=1&issues=1&language=1&logo=https://www.thisisxd.top/img/XDbot2.png&name=1&owner=1&pulls=1&stargazers=1&theme=Light)
 
+<p align="center">
+<img src="https://github.com/ITCraftDevelopmentTeam/XDbot2/actions/workflows/build-and-push-docker-image.yml/badge.svg">
+<img src="https://img.shields.io/github/repo-size/ITCraftDevelopmentTeam/XDbot2">
+<img src="https://img.shields.io/docker/image-size/xiaodeng3386/xdbot2?label=Docker%20Image%20Size">
+<img src="https://img.shields.io/github/v/tag/ITCraftDevelopmentTeam/XDbot2">
+<a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
+</p>
+
 ## 简介
 
 IT Craft XDBot2（下简称`XDbot2`）是一个简单的QQ功能型机器人，基于 Nonebot2 + OnebotV11 编写
@@ -12,11 +20,6 @@ IT Craft XDBot2（下简称`XDbot2`）是一个简单的QQ功能型机器人，�
 - 便于管理：强大的超管系统，轻松管理XDbot
 - 易于使用：更详细的指令文档和更易用的指令
 - 功能更丰富：在XDbot的基础上增加了更多功能
-
-[![Build and push Docker image](https://github.com/ITCraftDevelopmentTeam/XDbot2/actions/workflows/build-and-push-docker-image.yml/badge.svg)](https://github.com/ITCraftDevelopmentTeam/XDbot2/actions/workflows/build-and-push-docker-image.yml)
-![](https://img.shields.io/github/repo-size/ITCraftDevelopmentTeam/XDbot2)
-![](https://img.shields.io/docker/image-size/xiaodeng3386/xdbot2?label=Docker%20Image%20Size)
-![](https://img.shields.io/github/v/tag/ITCraftDevelopmentTeam/XDbot2)
 
 ## 使用
 
@@ -42,7 +45,7 @@ IT Craft XDBot2（下简称`XDbot2`）是一个简单的QQ功能型机器人，�
 
 - [IT Craft Development Team](https://itcdt.top)
 - Sugar：提供部分功能灵感
-- XTbot：提供部分功能灵感
+- XTBot：提供部分功能灵感
 - [NoneBot2](https://github.com/nonebot/nonebot2)：超好用的机器人框架
 - [VSCode](https://github.com/microsoft/vscode)：~~VSCode天下第一~~
 
