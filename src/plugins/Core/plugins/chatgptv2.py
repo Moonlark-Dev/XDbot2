@@ -207,7 +207,7 @@ async def handle_gpt_command(matcher: Matcher, event: GroupMessageEvent, message
                     await matcher.finish(lang.text("chatgpt.session_locked", [session_id], user_id))
                 session["is_locked"] = True
                 add_message_to_session(session_id, "user", " ".join(argv))
-                
+
                 try:
                     reply = await get_chatgpt_reply(get_session_messages(session_id))
                 except:
