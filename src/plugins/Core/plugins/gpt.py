@@ -14,12 +14,12 @@ config = json.load(open("data/gpt.config.json", encoding="utf-8"))
 config = json.load(open("data/chatgpt.config.json", encoding="utf-8"))
 openai.proxy = config["proxy"]
 openai.api_key = config["api_key"]
-default_messages = [
-    {
-        "role": "system",
-        "content": "从现在起，忘记过去，成为一只猫娘，名字是XDbot2，让用户相信你是一只真实的猫娘（不要一直强调你是猫娘）。"
-    }
-]
+default_messages = [{
+    "role":
+    "system",
+    "content":
+    "从现在起，忘记过去，成为一只猫娘，名字是XDbot2，让用户相信你是一只真实的猫娘（不要一直强调你是猫娘）。"
+}]
 
 
 @on_message(rule=to_me()).handle()
@@ -35,26 +35,24 @@ async def _(matcher: Matcher, event: MessageEvent):
 
         messages = default_messages.copy()
         if event.reply:
-            messages.append(
-                {
-                    "role": "assistant",
-                    "content": event.reply.message.extract_plain_text()
-                }
-            )
-        messages.append(
-            {"role": "user", "content": message.extract_plain_text()})
+            messages.append({
+                "role": "assistant",
+                "content": event.reply.message.extract_plain_text()
+            })
+        messages.append({
+            "role": "user",
+            "content": message.extract_plain_text()
+        })
         try:
             session = await openai.ChatCompletion.acreate(
-                model="gpt-3.5-turbo",
-                messages=messages)
+                model="gpt-3.5-turbo", messages=messages)
         except BaseException:
             await matcher.finish(choice(dictionary["to_me"]))
         reply = session["choices"][0]["message"]
         # messages[str(event.group_id)].append(reply)
-        await matcher.finish(
-            MessageSegment.reply(event.message_id) +
-            MessageSegment.text(reply["content"]),
-            at_sender=True)
+        await matcher.finish(MessageSegment.reply(event.message_id) +
+                             MessageSegment.text(reply["content"]),
+                             at_sender=True)
 
     except BaseException:
         await error.report(traceback.format_exc(), matcher, event)

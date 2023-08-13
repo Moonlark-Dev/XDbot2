@@ -19,14 +19,18 @@ async def _(matcher: Matcher, event: GroupMessageEvent):
         data = json.load(open("data/su.update_notice.json", encoding="utf-8"))
         if str(event.group_id) in data["disabled"]:
             data["disabled"].pop(data["disabled"].index(str(event.group_id)))
-            json.dump(data, open(
-                "data/su.update_notice.json", "w", encoding="utf-8"))
-            await matcher.finish(_lang.text("update-notice.enabled", [], str(event.user_id)))
+            json.dump(
+                data, open("data/su.update_notice.json", "w",
+                           encoding="utf-8"))
+            await matcher.finish(
+                _lang.text("update-notice.enabled", [], str(event.user_id)))
         else:
             data["disabled"].append(str(event.group_id))
-            json.dump(data, open(
-                "data/su.update_notice.json", "w", encoding="utf-8"))
-            await matcher.finish(_lang.text("update-notice.disabled", [], str(event.user_id)))
+            json.dump(
+                data, open("data/su.update_notice.json", "w",
+                           encoding="utf-8"))
+            await matcher.finish(
+                _lang.text("update-notice.disabled", [], str(event.user_id)))
 
     except BaseException:
         await _error.report(traceback.format_exc(), matcher)
@@ -41,10 +45,12 @@ async def su_update_notice(message: Message = CommandArg()):
             text = str(message)[argument[0].__len__() + 1:]
             if text == "submit":
                 disabled_update_notice = json.load(
-                    open("data/su.update_notice.json", encoding="utf-8"))["disabled"]
+                    open("data/su.update_notice.json",
+                         encoding="utf-8"))["disabled"]
                 if update_notice_cache != "":
                     multiAccoutData = json.load(
-                        open("data/su.multiaccoutdata.ro.json", encoding="utf-8"))
+                        open("data/su.multiaccoutdata.ro.json",
+                             encoding="utf-8"))
                     groupList = list(multiAccoutData.keys())
                     bots = get_bots()
                     # 开始广播
@@ -54,11 +60,13 @@ async def su_update_notice(message: Message = CommandArg()):
                         try:
                             await bots[multiAccoutData[group]].send_group_msg(
                                 message=Message(
-                                    f"【XDbot2 {time.strftime('%Y-%m-%d', time.localtime())} 更新推送】\n{update_notice_cache}"),
+                                    f"【XDbot2 {time.strftime('%Y-%m-%d', time.localtime())} 更新推送】\n{update_notice_cache}"
+                                ),
                                 group_id=group,
                             )
                         except BaseException:
-                            await su.send(f"在 {group} 推送更新失败：\n{traceback.format_exc()}")
+                            await su.send(
+                                f"在 {group} 推送更新失败：\n{traceback.format_exc()}")
                     update_notice_cache = ""
                 else:
                     await su.finish("请先使用 /su un <context> 设定超级广播内容")

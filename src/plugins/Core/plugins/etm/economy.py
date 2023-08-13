@@ -5,7 +5,6 @@ import json
 # from nonebot.log import logger
 from .data import vimcoin
 
-
 # {
 #    "in": 0,
 #    "out": 0,
@@ -22,10 +21,10 @@ class IllegalQuantityException(Exception):
 async def add_item():
     vimcoin["item_count"] += 175
 
+
 vimcoin["exchange_rate"] = 1
 
 # @scheduler.scheduled_job("cron", second="*/15", id="chamgeExchangeRate")
-
 """
 async def change_exchange_rate():
     # 总vi

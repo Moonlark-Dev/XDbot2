@@ -7,6 +7,7 @@ from .._lang import text
 
 
 class Pouch(Item):
+
     def on_register(self):
         self.basic_data = {
             "display_name": "收纳袋",
@@ -50,7 +51,9 @@ class Pouch(Item):
                 self.data["max_item_count"] += count
                 return [text("currency.ok")]
             else:
-                return [text("currency.no_money", [1.25*count], self.user_id)]
+                return [
+                    text("currency.no_money", [1.25 * count], self.user_id)
+                ]
         else:
             return [text("pouch.help", [], self.user_id)]
 
@@ -71,7 +74,10 @@ class Pouch(Item):
             self.data["items"][int(args[1]) - 1]["count"] -= count
 
         self.update_info()
-        return [text("pouch.got", [_item.data['display_name'], count], self.user_id)]
+        return [
+            text("pouch.got", [_item.data['display_name'], count],
+                 self.user_id)
+        ]
 
     def get_free_count(self):
         used = 0
@@ -113,4 +119,7 @@ class Pouch(Item):
         })
         self.update_info()
         _item = items.json2items([self.data["items"][-1]])[0]
-        return [text("pouch.put", [_item.data['display_name'], int(args[2])], self.user_id)]
+        return [
+            text("pouch.put", [_item.data['display_name'],
+                               int(args[2])], self.user_id)
+        ]

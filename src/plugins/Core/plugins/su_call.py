@@ -13,10 +13,9 @@ async def call_api(bot: Bot, message: Message = CommandArg()):
     try:
         if argument[0] in ["call", "调用"]:
             await su.finish(
-                json.dumps(
-                    await bot.call_api(
-                        api=argument[1],
-                        **json.loads(" ".join(argument[2:])))))
+                json.dumps(await
+                           bot.call_api(api=argument[1],
+                                        **json.loads(" ".join(argument[2:])))))
 
     except BaseException:
         await _error.report(traceback.format_exc(), su)

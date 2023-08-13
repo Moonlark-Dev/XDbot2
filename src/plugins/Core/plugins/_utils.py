@@ -22,7 +22,12 @@ SUCCESS: bool = True
 FAILED: bool = False
 
 
-async def send_text(key: str, _format: list = [], user_id: str | int = "default", at_sender: bool = False, matcher: Matcher = Matcher()) -> None:
+async def send_text(
+    key: str,
+    _format: list = [],
+    user_id: str | int = "default",
+    at_sender: bool = False,
+    matcher: Matcher = Matcher()) -> None:
     await matcher.send(lang.text(key, _format, user_id), at_sender=at_sender)
 
 
@@ -64,7 +69,7 @@ class Json:
             return None
 
     # def __getattr__(self, item: str) -> any:
-        # return self.get(item)
+    # return self.get(item)
 
     def __getitem__(self, key: str) -> Any:
         return self.get(key)

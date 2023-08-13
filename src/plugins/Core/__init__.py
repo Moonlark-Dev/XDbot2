@@ -18,9 +18,7 @@ import traceback
 logger.info("正在清理数据")
 files = os.listdir("./data")
 file_list = [
-    r"etm\.items\.json",
-    r"preview(.*).png",
-    r"setu\.(.*)\.(jpg|png)",
+    r"etm\.items\.json", r"preview(.*).png", r"setu\.(.*)\.(jpg|png)",
     r"(.*)\.ro\.(.*)"
 ]
 try:
@@ -39,8 +37,8 @@ try:
 except BaseException:
     disablePlugins = []
 try:
-    disablePlugins += json.load(open("data/init.disabled.json",
-                                encoding="utf-8"))
+    disablePlugins += json.load(
+        open("data/init.disabled.json", encoding="utf-8"))
 except BaseException:
     pass
 try:
@@ -88,13 +86,13 @@ sys.path.append(path)
 for plugin in pluginList:
     if check_plugin(plugin):
         try:
-            pluginsModule[plugin] = getattr(__import__(
-                f"plugins.{plugin[:-3]}"), plugin[:-3])
+            pluginsModule[plugin] = getattr(
+                __import__(f"plugins.{plugin[:-3]}"), plugin[:-3])
             logger.info(f"成功加载插件{plugin}")
             loadedPlugins += [plugin]
             # 读取帮助
-            helpData.update(getHelp.get_plugin_help(
-                plugin[:-3], pluginsModule[plugin]))
+            helpData.update(
+                getHelp.get_plugin_help(plugin[:-3], pluginsModule[plugin]))
 
         except AttributeError:
             logger.warning(f"在{plugin}中找不到指令文档")
@@ -104,12 +102,8 @@ for plugin in pluginList:
 
             data = json.load(open("data/_error.count.json", encoding="utf-8"))
             data["count"] += 1
-            json.dump(
-                data,
-                open(
-                    "data/_error.count.json",
-                    "w",
-                    encoding="utf-8"))
+            json.dump(data,
+                      open("data/_error.count.json", "w", encoding="utf-8"))
     else:
         logger.warning(f"未知或已禁用插件：{plugin}")
 logger.info(f"已成功加载 {loadedPlugins.__len__()} 个插件，{len(helpData.keys())}个指令帮助")
@@ -125,9 +119,7 @@ json.dump(
             "command_start": list(global_config.command_start)
         },
         "control": config.CONTROL_GROUP
-    },
-    open("data/init.json", "w", encoding="utf-8")
-)
+    }, open("data/init.json", "w", encoding="utf-8"))
 
 # 写入帮助文件
 logger.debug(helpData)

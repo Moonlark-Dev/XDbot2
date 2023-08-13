@@ -12,8 +12,8 @@ from nonebot_plugin_apscheduler import scheduler
 from nonebot import get_bot, on_message, require, on_command
 from nonebot.log import logger
 import json
-from sympy.parsing.sympy_parser import (
-    parse_expr, standard_transformations, implicit_multiplication_application)
+from sympy.parsing.sympy_parser import (parse_expr, standard_transformations,
+                                        implicit_multiplication_application)
 
 require("nonebot_plugin_apscheduler")
 group = None
@@ -25,9 +25,7 @@ def refresh_group_unanswered(groups=[]):
     global group_unanswered
     if not groups:
         groups = json.load(
-            open(
-                "data/quick_calculus.enabled_groups.json",
-                encoding="utf-8"))
+            open("data/quick_calculus.enabled_groups.json", encoding="utf-8"))
     for g in groups:
         group_unanswered[g] = 0
 
@@ -66,8 +64,10 @@ def format_answer(t):
 
 def generate_limit_question():
     x = symbols('x')
-    f = choice([x**2 + 3 * x - 2, x**3 - 2 * x + 1,
-               x**4 - 4 * x**3 + 5 * x**2 + 2 * x - 1])
+    f = choice([
+        x**2 + 3 * x - 2, x**3 - 2 * x + 1,
+        x**4 - 4 * x**3 + 5 * x**2 + 2 * x - 1
+    ])
     a = randint(-10, 10)
     _limit = limit(f, x, a)
     question = f"计算函数 {latex(f)} 在 $x={a}$ 处的极限。"
@@ -79,8 +79,8 @@ def _check_answer(_answer, right_answer):
     transformations = standard_transformations + \
         (implicit_multiplication_application,)
     answer_expr = parse_expr(_answer, transformations=transformations)
-    right_answer_expr = parse_expr(
-        right_answer, transformations=transformations)
+    right_answer_expr = parse_expr(right_answer,
+                                   transformations=transformations)
     return answer_expr == right_answer_expr
 
 
@@ -108,13 +108,9 @@ async def send_quick_calculus():
     global group, answer
     try:
         accout_data = json.load(
-            open(
-                "data/su.multiaccoutdata.ro.json",
-                encoding="utf-8"))
+            open("data/su.multiaccoutdata.ro.json", encoding="utf-8"))
         groups = json.load(
-            open(
-                "data/quick_calculus.enabled_groups.json",
-                encoding="utf-8"))
+            open("data/quick_calculus.enabled_groups.json", encoding="utf-8"))
         try:
             group = choice(groups)
         except BaseException:
@@ -180,7 +176,8 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
                 add = [randint(10, 30), randint(5, 25)]
                 economy.add_vi(event.get_user_id(), add[0])
                 exp.add_exp(event.get_user_id(), add[1])
-                await matcher.send(lang.text("quick_math.rightanswer", add, event.get_user_id()),
+                await matcher.send(lang.text("quick_math.rightanswer", add,
+                                             event.get_user_id()),
                                    at_sender=True)
                 group = None
                 answer = None
@@ -195,24 +192,24 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
 async def quick_math_command(matcher: Matcher, event: GroupMessageEvent):
     try:
         groups = json.load(
-            open(
-                "data/quick_calculus.enabled_groups.json",
-                encoding="utf-8"))
+            open("data/quick_calculus.enabled_groups.json", encoding="utf-8"))
         if event.group_id in groups:
             groups.pop(groups.index(event.group_id))
-            await matcher.send(lang.text("quick_calculus.disable", [], event.get_user_id()))
+            await matcher.send(
+                lang.text("quick_calculus.disable", [], event.get_user_id()))
         else:
             groups.append(event.group_id)
-            await matcher.send(lang.text("quick_calculus.enable", [], event.get_user_id()))
+            await matcher.send(
+                lang.text("quick_calculus.enable", [], event.get_user_id()))
         json.dump(
             groups,
-            open(
-                "data/quick_calculus.enabled_groups.json",
-                "w",
-                encoding="utf-8"))
+            open("data/quick_calculus.enabled_groups.json",
+                 "w",
+                 encoding="utf-8"))
         refresh_group_unanswered(groups)
     except BaseException:
         await error.report(format_exc(), matcher)
+
 
 # [HELPSTART] Version: 2
 # Command: qc

@@ -5,7 +5,7 @@ from . import _lang as lang
 from .etm import economy, exp, user, achievement
 import traceback
 
-pay = on_command("pay",aliases={"转账"})
+pay = on_command("pay", aliases={"转账"})
 
 # [HELPSTART] Version: 2
 # Command: pay
@@ -13,19 +13,20 @@ pay = on_command("pay",aliases={"转账"})
 # Info: 给别人转账
 # [HELPEND]
 
+
 @pay.handle()
 async def pay(message: Message = CommandArg()):
     try:
         argument = str(message).split(" ")
-        qq=argument[0]
-        num=float(argument[1])
-        src_qq=event.get_user_id()
-        data=user.get_user_data(src_qq)
-        vim_src=data["vimcoin"]
-        if num>eco_src:
-            await pay.finish(lang.text("pay.vim_not_enough",[],src_qq))
-        economy.add_vi(src_qq,-num)
-        economy.add_vi(qq,num)
-        await pay.finish(lang.text("pay.sucess",[],src_qq))
+        qq = argument[0]
+        num = float(argument[1])
+        src_qq = event.get_user_id()
+        data = user.get_user_data(src_qq)
+        vim_src = data["vimcoin"]
+        if num > eco_src:
+            await pay.finish(lang.text("pay.vim_not_enough", [], src_qq))
+        economy.add_vi(src_qq, -num)
+        economy.add_vi(qq, num)
+        await pay.finish(lang.text("pay.sucess", [], src_qq))
     except BaseException:
         await _error.report(traceback.format_exc(), pay)

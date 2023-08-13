@@ -30,17 +30,20 @@ def get_average(item_id):
         return items.json2items([{
             "id": item_id,
             "count": 1,
-            "data": {}}])[0].data["price"]
+            "data": {}
+        }])[0].data["price"]
 
 
 def save_data():
     json.dump(data, open("data/market.items.json", "w", encoding="utf-8"))
-    json.dump(average_price, open(
-        "data/market.average.json", "w", encoding="utf-8"))
+    json.dump(average_price,
+              open("data/market.average.json", "w", encoding="utf-8"))
 
 
 @market.handle()
-async def item_list(bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()):
+async def item_list(bot: Bot,
+                    event: GroupMessageEvent,
+                    message: Message = CommandArg()):
     try:
         user_id = event.get_user_id()
         argv = str(message).split(" ")
@@ -54,43 +57,47 @@ async def item_list(bot: Bot, event: GroupMessageEvent, message: Message = Comma
                 page = int(argv[1])
             except:
                 page = 1
-            node_messages = [
-                {
+            node_messages = [{
+                "type": "node",
+                "data": {
+                    "uin":
+                    event.self_id,
+                    "nickname":
+                    "XDBOT2",
+                    "content":
+                    _lang.text(
+                        "market.list_title",
+                        [page, math.ceil(len(list(data.items())) / 100)],
+                        user_id)
+                }
+            }]
+            for item_data in list(data.values())[page * 100 - 100:page * 100]:
+                item = items.json2items([item_data["item"]])[0]
+                node_messages.append({
                     "type": "node",
                     "data": {
-                        "uin": event.self_id,
-                        "nickname": "XDBOT2",
-                        "content": _lang.text("market.list_title", [page, math.ceil(len(list(data.items())) / 100)], user_id)
+                        "uin":
+                        event.self_id,
+                        "nickname":
+                        "XDBOT2",
+                        "content":
+                        _lang.text("market.view", [
+                            item_data["id"], item.data["display_name"],
+                            item.item_id, item_data["price"],
+                            min(
+                                int(
+                                    user.get_user_data(user_id)["vimcoin"] /
+                                    max(1, item_data["price"])),
+                                item_data["count"]), item_data["count"],
+                            item_data["seller"]["nickname"],
+                            item_data["seller"]["user_id"],
+                            item.data["display_message"]
+                        ], user_id)
                     }
-                }
-            ]
-            for item_data in list(data.values())[page*100-100:page*100]:
-                item = items.json2items([item_data["item"]])[0]
-                node_messages.append(
-                    {
-                        "type": "node",
-                        "data": {
-                            "uin": event.self_id,
-                            "nickname": "XDBOT2",
-                            "content": _lang.text("market.view", [
-                                item_data["id"],
-                                item.data["display_name"],
-                                item.item_id,
-                                item_data["price"],
-                                min(int(user.get_user_data(user_id)[
-                                    "vimcoin"] / max(1, item_data["price"])), item_data["count"]),
-                                item_data["count"],
-                                item_data["seller"]["nickname"],
-                                item_data["seller"]["user_id"],
-                                item.data["display_message"]], user_id)
-                        }
-                    }
-                )
-            await bot.call_api(
-                "send_group_forward_msg",
-                messages=node_messages,
-                group_id=event.group_id
-            )
+                })
+            await bot.call_api("send_group_forward_msg",
+                               messages=node_messages,
+                               group_id=event.group_id)
             await market.finish()
     except BaseException:
         await _error.report(traceback.format_exc(), market)
@@ -104,17 +111,18 @@ async def view_item(event: MessageEvent, message: Message = CommandArg()):
         if argv[0] == "view":
             item_data = data[argv[1]]
             item = items.json2items([item_data["item"]])[0]
-            await market.finish(_lang.text("market.view", [
-                item_data["id"],
-                item.data["display_name"],
-                item.item_id,
-                item_data["price"],
-                min(int(user.get_user_data(user_id)[
-                    "vimcoin"] / max(item_data["price"])), item_data["count"]),
-                item_data["count"],
-                item_data["seller"]["nickname"],
-                item_data["seller"]["user_id"],
-                item.data["display_message"]], user_id))
+            await market.finish(
+                _lang.text("market.view", [
+                    item_data["id"], item.data["display_name"], item.item_id,
+                    item_data["price"],
+                    min(
+                        int(
+                            user.get_user_data(user_id)["vimcoin"] /
+                            max(item_data["price"])), item_data["count"]),
+                    item_data["count"], item_data["seller"]["nickname"],
+                    item_data["seller"]["user_id"],
+                    item.data["display_message"]
+                ], user_id))
     except BaseException:
         await _error.report(traceback.format_exc(), market)
 
@@ -132,12 +140,14 @@ async def buy_item(event: MessageEvent, message: Message = CommandArg()):
                 count = 1
             if count <= item_json["count"]:
                 if economy.use_vimcoin(user_id, count * item_json["price"]):
-                    bag.add_item(
-                        user_id, item_json["item"]["id"], item_json["item"]["count"], item_json["item"]["data"])
+                    bag.add_item(user_id, item_json["item"]["id"],
+                                 item_json["item"]["count"],
+                                 item_json["item"]["data"])
                     economy.add_vimcoin(user_id, count * item_json["price"])
                     try:
                         average_price[item_json["item"]["id"]] = (
-                            average_price[item_json["item"]["id"]] + count * item_json["price"]) / count + 1
+                            average_price[item_json["item"]["id"]] +
+                            count * item_json["price"]) / count + 1
                     except BaseException:
                         average_price[item_json["item"]
                                       ["id"]] = item_json["price"]
@@ -156,7 +166,9 @@ async def buy_item(event: MessageEvent, message: Message = CommandArg()):
 
 
 @market.handle()
-async def sell_item(event: MessageEvent, bot: Bot, message: Message = CommandArg()):
+async def sell_item(event: MessageEvent,
+                    bot: Bot,
+                    message: Message = CommandArg()):
     try:
         user_id = event.get_user_id()
         argv = str(message).split(" ")
@@ -166,8 +178,9 @@ async def sell_item(event: MessageEvent, bot: Bot, message: Message = CommandArg
             price = max(0, float(argv[3]))
             if item.data["can_be_sold"]:
                 if count <= item.count:
-                    if price <= min(get_average(item.item_id)
-                                    * 2, item.data["price"] * 7) or item.item_id == "pouch":
+                    if price <= min(
+                            get_average(item.item_id) * 2,
+                            item.data["price"] * 7) or item.item_id == "pouch":
                         id = 1
                         while True:
                             if str(id) not in data.keys():
@@ -182,7 +195,8 @@ async def sell_item(event: MessageEvent, bot: Bot, message: Message = CommandArg
                                 "count": 1,
                                 "data": item.data
                             },
-                            "seller": await bot.get_stranger_info(user_id=user_id),
+                            "seller": await
+                            bot.get_stranger_info(user_id=user_id),
                             "price": price
                         }
                         save_data()

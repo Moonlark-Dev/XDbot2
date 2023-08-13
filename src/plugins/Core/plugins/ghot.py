@@ -15,7 +15,6 @@ from nonebot_plugin_apscheduler import scheduler
 from . import _lang as lang
 from . import _error as error
 
-
 require("nonebot_plugin_apscheduler")
 
 MINUTE = 60
@@ -42,7 +41,9 @@ async def _():
 
 
 @on_command("ghot", aliases={"群聊热度"}).handle()
-async def _(bot: Bot, event: GroupMessageEvent, matcher: Matcher,
+async def _(bot: Bot,
+            event: GroupMessageEvent,
+            matcher: Matcher,
             arg: Message = CommandArg()):
     arg = str(arg).replace("-", "")
     try:
@@ -72,7 +73,8 @@ async def _(bot: Bot, event: GroupMessageEvent, matcher: Matcher,
         n = 1
         for group_id, count in sorted_data[:10]:
             try:
-                group_name = (await bot.get_group_info(group_id=int(group_id)))["group_name"]
+                group_name = (await bot.get_group_info(group_id=int(group_id)
+                                                       ))["group_name"]
             except BaseException:
                 group_name = group_id
             reply += f"{n}. {group_name}: {count}\n"
@@ -83,7 +85,9 @@ async def _(bot: Bot, event: GroupMessageEvent, matcher: Matcher,
         for i in range(len(sorted_data)):
             if sorted_data[i][0] == group_id:
                 try:
-                    group_name = (await bot.get_group_info(group_id=int(group_id)))["group_name"]
+                    group_name = (await
+                                  bot.get_group_info(group_id=int(group_id)
+                                                     ))["group_name"]
                 except BaseException:
                     group_name = group_id
                 reply += f"{i + 1}. {group_name}: {count}"
@@ -104,8 +108,7 @@ async def _(event: GroupMessageEvent):
         json.dump(data, open("data/ghot.stamps.json", "w", encoding="utf-8"))
 
         data = json.load(open("data/ghot.day.json", encoding="utf-8"))
-        if ("date" not in data.keys() or
-                data["date"] != str(date.today())):
+        if ("date" not in data.keys() or data["date"] != str(date.today())):
             data = {"date": str(date.today())}
         if str(event.group_id) not in data.keys():
             data[str(event.group_id)] = 0
@@ -120,6 +123,7 @@ async def _(event: GroupMessageEvent):
 
     except BaseException:
         await error.report(traceback.format_exc())
+
 
 # [HELPSTART] Version: 2
 # Command: ghot

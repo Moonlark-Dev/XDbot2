@@ -19,7 +19,9 @@ ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 
 
 @man.handle()
-async def manHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg()):
+async def manHandle(bot: Bot,
+                    event: MessageEvent,
+                    message: Message = CommandArg()):
     try:
         argument = message.extract_plain_text()
         if argument == "":
@@ -53,8 +55,7 @@ async def manHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg
         _text = text.replace("\n", " \n").replace("#", " ").replace("`", " ")
         await man.send(
             Message(
-                f'[CQ:image,file=file://{os.path.abspath(filename)}]{_text}')
-        )
+                f'[CQ:image,file=file://{os.path.abspath(filename)}]{_text}'))
         os.remove(filename)
 
     except FinishedException:

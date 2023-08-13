@@ -45,12 +45,14 @@ def _sign(qq):
         return "\n".join([
             lang.text("sign.success", [], qq),
             lang.text("sign.hr", [], qq),
-            lang.text(
-                "sign.add_exp", [
-                    round(origin_data["exp"], 2), round(now_data["exp"], 2), add_exp], qq),
-            lang.text(
-                "sign.add_vim", [
-                    round(origin_data["vimcoin"], 2), round(now_data["vimcoin"], 2), add_vi], qq),
+            lang.text("sign.add_exp", [
+                round(origin_data["exp"], 2),
+                round(now_data["exp"], 2), add_exp
+            ], qq),
+            lang.text("sign.add_vim", [
+                round(origin_data["vimcoin"], 2),
+                round(now_data["vimcoin"], 2), add_vi
+            ], qq),
             lang.text("sign.hr", [], qq),
             lang.text("sign.days", [data["days"][qq]], qq)
         ])

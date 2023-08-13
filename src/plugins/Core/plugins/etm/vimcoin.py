@@ -3,6 +3,7 @@ from . import economy
 
 
 class VimCoin(Item):
+
     def on_register(self):
         self.item_id = "vimcoin"
         self.basic_data = {

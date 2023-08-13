@@ -39,15 +39,11 @@ class BookAndQuill(Item):
             else:
                 return [text("etm.book_saved", [], self.user_id)]
         else:
-            author_nickname = (
-                await (
-                    list(
-                        nonebot.get_bots().values()
-                    )[0].get_stranger_info(
-                        user_id=self.data['author']
-                    )
-                )
-            )['nickname']
+            author_nickname = (await (list(
+                nonebot.get_bots().values())[0].get_stranger_info(
+                    user_id=self.data['author'])))['nickname']
             author = f"{author_nickname} ({self.data['author']})"
-            return [text("etm.book_read", [self.data['display_name'], author, self.data['data']])
-                    ]
+            return [
+                text("etm.book_read",
+                     [self.data['display_name'], author, self.data['data']])
+            ]

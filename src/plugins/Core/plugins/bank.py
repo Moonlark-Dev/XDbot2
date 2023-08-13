@@ -39,8 +39,10 @@ def get_leaded_money(user_id: str):
 
 def lead_money(user_id: str, money: int):
     if get_leaded_money(user_id) + money <= get_max_lead(user_id):
-        data.bank_lead_data[user_id].append(
-            {"money": money, "time": time.time()})
+        data.bank_lead_data[user_id].append({
+            "money": money,
+            "time": time.time()
+        })
         economy.add_vi(user_id, money)
         return True
     return False
@@ -57,10 +59,13 @@ async def bank(event: MessageEvent, message: Message = CommandArg()):
         match argv[0]:
             case "lead" | "lend":
                 if lead_money(user_id, max(int(argv[1]), 0)):
-                    await bank_command.finish(_lang.text("currency.ok", [], user_id))
+                    await bank_command.finish(
+                        _lang.text("currency.ok", [], user_id))
                 else:
-                    await bank_command.finish(_lang.text("bank.full", [
-                        get_max_lead(user_id) - get_leaded_money(user_id)], user_id))
+                    await bank_command.finish(
+                        _lang.text("bank.full", [
+                            get_max_lead(user_id) - get_leaded_money(user_id)
+                        ], user_id))
             case "view" | "":
                 debt_list = ""
                 length = 0
@@ -68,28 +73,36 @@ async def bank(event: MessageEvent, message: Message = CommandArg()):
                 for item in data.bank_lead_data[user_id]:
                     length += 1
                     interest = round(
-                        interest_rate * ((time.time() - item["time"]) / 43200) * item["money"], 3)
-                    debt_list += _lang.text(
-                        "bank.item", [length, item["money"], interest], user_id)
+                        interest_rate *
+                        ((time.time() - item["time"]) / 43200) * item["money"],
+                        3)
+                    debt_list += _lang.text("bank.item",
+                                            [length, item["money"], interest],
+                                            user_id)
                     amount_to_be_repaid += item["money"] + interest
-                await bank_command.finish(_lang.text(
-                    "bank.view", [
-                        amount_to_be_repaid,
-                        debt_list], user_id))
+                await bank_command.finish(
+                    _lang.text("bank.view", [amount_to_be_repaid, debt_list],
+                               user_id))
             case "repay":
                 debt_info = data.bank_lead_data[user_id][int(argv[1]) - 1]
                 interest = round(
-                    interest_rate * ((time.time() - debt_info["time"]) / 43200) * debt_info["money"], 3)
+                    interest_rate *
+                    ((time.time() - debt_info["time"]) / 43200) *
+                    debt_info["money"], 3)
                 if user.get_user_data(
                         user_id)["vimcoin"] >= debt_info["money"] + interest:
                     economy.use_vimcoin(user_id, debt_info["money"] + interest)
                     data.bank_lead_data[user_id].pop(int(argv[1]) - 1)
                     exp.add_exp(event.get_user_id(), 2)
-                    await bank_command.finish(_lang.text("currency.ok", [], user_id))
+                    await bank_command.finish(
+                        _lang.text("currency.ok", [], user_id))
                 else:
-                    await bank_command.finish(_lang.text("currency.no_money", [debt_info["money"] + interest], user_id))
+                    await bank_command.finish(
+                        _lang.text("currency.no_money",
+                                   [debt_info["money"] + interest], user_id))
 
             case _:
-                await bank_command.finish(_lang.text("bank.usage", [], user_id))
+                await bank_command.finish(_lang.text("bank.usage", [],
+                                                     user_id))
     except BaseException:
         await _error.report(traceback.format_exc(), bank_command)

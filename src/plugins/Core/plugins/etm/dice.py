@@ -7,6 +7,7 @@ from .economy import IllegalQuantityException
 
 
 class Dice(Item):
+
     def on_register(self):
         self.item_id = "dice"
         self.basic_data = {
@@ -54,11 +55,13 @@ class Dice(Item):
                     big_success_count += 1
                 elif res[1] == 1:
                     big_lose_count += 1
-            return [_lang.text("dice.somedice", [
-                count, total_vim,
-                big_success_count, round(big_success_count / count, 1),
-                big_lose_count, round(big_lose_count / count, 1)
-            ], str(self.user_id))]
+            return [
+                _lang.text("dice.somedice", [
+                    count, total_vim, big_success_count,
+                    round(big_success_count / count, 1), big_lose_count,
+                    round(big_lose_count / count, 1)
+                ], str(self.user_id))
+            ]
 
     def use_item(self):
         user_id = self.user_id

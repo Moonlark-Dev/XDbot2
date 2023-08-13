@@ -7,7 +7,8 @@ from .item import Item
 from .nbt import NbtDict
 
 
-def json2items(items, user_id=None): ...
+def json2items(items, user_id=None):
+    ...
 
 
 SHOP_ITEMS = {}
@@ -17,12 +18,12 @@ class MysteryBoxLevel1(Item):
 
     def on_register(self):
         self.basic_data: NbtDict = {
-            "display_name": "Mystery Box (⭐️)",
-            "display_message": (
-                "十分神秘的盒子，没人知道它为什么会出现在这里，也没人知道里面有什么\n\n"
-                "「盒子里好像……发光了？」"
-            ),
-            "price": 32
+            "display_name":
+            "Mystery Box (⭐️)",
+            "display_message": ("十分神秘的盒子，没人知道它为什么会出现在这里，也没人知道里面有什么\n\n"
+                                "「盒子里好像……发光了？」"),
+            "price":
+            32
         }
         self.item_id = "mysterybox_lv1"
 
@@ -34,18 +35,19 @@ class MysteryBoxLevel1(Item):
             "count": random.randint(15, 60),
             "data": {}
         })
-        items.append({
-            "id": "exp",
-            "count": random.randint(1, 30),
-            "data": {}
-        })
+        items.append({"id": "exp", "count": random.randint(1, 30), "data": {}})
         # 商店物品
         for _ in range(random.randint(0, 5)):
-            item: Item = json2items(
-                [random.choice(list(SHOP_ITEMS.values()))])[0]
+            item: Item = json2items([random.choice(list(SHOP_ITEMS.values()))
+                                     ])[0]
             items.append({
-                "id": item.item_id,
-                "count": random.randint(1, min(item.data["maximum_stack"], max(1, int(32 / item.data["price"])))),
+                "id":
+                item.item_id,
+                "count":
+                random.randint(
+                    1,
+                    min(item.data["maximum_stack"],
+                        max(1, int(32 / item.data["price"])))),
                 "data": {}
             })
         # 大紫（确信
@@ -56,11 +58,7 @@ class MysteryBoxLevel1(Item):
                 "data": {}
             })
         if random.random() <= 0.12:
-            items.append({
-                "id": "talisman",
-                "count": 1,
-                "data": {}
-            })
+            items.append({"id": "talisman", "count": 1, "data": {}})
         if random.random() <= 0.17:
             items.append({
                 "id": "pawcoin",

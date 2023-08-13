@@ -70,10 +70,7 @@ def format_time(seconds):
 def uptime():
     try:
         seconds = int(
-            float(
-                open(
-                    "/proc/uptime",
-                    encoding="utf-8").read().split(" ")[0]))
+            float(open("/proc/uptime", encoding="utf-8").read().split(" ")[0]))
     except BaseException:
         return "Unknown"
     return format_time(seconds)
@@ -100,7 +97,9 @@ def pyver():
 
 
 @status.handle()
-async def statusHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg()):
+async def statusHandle(bot: Bot,
+                       event: MessageEvent,
+                       message: Message = CommandArg()):
     try:
         initData = json.load(open("data/init.json", encoding="utf-8"))
         argument = message.extract_plain_text()
@@ -112,8 +111,7 @@ async def statusHandle(bot: Bot, event: MessageEvent, message: Message = Command
 {_lang.text("status.swap",[],event.get_user_id())}{swap_used()}GiB / {swap_total()}GiB
 {_lang.text("status.run",[],event.get_user_id())}{format_time(int(time.time() - initData['time']))}
 {_lang.text("status.boot",[],event.get_user_id())}{uptime()}
-{_lang.text("status.py",[],event.get_user_id())}{pyver()}"""
-            )
+{_lang.text("status.py",[],event.get_user_id())}{pyver()}""")
         elif argument == "cpu":
             await status.finish(
                 f"{_lang.text('status.cpu',[],event.get_user_id())}{cpu_percent()}%（{cpu_freq()} x{cpu_count()}）"
@@ -137,8 +135,7 @@ async def statusHandle(bot: Bot, event: MessageEvent, message: Message = Command
             await status.finish(f"{user()}@{hostname()}")
         else:
             await status.finish(
-                _lang.text("status.error", [argument], event.get_user_id())
-            )
+                _lang.text("status.error", [argument], event.get_user_id()))
 
     except FinishedException:
         raise FinishedException()

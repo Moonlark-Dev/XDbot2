@@ -21,9 +21,9 @@ ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 
 
 @vote.handle()
-async def voteHandle(
-    bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()
-):
+async def voteHandle(bot: Bot,
+                     event: GroupMessageEvent,
+                     message: Message = CommandArg()):
     try:
         data = json.load(open("data/vote.list.json", encoding="utf-8"))
         answer = ""
@@ -79,10 +79,8 @@ async def voteHandle(
             # 添加数据
             data[voteID] = voteData
             # 返回
-            answer = _lang.text(
-                "vote.create_success",
-                [voteID],
-                event.get_user_id())
+            answer = _lang.text("vote.create_success", [voteID],
+                                event.get_user_id())
         elif mode == "list" or mode == "列表" or mode == "":
             answer = _lang.text("vote.list_title", [], event.get_user_id())
             for key in list(data.keys()):
@@ -108,21 +106,18 @@ async def voteHandle(
                 if voteData["group"] == event.group_id or voteData["global"]:
                     if event.get_user_id() not in voteData["users"]:
                         data[argument[0].split(" ")[1]]["users"][
-                            event.get_user_id()
-                        ] = choice
+                            event.get_user_id()] = choice
                         answer = _lang.text(
                             "vote.choice",
                             [voteData["choices"][choice]],
                             event.get_user_id(),
                         )
                     else:
-                        answer = _lang.text(
-                            "vote.error_repeat", [], event.get_user_id()
-                        )
+                        answer = _lang.text("vote.error_repeat", [],
+                                            event.get_user_id())
                 else:
-                    answer = _lang.text(
-                        "vote.error_no_permission", [], event.get_user_id()
-                    )
+                    answer = _lang.text("vote.error_no_permission", [],
+                                        event.get_user_id())
             else:
                 answer = _lang.text("vote.error_end", [], event.get_user_id())
         elif mode == "close" or mode == "结束":
@@ -130,18 +125,16 @@ async def voteHandle(
             voteData = data[voteindex]
             if voteData["status"] == "进行中":
                 voteData["status"] = "已结束"
-                answer = _lang.text(
-                    "vote.end", [voteindex], event.get_user_id())
+                answer = _lang.text("vote.end", [voteindex],
+                                    event.get_user_id())
             else:
-                answer = _lang.text(
-                    "vote.ended", [voteindex], event.get_user_id())
+                answer = _lang.text("vote.ended", [voteindex],
+                                    event.get_user_id())
         elif mode == "delete" or mode == "删除":
             voteindex = argument[0].split(" ")[1]
             data.pop(voteindex)
-            answer = _lang.text(
-                "vote.delete",
-                [voteindex],
-                event.get_user_id())
+            answer = _lang.text("vote.delete", [voteindex],
+                                event.get_user_id())
         json.dump(data, open("data/vote.list.json", "w", encoding="utf-8"))
         await vote.finish(str(answer))
 
@@ -156,30 +149,24 @@ async def voteHandle(
 async def reloadVote():
     data = json.load(open("data/vote.list.json", encoding="utf-8"))
     accouts = json.load(
-        open(
-            "data/su.multiaccoutdata.ro.json",
-            encoding="utf-8"))
+        open("data/su.multiaccoutdata.ro.json", encoding="utf-8"))
     for key in list(data.keys()):
         voteData = data[key]
         bot = get_bot(accouts[str(voteData["group"])])
         if voteData["status"] == "进行中":
             if time.time() >= voteData["endTime"]:
                 await bot.send_group_msg(
-                    message=_lang.text(
-                        "vote.time_end", [voteData["title"], voteData["id"]]
-                    ),
+                    message=_lang.text("vote.time_end",
+                                       [voteData["title"], voteData["id"]]),
                     group_id=voteData["group"],
                 )
                 data[key]["status"] = "已结束"
             # 3600s，一小时
-            elif (
-                int(voteData["endTime"] - time.time()) <= 3600
-                and "msg" not in voteData.keys()
-            ):
+            elif (int(voteData["endTime"] - time.time()) <= 3600
+                  and "msg" not in voteData.keys()):
                 await bot.send_group_msg(
-                    message=_lang.text(
-                        "vote.time_1h_end", [
-                            voteData["title"]]),
+                    message=_lang.text("vote.time_1h_end",
+                                       [voteData["title"]]),
                     group_id=voteData["group"],
                 )
                 data[key]["msg"] = True
@@ -192,6 +179,7 @@ async def reload_task():
         await reloadVote()
     except Exception:
         await _error.report(traceback.format_exc())
+
 
 # [HELPSTART]
 # !Usage 1 vote

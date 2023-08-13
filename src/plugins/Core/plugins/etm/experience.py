@@ -3,6 +3,7 @@ from . import exp
 
 
 class Experience(Item):
+
     def on_register(self):
         self.item_id = "exp"
         self.basic_data = {

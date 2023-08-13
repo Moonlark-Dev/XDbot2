@@ -37,7 +37,8 @@ async def random_handle(event: MessageEvent, message: Message = CommandArg()):
                 result = random.randint(int(arg_list[0]), int(arg_list[1]))
             else:
                 # 参数错误
-                await random_plugin.finish(lang.text("random_number.argerr", [], event.get_user_id()))
+                await random_plugin.finish(
+                    lang.text("random_number.argerr", [], event.get_user_id()))
         # 返回结果
         await random_plugin.finish(str(result))
     except FinishedException:

@@ -1,12 +1,7 @@
 from time import time
 from . import data
 
-BUFFERS = {
-    "护符": {
-        "max_effect": lambda _: 5,
-        "default_level": None
-    }
-}
+BUFFERS = {"护符": {"max_effect": lambda _: 5, "default_level": None}}
 
 
 def get_buff_level(user_id, buff_id):
@@ -24,8 +19,8 @@ def get_buff_level(user_id, buff_id):
 def effect_buff(user_id, buff_id):
     try:
         data.buff[user_id][buff_id]["effect_count"] += 1
-        if data.buff[user_id][buff_id]["effect_count"] >= BUFFERS[buff_id]["max_effect"](
-                data.buff[user_id][buff_id]["level"]):
+        if data.buff[user_id][buff_id]["effect_count"] >= BUFFERS[buff_id][
+                "max_effect"](data.buff[user_id][buff_id]["level"]):
             data.buff[user_id].pop(buff_id)
         return True
     except BaseException:
@@ -34,8 +29,8 @@ def effect_buff(user_id, buff_id):
 
 def can_effect(user_id, buff_id):
     try:
-        if data.buff[user_id][buff_id]["effect_count"] >= BUFFERS[buff_id]["max_effect"](
-                data.buff[user_id][buff_id]["level"]):
+        if data.buff[user_id][buff_id]["effect_count"] >= BUFFERS[buff_id][
+                "max_effect"](data.buff[user_id][buff_id]["level"]):
             return False
         return True
     except BaseException:

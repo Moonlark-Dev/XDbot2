@@ -26,7 +26,8 @@ class Config(BaseModel, extra=Extra.allow):
     @root_validator(pre=True)
     def filter_sentry_configs(cls, values: dict[str, Any]):
         return {
-            key: value for key, value in values.items() if key.startswith("sentry_")
+            key: value
+            for key, value in values.items() if key.startswith("sentry_")
         }
 
     @validator("sentry_dsn", allow_reuse=True)

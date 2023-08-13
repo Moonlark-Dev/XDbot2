@@ -13,7 +13,9 @@ help = on_command("help", aliases={"帮助"})
 
 
 @help.handle()
-async def group_handler(bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()):
+async def group_handler(bot: Bot,
+                        event: GroupMessageEvent,
+                        message: Message = CommandArg()):
     try:
         argv = message.extract_plain_text()
         if argv == "":
@@ -24,9 +26,9 @@ async def group_handler(bot: Bot, event: GroupMessageEvent, message: Message = C
             reply = f"{_lang.text('help.name',[],event.get_user_id())} —— XDbot2\n"
             for key in list(commands.keys()):
                 cmd_status = {
-                    True:  '√',
+                    True: '√',
                     False: 'X',
-                    None:  'O'
+                    None: 'O'
                 }[commands[key]['status']]
                 reply += f"[{cmd_status}] {key}：{commands[key]['msg']}\n"
             reply += _lang.text("help.command", [], event.get_user_id())
@@ -41,9 +43,13 @@ async def group_handler(bot: Bot, event: GroupMessageEvent, message: Message = C
             messages.append({
                 "type": "node",
                 "data": {
-                    "uin": self_id,
-                    "name": "Tips",
-                    "content": _lang.text("help.tips", [command_start], event.get_user_id())
+                    "uin":
+                    self_id,
+                    "name":
+                    "Tips",
+                    "content":
+                    _lang.text("help.tips", [command_start],
+                               event.get_user_id())
                 }
             })
 
@@ -63,10 +69,9 @@ async def group_handler(bot: Bot, event: GroupMessageEvent, message: Message = C
                         "content": content
                     }
                 })
-            await bot.call_api(
-                api="send_group_forward_msg",
-                group_id=event.group_id,
-                messages=messages)
+            await bot.call_api(api="send_group_forward_msg",
+                               group_id=event.group_id,
+                               messages=messages)
             await help.finish()
 
     except BaseException:
@@ -74,7 +79,9 @@ async def group_handler(bot: Bot, event: GroupMessageEvent, message: Message = C
 
 
 @help.handle()
-async def helpHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg()):
+async def helpHandle(bot: Bot,
+                     event: MessageEvent,
+                     message: Message = CommandArg()):
     try:
         argument = message.extract_plain_text()
         reply = ""

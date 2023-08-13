@@ -57,14 +57,11 @@ async def homepage() -> str:
 </html>"""
     except BaseException:
         await _error.report(traceback.format_exc())
-        formatHtml(
-            (
-                "<h1>服务器内部错误</h1>"
-                "<p>给老子去："
-                "https://github.com/This-is-XiaoDeng/XDbot2/issues/new?assignees=&labels=%C2%B7+Bug&template=bug.yml"
-                " 提交 Issue </p>"
-            )
-        )
+        formatHtml((
+            "<h1>服务器内部错误</h1>"
+            "<p>给老子去："
+            "https://github.com/This-is-XiaoDeng/XDbot2/issues/new?assignees=&labels=%C2%B7+Bug&template=bug.yml"
+            " 提交 Issue </p>"))
 
 
 @app.get("/ban/{group_id}", response_class=HTMLResponse)
@@ -91,14 +88,11 @@ async def viewBans(group_id) -> str:
         return formatHtml(html)
     except BaseException:
         _error.report(traceback.format_exc())
-        return formatHtml(
-            (
-                "<h1>你吗你给服务器搞踏马炸了</h1>"
-                "<p>给老子滚去："
-                "https://github.com/This-is-XiaoDeng/XDbot2/issues/new?assignees=&labels=%C2%B7+Bug&template=bug.yml"
-                " 提交 Issue </p>"
-            )
-        )
+        return formatHtml((
+            "<h1>你吗你给服务器搞踏马炸了</h1>"
+            "<p>给老子滚去："
+            "https://github.com/This-is-XiaoDeng/XDbot2/issues/new?assignees=&labels=%C2%B7+Bug&template=bug.yml"
+            " 提交 Issue </p>"))
 
 
 @banCount.handle()
@@ -112,10 +106,14 @@ async def banCountHandle(bot: Bot, event: GroupBanNoticeEvent) -> None:
             data[event.group_id].insert(
                 0,
                 {
-                    "user": await bot.get_stranger_info(user_id=event.get_user_id()),
-                    "duration": event.duration,
-                    "operator": await bot.get_stranger_info(user_id=event.operator_id),
-                    "banTime": int(time.time()),
+                    "user":
+                    await bot.get_stranger_info(user_id=event.get_user_id()),
+                    "duration":
+                    event.duration,
+                    "operator":
+                    await bot.get_stranger_info(user_id=event.operator_id),
+                    "banTime":
+                    int(time.time()),
                 },
             )
         else:
@@ -131,8 +129,7 @@ async def banCountHandle(bot: Bot, event: GroupBanNoticeEvent) -> None:
                     if str(item["user"]["user_id"]) == event.get_user_id():
                         if "pardonTime" not in item.keys():
                             data[event.group_id][length]["pardonTime"] = int(
-                                time.time()
-                            )
+                                time.time())
                             break
                 length += 1
         json.dump(data, open("data/ban.banData.json", "w", encoding="utf-8"))

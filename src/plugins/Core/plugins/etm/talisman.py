@@ -3,6 +3,7 @@ from . import buff
 
 
 class Talisman(Item):
+
     def on_register(self):
         self.item_id = "talisman"
         self.basic_data = {

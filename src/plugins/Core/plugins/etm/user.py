@@ -1,11 +1,6 @@
 from . import data as _data
 
-RAW_DATA = {
-    "user_id": None,
-    "exp": 0,
-    "health": 20,
-    "vimcoin": 0
-}
+RAW_DATA = {"user_id": None, "exp": 0, "health": 20, "vimcoin": 0}
 
 
 def get_user_data(user_id):
