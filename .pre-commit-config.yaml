@@ -13,3 +13,4 @@ repos:
     rev: 23.7.0
     hooks:
       - id: black
+        args: [--skip-magic-trailing-comma]
