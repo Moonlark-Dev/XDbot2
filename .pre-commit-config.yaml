@@ -9,7 +9,7 @@ repos:
     hooks:
       - id: flake8
         args: [--select=E9]
-  - repo: https://github.com/google/yapf
-    rev: v0.40.1
+  - repo: https://github.com/psf/black
+    rev: 23.7.0
     hooks:
-      - id: yapf
+      - id: black
