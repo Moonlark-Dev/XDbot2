@@ -191,7 +191,7 @@ async def handle_gpt_command(matcher: Matcher, event: GroupMessageEvent, message
             case "token" | "tokens":
                 if argv[1] in ["buy", "购买"]:
                     count = max(int(argv[2]), 0)
-                    if economy.use_vimcoin(user_id, 0.04 * count):
+                    if economy.use_vimcoin(user_id, 0.03 * count):
                         Json(f"gpt/users/{user_id}.json")["token"] = Json(
                             f"gpt/users/{user_id}.json").get("token", 0) + count
                         await send_text("chatgpt.buy_success", [count], user_id)
