@@ -22,5 +22,5 @@ ITEMS = {
     "exp": Experience,
     "mysterious_shard": MysteriousShard,
     "auto_sign_coupon": AutoSignCoupon,
-    "auto_sign_coupon_actived": AutoSignCouponActived
+    "auto_sign_coupon_actived": AutoSignCouponActived,
 }

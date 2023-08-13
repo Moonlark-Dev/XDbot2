@@ -5,6 +5,7 @@ import traceback
 from . import _error
 import os.path
 from nonebot.log import logger
+
 try:
     import pyautogui
 except BaseException:
@@ -30,6 +31,7 @@ async def screenshot(message: Message = CommandArg()):
                 await su.send(
                     Message(
                         f"[CQ:image,file=file://{os.path.abspath('./data/screenshot.png')}]"
-                    ))
+                    )
+                )
     except BaseException:
         await _error.report(traceback.format_exc(), su)

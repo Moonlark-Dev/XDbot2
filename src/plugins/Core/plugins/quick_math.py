@@ -32,14 +32,13 @@ eggs = {
     "0/0=?": "regex>([nN][aA][nN])|(0)",
     "1/0=?": "regex>[iI][nN][fF]",
     "creeper?": "regex>[aA][wW]+.*?[mM][aA][N](.*?)",
-    "undefined+undefined=?":
-    "regex>[nN][aA][nN]|[uU][nN][dD][fF][iI][nN][eE][dD]",
-    "114+514=?": "regex>哼+啊+|114|514|114514|1919|810|1919810"
+    "undefined+undefined=?": "regex>[nN][aA][nN]|[uU][nN][dD][fF][iI][nN][eE][dD]",
+    "114+514=?": "regex>哼+啊+|114|514|114514|1919|810|1919810",
 }
 
 
 def generate_equation():
-    x = Symbol('x')
+    x = Symbol("x")
     a, b = random.randint(1, 10), random.randint(1, 10)
     eq = Eq(a * x + b, random.randint(1, 50))
     ans = solve(eq)
@@ -54,20 +53,21 @@ def render_text_as_image(_string):
         string, answer = random.choice(list(eggs.items()))
     # Set the font size and the font type
     font_size = 20, 16
-    font = ImageFont.truetype("./src/plugins/Core/font/HYRunYuan-55W.ttf",
-                              font_size[0])
+    font = ImageFont.truetype("./src/plugins/Core/font/HYRunYuan-55W.ttf", font_size[0])
     title_font = ImageFont.truetype(
-        "./src/plugins/Core/font/HYRunYuan-55W.ttf", font_size[1])
+        "./src/plugins/Core/font/HYRunYuan-55W.ttf", font_size[1]
+    )
     # Get the size of the text
     width1, height1 = font.getsize(string)
     width2, height2 = title_font.getsize("[QUICK MATH]")
     # Create a new image with the size of the text
-    image = Image.new('RGB', (max(width1, width2), max(height1, height2) + 18),
-                      color='white')
+    image = Image.new(
+        "RGB", (max(width1, width2), max(height1, height2) + 18), color="white"
+    )
     # Draw the text on the image
     draw = ImageDraw.Draw(image)
-    draw.text((0, 17), string, fill='black', font=font)
-    draw.text((0, 0), "[QUICK MATH]", fill='black', font=title_font)
+    draw.text((0, 17), string, fill="black", font=font)
+    draw.text((0, 0), "[QUICK MATH]", fill="black", font=title_font)
     # Remove any extra white space in the image
     bbox = image.getbbox()
     image = image.crop(bbox)
@@ -85,7 +85,8 @@ def refresh_group_unanswered(groups=[]):
     global group_unanswered
     if not groups:
         groups = json.load(
-            open("data/quick_math.enabled_groups.json", encoding="utf-8"))
+            open("data/quick_math.enabled_groups.json", encoding="utf-8")
+        )
     for g in groups:
         group_unanswered[g] = 0
 
@@ -98,7 +99,8 @@ async def _(matcher: Matcher, event: GroupMessageEvent):
     global group, answer, send_time
     try:
         accout_data = json.load(
-            open("data/su.multiaccoutdata.ro.json", encoding="utf-8"))
+            open("data/su.multiaccoutdata.ro.json", encoding="utf-8")
+        )
         group = event.group_id
         if random.random() <= 0.5:
             question = f"{random.randint(0, 40)} {random.choice('+-*')} {random.randint(0, 35)}"
@@ -110,10 +112,12 @@ async def _(matcher: Matcher, event: GroupMessageEvent):
             answer = str(answer).replace("[", "").replace("]", "")
         bot = get_bot(accout_data[str(group)])
         send_time = time.time()
-        msg_id = (await bot.send_group_msg(
-            group_id=group,
-            message=MessageSegment.image(
-                render_text_as_image(f"{question}"))))["message_id"]
+        msg_id = (
+            await bot.send_group_msg(
+                group_id=group,
+                message=MessageSegment.image(render_text_as_image(f"{question}")),
+            )
+        )["message_id"]
         await asyncio.sleep(20)
         if None not in [group, answer]:
             await bot.delete_msg(message_id=msg_id)
@@ -129,9 +133,11 @@ async def send_quick_math():
     global group, answer, send_time
     try:
         accout_data = json.load(
-            open("data/su.multiaccoutdata.ro.json", encoding="utf-8"))
+            open("data/su.multiaccoutdata.ro.json", encoding="utf-8")
+        )
         groups = json.load(
-            open("data/quick_math.enabled_groups.json", encoding="utf-8"))
+            open("data/quick_math.enabled_groups.json", encoding="utf-8")
+        )
         try:
             group = random.choice(groups)
         except BaseException:
@@ -148,10 +154,12 @@ async def send_quick_math():
             answer = str(answer).replace("[", "").replace("]", "")
         bot = get_bot(accout_data[str(group)])
         send_time = time.time()
-        msg_id = (await bot.send_group_msg(
-            group_id=group,
-            message=MessageSegment.image(
-                render_text_as_image(f"{question}"))))["message_id"]
+        msg_id = (
+            await bot.send_group_msg(
+                group_id=group,
+                message=MessageSegment.image(render_text_as_image(f"{question}")),
+            )
+        )["message_id"]
         await asyncio.sleep(20)
         if None not in [group, answer]:
             await bot.delete_msg(message_id=msg_id)
@@ -204,28 +212,33 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
             except ValueError:
                 await matcher.finish()
             answer = str(answer)
-            if test_regex(answer, _answ) or _answ == str(answer) or\
-                    ("/" not in str(_answ) and "regex>" not in str(answer) and
-                        run_sandbox(_answ) == run_sandbox(str(answer))):
+            if (
+                test_regex(answer, _answ)
+                or _answ == str(answer)
+                or (
+                    "/" not in str(_answ)
+                    and "regex>" not in str(answer)
+                    and run_sandbox(_answ) == run_sandbox(str(answer))
+                )
+            ):
                 group_unanswered[event.group_id] = 0
                 add = [random.randint(1, 13), random.randint(1, 15)]
                 economy.add_vi(event.get_user_id(), add[0])
                 exp.add_exp(event.get_user_id(), add[1])
-                await matcher.send(lang.text("quick_math.rightanswer", add,
-                                             event.get_user_id()),
-                                   at_sender=True)
-                data = json.load(
-                    open("data/quick_math.average.json", encoding="utf-8"))
+                await matcher.send(
+                    lang.text("quick_math.rightanswer", add, event.get_user_id()),
+                    at_sender=True,
+                )
+                data = json.load(open("data/quick_math.average.json", encoding="utf-8"))
                 data["average"] = round(
-                    (data["average"] + (time.time() - send_time)) / 2, 3)
+                    (data["average"] + (time.time() - send_time)) / 2, 3
+                )
                 json.dump(
-                    data,
-                    open("data/quick_math.average.json", "w",
-                         encoding="utf-8"))
+                    data, open("data/quick_math.average.json", "w", encoding="utf-8")
+                )
                 group = None
                 answer = None
-                achievement.increase_unlock_progress("我爱数学",
-                                                     event.get_user_id())
+                achievement.increase_unlock_progress("我爱数学", event.get_user_id())
     except BaseException:
         error = format_exc()
         if "LuaError" not in error:
@@ -236,18 +249,17 @@ async def quick_math(matcher: Matcher, event: GroupMessageEvent):
 async def quick_math_command(matcher: Matcher, event: GroupMessageEvent):
     try:
         groups = json.load(
-            open("data/quick_math.enabled_groups.json", encoding="utf-8"))
+            open("data/quick_math.enabled_groups.json", encoding="utf-8")
+        )
         if event.group_id in groups:
             groups.pop(groups.index(event.group_id))
-            await matcher.send(
-                lang.text("quick_math.disable", [], event.get_user_id()))
+            await matcher.send(lang.text("quick_math.disable", [], event.get_user_id()))
         else:
             groups.append(event.group_id)
-            await matcher.send(
-                lang.text("quick_math.enable", [], event.get_user_id()))
+            await matcher.send(lang.text("quick_math.enable", [], event.get_user_id()))
         json.dump(
-            groups,
-            open("data/quick_math.enabled_groups.json", "w", encoding="utf-8"))
+            groups, open("data/quick_math.enabled_groups.json", "w", encoding="utf-8")
+        )
         refresh_group_unanswered(groups)
     except BaseException:
         await error.report(format_exc(), matcher)

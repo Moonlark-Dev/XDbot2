@@ -7,7 +7,6 @@ from .._lang import text
 
 
 class Pouch(Item):
-
     def on_register(self):
         self.basic_data = {
             "display_name": "收纳袋",
@@ -15,7 +14,7 @@ class Pouch(Item):
             "items": [],
             "price": 10,
             "maximum_stack": 1,
-            "max_item_count": 16
+            "max_item_count": 16,
         }
         self.item_id = "pouch"
 
@@ -24,16 +23,17 @@ class Pouch(Item):
 
     def update_info(self):
         item_list = items.json2items(self.data["items"])
-        display_info = self.data["display_message"].split(
-            "\x00")[0] + f"\x00\n物品列表（\x01used/{self.data['max_item_count']}）："
+        display_info = (
+            self.data["display_message"].split("\x00")[0]
+            + f"\x00\n物品列表（\x01used/{self.data['max_item_count']}）："
+        )
         length = 1
         used = 0
         for i in item_list:
             display_info += f"\n{length}. {i.data['display_name']} x{i.count}"
             used += i.count
             length += 1
-        self.data["display_message"] = display_info.replace(
-            "\x01used", str(used))
+        self.data["display_message"] = display_info.replace("\x01used", str(used))
 
     def use(self, args):
         args = args.split(" ")
@@ -51,9 +51,7 @@ class Pouch(Item):
                 self.data["max_item_count"] += count
                 return [text("currency.ok")]
             else:
-                return [
-                    text("currency.no_money", [1.25 * count], self.user_id)
-                ]
+                return [text("currency.no_money", [1.25 * count], self.user_id)]
         else:
             return [text("pouch.help", [], self.user_id)]
 
@@ -74,10 +72,7 @@ class Pouch(Item):
             self.data["items"][int(args[1]) - 1]["count"] -= count
 
         self.update_info()
-        return [
-            text("pouch.got", [_item.data['display_name'], count],
-                 self.user_id)
-        ]
+        return [text("pouch.got", [_item.data["display_name"], count], self.user_id)]
 
     def get_free_count(self):
         used = 0
@@ -112,14 +107,9 @@ class Pouch(Item):
                 pass
 
         item.count -= int(args[2])
-        self.data["items"].append({
-            "id": item_id,
-            "count": int(args[2]),
-            "data": nbt
-        })
+        self.data["items"].append({"id": item_id, "count": int(args[2]), "data": nbt})
         self.update_info()
         _item = items.json2items([self.data["items"][-1]])[0]
         return [
-            text("pouch.put", [_item.data['display_name'],
-                               int(args[2])], self.user_id)
+            text("pouch.put", [_item.data["display_name"], int(args[2])], self.user_id)
         ]

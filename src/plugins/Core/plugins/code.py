@@ -13,7 +13,7 @@ import asyncio
 code = on_command("code", aliases={"运行代码"})
 header = {
     "Authorization": "Token a238bd14-14ae-43e4-a7ea-8942edd9b98c",
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
 }
 file_types = {
     "python": ".py",
@@ -21,7 +21,7 @@ file_types = {
     "c": ".c",
     "bash": ".sh",
     "rust": ".rs",
-    "java": ".java"
+    "java": ".java",
 }
 
 
@@ -41,18 +41,16 @@ async def run_code(message: Message):
     src = src.replace("&#91;", "[").replace("&#93;", "]")
     # 请求数据
     request_data = {
-        "files": [{
-            "name": f"main{file_type}",
-            "content": src
-        }],
-        "stdin": stdin
+        "files": [{"name": f"main{file_type}", "content": src}],
+        "stdin": stdin,
     }
     # 发送请求
     async with httpx.AsyncClient() as client:
         response = await client.post(
             url=f"https://glot.io/api/run/{language}/latest",
             headers=header,
-            data=json.dumps(request_data))
+            data=json.dumps(request_data),
+        )
     data = json.loads(response.read())
     # 分析数据
     if "message" in data.keys():
@@ -70,11 +68,11 @@ async def code_handler(event: MessageEvent, message: Message = CommandArg()):
     try:
         try:
             await code.finish(
-                MessageSegment.reply(id_=event.message_id) +
-                MessageSegment.text(text=await run_code(message)))
+                MessageSegment.reply(id_=event.message_id)
+                + MessageSegment.text(text=await run_code(message))
+            )
         except ActionFailed:
-            await code.finish(
-                _lang.text("code.too_long", [], str(event.user_id)))
+            await code.finish(_lang.text("code.too_long", [], str(event.user_id)))
         # await asyncio.sleep(60)
         # await bot.delete_msg(message_id=message_id)
     except FinishedException:

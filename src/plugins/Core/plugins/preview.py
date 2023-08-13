@@ -18,7 +18,7 @@ builtin_urls = {
     "six": "http://127.0.0.1:38192/six",
     "ban": "http://127.0.0.1:38192/ban/%group_id%",
     "setu": "http://127.0.0.1:38192/setu",
-    "xtbot": "https://xtbot-status.xxtg666.top/?r=5"
+    "xtbot": "https://xtbot-status.xxtg666.top/?r=5",
 }
 
 # [HELPSTART] Version: 2
@@ -31,8 +31,7 @@ builtin_urls = {
 
 
 @preview.handle()
-async def preview_website(event: MessageEvent,
-                          message: Message = CommandArg()):
+async def preview_website(event: MessageEvent, message: Message = CommandArg()):
     global latest_time
     try:
         if time.time() - latest_time < 10:
@@ -44,12 +43,13 @@ async def preview_website(event: MessageEvent,
             url = builtin_urls[url]
             if "%group_id%" in url:
                 try:
-                    url = url.replace("%group_id%",
-                                      event.get_session_id().split("_")[1])
+                    url = url.replace(
+                        "%group_id%", event.get_session_id().split("_")[1]
+                    )
                 except IndexError:
                     await preview.finish(
-                        lang.text("preview.only_group", [],
-                                  event.get_user_id()))
+                        lang.text("preview.only_group", [], event.get_user_id())
+                    )
         # 截取网页
         file_name = f"preview.image_{int(time.time())}"
         async with async_playwright() as p:
@@ -70,9 +70,10 @@ async def preview_website(event: MessageEvent,
         await preview.send(
             Message(
                 MessageSegment.image(
-                    file=
-                    f"file://{os.path.abspath(os.path.join('./data', f'{file_name}.png'))}"
-                )))
+                    file=f"file://{os.path.abspath(os.path.join('./data', f'{file_name}.png'))}"
+                )
+            )
+        )
         # 删除图片 (Issue #66)
         os.remove(os.path.abspath(os.path.join("./data", f"{file_name}.png")))
 

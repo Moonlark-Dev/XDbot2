@@ -22,40 +22,45 @@ def load_data():
         if os.path.isdir(os.path.join("data", "etm", user)):
             try:
                 achi_user_data[user] = json.load(
-                    open(f"data/etm/{user}/achi.json", encoding="utf-8"))
+                    open(f"data/etm/{user}/achi.json", encoding="utf-8")
+                )
 
             except BaseException:
                 pass
             try:
                 achi_unlock_progress[user] = json.load(
-                    open(f"data/etm/{user}/achi_unlock_progress.json",
-                         encoding="utf-8"))
+                    open(f"data/etm/{user}/achi_unlock_progress.json", encoding="utf-8")
+                )
             except BaseException:
                 pass
             try:
                 bags[user] = json.load(
-                    open(f"data/etm/{user}/bag.json", encoding="utf-8"))
+                    open(f"data/etm/{user}/bag.json", encoding="utf-8")
+                )
             except BaseException:
                 pass
             try:
                 basic_data[user] = json.load(
-                    open(f"data/etm/{user}/user.json", encoding="utf-8"))
+                    open(f"data/etm/{user}/user.json", encoding="utf-8")
+                )
             except BaseException:
                 pass
             try:
                 buff[user] = json.load(
-                    open(f"data/etm/{user}/buff.json", encoding="utf-8"))
+                    open(f"data/etm/{user}/buff.json", encoding="utf-8")
+                )
             except BaseException:
                 pass
             try:
                 bank_lead_data[user] = json.load(
-                    open(f"data/etm/{user}/bank_lead_data.json",
-                         encoding="utf-8"))
+                    open(f"data/etm/{user}/bank_lead_data.json", encoding="utf-8")
+                )
             except BaseException:
                 pass
             try:
                 emails[user] = json.load(
-                    open(f"data/etm/{user}/emails.json", encoding="utf-8"))
+                    open(f"data/etm/{user}/emails.json", encoding="utf-8")
+                )
             except BaseException:
                 pass
 
@@ -68,8 +73,9 @@ def _save_data(name, data):
     for user in users:
         if not os.path.isdir(f"data/etm/{user}"):
             os.mkdir(f"data/etm/{user}")
-        json.dump(data[user],
-                  open(f"data/etm/{user}/{name}.json", "w", encoding="utf-8"))
+        json.dump(
+            data[user], open(f"data/etm/{user}/{name}.json", "w", encoding="utf-8")
+        )
 
 
 def save_data():
