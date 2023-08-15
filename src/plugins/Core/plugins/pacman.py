@@ -107,10 +107,10 @@ async def search_package(bot: Bot, event: GroupMessageEvent, message: Message = 
             )
         nowLen = 0
         for _ in range(len(messages) // 99 + 1):
-            nowLen += 99
+            nowLen += 100
             await bot.call_api(
                 api="send_group_forward_msg",
-                messages=messages[nowLen - 99: nowLen],
+                messages=messages[nowLen - 100: nowLen],
                 group_id=str(event.group_id),
             )
         await pacman.finish()
