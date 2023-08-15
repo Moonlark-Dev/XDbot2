@@ -78,6 +78,7 @@ async def search_package(bot: Bot, event: GroupMessageEvent, message: Message = 
     if str(message) == "":
         await pacman.finish(lang.text("pacman.need_pkg_name", [], event.user_id))
     try:
+        await pacman.send(lang.text("pacman.wait", [], event.user_id))
         packages = parse_packages_data(
             get_packages_list(await send_request(process_input(str(message))))
         )
