@@ -1,5 +1,5 @@
 import re
-from nonebot.adapters.onebot.v11 import Message, MessageEvent
+from nonebot.adapters.onebot.v11 import Message, GroupMessageEvent
 from nonebot.params import CommandArg
 from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot.exception import FinishedException
@@ -72,28 +72,45 @@ def parse_packages_data(packages: list):
 
 
 @pacman.handle()
-async def search_package(event: MessageEvent, message: Message = CommandArg()):
+async def search_package(
+    bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()
+):
     if str(message) == "":
         await pacman.finish(lang.text("pacman.need_pkg_name", [], event.user_id))
     try:
+        await pacman.send(lang.text("pacman.wait", [], event.user_id))
         packages = parse_packages_data(
             get_packages_list(await send_request(process_input(str(message))))
         )
+        messages = []
+        qq = str((await bot.get_login_info())["user_id"])
         for package in packages:
-            await pacman.send(
-                lang.text(
-                    "pacman.pkg_info",
-                    [
-                        package["name"],
-                        package["ver"],
-                        package["arch"],
-                        package["info"],
-                        package["latest_update"],
-                        package["url"],
-                    ],
-                    event.user_id,
-                )
+            messages.append(
+                {
+                    "type": "node",
+                    "data": {
+                        "uin": qq,
+                        "name": package["name"],
+                        "content": lang.text(
+                            "pacman.pkg_info",
+                            [
+                                package["name"],
+                                package["ver"],
+                                package["arch"],
+                                package["info"],
+                                package["latest_update"],
+                                package["url"],
+                            ],
+                            event.user_id,
+                        ),
+                    },
+                }
             )
+        await bot.call_api(
+            api="send_group_forward_msg",
+            messages=messages,
+            group_id=str(event.group_id),
+        )
         await pacman.finish()
     except FinishedException:
         raise FinishedException()
