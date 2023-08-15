@@ -2,7 +2,7 @@ import re
 from nonebot.adapters.onebot.v11 import Message, GroupMessageEvent
 from nonebot.params import CommandArg
 from nonebot.adapters.onebot.v11.bot import Bot
-from nonebot.exception import FinishedException, ActionFailed, NetworkError
+from nonebot.exception import FinishedException
 from . import _error as error
 from . import _lang as lang
 from nonebot import on_command
@@ -105,16 +105,13 @@ async def search_package(bot: Bot, event: GroupMessageEvent, message: Message = 
                     },
                 }
             )
-        nowLen = 0
-        for _ in range(len(messages) // 99 + 1):
-            nowLen += 100
-            await bot.call_api(
-                api="send_group_forward_msg",
-                messages=messages[nowLen - 100: nowLen],
-                group_id=str(event.group_id),
-            )
+        await bot.call_api(
+            api="send_group_forward_msg",
+            messages=messages,
+            group_id=str(event.group_id),
+        )
         await pacman.finish()
     except FinishedException:
         raise FinishedException()
-    except BaseException and NetworkError and ActionFailed:
+    except BaseException:
         await error.report(traceback.format_exc(), pacman)
