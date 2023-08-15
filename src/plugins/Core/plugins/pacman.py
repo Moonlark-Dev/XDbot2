@@ -1,5 +1,5 @@
 import re
-from nonebot.adapters.onebot.v11 import Message, MessageEvent
+from nonebot.adapters.onebot.v11 import Message, GroupMessageEvent
 from nonebot.params import CommandArg
 from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot.exception import FinishedException
@@ -9,7 +9,8 @@ from nonebot import on_command
 import traceback
 import httpx
 
-pacman = on_command("archpackage", aliases={"apkg", "pacman", "Linux搜包", "spkg", "pkg"})
+pacman = on_command("archpackage", aliases={
+                    "apkg", "pacman", "Linux搜包", "spkg", "pkg"})
 
 
 # [HELPSTART] Version: 2
@@ -28,7 +29,8 @@ async def send_request(package: str):
 
 def get_packages_list(html: str):
     return (
-        html[html.find("<tbody>") + 7 : html.find("</tbody>", html.find("<tbody>"))]
+        html[html.find("<tbody>") +
+             7: html.find("</tbody>", html.find("<tbody>"))]
         .replace("<tr>", "")
         .replace("<td>", "")
         .replace("\n", "")
@@ -52,9 +54,9 @@ def parse_package_data(package: str):
         return {
             "arch": package_data[0],
             "repo": package_data[1],
-            "name": package_data[2][package_data[2].find(">") + 1 :],
+            "name": package_data[2][package_data[2].find(">") + 1:],
             "ver": package_data[3],
-            "info": package_data[4][package_data[4].find(">") + 1 :],
+            "info": package_data[4][package_data[4].find(">") + 1:],
             "latest_update": package_data[5],
             "url": f"https://archlinux.org/packages/{package_data[1].lower()}/{package_data[0]}/{package_data[2][package_data[2].find('>')+1:]}",
         }
@@ -72,27 +74,44 @@ def parse_packages_data(packages: list):
 
 
 @pacman.handle()
-async def search_package(event: MessageEvent, message: Message = CommandArg()):
+async def search_package(bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()):
     if str(message) == "":
         await pacman.finish(lang.text("pacman.need_pkg_name", [], event.user_id))
     try:
         packages = parse_packages_data(
             get_packages_list(await send_request(process_input(str(message))))
         )
+        messages = []
+        qq = str((await bot.get_login_info())["user_id"])
         for package in packages:
-            await pacman.send(
-                lang.text(
-                    "pacman.pkg_info",
-                    [
-                        package["name"],
-                        package["ver"],
-                        package["arch"],
-                        package["info"],
-                        package["latest_update"],
-                        package["url"],
-                    ],
-                    event.user_id,
-                )
+            messages.append(
+                {
+                    "type": "node",
+                    "data": {
+                        "uin": qq,
+                        "name": "XDBOT2 LINUX MAN",
+                        "content": lang.text(
+                            "pacman.pkg_info",
+                            [
+                                package["name"],
+                                package["ver"],
+                                package["arch"],
+                                package["info"],
+                                package["latest_update"],
+                                package["url"],
+                            ],
+                            event.user_id,
+                        )
+                    },
+                }
+            )
+        nowLen = 0
+        for _ in range(len(messages) // 99 + 1):
+            nowLen += 99
+            await bot.call_api(
+                api="send_group_forward_msg",
+                messages=messages[nowLen - 99: nowLen],
+                group_id=str(event.group_id),
             )
         await pacman.finish()
     except FinishedException:
