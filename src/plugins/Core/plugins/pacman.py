@@ -89,7 +89,7 @@ async def search_package(bot: Bot, event: GroupMessageEvent, message: Message = 
                     "type": "node",
                     "data": {
                         "uin": qq,
-                        "name": "XDBOT2 LINUX MAN",
+                        "name": package["name"],
                         "content": lang.text(
                             "pacman.pkg_info",
                             [
