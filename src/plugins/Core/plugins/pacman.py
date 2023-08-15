@@ -2,7 +2,7 @@ import re
 from nonebot.adapters.onebot.v11 import Message, GroupMessageEvent
 from nonebot.params import CommandArg
 from nonebot.adapters.onebot.v11.bot import Bot
-from nonebot.exception import FinishedException
+from nonebot.exception import FinishedException, ActionFailed, NetworkError
 from . import _error as error
 from . import _lang as lang
 from nonebot import on_command
@@ -116,5 +116,5 @@ async def search_package(bot: Bot, event: GroupMessageEvent, message: Message = 
         await pacman.finish()
     except FinishedException:
         raise FinishedException()
-    except BaseException:
+    except BaseException and NetworkError and ActionFailed:
         await error.report(traceback.format_exc(), pacman)
