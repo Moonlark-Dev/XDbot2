@@ -15,7 +15,7 @@ pay = on_command("pay", aliases={"转账"})
 
 
 @pay.handle()
-async def pay(message: Message = CommandArg()):
+async def pay(bot: Bot, event: GroupMessageEvent, message: Message = CommandArg())):
     try:
         argument = str(message).split(" ")
         qq = argument[0]
