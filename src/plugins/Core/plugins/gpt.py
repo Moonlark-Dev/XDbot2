@@ -2,7 +2,7 @@ from nonebot import on_message
 from .cave import cave_messages
 from ._utils import *
 from nonebot.rule import to_me
-from .chatgptv2 import ask_chatgpt
+from .chatgptv2 import ask_chatgpt, NoTokenError
 
 def get_messages(reply: Any, message: Message) -> list[dict[str, str]]:
     messages = [{
@@ -27,7 +27,7 @@ async def handle_gpt_command(matcher: Matcher, event: MessageEvent) -> None:
             await matcher.finish()
         try:
             await matcher.finish(await ask_chatgpt(get_messages(event.reply, event.get_message()), event.get_user_id(), 0.60, False), at_sender=True) # type: ignore
-        except:
+        except NoTokenError:
             await matcher.finish()
 
     except:
