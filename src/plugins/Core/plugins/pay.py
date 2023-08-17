@@ -1,8 +1,7 @@
-from nonebot import on_command, on_regex
-from . import _error as error
-from nonebot.adapters.onebot.v11.event import MessageEvent
+from nonebot import on_command
+from ._utils import *
 from . import _lang as lang
-from .etm import economy, exp, user, achievement
+from .etm import economy, user
 import traceback
 
 pay = on_command("pay", aliases={"转账"})
@@ -15,18 +14,15 @@ pay = on_command("pay", aliases={"转账"})
 
 
 @pay.handle()
-async def pay(message: Message = CommandArg()):
+async def handle_pay_command(event: MessageEvent, message: Message = CommandArg()):
     try:
         argument = str(message).split(" ")
         qq = argument[0]
         num = float(argument[1])
         src_qq = event.get_user_id()
-        data = user.get_user_data(src_qq)
-        vim_src = data["vimcoin"]
-        if num > eco_src:
+        if not economy.use_vimcoin(src_qq, num):
             await pay.finish(lang.text("pay.vim_not_enough", [], src_qq))
-        economy.add_vi(src_qq, -num)
         economy.add_vi(qq, num)
         await pay.finish(lang.text("pay.sucess", [], src_qq))
     except BaseException:
-        await _error.report(traceback.format_exc(), pay)
+        await error.report(traceback.format_exc())

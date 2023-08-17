@@ -95,6 +95,32 @@ async def get_chatgpt_reply(messages: list[dict], model: str = "gpt-3.5-turbo"):
     return await openai.ChatCompletion.acreate(messages=messages, model=model)
 
 
+class NoTokenError(Exception):
+    pass
+
+
+# 给其他插件调用的
+async def ask_chatgpt(
+    messages: list[dict],
+    user_id: str,
+    multiple: float = 1.0,
+    no_token_warn: bool = False,
+    model: str = "gpt-3.5-turbo",
+):
+    if not check_user_tokens(user_id):
+        if not no_token_warn:
+            raise NoTokenError()
+        else:
+            return lang.text("chatgpt.no_enough_token", [], user_id)
+
+    reply = await get_chatgpt_reply(messages, model)
+    return generate_gpt_reply(
+        reply["choices"][0]["message"]["content"],
+        reduce_tokens(user_id, int(reply["usage"]["total_tokens"] * multiple)),
+        user_id,
+    )
+
+
 def add_message_to_session(session_id: str, role: str, content: str) -> None:
     messages = get_session_by_id(session_id).get("messages", [])
     get_session_by_id(session_id)["messages"] = messages + [

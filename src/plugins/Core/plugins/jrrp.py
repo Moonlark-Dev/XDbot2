@@ -33,7 +33,7 @@ async def getJrrp(qq: str):
         await jrrp.send(_lang.text("jrrp.notice", [], qq), at_sender=True)
         data[qq] = {"max": 0}
     # 计算人品值
-    random.seed(int(qq) + int(time.time() / 86400))
+    random.seed(int(qq) + int((time.time() + 480) / 86400))
     luck = random.randint(0, 100)
     if luck > data[qq]["max"]:
         await jrrp.send(
