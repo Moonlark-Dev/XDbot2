@@ -1,4 +1,4 @@
-from nonebot import message
+from nonebot import on_message
 from .cave import cave_messages
 from ._utils import *
 from nonebot.rule import to_me
