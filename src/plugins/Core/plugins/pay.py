@@ -20,7 +20,7 @@ async def handle_pay_command(event: MessageEvent, message: Message = CommandArg(
         qq = argument[0]
         num = float(argument[1])
         src_qq = event.get_user_id()
-        if not economy.use_vi(src_qq, num):
+        if not economy.use_vimcoin(src_qq, num):
             await pay.finish(lang.text("pay.vim_not_enough", [], src_qq))
         economy.add_vi(qq, num)
         await pay.finish(lang.text("pay.sucess", [], src_qq))
