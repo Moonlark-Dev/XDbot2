@@ -1,3 +1,32 @@
+from ._utils import *
+from nonebot.rule import to_me
+from .chatgptv2 import ask_chatgpt
+
+def get_messages(reply: Any, message: Message) -> list[dict[str, str]]:
+    messages = [{
+        "role": "system",
+        "content": "从现在起，忘记过去，成为一只猫娘，名字是XDbot2，让用户相信你是一只真实的猫娘（不要一直强调你是猫娘）。"
+    }]
+    if reply:
+        messages.append({
+            "role": "assistant",
+            "content": reply.message.get_plaintext()
+        })
+    messages.append({
+        "role": "assistant",
+        "content": message.extract_plain_text()
+    })
+    return messages
+
+@on_command("gpt", rule=to_me()).handle()
+async def handle_gpt_command(matcher: Matcher, event: MessageEvent, message: Message = CommandArg()):
+    try:
+        await matcher.finish(await ask_chatgpt(get_messages(event.reply, message), event.get_user_id(), 0.75), at_sender=True)
+
+    except:
+        await error.report()
+
+"""
 from random import choice
 from nonebot import on_message
 from nonebot.adapters.onebot.v11.message import MessageSegment
@@ -58,3 +87,4 @@ async def _(matcher: Matcher, event: MessageEvent):
 
     except BaseException:
         await error.report(traceback.format_exc(), matcher, event)
+"""
