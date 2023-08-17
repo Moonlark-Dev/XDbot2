@@ -21,7 +21,8 @@ def get_messages(reply: Any, message: Message) -> list[dict[str, str]]:
 @on_command("gpt", rule=to_me()).handle()
 async def handle_gpt_command(matcher: Matcher, event: MessageEvent, message: Message = CommandArg()):
     try:
-        await matcher.finish(await ask_chatgpt(get_messages(event.reply, message), event.get_user_id(), 0.75), at_sender=True)
+        if len(message.extract_plain_text()) >= 4:
+            await matcher.finish(await ask_chatgpt(get_messages(event.reply, message), event.get_user_id(), 0.75), at_sender=True)
 
     except:
         await error.report()
