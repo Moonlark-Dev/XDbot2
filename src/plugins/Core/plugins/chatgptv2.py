@@ -100,7 +100,7 @@ async def ask_chatgpt(messages: list[dict], user_id: str, multiple: float = 1.0,
     reply = await get_chatgpt_reply(messages, model)
     return generate_gpt_reply(
         reply["choices"][0]["message"]["content"],
-        reduce_tokens(user_id, reply["usage"]["total_tokens"] * multiple),
+        reduce_tokens(user_id, int(reply["usage"]["total_tokens"] * multiple)),
         user_id,
     )
 
