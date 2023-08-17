@@ -1,3 +1,4 @@
+from nonebot import message
 from .cave import cave_messages
 from ._utils import *
 from nonebot.rule import to_me
@@ -19,12 +20,12 @@ def get_messages(reply: Any, message: Message) -> list[dict[str, str]]:
     })
     return messages
 
-@on_command("gpt", rule=to_me()).handle()
-async def handle_gpt_command(matcher: Matcher, event: MessageEvent, message: Message = CommandArg()):
+@on_message("gpt", rule=to_me()).handle()
+async def handle_gpt_command(matcher: Matcher, event: MessageEvent) -> None:
     try:
         if event.reply and event.reply.message_id in cave_messages:
             await matcher.finish()
-        await matcher.finish(await ask_chatgpt(get_messages(event.reply, message), event.get_user_id(), 0.75), at_sender=True) # type: ignore
+        await matcher.finish(await ask_chatgpt(get_messages(event.reply, event.get_message()), event.get_user_id(), 0.75), at_sender=True) # type: ignore
 
     except:
         await error.report()
