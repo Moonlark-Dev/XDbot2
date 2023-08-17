@@ -20,7 +20,7 @@ def get_messages(reply: Any, message: Message) -> list[dict[str, str]]:
     })
     return messages
 
-@on_message("gpt", rule=to_me()).handle()
+@on_message(rule=to_me()).handle()
 async def handle_gpt_command(matcher: Matcher, event: MessageEvent) -> None:
     try:
         if event.reply and event.reply.message_id in cave_messages:
