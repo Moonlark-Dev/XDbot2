@@ -96,7 +96,7 @@ async def get_chatgpt_reply(messages: list[dict], model: str = "gpt-3.5-turbo"):
 
 
 # 给其他插件调用的
-async def ask_chatgpt(messages: list[dict], user_id: str, multiple: float = 1.0, model: str = "gpt-3.5-tubro"):
+async def ask_chatgpt(messages: list[dict], user_id: str, multiple: float = 1.0, model: str = "gpt-3.5-turbo"):
     reply = await get_chatgpt_reply(messages, model)
     return generate_gpt_reply(
         reply["choices"][0]["message"]["content"],
