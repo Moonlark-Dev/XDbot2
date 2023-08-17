@@ -163,13 +163,6 @@
   "market.list_title": "「全球市场商品列表」\n正在预览：{}/{} 页\n使用 /market list <页> 查看更多",
   "market.list_item": "\n{}. {} {}vim",
   "market.view": "「商品信息（#{}）」\n——————————————\n  {} ({})\n价格：{}vim（可购：{}）\n存货量：{}\n出售者：{}({})\n简介：{}",
-  "chatgpt.proxy_set": "代理已设为：{}",
-  "chatgpt.apikey_set": "API 秘钥已设为：{}",
-  "chatgpt.cache_cleaned": [
-    "好的，XDbot 已为主人抹去了过去，我们现在应该探索什么喵？",
-    "XDbotGPT 聊天记录已清除喵"
-  ],
-  "chatgpt.cache": "主人与 XDbot 的聊天记录如下：{}",
   "statistics.info": "XDbot2 统计信息：\n用户数量：{}\n加入群聊：{}（{} 成员）\n原创代码：{}行（{}字符）\n产生错误：{}\nXDbot 已经走过了 {}days",
   "qm_avg.info": "[QUICK MATH]\n平均作答用时：{}s",
   "bag.item_info": "「{} ({})」\n拥有：{}\n \n{}",
