@@ -64,8 +64,9 @@ class Json:
             self.data = json.load(open(file=self.path, encoding="utf-8"))
 
     def append_to(self, obj: Any, key: str) -> None:
-        self.data[key] = self.get(key, []) + [obj]
-        self.save()
+        temp = self.get(key, []).copy()
+        temp.append(obj)
+        self.data[key] = temp
 
     def __setitem__(self, key: str, value: Any) -> None:
         if value == None:
