@@ -31,6 +31,7 @@ async def send_text(
 ) -> None:
     await matcher.send(lang.text(key, _format, user_id), at_sender=at_sender)
 
+
 async def finish(
     key: str,
     _format: list = [],
