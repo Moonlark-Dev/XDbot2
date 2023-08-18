@@ -257,5 +257,6 @@
   "cm.blocked_command_list": "[CM] 已禁用的命令：\n{}",
 
   "redpacket.info": "[RP] [CQ:at,qq={}] 发了一个拼手气红包，回复本消息并发送「抢」领取",
-  "redpacket.open": "[RP] 你打开了 [CQ:at,qq={}] 的红包，获得了：{}vi"
+  "redpacket.open": "[RP] 你打开了 [CQ:at,qq={}] 的红包，获得了：{}vi",
+  "redpacket.finish": "[RP] [CQ:at,qq={}] 的红包已被抢完"
 }
