@@ -4,6 +4,9 @@
 import os
 
 print("XDbot2 更新器 V1.0.0")
+
+os.system('git reset --head HARD@{0}')
+
 with open("XDbot2_Update.py", encoding="utf-8") as f:
     oldVersion = f.read().split("\n")[0]
 print(f"当前更新脚本版本标签：{oldVersion}")
