@@ -8,7 +8,7 @@ from nonebot.matcher import matchers
 def get_matchers() -> list[type[Matcher]]:
     _matchers = []
     for matcher in matchers.provider[1]:
-        print(matcher.type)
+        # print(matcher.type)
         if matcher.type == "message":
             _matchers.append(matcher)
     return _matchers
@@ -21,7 +21,10 @@ def get_commands() -> list[tuple[str]]:
             continue
         if not hasattr(list(matcher.rule.checkers)[0].call, "cmds"):
             continue
-        commands.append(list(matcher.rule.checkers)[0].call.cmds)
+        command_aliases = []
+        for item in list(matcher.rule.checkers)[0].call.cmds:
+            command_aliases.append(item[0])
+        commands.append(command_aliases)
     return commands
 
 def search_command_by_name(name: str) -> tuple[str] | tuple[()]:
