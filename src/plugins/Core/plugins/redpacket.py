@@ -5,7 +5,13 @@ from ._utils import *
 from nonebot.adapters.onebot.v11.bot import Bot
 from .etm import economy
 
-@on_command("mrp", aliases={"make-red-packet"}).handle()
+# [HELPSTART] Version: 2
+# Command: mrp
+# Info: 发红包
+# Usage: mrp <总金额> <个数>
+# [HELPEND]
+
+@on_command("mrp", aliases={"make-red-packet", "发红包"}).handle()
 async def handle_mrp_command(bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()):
     try:
         argv = message.extract_plain_text().split(" ")
