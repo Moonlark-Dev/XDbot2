@@ -214,7 +214,6 @@
   "asc.signed_2": "已消耗1个[自动签到券（激活）]",
   "asc.signed_3": "已经签到过了，没有消耗[自动签到券（激活）]",
   "cave.query_too_many": "查询失败：范围超过限制（单次可查询最多 {} 条数据）",
-  "chatgpt.ready": "XDbot 已经准备好了！使用 /gpt 开始对话吧！",
   "item.not_useable": "失败：物品无法被使用",
   "dice.somedice": "你扔了 {} 个二十面骰子，共获得 {}vi\n大成功（+50）：{} ({}%)\n大失败（-50）：{} ({}%)",
   "node_manager.enabled": "Develop 节点已在本群启用",
@@ -246,6 +245,7 @@
   
   "pay.vim_not_enough": "错误：vim余额不足",
   "pay.sucess": "完成",
+  "pay.failed": "失败：非法参数",
   "pacman.need_pkg_name": "错误：需要附上包名进行搜索",
   "pacman.pkg_info": "包名：{}\n版本：{}\n架构：{}\n简介：{}\n最后更新：{}\n{}",
   "pacman.wait": "Pacman 正在搜索（这需要一些时间），请稍候 ...",
@@ -254,5 +254,9 @@
   "cm.block_failed": "[CM] 禁用命令 {} 失败：\n命令无效或已被禁用",
   "cm.unblocked": "[CM] 命令 {} 已在此群启用",
   "cm.unblock_failed": "[CM] 启用命令 {} 失败：\n命令无效或未被禁用",
-  "cm.blocked_command_list": "[CM] 已禁用的命令：\n{}"
+  "cm.blocked_command_list": "[CM] 已禁用的命令：\n{}",
+
+  "redpacket.info": "[RP] [CQ:at,qq={}] 发了一个拼手气红包，回复本消息并发送「抢」领取",
+  "redpacket.open": "你打开了 [CQ:at,qq={}] 的红包，获得了：{}vi",
+  "redpacket.finish": "[RP] [CQ:at,qq={}] 的红包已被抢完"
 }

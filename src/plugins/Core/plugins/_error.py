@@ -73,7 +73,7 @@ async def report(
             try:
                 data = None
                 for reg, _data in list(ehm["errors"].items()):
-                    if re.search(reg, err):
+                    if re.search(re.compile(reg, re.DOTALL), err):
                         data = _data
                 if not data:
                     data = ehm["unknown"]
