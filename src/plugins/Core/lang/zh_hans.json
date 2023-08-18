@@ -226,6 +226,7 @@
   "github.repo_archived": "(只读)",
   "version.version": "当前版本：{}\n{}",
   "mystery_box.get": "你获得了：",
+
   "chatgpt.user_info": "[XDbot2GPT] 用户信息：\n剩余：{}\n限免（次）：{}",
   "chatgpt.session_changed": "[XDbot2GPT]\n已切换到会话：{}",
   "chatgpt.chatgpt": "[XDbot2GPT]\n{}\n{}",
@@ -242,9 +243,16 @@
   "chatgpt.used_token": "Token: {} (-{})",
   "chatgpt.free": "限免：{} (-1)",
   "chatgpt.buy_success": "[XDbot2GPT]\n成功购买 {} Tokens",
+  
   "pay.vim_not_enough": "错误：vim余额不足",
   "pay.sucess": "完成",
   "pacman.need_pkg_name": "错误：需要附上包名进行搜索",
   "pacman.pkg_info": "包名：{}\n版本：{}\n架构：{}\n简介：{}\n最后更新：{}\n{}",
-  "pacman.wait": "Pacman 正在搜索（这需要一些时间），请稍候 ..."
+  "pacman.wait": "Pacman 正在搜索（这需要一些时间），请稍候 ...",
+
+  "cm.blocked": "[CM] 命令 {} （及别名）已在此群禁用",
+  "cm.block_failed": "[CM] 禁用命令 {} 失败：\n命令无效或已被禁用",
+  "cm.unblocked": "[CM] 命令 {} 已在此群启用",
+  "cm.unblock_failed": "[CM] 启用命令 {} 失败：\n命令无效或未被禁用",
+  "cm.blocked_command_list": "[CM] 已禁用的命令：\n{}"
 }

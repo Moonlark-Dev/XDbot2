@@ -31,6 +31,15 @@ async def send_text(
 ) -> None:
     await matcher.send(lang.text(key, _format, user_id), at_sender=at_sender)
 
+async def finish(
+    key: str,
+    _format: list = [],
+    user_id: str | int = "default",
+    at_sender: bool = True,
+    matcher: Matcher = Matcher(),
+) -> None:
+    await matcher.finish(lang.text(key, _format, user_id), at_sender=at_sender)
+
 
 def get_list_item(l: list, index: int, default: Any = None) -> Any:
     try:
@@ -53,6 +62,10 @@ class Json:
             self.data = {}
         else:
             self.data = json.load(open(file=self.path, encoding="utf-8"))
+
+    def append_to(self, obj: Any, key: str) -> None:
+        self.data[key] = self.get(key, []) + [obj]
+        self.save()
 
     def __setitem__(self, key: str, value: Any) -> None:
         if value == None:
