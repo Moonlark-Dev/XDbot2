@@ -29,7 +29,7 @@ async def handle_mrp_command(bot: Bot, event: GroupMessageEvent, message: Messag
                 if not subevent.reply:
                     await matcher.finish()
                 if subevent.user_id not in claimed_user and subevent.reply.message_id == message_id:
-                    vimcoin_count = (round(random.random() * 1000 % (remainder_vimcoin / 2), 3)) if remainder_count >= 0 else remainder_vimcoin
+                    vimcoin_count = (round(random.random() * 1000 % (remainder_vimcoin / 2), 3)) if remainder_count > 1 else remainder_vimcoin
                     economy.add_vi(subevent.user_id, vimcoin_count)
                     remainder_count -= 1
                     remainder_vimcoin -= vimcoin_count
