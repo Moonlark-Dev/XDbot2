@@ -67,6 +67,7 @@ class Json:
         temp = self.get(key, []).copy()
         temp.append(obj)
         self.data[key] = temp
+        self.save()
 
     def __setitem__(self, key: str, value: Any) -> None:
         if value == None:
