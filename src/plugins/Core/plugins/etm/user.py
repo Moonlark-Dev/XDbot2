@@ -8,7 +8,7 @@ def get_user_data(user_id):
         return _data.basic_data[str(user_id)].copy()
     except KeyError:
         data = RAW_DATA.copy()
-        data["user_id"] =str(user_id)
+        data["user_id"] = str(user_id)
         return data
 
 
