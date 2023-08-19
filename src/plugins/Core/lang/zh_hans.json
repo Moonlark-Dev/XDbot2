@@ -258,5 +258,7 @@
 
   "redpacket.info": "[RP] [CQ:at,qq={}] 发了一个拼手气红包，回复本消息并发送「抢」领取",
   "redpacket.open": "你打开了 [CQ:at,qq={}] 的红包，获得了：{}vi",
-  "redpacket.finish": "[RP] [CQ:at,qq={}] 的红包已被抢完"
+  "redpacket.finish": "[RP] [CQ:at,qq={}] 的红包已被抢完",
+  "redpacket.repay_subject": "红包退还通知",
+  "redpacket.repay_message": "您发送的红包中剩余 {}vi 未被领取，已退还到您的帐户"
 }

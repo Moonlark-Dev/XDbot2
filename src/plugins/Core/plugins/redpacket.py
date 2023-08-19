@@ -1,9 +1,10 @@
 from math import e
 import random
-from nonebot import on_regex
+from nonebot import get_driver, on_regex
 from ._utils import *
 from nonebot.adapters.onebot.v11.bot import Bot
 from .etm import economy
+from .email import send_email
 
 # [HELPSTART] Version: 2
 # Command: mrp
@@ -11,11 +12,23 @@ from .etm import economy
 # Usage: mrp <总金额> <个数>
 # [HELPEND]
 
+redpackets = {}
+
+@get_driver().on_shutdown
+async def repay_vimcoin():
+    for redpacket in list(redpackets.values()):
+        economy.add_vimcoin(redpacket[0], redpacket[1])
+        await send_email(
+            str(redpacket[0]),
+            lang.text("redpacket.repay_subject", [], redpacket[0]),
+            lang.text("redpacket.repay_message", [redpacket[1]], redpacket[0])
+        )
 
 @on_command("mrp", aliases={"make-red-packet", "发红包"}).handle()
 async def handle_mrp_command(
     bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()
 ):
+    global redpackets
     try:
         argv = message.extract_plain_text().split(" ")
         if not economy.use_vimcoin(event.get_user_id(), float(argv[0])):
@@ -28,7 +41,7 @@ async def handle_mrp_command(
                 ),
             )
         )["message_id"]
-        remainder_vimcoin = float(argv[0])
+        redpackets[message_id]= [event.user_id, float(argv[0])]
         try:
             remainder_count = int(argv[1])
         except:
@@ -37,7 +50,7 @@ async def handle_mrp_command(
 
         @on_regex("抢").handle()
         async def _(matcher: Matcher, subevent: GroupMessageEvent):
-            nonlocal remainder_count, remainder_vimcoin
+            nonlocal remainder_count
             try:
                 if not subevent.reply:
                     await matcher.finish()
@@ -46,13 +59,13 @@ async def handle_mrp_command(
                     and subevent.reply.message_id == message_id
                 ):
                     vimcoin_count = (
-                        (round(random.random() * 1000 % (remainder_vimcoin / 2), 3))
+                        (round(random.random() * 1000 % (redpackets[message_id][1] / 2), 3))
                         if remainder_count > 1
-                        else remainder_vimcoin
+                        else redpackets[message_id][1]
                     )
                     economy.add_vi(subevent.user_id, vimcoin_count)
                     remainder_count -= 1
-                    remainder_vimcoin -= vimcoin_count
+                    redpackets[message_id][1] -= vimcoin_count
                     claimed_user.append(subevent.user_id)
                     await matcher.send(
                         Message(
@@ -68,6 +81,7 @@ async def handle_mrp_command(
                         await send_text(
                             "redpacket.finish", [event.user_id], event.user_id
                         )
+                        redpackets.pop(message_id)
                         matcher.destroy()
             except:
                 await error.report()
