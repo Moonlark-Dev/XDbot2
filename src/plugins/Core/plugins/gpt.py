@@ -24,10 +24,8 @@ def get_messages(reply: Any, message: Message) -> list[dict[str, str]]:
 async def handle_gpt_command(matcher: Matcher, event: MessageEvent) -> None:
     try:
         if (
-            (event.reply
-            and event.reply.message_id in cave_messages)
-            or "抢" in event.get_plaintext()
-        ):
+            event.reply and event.reply.message_id in cave_messages
+        ) or "抢" in event.get_plaintext():
             await matcher.finish()
         try:
             await matcher.finish(await ask_chatgpt(get_messages(event.reply, event.get_message()), event.get_user_id(), 0.60, False), at_sender=True)  # type: ignore

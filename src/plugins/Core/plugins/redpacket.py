@@ -15,6 +15,7 @@ from .email import send_email
 
 redpackets = {}
 
+
 @get_driver().on_shutdown
 async def repay_vimcoin():
     for redpacket in list(redpackets.values()):
@@ -22,9 +23,10 @@ async def repay_vimcoin():
         await send_email(
             str(redpacket[0]),
             lang.text("redpacket.repay_subject", [], redpacket[0]),
-            lang.text("redpacket.repay_message", [redpacket[1]], redpacket[0])
+            lang.text("redpacket.repay_message", [redpacket[1]], redpacket[0]),
         )
     etm_data.save_data()
+
 
 @on_command("mrp", aliases={"make-red-packet", "发红包"}).handle()
 async def handle_mrp_command(
@@ -42,7 +44,7 @@ async def handle_mrp_command(
                 ),
             )
         )["message_id"]
-        redpackets[message_id]= [event.user_id, float(argv[0])]
+        redpackets[message_id] = [event.user_id, float(argv[0])]
         try:
             remainder_count = int(argv[1])
         except:
@@ -60,7 +62,14 @@ async def handle_mrp_command(
                     and subevent.reply.message_id == message_id
                 ):
                     vimcoin_count = (
-                        (round(random.random() * 1000 % (redpackets[message_id][1] / 2), 3))
+                        (
+                            round(
+                                random.random()
+                                * 1000
+                                % (redpackets[message_id][1] / 2),
+                                3,
+                            )
+                        )
                         if remainder_count > 1
                         else redpackets[message_id][1]
                     )
