@@ -9,9 +9,9 @@ async def sudo_command(event: MessageEvent):
         if event.get_plaintext().startswith(command_start + "sudo"):
             if event.user_id in Json("sudo/sudoers.json").get("sudoers", []):
                 event.user_id = int(str(event.get_message()).strip().split(" ")[1].replace("[CQ:at,qq=", "").replace("]", ""))
-                event.message[0].data["text"] = " ".join(
-                    event.message[0].data["text"].split(" ")[2:]
-                )
+                event.message = Message(" ".join(
+                    str(event.get_message()).split(" ")[2:]
+                ))
 
 
 @su.handle()
