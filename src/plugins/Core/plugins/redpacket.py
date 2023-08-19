@@ -28,7 +28,6 @@ async def repay_vimcoin():
 async def handle_mrp_command(
     bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()
 ):
-    global redpackets
     try:
         argv = message.extract_plain_text().split(" ")
         if not economy.use_vimcoin(event.get_user_id(), float(argv[0])):

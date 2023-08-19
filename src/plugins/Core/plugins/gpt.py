@@ -24,9 +24,9 @@ def get_messages(reply: Any, message: Message) -> list[dict[str, str]]:
 async def handle_gpt_command(matcher: Matcher, event: MessageEvent) -> None:
     try:
         if (
-            event.reply
-            and event.reply.message_id in cave_messages
-            and "抢" not in event.get_plaintext()
+            (event.reply
+            and event.reply.message_id in cave_messages)
+            or "抢" in event.get_plaintext()
         ):
             await matcher.finish()
         try:
