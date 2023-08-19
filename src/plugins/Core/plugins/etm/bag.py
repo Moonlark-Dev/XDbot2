@@ -20,6 +20,7 @@ get_bags()
 
 
 def get_items_count_in_bag(user_id):
+    user_id = str(user_id)
     count = 0
     bag = bags[user_id]
     for item in bag:
@@ -66,20 +67,21 @@ def save_bags():
 
 def get_user_bag(user_id):
     try:
-        return bags[user_id]
+        return bags[str(user_id)]
     except KeyError:
         bags[user_id] = []
-        return bags[user_id]
+        return bags[str(user_id)]
 
 
 def _add_item(user_id, item):
     try:
-        bags[user_id].append(item)
+        bags[str(user_id)].append(item)
     except KeyError:
-        bags[user_id] = [item]
+        bags[str(user_id)] = [item]
 
 
 def add_item(user_id, item_id, item_count=1, item_data={}):
+    user_id = str(user_id)
     try:
         for item in bags[user_id]:
             if item.item_id == item_id:
@@ -92,6 +94,7 @@ def add_item(user_id, item_id, item_count=1, item_data={}):
 
 
 async def use_item(user_id, item_pos, argv=""):
+    user_id = str(user_id)
     try:
         # print(user_id, item_pos, bags[user_id])
         return bags[user_id][item_pos].use(argv)
