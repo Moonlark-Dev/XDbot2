@@ -4,6 +4,7 @@ from nonebot import get_driver, on_regex
 from ._utils import *
 from nonebot.adapters.onebot.v11.bot import Bot
 from .etm import economy
+from .etm import data as etm_data
 from .email import send_email
 
 # [HELPSTART] Version: 2
@@ -23,6 +24,7 @@ async def repay_vimcoin():
             lang.text("redpacket.repay_subject", [], redpacket[0]),
             lang.text("redpacket.repay_message", [redpacket[1]], redpacket[0])
         )
+    etm_data.save_data()
 
 @on_command("mrp", aliases={"make-red-packet", "发红包"}).handle()
 async def handle_mrp_command(
