@@ -34,8 +34,8 @@ async def handle_mrp_command(
 ):
     try:
         argv = message.extract_plain_text().split(" ")
-        argv[0] = max(float(argv[0]), 0.001) # type: ignore
-        
+        argv[0] = max(float(argv[0]), 0.001)  # type: ignore
+
         if not economy.use_vimcoin(event.get_user_id(), argv[0]):
             await finish("currency.no_money", [argv[0]], event.user_id)
         message_id = (
@@ -46,7 +46,7 @@ async def handle_mrp_command(
                 ),
             )
         )["message_id"]
-        redpackets[message_id]= [event.user_id, argv[0]]
+        redpackets[message_id] = [event.user_id, argv[0]]
         try:
             remainder_count = max(int(argv[1]), 1)
         except:
