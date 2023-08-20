@@ -36,6 +36,6 @@ async def handle_reply(matcher: Matcher, event: GroupMessageEvent):
             )
 
             latest_use = time.time()
-            await matcher.finish(Message(reply))
+            await matcher.finish(Message("：".join(reply.split("：")[1:])))
     except:
         await error.report()
