@@ -1,3 +1,4 @@
+import random
 from ._utils import *
 from nonebot import on_message
 from .chatgptv2 import get_chatgpt_reply
@@ -20,19 +21,20 @@ async def handle_reply(matcher: Matcher, event: GroupMessageEvent):
         Json(f"autoreply/g{event.group_id}.json").append_to(
             {"user": event.sender.nickname, "content": event.raw_message}, "messages"
         )
-        Json(f"autoreply/g{event.group_id}.json")["messages"] = Json(
-            f"autoreply/g{event.group_id}.json"
-        )["messages"][:50]
-        message_list = ""
-        for item in Json(f"autoreply/g{event.group_id}.json")["messages"]:
-            message_list += f"{item['user']}: {item['content']}"
-        messages = base_message.copy()
-        messages[1]["content"] = messages[1]["content"].replace(
-            "%message%", message_list
-        )
-        session = await get_chatgpt_reply(messages)
-        reply = session["choices"][0]["message"]["content"]
-        if reply != "NULL":
+        if random.random() >= 0.1:
+            Json(f"autoreply/g{event.group_id}.json")["messages"] = Json(
+                f"autoreply/g{event.group_id}.json"
+            )["messages"][:50]
+            message_list = ""
+            for item in Json(f"autoreply/g{event.group_id}.json")["messages"]:
+                message_list += f"{item['user']}: {item['content']}"
+            messages = base_message.copy()
+            messages[1]["content"] = messages[1]["content"].replace(
+                "%message%", message_list
+            )
+            session = await get_chatgpt_reply(messages)
+            reply = session["choices"][0]["message"]["content"]
+            if reply != "NULL":
             await matcher.finish(reply)
     except:
         await error.report()
