@@ -23,7 +23,7 @@ async def handle_reply(matcher: Matcher, event: GroupMessageEvent):
         )
         Json(f"autoreply/g{event.group_id}.json")["messages"] = Json(
             f"autoreply/g{event.group_id}.json"
-        )["messages"][:50]
+        )["messages"][:20]
         if time.time() - latest_use > 20:
             messages = base_message.copy()
             for item in Json(f"autoreply/g{event.group_id}.json")["messages"]:
