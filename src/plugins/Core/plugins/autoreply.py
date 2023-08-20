@@ -54,6 +54,6 @@ async def handle_reply(matcher: Matcher, event: GroupMessageEvent):
                 message = ":".join(reply.split(":")[1:])
                 if message == "":
                     message = reply
-            await matcher.finish(Message(message))
+            await matcher.finish(Message(message.strip()))
     except:
         await error.report()
