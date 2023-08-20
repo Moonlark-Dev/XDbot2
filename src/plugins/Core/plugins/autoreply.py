@@ -29,7 +29,11 @@ async def handle_reply(matcher: Matcher, event: GroupMessageEvent):
             f"autoreply/g_{event.group_id}.json"
         )["messages"][-20:]
 
-        if time.time() - latest_use > 25 and random.random() >= 0.3 and not event.raw_message.startswith("!"):
+        if (
+            time.time() - latest_use > 25
+            and random.random() >= 0.3
+            and not event.raw_message.startswith("!")
+        ):
             latest_use = time.time()
             messages = (
                 base_message + Json(f"autoreply/g_{event.group_id}.json")["messages"]
