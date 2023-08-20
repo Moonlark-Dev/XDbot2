@@ -1,4 +1,5 @@
 from ._utils import *
+from nonebot import on_message
 from .chatgptv2 import get_chatgpt_reply
 
 base_message = [
@@ -34,4 +35,6 @@ async def handle_reply(matcher: Matcher, event: GroupMessageEvent):
         reply = session["choices"][0]["message"]["content"]
         if reply != "NULL":
             await matcher.finish(reply)
+    except:
+        await error.report()
 
