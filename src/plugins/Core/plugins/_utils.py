@@ -108,7 +108,10 @@ class Json:
         except FileNotFoundError:
             local_data = {}
         for key in list(self.changed_key):
-            local_data[key] = self.data[key]
+            try:
+                local_data[key] = self.data[key]
+            except KeyError:
+                local_data.pop(key)
         json.dump(local_data, open(self.path, "w", encoding="utf-8"))
         self.changed_key = set()
 
