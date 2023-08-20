@@ -34,6 +34,6 @@ async def handle_reply(matcher: Matcher, event: GroupMessageEvent):
             reply = session["choices"][0]["message"]["content"]
             latest_use = time.time()
             if reply != "NULL":
-                await matcher.finish(reply)
+                await matcher.finish(":".join(reply.split(":")[1:]))
     except:
         await error.report()
