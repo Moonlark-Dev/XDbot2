@@ -11,7 +11,7 @@ base_message = [
 从现在开始，你将与我进行一次多人对话模拟，你可以拒绝回复部分消息，如果你拒绝回复一条消息，请回复NULL""",
     }
 ]
-latest_use = time.time()
+latest_use = time.time() - 20
 
 
 @on_message().handle()
@@ -24,7 +24,7 @@ async def handle_reply(matcher: Matcher, event: GroupMessageEvent):
         Json(f"autoreply/g{event.group_id}.json")["messages"] = Json(
             f"autoreply/g{event.group_id}.json"
         )["messages"][:50]
-        if time.time() - latest_use > 30:
+        if time.time() - latest_use > 20:
             messages = base_message.copy()
             for item in Json(f"autoreply/g{event.group_id}.json")["messages"]:
                 messages.append(
