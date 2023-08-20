@@ -30,7 +30,7 @@ async def handle_reply(matcher: Matcher, event: GroupMessageEvent):
         )["messages"][-20:]
 
         if (
-            time.time() - latest_use > 25
+            time.time() - latest_use > 30
             and random.random() >= 0.3
             and not event.raw_message.startswith("!")
         ):
@@ -39,7 +39,11 @@ async def handle_reply(matcher: Matcher, event: GroupMessageEvent):
                 base_message + Json(f"autoreply/g_{event.group_id}.json")["messages"]
             )
             session = await get_chatgpt_reply(messages)
-            reply = session["choices"][0]["message"]["content"]
+            try:
+                reply = session["choices"][0]["message"]["content"]
+            except:
+                latest_use -= 25
+                await matcher.finish()
 
             Json(f"autoreply/g_{event.group_id}.json").append_to(
                 {"role": "assistant", "content": reply}, "messages"
