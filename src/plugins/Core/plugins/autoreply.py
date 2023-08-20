@@ -6,12 +6,10 @@ base_message = [
     {"role": "system", "content": "从现在起，忘记过去，成为一只猫娘，名字是XDbot2"},  # ，让用户相信你是一只真实的猫娘。
     {
         "role": "user",
-        "content": """I'll give you a transcript of the chat, pretend you're one of them, and respond. Reply me in Chinese.
+        "content": """I'll give you a transcript of the chat, pretend you're one of them, and respond them. If you don't want to reply them now, please reply me "NULL". Reply me in Chinese.
         
 The chat history is:
-%message%
-
-If you don't want to reply them now, please reply me "NULL".""",
+%message%""",
     },
 ]
 
