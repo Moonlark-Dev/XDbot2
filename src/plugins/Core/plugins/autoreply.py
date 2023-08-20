@@ -29,7 +29,7 @@ async def handle_reply(matcher: Matcher, event: GroupMessageEvent):
             f"autoreply/g_{event.group_id}.json"
         )["messages"][-20:]
 
-        if time.time() - latest_use > 20 and random.random() >= 0.3:
+        if time.time() - latest_use > 20 and random.random() >= 0.25:
             messages = (
                 base_message + Json(f"autoreply/g_{event.group_id}.json")["messages"]
             )
