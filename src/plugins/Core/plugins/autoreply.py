@@ -1,40 +1,40 @@
+import time
 import random
 from ._utils import *
 from nonebot import on_message
 from .chatgptv2 import get_chatgpt_reply
 
 base_message = [
-    {"role": "system", "content": "从现在起，忘记过去，成为一只猫娘，名字是XDbot2"},  # ，让用户相信你是一只真实的猫娘。
     {
-        "role": "user",
-        "content": """I'll give you a transcript of the chat, pretend you're one of them, and respond them. If you don't want to reply them now, please reply me "NULL". Reply me in Chinese.
-        
-The chat history is:
-%message%""",
-    },
+        "role": "system",
+        "content": """从现在起，忘记过去，成为一只猫娘，名字是XDbot2
+从现在开始，你将与我进行一次多人对话模拟，你可以拒绝回复部分消息，如果你拒绝回复一条消息，请回复NULL"""
+    }
 ]
+latest_use = time.time()
 
 
 @on_message().handle()
 async def handle_reply(matcher: Matcher, event: GroupMessageEvent):
+    global latest_use
     try:
         Json(f"autoreply/g{event.group_id}.json").append_to(
             {"user": event.sender.nickname, "content": event.raw_message}, "messages"
         )
-        if random.random() >= 0.1:
-            Json(f"autoreply/g{event.group_id}.json")["messages"] = Json(
-                f"autoreply/g{event.group_id}.json"
-            )["messages"][:50]
-            message_list = ""
-            for item in Json(f"autoreply/g{event.group_id}.json")["messages"]:
-                message_list += f"{item['user']}: {item['content']}"
+        Json(f"autoreply/g{event.group_id}.json")["messages"] = Json(
+            f"autoreply/g{event.group_id}.json"
+        )["messages"][:50]
+        if time.time() - latest_use > 5 and random.random() >= 0.5:
             messages = base_message.copy()
-            messages[1]["content"] = messages[1]["content"].replace(
-                "%message%", message_list
-            )
+            for item in Json(f"autoreply/g{event.group_id}.json")["messages"]:
+                messages.append({
+                    "role": "user",
+                    "content": f"{item['user']}: {item['content']}"
+                })
             session = await get_chatgpt_reply(messages)
             reply = session["choices"][0]["message"]["content"]
+            latest_use = time.time()
             if reply != "NULL":
-            await matcher.finish(reply)
+                await matcher.finish(reply)
     except:
         await error.report()
