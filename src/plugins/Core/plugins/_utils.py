@@ -27,9 +27,10 @@ async def send_text(
     _format: list = [],
     user_id: str | int = "default",
     at_sender: bool = False,
+    reply_message: bool = True,
     matcher: Matcher = Matcher(),
 ) -> None:
-    await matcher.send(Message(lang.text(key, _format, user_id)), at_sender=at_sender)
+    await matcher.send(Message(lang.text(key, _format, user_id)), at_sender=at_sender, reply_message=reply_message)
 
 
 async def finish(
@@ -37,9 +38,10 @@ async def finish(
     _format: list = [],
     user_id: str | int = "default",
     at_sender: bool = True,
+    reply_message: bool = False,
     matcher: Matcher = Matcher(),
 ) -> None:
-    await matcher.finish(lang.text(key, _format, user_id), at_sender=at_sender)
+    await matcher.finish(lang.text(key, _format, user_id), at_sender=at_sender, reply_message = reply_message)
 
 
 def get_list_item(l: list, index: int, default: Any = None) -> Any:
