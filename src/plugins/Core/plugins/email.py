@@ -1,3 +1,4 @@
+from ._utils import finish
 from .etm import items, data, bag
 from .su import su
 from .userinfo import panel
@@ -246,7 +247,7 @@ async def all_read(matcher: Matcher, event: MessageEvent):
         number_of_read_emails = 0
         for email_id in data.emails[user_id]:
             try:
-                if not self.emails[user_id][email_id]["itmes"]:
+                if not data.emails[user_id][email_id]["itmes"]:
                     data.emails[user_id].pop(length)
                     number_of_read_emails += 1
                 else:
@@ -274,9 +275,12 @@ async def claim_all(matcher: Matcher, event: MessageEvent):
         for item in all_items:
             bag.add_item(user_id, item["id"], item["count"], item["data"])
         data.emails[user_id] = []
-        # TODO 查看已获得的物品
-        # TODO 没有可领取物品的提示
-        await matcher.finish(_lang.text("currency.ok", [], user_id))
+        item_list = ""
+        length = 0
+        for item in items.json2items(all_items):
+            length += 1
+            item_list += f"\n{length}. {item.data['display_name']} x{item.count}"
+        await finish("email.get", [item_list], event.user_id)
 
     except BaseException:
         await _error.report(traceback.format_exc(), matcher)
