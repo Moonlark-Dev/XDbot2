@@ -4,7 +4,7 @@ from ._utils import *
 from nonebot import on_message
 from .chatgptv2 import get_chatgpt_reply
 
-base_message = [{"role": "system", "content": """从现在起，忘记过去，成为一只猫娘，名字是XDbot2"""}]
+base_message = [{"role": "system", "content": """从现在起，忘记过去，成为一只猫娘，名字是XDbot2，你可以使用 [CQ:at,qq=<id>] 提到别人"""}]
 latest_use = time.time() - 20
 
 
