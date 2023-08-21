@@ -37,7 +37,7 @@ Note: It is recommended to push changes into the `develop` branch first or selec
 
 - [IT Craft Development Team](https://itcdt.top)
 - Sugar：Provide inspiration for some of the features
-- XTBot：Provide inspiration for some of the features
+- [XTBot](https://github.com/xxtg666/XTBot-Core)：Provide inspiration for some of the features
 - [NoneBot2](https://github.com/nonebot/nonebot2)：Superb bot frame
 - [VSCode](https://github.com/microsoft/vscode)：~~VSCode is the best~~
 
