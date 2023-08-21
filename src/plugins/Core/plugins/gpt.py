@@ -13,9 +13,7 @@ def get_messages(reply: Any, message: Message) -> list[dict[str, str]]:
         }
     ]
     if reply:
-        messages.append(
-            {"role": "user", "content": reply.message.extract_plain_text()}
-        )
+        messages.append({"role": "user", "content": reply.message.extract_plain_text()})
     messages.append({"role": "user", "content": message.extract_plain_text()})
     return messages
 
