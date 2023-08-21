@@ -1,3 +1,4 @@
+import random
 import json
 from . import path
 import os.path
@@ -15,7 +16,7 @@ class Monomer:
         base_properties = get_base_properties()
         self._default_data = base_properties.copy()
         self.gain_list = []
-        self.tiggers = {}
+        self.triggers = {}
         self.battle_skill_points: int = 3
         self.buff = []
         self.hp = hp
@@ -25,6 +26,7 @@ class Monomer:
         self.get_kit_gain()
 
         self._default_data = self.parse_gain(self.gain_list)
+        self.data = self._default_data.copy()
         del self.gain_list
 
     def get_kits(self) -> dict:
@@ -76,3 +78,24 @@ class Monomer:
             default_data[key] = default_data.get(key, 0) * (1 + value)
         return default_data
 
+    def effect_add_hp(self, effect: dict):
+        if isinstance(effect["value"], float):
+            self.hp += self.data["health"] * (1 + effect["value"] + self.data['therapeutic_volume_bonus'])
+        else:
+            self.hp += effect["value"] * (1 + self.data['therapeutic_volume_bonus'])
+
+    def effect_add_trigger(self, effect: dict):
+        if effect["condition"] not in self.triggers.keys():
+            self.triggers[effect["condition"]] = []
+        self.triggers[effect["condition"]].append(effect["effect"])
+
+    def parse_effect(self, effect_block: list[dict]):
+        for effect in effect_block:
+            match effect["function"]:
+                case "add_hp":
+                    self.effect_add_hp(effect)
+                case "add_trigger":
+                    self.effect_add_trigger(effect)
+                case "verify_probabilities":
+                    if random.random() > effect["probability"]:
+                        break

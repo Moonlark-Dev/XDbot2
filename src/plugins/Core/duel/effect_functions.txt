@@ -3,4 +3,5 @@ make_attack
 add_buff
 add_battle_skill_points
 remove_battle_skill_points
-remove_hp
+verify_probabilities
+add_trigger
