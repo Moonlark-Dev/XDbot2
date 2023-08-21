@@ -161,7 +161,7 @@ async def buy_item(event: MessageEvent, message: Message = CommandArg()):
                     bag.add_item(
                         user_id,
                         item_json["item"]["id"],
-                        item_json["item"]["count"],
+                        count,
                         item_json["item"]["data"],
                     )
                     economy.add_vimcoin(user_id, count * item_json["price"])
