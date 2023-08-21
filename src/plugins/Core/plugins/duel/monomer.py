@@ -3,16 +3,19 @@ import json
 from . import path
 import os.path
 
+
 def load_json(name: str) -> dict:
     return json.load(open(os.path.join(path.res_path, name), encoding="utf-8"))
+
 
 def get_base_properties(_type: str = "primary") -> dict:
     return load_json(f"base_properties/{_type}")
 
 
 class Monomer:
-
-    def __init__(self, weapons: str, relics: dict[str, dict], ball: str, hp: int) -> None:
+    def __init__(
+        self, weapons: str, relics: dict[str, dict], ball: str, hp: int
+    ) -> None:
         base_properties = get_base_properties()
         self._default_data = base_properties.copy()
         self.gain_list = []
@@ -40,13 +43,29 @@ class Monomer:
     def get_kit_gain(self):
         for kit, count in list(self.get_kits().items()):
             if count >= 2:
-                self.gain_list += list(load_json(f"kits/{kit}.json")["kit_effect"]["2"].get("gain", {}).items())
+                self.gain_list += list(
+                    load_json(f"kits/{kit}.json")["kit_effect"]["2"]
+                    .get("gain", {})
+                    .items()
+                )
             if count >= 4:
-                self.gain_list += list(load_json(f"kits/{kit}.json")["kit_effect"]["4"].get("gain", {}).items())
+                self.gain_list += list(
+                    load_json(f"kits/{kit}.json")["kit_effect"]["4"]
+                    .get("gain", {})
+                    .items()
+                )
             if count >= 6:
-                self.gain_list += list(load_json(f"kits/{kit}.json")["kit_effect"]["6"].get("gain", {}).items())
+                self.gain_list += list(
+                    load_json(f"kits/{kit}.json")["kit_effect"]["6"]
+                    .get("gain", {})
+                    .items()
+                )
             if self.ball["kit"] == self.weapons["kit"]:
-                self.gain_list += list(load_json(f"kits/{kit}.json")["kit_effect"]["resonance"].get("gain", {}).items())
+                self.gain_list += list(
+                    load_json(f"kits/{kit}.json")["kit_effect"]["resonance"]
+                    .get("gain", {})
+                    .items()
+                )
 
     def get_weapons(self, weapons: str) -> None:
         self.weapons = load_json(f"kits/{weapons}.json")["weapons"]
@@ -80,9 +99,11 @@ class Monomer:
 
     def effect_add_hp(self, effect: dict):
         if isinstance(effect["value"], float):
-            self.hp += self.data["health"] * (1 + effect["value"] + self.data['therapeutic_volume_bonus'])
+            self.hp += self.data["health"] * (
+                1 + effect["value"] + self.data["therapeutic_volume_bonus"]
+            )
         else:
-            self.hp += effect["value"] * (1 + self.data['therapeutic_volume_bonus'])
+            self.hp += effect["value"] * (1 + self.data["therapeutic_volume_bonus"])
 
     def effect_add_trigger(self, effect: dict):
         if effect["condition"] not in self.triggers.keys():
