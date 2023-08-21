@@ -152,4 +152,3 @@ class Monomer:
 
     def prepare_before_the_round(self) -> None:
         pass
-
