@@ -153,7 +153,7 @@ async def buy_item(event: MessageEvent, message: Message = CommandArg()):
         if argv[0] == "buy":
             item_json = data[argv[1]]
             try:
-                count = max(argv[2], 1)
+                count = max(int(argv[2]), 1)
             except BaseException:
                 count = 1
             if count <= item_json["count"]:
