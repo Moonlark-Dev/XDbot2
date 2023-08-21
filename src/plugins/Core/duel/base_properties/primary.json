@@ -1,0 +1,12 @@
+{
+    "health": 100,
+    "attack": 20,
+    "defense": 0.1,
+    "speed": 90,
+    "charging_efficiency": 2,
+    "elemental_mastery": 0.375,
+    "break_the_special_attack": 0.5,
+    "effect_resistance": 0.2,
+    "effect_hit": 0.2,
+    "therapeutic_volume_bonus": 0.00
+}
