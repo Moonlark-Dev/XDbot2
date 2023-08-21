@@ -1,0 +1,114 @@
+{
+    "name": "寒冰王者",
+    "rarity": 1,
+    "weapons": {
+        "name": "冰之刃",
+        "element": "冰",
+        "attack": {
+            "type": "single",
+            "value": 0.70
+        },
+        "skill": {
+            "name": "冰霜裂痕",
+            "attack": {
+                "type": "diffusion",
+                "value": 0.95,
+                "effect": [
+                    {
+                        "function": "verify_probabilities",
+                        "probability": 0.2
+                    },
+                    {
+                        "function": "add_buff",
+                        "target": 1,
+                        "ragne": 1,
+                        "buff": "freezing",
+                        "cling": 3,
+                        "data": {}
+                    }
+                ]
+            },
+            "gain": {
+                "attack": 0.1
+            }
+        }
+    },
+    "relics": {
+        "hand": "冰雪护手",
+        "torso": "霜冻铠甲",
+        "leg": "寒风护腿",
+        "feet": "雪地行者",
+        "weakness": "火"
+    },
+    "ball": {
+        "name": "冰晶之眼",
+        "gain": {
+            "health": 0.1
+        },
+        "skill": {
+            "name": "寒冰守护",
+            "effect": [{
+                "function": "add_buff",
+                "buff": "ice_shield",
+                "target": 0,
+                "ragne": 1,
+                "cling": 5,
+                "data": {
+                    "thickness": {
+                        "base": "hp",
+                        "value": 0.2
+                    }
+                }
+            }]
+        },
+        "kit_effect": {
+            "2": {
+                "gain": {
+                    "health": 0.15
+                }
+            },
+            "4": {
+                "effect": [
+                    {
+                        "function": "add_trigger",
+                        "condition": "our.attack.primary",
+                        "effect": [
+                            {
+                                "function": "verify_probabilities",
+                                "probability": 0.3
+                            },
+                            {
+                                "function": "make_attack",
+                                "name": "小型冰冻炸弹",
+                                "element": "冰",
+                                "attack": {
+                                    "type": "diffusion",
+                                    "value": 1.04
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "6": {
+                "effect": [
+                    {
+                        "function": "add_trigger",
+                        "condition": "our.killed.enemy",
+                        "effect": [
+                            {
+                                "function": "add_hp",
+                                "value": 0.1
+                            }
+                        ]
+                    }
+                ]
+            },
+            "resonance": {
+                "gain": {
+                    "ice_attack": 0.1
+                }
+            }
+        }
+    }
+}
