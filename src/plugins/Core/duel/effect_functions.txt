@@ -1,0 +1,6 @@
+add_hp
+make_attack
+add_buff
+add_battle_skill_points
+remove_battle_skill_points
+remove_hp

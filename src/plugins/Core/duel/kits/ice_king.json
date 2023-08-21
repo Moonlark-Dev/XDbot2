@@ -47,67 +47,69 @@
         },
         "skill": {
             "name": "寒冰守护",
-            "effect": [{
-                "function": "add_buff",
-                "buff": "ice_shield",
-                "target": 0,
-                "ragne": 1,
-                "cling": 5,
-                "data": {
-                    "thickness": {
-                        "base": "hp",
-                        "value": 0.2
+            "effect": [
+                {
+                    "function": "add_buff",
+                    "buff": "ice_shield",
+                    "target": 0,
+                    "ragne": 1,
+                    "cling": 5,
+                    "data": {
+                        "thickness": {
+                            "base": "hp",
+                            "value": 0.2
+                        }
                     }
                 }
-            }]
+            ]
+        }
+    },
+    "kit_effect": {
+        "2": {
+            "gain": {
+                "health": 0.15
+            }
         },
-        "kit_effect": {
-            "2": {
-                "gain": {
-                    "health": 0.15
-                }
-            },
-            "4": {
-                "effect": [
-                    {
-                        "function": "add_trigger",
-                        "condition": "our.attack.primary",
-                        "effect": [
-                            {
-                                "function": "verify_probabilities",
-                                "probability": 0.3
-                            },
-                            {
-                                "function": "make_attack",
-                                "name": "小型冰冻炸弹",
-                                "element": "冰",
-                                "attack": {
-                                    "type": "diffusion",
-                                    "value": 1.04
-                                }
+        "4": {
+            "effect": [
+                {
+                    "function": "add_trigger",
+                    "condition": "our.attack.primary",
+                    "effect": [
+                        {
+                            "function": "verify_probabilities",
+                            "probability": 0.3
+                        },
+                        {
+                            "function": "make_attack",
+                            "name": "小型冰冻炸弹",
+                            "element": "冰",
+                            "attack": {
+                                "type": "diffusion",
+                                "value": 1.04
                             }
-                        ]
-                    }
-                ]
-            },
-            "6": {
-                "effect": [
-                    {
-                        "function": "add_trigger",
-                        "condition": "our.killed.enemy",
-                        "effect": [
-                            {
-                                "function": "add_hp",
-                                "value": 0.1
-                            }
-                        ]
-                    }
-                ]
-            },
-            "resonance": {
-                "gain": {
-                    "ice_attack": 0.1
+                        }
+                    ]
                 }
+            ]
+        },
+        "6": {
+            "effect": [
+                {
+                    "function": "add_trigger",
+                    "condition": "our.killed.enemy",
+                    "effect": [
+                        {
+                            "function": "add_hp",
+                            "value": 0.1
+                        }
+                    ]
+                }
+            ]
+        },
+        "resonance": {
+            "gain": {
+                "ice_attack": 0.1
             }
         }
     }
