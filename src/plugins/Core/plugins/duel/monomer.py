@@ -25,6 +25,8 @@ class Monomer:
         self.hp = hp
 
         self.enemy: Monomer
+        self.reduced_action_value: int = 0
+        self.action_value: int
 
         self.get_weapons(weapons)
         self.get_ball(ball)
@@ -68,6 +70,9 @@ class Monomer:
                     .get("gain", {})
                     .items()
                 )
+
+    def start_action(self):
+        pass
 
     def get_weapons(self, weapons: str) -> None:
         self.weapons = load_json(f"kits/{weapons}.json")["weapons"]
@@ -126,6 +131,9 @@ class Monomer:
                 self.enemy.battle_skill_points -= 1
         elif self.battle_skill_points > 0:
             self.battle_skill_points -= 1
+
+    def prepare_before_fighting(self) -> None:
+        pass
 
     def parse_effect(self, effect_block: list[dict]) -> None:
         for effect in effect_block:
