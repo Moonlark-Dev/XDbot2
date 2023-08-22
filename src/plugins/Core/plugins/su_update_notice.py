@@ -58,7 +58,7 @@ async def su_update_notice(message: Message = CommandArg()):
                         try:
                             await bots[multiAccoutData[group]].send_group_msg(
                                 message=Message(
-                                    f"【XDbot2 {time.strftime('%Y-%m-%d', time.localtime())} 更新推送】\n{update_notice_cache}"
+                                    f"【XDbot2 {time.strftime('%m-%d', time.localtime())} 更新推送】\n{update_notice_cache}"
                                 ),
                                 group_id=group,
                             )

@@ -155,9 +155,8 @@ async def ctRecorderHandle(bot: Bot, event: GroupMessageEvent):
         await _error.report(traceback.format_exc())
 
 
-# [HELPSTART]
-# !Usage 1 ct
-# !Info 1 查询 XDbot 加入的所有群聊中的发言排行榜
-# !Usage 2 ct group
-# !Info 2 查询当前群聊的发言排行榜
+# [HELPSTART] Version: 2
+# Command: ct
+# Info: 发言排行榜
+# Usage: ct [group]
 # [HELPEND]

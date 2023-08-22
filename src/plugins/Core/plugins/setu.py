@@ -167,6 +167,6 @@ async def setu_handler(
 
 # [HELPSTART] Version: 2
 # Command: st-r
-# Info: 随机图片（增强）
+# Info: 随机涩图
 # Usage: st-r [r18] [tag ...]
 # [HELPEND]

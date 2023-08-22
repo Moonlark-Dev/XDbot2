@@ -19,6 +19,7 @@ average_price = json.load(open("data/market.average.json", encoding="utf-8"))
 # Usage: market list <页码>：查看商品列表
 # Usage: market sell <背包物品ID> <卖出总数> <单价>：卖出商品
 # Usage: market view <商品ID>：查看商品
+# Usage: market search <关键词>：搜索商品
 # Usage: market buy <商品ID> [数量]：购买商品
 # [HELPEND]
 

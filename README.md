@@ -44,7 +44,7 @@ IT Craft XDBot2（下简称`XDbot2`）是一个简单的QQ功能型机器人，�
 # 鸣谢（排名不分先后）
 
 - [IT Craft Development Team](https://itcdt.top)
-- Sugar：提供部分功能灵感
+- [SugarWeb](https://github.com/Monody-S/SugarWeb)：提供部分功能灵感
 - [XTBot](https://github.com/xxtg666/XTBot-Core)：提供部分功能灵感
 - [NoneBot2](https://github.com/nonebot/nonebot2)：超好用的机器人框架
 - [VSCode](https://github.com/microsoft/vscode)：~~VSCode天下第一~~
