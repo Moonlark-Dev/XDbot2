@@ -1,17 +1,20 @@
 from .monomer import Monomer
 
+
 class Scheduler:
 
     def __init__(self, active: list[Monomer], passive: list[Monomer]):
         self.active = active
         self.passive = passive
         
+
     def start_fighting(self):
         for monomer in self.active + self.passive:
             monomer.prepare_before_fighting()
             monomer.action_value = 10000 / monomer.data["speed"]
         while not self.is_fighting_end():
             self.handle_round()
+
 
     def handle_round(self):
         for monomer in self.active + self.passive:
@@ -20,11 +23,13 @@ class Scheduler:
         action_monomer.prepare_before_action()
         action_monomer.start_action()
 
+
     def reset_action_value(self):
         for monomer in self.active + self.passive:
             if monomer.action_value == 0:
                 monomer.action_value = 10000 / monomer.data["speed"]
                 monomer.reduced_action_value = 0
+
 
     def is_fighting_end(self) -> bool:
         active_side_survives = False
@@ -39,10 +44,12 @@ class Scheduler:
         
         return not (active_side_survives and passive_side_survives)
         
+
     def init_action_value(self):
         for monomer in self.active + self.passive:
             monomer.action_value = 10000 / monomer.data["speed"] - monomer.reduced_action_value
     
+
     def get_action_monomer(self):
         self.init_action_value()
         minimum_action_value_monomer: Monomer = self.active[0]
