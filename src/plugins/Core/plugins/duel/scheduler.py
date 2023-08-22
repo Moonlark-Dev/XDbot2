@@ -6,6 +6,7 @@ class Scheduler:
     def __init__(self, active: list[Monomer], passive: list[Monomer]):
         self.active = active
         self.passive = passive
+        self.start_fighting()
         
 
     def start_fighting(self):
