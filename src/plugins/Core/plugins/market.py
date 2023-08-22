@@ -146,7 +146,7 @@ async def view_item(event: MessageEvent, message: Message = CommandArg()):
 
 def check_item(item: item.Item, keyword: str):
     return keyword == item.item_id or\
-            keyword in item.data["disaply_message"] or\
+            keyword in item.data["display_message"] or\
             keyword in item.data["display_name"]
 
 
