@@ -161,6 +161,7 @@
   "etm.book_savesuccess": "保存成功！",
   "etm.book_read": " {}\n作者：{}\n—————————————\n{}",
   "market.list_title": "「全球市场商品列表」\n正在预览：{}/{} 页\n使用 /market list <页> 查看更多",
+  "market.search_title": "「全球市场搜索结果」\n{} 的搜索结果\n仅列出前 100 条",
   "market.list_item": "\n{}. {} {}vim",
   "market.view": "「商品信息（#{}）」\n——————————————\n  {} ({})\n价格：{}vim（可购：{}）\n存货量：{}\n出售者：{}({})\n简介：{}",
   "statistics.info": "XDbot2 统计信息：\n用户数量：{}\n加入群聊：{}（{} 成员）\n原创代码：{}行（{}字符）\n产生错误：{}\nXDbot 已经走过了 {}days",

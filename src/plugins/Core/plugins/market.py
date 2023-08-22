@@ -144,6 +144,72 @@ async def view_item(event: MessageEvent, message: Message = CommandArg()):
     except BaseException:
         await _error.report(traceback.format_exc(), market)
 
+@market.handle()
+async def search_item(bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()):
+    try:
+        user_id = event.get_user_id()
+        argv = str(message).split(" ")
+        if argv[0] in ["search", "搜索"]:
+            item_list = []
+            for value in list(data.values()):
+                if value["item_id"] == argv[1]:
+                    item_list.append(value)
+            
+            node_messages = [
+                {
+                    "type": "node",
+                    "data": {
+                        "uin": event.self_id,
+                        "nickname": "XDBOT2",
+                        "content": _lang.text(
+                            "market.search_title",
+                            [argv[1]],
+                            user_id,
+                        ),
+                    },
+                }
+            ]
+            for item_data in item_list[:100]:
+                item = items.json2items([item_data["item"]])[0]
+                node_messages.append(
+                    {
+                        "type": "node",
+                        "data": {
+                            "uin": event.self_id,
+                            "nickname": "XDBOT2",
+                            "content": _lang.text(
+                                "market.view",
+                                [
+                                    item_data["id"],
+                                    item.data["display_name"],
+                                    item.item_id,
+                                    item_data["price"],
+                                    min(
+                                        int(
+                                            user.get_user_data(user_id)["vimcoin"]
+                                            / max(1, item_data["price"])
+                                        ),
+                                        item_data["count"],
+                                    ),
+                                    item_data["count"],
+                                    item_data["seller"]["nickname"],
+                                    item_data["seller"]["user_id"],
+                                    item.data["display_message"],
+                                ],
+                                user_id,
+                            ),
+                        },
+                    }
+                )
+            await bot.call_api(
+                "send_group_forward_msg",
+                messages=node_messages,
+                group_id=event.group_id,
+            )
+            await market.finish()
+
+    except:
+        await _error.report()
 
 @market.handle()
 async def buy_item(event: MessageEvent, message: Message = CommandArg()):
