@@ -144,14 +144,19 @@ async def view_item(event: MessageEvent, message: Message = CommandArg()):
     except BaseException:
         await _error.report(traceback.format_exc(), market)
 
+
 def check_item(item: item.Item, keyword: str):
-    return keyword == item.item_id or\
-            keyword in item.data["display_message"] or\
-            keyword in item.data["display_name"]
+    return (
+        keyword == item.item_id
+        or keyword in item.data["display_message"]
+        or keyword in item.data["display_name"]
+    )
 
 
 @market.handle()
-async def search_item(bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()):
+async def search_item(
+    bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()
+):
     try:
         user_id = event.get_user_id()
         argv = str(message).split(" ")
@@ -163,9 +168,7 @@ async def search_item(bot: Bot, event: GroupMessageEvent, message: Message = Com
                         "uin": event.self_id,
                         "nickname": "XDBOT2",
                         "content": _lang.text(
-                            "market.search_title",
-                            [argv[1]],
-                            user_id,
+                            "market.search_title", [argv[1]], user_id
                         ),
                     },
                 }
@@ -217,6 +220,7 @@ async def search_item(bot: Bot, event: GroupMessageEvent, message: Message = Com
 
     except:
         await _error.report()
+
 
 @market.handle()
 async def buy_item(event: MessageEvent, message: Message = CommandArg()):
