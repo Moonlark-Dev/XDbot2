@@ -63,8 +63,8 @@ async def linuxmanHandle(
 
 # [HELPSTART] Version: 2
 # Command: linuxman
-# Usage: linuxman（查看linux manpage）
-# Usage: linuxman man.1（查看man(1)）
+# Usage: linuxman：查看linux manpage
+# Usage: linuxman man.1：查看man(1)
 # Info: 查看linux manpage
-# Msg: 查看linux manpage
+# Msg: 查看manpage
 # [HELPEND]

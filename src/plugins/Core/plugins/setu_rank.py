@@ -12,8 +12,8 @@ setu_rank = on_command("st-l", aliases={"setu-rank", "随机涩图排行榜"})
 # [HELPSTART] Version: 2
 # Command: st-l
 # Usage: st-l
-# Msg: 查看全局st-r指令使用排行
-# Info: 随机涩图排行
+# Info: 查看全局st-r指令使用排行
+# Msg: 随机涩图排行
 # [HELPEND]
 
 
