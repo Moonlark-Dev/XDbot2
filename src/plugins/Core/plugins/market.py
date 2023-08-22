@@ -4,7 +4,7 @@ from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Bot, Message, MessageEvent, GroupMessageEvent
 from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot.params import CommandArg
-from .etm import items, user, economy, bag, exp
+from .etm import items, user, economy, bag, item
 from . import _error, _lang
 import traceback
 
@@ -144,17 +144,18 @@ async def view_item(event: MessageEvent, message: Message = CommandArg()):
     except BaseException:
         await _error.report(traceback.format_exc(), market)
 
+def check_item(item: item.Item, keyword: str):
+    return keyword == item.item_id or\
+            keyword in item.data["disaply_message"] or\
+            keyword in item.data["display_name"]
+
+
 @market.handle()
 async def search_item(bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()):
     try:
         user_id = event.get_user_id()
         argv = str(message).split(" ")
         if argv[0] in ["search", "搜索"]:
-            item_list = []
-            for value in list(data.values()):
-                if value["item"]["id"] == argv[1]:
-                    item_list.append(value)
-            
             node_messages = [
                 {
                     "type": "node",
@@ -169,8 +170,12 @@ async def search_item(bot: Bot, event: GroupMessageEvent, message: Message = Com
                     },
                 }
             ]
-            for item_data in item_list[:100]:
+            item_count = 0
+            for item_data in list(data.values()):
                 item = items.json2items([item_data["item"]])[0]
+                if not check_item(item, argv[1]):
+                    continue
+                item_count += 1
                 node_messages.append(
                     {
                         "type": "node",
@@ -201,6 +206,8 @@ async def search_item(bot: Bot, event: GroupMessageEvent, message: Message = Com
                         },
                     }
                 )
+                if item_count >= 100:
+                    break
             await bot.call_api(
                 "send_group_forward_msg",
                 messages=node_messages,
