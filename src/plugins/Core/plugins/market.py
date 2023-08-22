@@ -129,7 +129,7 @@ async def view_item(event: MessageEvent, message: Message = CommandArg()):
                         min(
                             int(
                                 user.get_user_data(user_id)["vimcoin"]
-                                / max(item_data["price"])
+                                / max(1, item_data["price"])
                             ),
                             item_data["count"],
                         ),
