@@ -152,7 +152,7 @@ async def search_item(bot: Bot, event: GroupMessageEvent, message: Message = Com
         if argv[0] in ["search", "搜索"]:
             item_list = []
             for value in list(data.values()):
-                if value["item_id"] == argv[1]:
+                if value["id"] == argv[1]:
                     item_list.append(value)
             
             node_messages = [
