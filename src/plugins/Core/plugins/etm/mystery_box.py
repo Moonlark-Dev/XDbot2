@@ -19,7 +19,7 @@ class MysteryBoxLevel1(Item):
         self.basic_data: NbtDict = {
             "display_name": "Mystery Box (⭐️)",
             "display_message": (
-                "十分神秘的盒子，没人知道它为什么会出现在这里，也没人知道里面有什么\n\n" "「盒子里好像……发光了？」"
+                "并不普通的的盒子，散发着少许神秘的气息。\n \n「盒子里好像……发光了？」"
             ),
             "price": 32,
         }
