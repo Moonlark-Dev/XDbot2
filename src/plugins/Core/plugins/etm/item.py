@@ -1,17 +1,18 @@
 from .item_basic_data import BASIC_DATA
 import traceback
 from .economy import IllegalQuantityException
+from .nbt import NbtDict
 
 
 class Item:
     def __init__(self, count, data, user_id):
         self.count = count
         self.item_id = ""  # dice"
-        self.basic_data = {}
+        self.basic_data: NbtDict = {} # type: ignore
         # 初始化
         self.on_register()
         # 设置 NBT
-        self.data = BASIC_DATA.copy()
+        self.data: NbtDict = BASIC_DATA.copy() # type: ignore
         self.data.update(self.basic_data)
         self.data.update(data)
         self.user_id = user_id
@@ -57,7 +58,7 @@ class Item:
         return msg
 
     def drop(self, count):
-        if self.count >= count and self.data["disposable"]:
+        if self.count >= count and self.data["dispoable"]:
             self.count -= count
             return True
         else:

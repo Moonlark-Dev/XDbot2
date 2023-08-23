@@ -1,8 +1,9 @@
 from .item_list import ITEMS
 from . import mystery_box
+from .item import Item
 
 
-def json2items(items, user_id=None):
+def json2items(items, user_id=None) -> list[Item]:
     item_list = []
     for item in items:
         item_list.append((ITEMS[item["id"]](item["count"], item["data"], user_id)))
