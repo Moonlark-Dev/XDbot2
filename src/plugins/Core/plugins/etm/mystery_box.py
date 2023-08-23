@@ -104,4 +104,5 @@ class MysteriousShard(Item):
             "display_name": "神秘碎片",
             "display_message": "与 Mystery Box 差不多神秘的碎片（尚未完成）",
             "price": 2,
+            "useable": False
         }
