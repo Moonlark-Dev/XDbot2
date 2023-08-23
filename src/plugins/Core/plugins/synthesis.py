@@ -88,8 +88,8 @@ async def send_crafting_result(item_data: dict, count: int, user_id: str):
     for i in range(len(item_data["result"])):
         item_data["result"][i]["count"] *= count
     await finish("synthesis.done", [
-        items2text(reduced_items),
-        items2text(item_data["result"])
+        items2text(items.json2items(reduced_items)),
+        items2text(items.json2items(item_data["result"]))
     ], user_id)
 
 async def crafting_items(_id: int, count: int, user_id: str):
@@ -106,7 +106,7 @@ async def crafting_items(_id: int, count: int, user_id: str):
             bag.add_item(user_id, item["id"], item["count"] * count, item["data"])
         await send_crafting_result(item_data, count, user_id)
     else:
-        await finish("synthesis.synthesis.item_not_enough", [], user_id, False, True)
+        await finish("synthesis.item_not_enough", [], user_id, False, True)
 
 
 
