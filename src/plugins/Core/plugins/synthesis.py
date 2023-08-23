@@ -85,7 +85,8 @@ async def send_crafting_result(item_data: dict, count: int, user_id: str):
             "count": c,
             "data": {}
         })
-    item_data["result"]["count"] *= count
+    for i in range(len(item_data["result"])):
+        item_data["result"][i]["count"] *= count
     await finish("synthesis.done", [
         items2text(reduced_items),
         items2text(item_data["result"])
