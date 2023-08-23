@@ -264,6 +264,9 @@
   "redpacket.repay_subject": "红包退还通知",
   "redpacket.repay_message": "您发送的红包中剩余 {}vi 未被领取，已退还到您的帐户",
 
-  "synthesis.list_title": "「合成配方列表」\n正在预览：{}/{}页",
-  "synthesis.list_item": "「合成配方（#{}）」\n合成结果：\n{}\n所需材料：\n{}"
+  "synthesis.list_title": "「合成配方列表」\n正在预览：{}/{}页\n每次合成需消耗「猫爪币 x1」",
+  "synthesis.list_item": "「合成配方（#{}）」\n合成结果：\n{}\n所需材料：\n{}",
+  "synthesis.item_not_found": "合成失败：无效的配方",
+  "synthesis.done": "合成成功！\n消耗物品：\n{}\n获得物品：\n{}",
+  "synthesis.item_not_enough": "合成失败：所需材料不足"
 }
