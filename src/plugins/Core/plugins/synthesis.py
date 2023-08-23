@@ -100,7 +100,8 @@ async def crafting_items(_id: int, count: int, user_id: str):
         user_bag = bag.get_user_bag(user_id)
         for i in range(len(user_bag)):
             if user_bag[i].item_id in required_items.keys():
-                user_bag[i].count -= (reduced_count := min(user_bag[i].count, required_items[user_bag[i].count]))
+                reduced_count = min(user_bag[i].count, required_items[user_bag[i].count])
+                user_bag[i].count -= reduced_count
                 required_items[user_bag[i].count] -= reduced_count
         for item in item_data["result"]:
             bag.add_item(user_id, item["id"], item["count"] * count, item["data"])
