@@ -1,5 +1,6 @@
 from .monomer import Monomer
 
+
 class Controller:
     def __init__(self, active: list[Monomer], passive: list[Monomer]) -> None:
         self.active = active
@@ -11,5 +12,3 @@ class Controller:
 
     def create_logger_block(self, message: str = ""):
         self.logs.append([message])
-
-

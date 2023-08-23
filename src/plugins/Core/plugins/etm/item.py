@@ -8,11 +8,11 @@ class Item:
     def __init__(self, count, data, user_id):
         self.count = count
         self.item_id = ""  # dice"
-        self.basic_data: NbtDict = {} # type: ignore
+        self.basic_data: NbtDict = {}  # type: ignore
         # 初始化
         self.on_register()
         # 设置 NBT
-        self.data: NbtDict = BASIC_DATA.copy() # type: ignore
+        self.data: NbtDict = BASIC_DATA.copy()  # type: ignore
         self.data.update(self.basic_data)
         self.data.update(data)
         self.user_id = user_id
@@ -63,7 +63,7 @@ class Item:
             return True
         else:
             return False
-        
+
     def _used(self, count):
         self.count -= count
 

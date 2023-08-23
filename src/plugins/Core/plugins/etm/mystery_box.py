@@ -18,9 +18,7 @@ class MysteryBoxLevel1(Item):
     def on_register(self):
         self.basic_data: NbtDict = {
             "display_name": "Mystery Box (⭐️)",
-            "display_message": (
-                "并不普通的的盒子，散发着少许神秘的气息。\n \n「盒子里好像……发光了？」"
-            ),
+            "display_message": ("并不普通的的盒子，散发着少许神秘的气息。\n \n「盒子里好像……发光了？」"),
             "price": 32,
         }
         self.item_id = "mysterybox_lv1"
@@ -104,5 +102,5 @@ class MysteriousShard(Item):
             "display_name": "神秘碎片",
             "display_message": "………………\n \n「……」",
             "price": 2,
-            "useable": False
+            "useable": False,
         }
