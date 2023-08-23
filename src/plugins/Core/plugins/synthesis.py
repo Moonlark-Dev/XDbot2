@@ -69,7 +69,8 @@ def get_required_items(item_data: dict, count: int) -> dict:
     required_items["pawcoin"] = required_items.get("pawcoin", 0) + SYNTHESIS_CONSUMES_PAWCOIN * count
     return required_items
 
-def check_required_items(required_items: dict[str, int], user_id: str):
+def check_required_items(_required_items: dict[str, int], user_id: str):
+    required_items = _required_items.copy()
     for item in bag.get_user_bag(user_id):
         if item.item_id in required_items.keys() and not item.data.get("locked", False):
             required_items[item.item_id] -= item.count
@@ -99,7 +100,6 @@ async def crafting_items(_id: int, count: int, user_id: str):
     if check_required_items(required_items, user_id):
         user_bag = bag.get_user_bag(user_id)
         for i in range(len(user_bag)):
-            print(user_bag[i].item_id, required_items)
             if user_bag[i].item_id in required_items.keys():
                 user_bag[i]._used(reduced_count := min(user_bag[i].count, required_items[user_bag[i].count]))
                 required_items[user_bag[i].count] -= reduced_count
