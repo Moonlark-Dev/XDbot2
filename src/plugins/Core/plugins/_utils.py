@@ -14,6 +14,7 @@ from . import _error as error
 from . import _lang as lang
 from nonebot.adapters.onebot.v11 import GroupMessageEvent
 from nonebot.adapters.onebot.v11 import MessageEvent
+from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot.adapters.onebot.v11 import Message
 
 # import traceback
@@ -27,7 +28,7 @@ async def send_text(
     _format: list = [],
     user_id: str | int = "default",
     at_sender: bool = False,
-    reply_message: bool = True,
+    reply_message: bool = False,
     matcher: Matcher = Matcher(),
 ) -> None:
     await matcher.send(
@@ -73,6 +74,9 @@ class Json:
             self.data = {}
         else:
             self.data = json.load(open(file=self.path, encoding="utf-8"))
+
+    def to_dict(self) -> dict:
+        return self.data
 
     def append_to(self, obj: Any, key: str) -> None:
         self.data[key] = self.get(key, []) + [obj]
