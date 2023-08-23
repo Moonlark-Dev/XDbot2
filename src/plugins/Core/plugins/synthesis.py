@@ -105,6 +105,7 @@ async def crafting_items(_id: int, count: int, user_id: str):
                 required_items[user_bag[i].item_id] -= reduced_count
         for item in item_data["result"]:
             bag.add_item(user_id, item["id"], item["count"] * count, item["data"])
+        exp.add_exp(user_id, int(5.2 * count))
         await send_crafting_result(item_data, count, user_id)
     else:
         await finish("synthesis.item_not_enough", [], user_id, False, True)
