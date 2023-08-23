@@ -128,6 +128,13 @@ async def handle_synthesis_command(bot: Bot, event: MessageEvent, message: Messa
                 try: count = max(int(argv[1]), 1)
                 except Exception: count = 1
                 await crafting_items(int(argv[0]), count, event.user_id)
-
     except:
         await error.report()
+
+# [HELPSTART] Version: 2
+# Command: synthesis
+# Info: 万能（并不）合成机
+# Msg: 万能合成机
+# Usage: synthesis list [页面]：查看配方列表
+# Usage: synthesis <配方ID> [数量]：合成物品
+# [HELPEND]
