@@ -125,7 +125,7 @@ async def handle_synthesis_command(bot: Bot, event: MessageEvent, message: Messa
                     group_id=event.dict().get("group_id"),
                 )
             case _:
-                try: count = max(int(argv[1]), 1)
+                try: count = max(int(argv[2]), 1)
                 except IndexError | ValueError: count = 1
                 await crafting_items(int(argv[1]), count, event.user_id)
 
