@@ -85,7 +85,7 @@ async def send_crafting_result(item_data: dict, count: int, user_id: str):
             "count": c,
             "data": {}
         })
-    item_data["result"]["count"] = count
+    item_data["result"]["count"] *= count
     await finish("synthesis.done", [
         items2text(reduced_items),
         items2text(item_data["result"])
@@ -101,7 +101,8 @@ async def crafting_items(_id: int, count: int, user_id: str):
             if user_bag[i].item_id in required_items.keys():
                 user_bag[i].count -= (reduced_count := min(user_bag[i].count, required_items[user_bag[i].count]))
                 required_items[user_bag[i].count] -= reduced_count
-        bag.add_item(item_data["result"]["id"], count, item_data["result"]["data"])
+        for item in item_data["result"]:
+            bag.add_item(item["id"], item["count"] * count, item["data"])
         await send_crafting_result(item_data, count, user_id)
     else:
         await finish("synthesis.synthesis.item_not_enough", [], user_id, False, True)
