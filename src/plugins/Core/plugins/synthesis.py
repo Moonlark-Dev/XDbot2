@@ -9,7 +9,7 @@ def get_item_list() -> list:
     item_list = []
     for file in file_list:
         if (not file.startswith("_")) and file.endswith(".json"):
-            item_list.append(Json(os.path.join("src/plugins/Core/synthesis/", file)).to_dict())
+            item_list.append(Json(os.path.join("../src/plugins/Core/synthesis/", file)).to_dict())
     return sorted(item_list, key=lambda x: x["id"])
 
 def items2text(item_list: list[Item]) -> str:
