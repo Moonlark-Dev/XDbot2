@@ -63,6 +63,9 @@ class Item:
             return True
         else:
             return False
+        
+    def _used(self, count):
+        self.count -= count
 
     def _add(self, count):
         if self.count + count <= self.data["maximum_stack"]:
