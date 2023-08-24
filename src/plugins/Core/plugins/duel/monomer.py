@@ -36,6 +36,7 @@ class Monomer:
 
         self.get_weapons(weapons)
         self.get_ball(ball)
+        self.get_relics_gain(relics)
         self.get_kit_gain()
 
         self._default_data = self.parse_gain(self.gain_list)
@@ -77,8 +78,11 @@ class Monomer:
                     .items()
                 )
 
-    def start_action(self):
+    def on_action(self):
         pass
+
+    def start_action(self):
+        self.run_tigger("action.start")
 
     def get_weapons(self, weapons: str) -> None:
         self.weapons = load_json(f"kits/{weapons}.json")["weapons"]
@@ -139,7 +143,14 @@ class Monomer:
             self.contingent.enemy.battle_skill_points -= 1
 
     def prepare_before_fighting(self) -> None:
-        pass
+        self.run_tigger("fighting.start")
+
+    def run_tigger(self, event: str) -> None:
+        try:
+            for effect in self.triggers[event]:
+                self.parse_effect(effect)
+        except KeyError:
+            pass
 
     def parse_effect(self, effect_block: list[dict]) -> None:
         for effect in effect_block:
@@ -168,7 +179,7 @@ class Monomer:
         self.reduced_action_value += count
 
     def prepare_before_action(self) -> None:
-        pass
+        self.run_tigger("action.start")
 
     def prepare_before_the_round(self) -> None:
-        pass
+        self.run_tigger("round.start")
