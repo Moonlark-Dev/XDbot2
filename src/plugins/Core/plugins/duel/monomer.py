@@ -1,7 +1,10 @@
 import random
 import json
+from typing import Literal
 from . import path
 import os.path
+
+SKIP = False
 
 
 def load_json(name: str) -> dict:
@@ -12,24 +15,32 @@ def get_base_properties(_type: str = "primary") -> dict:
     return load_json(f"base_properties/{_type}")
 
 
+from .contingent import Contingent
+
+
 class Monomer:
     def __init__(
-        self, weapons: str, relics: dict[str, dict], ball: str, hp: int
+        self,
+        weapons: str,
+        relics: dict[str, dict],
+        ball: str,
+        hp: int,
+        contingent: Contingent,
     ) -> None:
         base_properties = get_base_properties()
         self._default_data = base_properties.copy()
         self.gain_list = []
         self.triggers = {}
-        self.battle_skill_points = 3
-        self.buff = []
+        self.contingent = contingent
+        self.buff = {}
+        self.toughness_strips = 100
         self.hp = hp
 
-        self.enemy: Monomer
-        self.reduced_action_value: int = 0
-        self.action_value: int
+        self.reduced_action_value: float = 0.0
 
         self.get_weapons(weapons)
         self.get_ball(ball)
+        self.get_relics_gain(relics)
         self.get_kit_gain()
 
         self._default_data = self.parse_gain(self.gain_list)
@@ -71,8 +82,11 @@ class Monomer:
                     .items()
                 )
 
-    def start_action(self):
+    def on_action(self):
         pass
+
+    def start_action(self):
+        self.run_tigger("action.start")
 
     def get_weapons(self, weapons: str) -> None:
         self.weapons = load_json(f"kits/{weapons}.json")["weapons"]
@@ -120,20 +134,27 @@ class Monomer:
 
     def effect_add_battle_skill_points(self, effect: dict) -> None:
         if effect["target"]:
-            if self.enemy.battle_skill_points < 5:
-                self.enemy.battle_skill_points += 1
-        elif self.battle_skill_points < 5:
-            self.battle_skill_points += 1
+            if self.contingent.enemy.battle_skill_points < 5:
+                self.contingent.enemy.battle_skill_points += 1
+        elif self.contingent.battle_skill_points < 5:
+            self.contingent.battle_skill_points += 1
 
     def effect_remove_battle_skill_points(self, effect: dict) -> None:
         if effect["target"]:
-            if self.enemy.battle_skill_points > 0:
-                self.enemy.battle_skill_points -= 1
-        elif self.battle_skill_points > 0:
-            self.battle_skill_points -= 1
+            if self.contingent.enemy.battle_skill_points > 0:
+                self.contingent.enemy.battle_skill_points -= 1
+        elif self.contingent.enemy.battle_skill_points > 0:
+            self.contingent.enemy.battle_skill_points -= 1
 
     def prepare_before_fighting(self) -> None:
-        pass
+        self.run_tigger("fighting.start")
+
+    def run_tigger(self, event: str) -> None:
+        try:
+            for effect in self.triggers[event]:
+                self.parse_effect(effect)
+        except KeyError:
+            pass
 
     def parse_effect(self, effect_block: list[dict]) -> None:
         for effect in effect_block:
@@ -155,8 +176,49 @@ class Monomer:
     def effect_add_buff(self, effect: dict) -> None:
         pass
 
-    def prepare_before_action(self) -> None:
-        pass
+    def get_action_value(self):
+        return 10000 / self.data["speed"] - self.reduced_action_value
+
+    def reduce_action_value(self, count: int):
+        self.reduced_action_value += count
+
+    def run_buff_effect(self):
+        for buff_name in list(self.buff.keys()):
+            buff_data = self.buff[buff_name]
+            buff_data["cling"] -= 1
+            match buff_name:
+                case "freezing":
+                    self.attacked(15 if buff_data["cling"] == 0 else 10, "冰", None)
+            if buff_data["cling"] == 0:
+                self.buff.pop(buff_name)
+
+    def attacked(self, harm: float, attribute: str, from_monomer):
+        self.run_tigger("our.attacked")
+        if self.toughness_strips > 0 and attribute in self.get_weakness():
+            self.toughness_strips -= 15 * from_monomer.data["elemental_mastery"]
+        if self.toughness_strips > 0:
+            harm *= 0.8 if attribute in self.get_weakness() else 0.9
+        self.hp -= 1 if self.data.get("fatal_injury_protection", False) else harm
+        self.data["fatal_injury_protection"] = False
+        if self.hp <= 0:
+            self.hp = 0
+            self.run_tigger("our.died")
+            self.contingent.died(self)
+
+    def get_weakness(self):
+        weakness = set()
+        for relics in self.relics:
+            weakness.add(load_json(f"kits/{relics}")["weakness"])
+        return list(weakness)
+
+    def has_buff(self, buff_name: str):
+        return buff_name in self.buff.items()
+
+    def prepare_before_action(self) -> Literal[False] | None:
+        self.run_tigger("action.start")
+        self.run_buff_effect()
+        if self.has_buff("freezing"):
+            return SKIP
 
     def prepare_before_the_round(self) -> None:
-        pass
+        self.run_tigger("round.start")

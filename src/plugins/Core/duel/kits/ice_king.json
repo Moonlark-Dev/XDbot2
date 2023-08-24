@@ -50,7 +50,7 @@
             "effect": [
                 {
                     "function": "add_buff",
-                    "buff": "ice_shield",
+                    "buff": "shield",
                     "target": 0,
                     "ragne": 1,
                     "cling": 5,

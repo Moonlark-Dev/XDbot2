@@ -19,43 +19,37 @@ class MysteryBoxLevel1(Item):
         self.basic_data: NbtDict = {
             "display_name": "Mystery Box (⭐️)",
             "display_message": ("并不普通的的盒子，散发着少许神秘的气息。\n \n「盒子里好像……发光了？」"),
-            "price": 32,
+            "price": 35,
         }
         self.item_id = "mysterybox_lv1"
 
     def use_item(self):
         items = []
-        # 普通物品
-        items.append({"id": "vimcoin", "count": random.randint(15, 60), "data": {}})
-        items.append({"id": "exp", "count": random.randint(1, 30), "data": {}})
-        # 商店物品
-        for _ in range(random.randint(0, 5)):
-            item: Item = json2items([random.choice(list(SHOP_ITEMS.values()))])[0]
+        for _ in range(random.randint(3, 5)):
             items.append(
                 {
-                    "id": item.item_id,
-                    "count": random.randint(
-                        1,
-                        min(
-                            item.data["maximum_stack"],
-                            max(1, int(32 / item.data["price"])),
-                        ),
-                    ),
+                    "id": (item := random.choice(self.get_items()["ordinary"]))[
+                        "item_id"
+                    ],
+                    "count": random.randint(item["count"][0], item["count"][1]),
                     "data": {},
                 }
             )
-        # 大紫（确信
-        if random.random() <= 0.15:
+        for _ in range(random.randint(2, 3)):
             items.append(
-                {"id": "auto_sign_coupon", "count": random.randint(1, 5), "data": {}}
+                {
+                    "id": (item := random.choice(self.get_items()["rare"]))["item_id"],
+                    "count": random.randint(item["count"][0], item["count"][1]),
+                    "data": {},
+                }
             )
-        if random.random() <= 0.12:
-            items.append({"id": "talisman", "count": 1, "data": {}})
-        if random.random() <= 0.17:
-            items.append({"id": "pawcoin", "count": random.randint(1, 7), "data": {}})
-        if random.random() <= 0.75:
+        if random.random() <= 0.25:
             items.append(
-                {"id": "mysterious_shard", "count": random.randint(1, 25), "data": {}}
+                {
+                    "id": (item := random.choice(self.get_items()["rare"]))["item_id"],
+                    "count": random.randint(item["count"][0], item["count"][1]),
+                    "data": {},
+                }
             )
 
         items = json2items(items)
@@ -69,6 +63,29 @@ class MysteryBoxLevel1(Item):
             reply_text += f"\n{self.length}. {item.data['display_name']} x{item.count}"
             self.length += 1
         return reply_text[1:]
+
+    def get_items(self):
+        return {
+            "ordinary": [
+                {"item_id": "dice", "count": [5, 16]},
+                {"item_id": "mysterious_shard", "count": [5, 30]},
+                {"item_id": "pawcoin", "count": [2, 15]},
+                {"item_id": "towel", "count": [1, 16]},
+                {"item_id": "book_and_quill", "count": [1, 1]},
+                {"item_id": "pouch", "count": [1, 1]},
+                {"item_id": "vimcoin", "count": [5, 20]},
+            ],
+            "rare": [
+                {"item_id": "vimcoin", "count": [15, 40]},
+                {"item_id": "mysterious_shard", "count": [10, 35]},
+                {"item_id": "towel.zip", "count": [1, 5]},
+                {"item_id": "auto_sign_coupon", "count": [1, 5]},
+            ],
+            "legend": [
+                {"item_id": "mysterybox_lv1", "count": [1, 2]},
+                {"item_id": "talisman", "count": [1, 4]},
+            ],
+        }
 
     def use(self, args):
         if not self.data["useable"]:

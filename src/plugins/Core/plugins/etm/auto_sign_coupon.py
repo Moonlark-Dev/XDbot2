@@ -12,7 +12,7 @@ require("nonebot_plugin_apscheduler")
 
 
 class AutoSignCoupon(Item):
-    def on_register(self):
+    def on_register(self) -> None:
         self.item_id = "auto_sign_coupon"
         self.basic_data = {
             "display_name": "自动签到券（未激活）",

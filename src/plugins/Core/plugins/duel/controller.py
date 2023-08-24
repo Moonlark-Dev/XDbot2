@@ -1,8 +1,5 @@
-from .monomer import Monomer
-
-
 class Controller:
-    def __init__(self, active: list[Monomer], passive: list[Monomer]) -> None:
+    def __init__(self, active: list, passive: list) -> None:
         self.active = active
         self.passive = passive
         self.logs = []

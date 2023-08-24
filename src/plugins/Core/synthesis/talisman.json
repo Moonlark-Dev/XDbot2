@@ -1,16 +1,21 @@
 {
-    "id": 1,
+    "id": 2,
     "result": [
         {
-            "id": "mysterybox_lv1",
+            "id": "talisman",
             "count": 1,
             "data": {}
         }
     ],
     "required": [
         {
+            "id": "dice",
+            "count": 7,
+            "data": {}
+        },
+        {
             "id": "mysterious_shard",
-            "count": 25,
+            "count": 20,
             "data": {}
         }
     ]
