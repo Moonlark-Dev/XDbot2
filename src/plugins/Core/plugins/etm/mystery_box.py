@@ -25,13 +25,13 @@ class MysteryBoxLevel1(Item):
 
     def use_item(self):
         items = []
-        for _ in range(random.randint(2, 5)):
+        for _ in range(random.randint(3, 5)):
             items.append({
                 "id": (item := random.choice(self.get_items()["ordinary"]))["item_id"],
                 "count":random.randint(item["count"][0], item["count"][1]),
                 "data": {}
             })
-        for _ in range(random.randint(1, 3)):
+        for _ in range(random.randint(2, 3)):
             items.append({
                 "id": (item := random.choice(self.get_items()["rare"]))["item_id"],
                 "count":random.randint(item["count"][0], item["count"][1]),
@@ -91,11 +91,11 @@ class MysteryBoxLevel1(Item):
             "rare": [
                 {
                     "item_id": "vimcoin",
-                    "count": [15, 50]
+                    "count": [15, 40]
                 },
                 {
                     "item_id": "mysterious_shard",
-                    "count": [10, 40]
+                    "count": [10, 35]
                 },
                 {
                     "item_id": "towel.zip",
