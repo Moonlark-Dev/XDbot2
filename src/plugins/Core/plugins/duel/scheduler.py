@@ -8,7 +8,9 @@ class Scheduler:
         self.active = active
         self.passive = passive
         self.round_boundaries = RoundBoundaries()
-        self.monomers: list[Monomer] = self.active.monomers + self.passive.monomers + [self.round_boundaries]
+        self.monomers: list[Monomer] = (
+            self.active.monomers + self.passive.monomers + [self.round_boundaries]
+        )
 
     def start_fighting(self):
         self.prepare_fighting()
@@ -33,9 +35,11 @@ class Scheduler:
     def prepare_round(self):
         for i in range(len(self.monomers)):
             self.monomers[i].prepare_before_the_round()
-    
+
     def get_action_monomer(self):
-        self.monomers: list[Monomer] = self.active.monomers + self.passive.monomers + [self.round_boundaries]
+        self.monomers: list[Monomer] = (
+            self.active.monomers + self.passive.monomers + [self.round_boundaries]
+        )
         self.monomers = sorted(self.monomers, key=lambda x: x.get_action_value())
         action_value_to_reduce = self.monomers[0].get_action_value()
         for i in range(len(self.monomers)):
@@ -56,11 +60,7 @@ class Scheduler:
             if monomer.hp > 0:
                 return True
         return False
-    
 
     def prepare_fighting(self):
         for monomer in self.monomers:
             monomer.prepare_before_fighting()
-        
-
-        

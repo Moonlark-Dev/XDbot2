@@ -11,11 +11,18 @@ def load_json(name: str) -> dict:
 def get_base_properties(_type: str = "primary") -> dict:
     return load_json(f"base_properties/{_type}")
 
+
 from .contingent import Contingent
+
 
 class Monomer:
     def __init__(
-        self, weapons: str, relics: dict[str, dict], ball: str, hp: int, contingent: Contingent
+        self,
+        weapons: str,
+        relics: dict[str, dict],
+        ball: str,
+        hp: int,
+        contingent: Contingent,
     ) -> None:
         base_properties = get_base_properties()
         self._default_data = base_properties.copy()
@@ -156,7 +163,7 @@ class Monomer:
 
     def get_action_value(self):
         return 10000 / self.data["speed"] - self.reduced_action_value
-    
+
     def reduce_action_value(self, count: int):
         self.reduced_action_value += count
 
