@@ -68,10 +68,6 @@ class MysteryBoxLevel1(Item):
                     "count": [15, 37]
                 },
                 {
-                    "item_id": "mysterious_shard",
-                    "count": [5, 35]
-                },
-                {
                     "item_id": "pawcoin",
                     "count": [2, 20]
                 },
