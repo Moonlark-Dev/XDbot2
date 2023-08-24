@@ -31,7 +31,7 @@ class MysteryBoxLevel1(Item):
                 "count":random.randint(item["count"][0], item["count"][1]),
                 "data": {}
             })
-        for _ in range(random.randint(0, 3)):
+        for _ in range(random.randint(1, 3)):
             items.append({
                 "id": (item := random.choice(self.get_items()["rare"]))["item_id"],
                 "count":random.randint(item["count"][0], item["count"][1]),
@@ -68,6 +68,10 @@ class MysteryBoxLevel1(Item):
                     "count": [5, 37]
                 },
                 {
+                    "item_id": "mysterious_shard",
+                    "count": [5, 30]
+                },
+                {
                     "item_id": "pawcoin",
                     "count": [2, 10]
                 },
@@ -85,7 +89,7 @@ class MysteryBoxLevel1(Item):
                 },
                 {
                     "item_id": "vimcoin",
-                    "count": [0, 10]
+                    "count": [1, 10]
                 }
             ],
             "rare": [
