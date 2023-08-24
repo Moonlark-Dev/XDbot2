@@ -25,13 +25,13 @@ class MysteryBoxLevel1(Item):
 
     def use_item(self):
         items = []
-        for _ in range(random.randint(2, 4)):
+        for _ in range(random.randint(2, 5)):
             items.append({
                 "id": (item := random.choice(self.get_items()["ordinary"]))["item_id"],
                 "count":random.randint(item["count"][0], item["count"][1]),
                 "data": {}
             })
-        for _ in range(random.randint(0, 2)):
+        for _ in range(random.randint(0, 3)):
             items.append({
                 "id": (item := random.choice(self.get_items()["rare"]))["item_id"],
                 "count":random.randint(item["count"][0], item["count"][1]),
