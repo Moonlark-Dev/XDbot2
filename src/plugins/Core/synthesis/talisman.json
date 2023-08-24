@@ -10,12 +10,13 @@
     "required": [
         {
             "id": "dice",
-            "count": 10,
+            "count": 7,
             "data": {}
         },
         {
             "id": "mysterious_shard",
-            "count": 23
+            "count": 20,
+            "data": {}
         }
     ]
 }
