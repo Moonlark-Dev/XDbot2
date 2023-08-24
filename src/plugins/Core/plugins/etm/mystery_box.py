@@ -26,23 +26,31 @@ class MysteryBoxLevel1(Item):
     def use_item(self):
         items = []
         for _ in range(random.randint(3, 5)):
-            items.append({
-                "id": (item := random.choice(self.get_items()["ordinary"]))["item_id"],
-                "count":random.randint(item["count"][0], item["count"][1]),
-                "data": {}
-            })
+            items.append(
+                {
+                    "id": (item := random.choice(self.get_items()["ordinary"]))[
+                        "item_id"
+                    ],
+                    "count": random.randint(item["count"][0], item["count"][1]),
+                    "data": {},
+                }
+            )
         for _ in range(random.randint(2, 3)):
-            items.append({
-                "id": (item := random.choice(self.get_items()["rare"]))["item_id"],
-                "count":random.randint(item["count"][0], item["count"][1]),
-                "data": {}
-            })
+            items.append(
+                {
+                    "id": (item := random.choice(self.get_items()["rare"]))["item_id"],
+                    "count": random.randint(item["count"][0], item["count"][1]),
+                    "data": {},
+                }
+            )
         if random.random() <= 0.25:
-            items.append({
-                "id": (item := random.choice(self.get_items()["rare"]))["item_id"],
-                "count":random.randint(item["count"][0], item["count"][1]),
-                "data": {}
-            })
+            items.append(
+                {
+                    "id": (item := random.choice(self.get_items()["rare"]))["item_id"],
+                    "count": random.randint(item["count"][0], item["count"][1]),
+                    "data": {},
+                }
+            )
 
         items = json2items(items)
         if not self.length:
@@ -59,63 +67,24 @@ class MysteryBoxLevel1(Item):
     def get_items(self):
         return {
             "ordinary": [
-                {
-                    "item_id": "dice",
-                    "count": [5, 16]
-                },
-                {
-                    "item_id": "mysterious_shard",
-                    "count": [5, 30]
-                },
-                {
-                    "item_id": "pawcoin",
-                    "count": [2, 15]
-                },
-                {
-                    "item_id": "towel",
-                    "count": [1, 16]
-                },
-                {
-                    "item_id": "book_and_quill",
-                    "count": [1, 1]
-                },
-                {
-                    "item_id": "pouch",
-                    "count": [1, 1]
-                },
-                {
-                    "item_id": "vimcoin",
-                    "count": [5, 20]
-                }
+                {"item_id": "dice", "count": [5, 16]},
+                {"item_id": "mysterious_shard", "count": [5, 30]},
+                {"item_id": "pawcoin", "count": [2, 15]},
+                {"item_id": "towel", "count": [1, 16]},
+                {"item_id": "book_and_quill", "count": [1, 1]},
+                {"item_id": "pouch", "count": [1, 1]},
+                {"item_id": "vimcoin", "count": [5, 20]},
             ],
             "rare": [
-                {
-                    "item_id": "vimcoin",
-                    "count": [15, 40]
-                },
-                {
-                    "item_id": "mysterious_shard",
-                    "count": [10, 35]
-                },
-                {
-                    "item_id": "towel.zip",
-                    "count": [1, 5]
-                },
-                {
-                    "item_id": "auto_sign_coupon",
-                    "count": [1, 5]
-                }
+                {"item_id": "vimcoin", "count": [15, 40]},
+                {"item_id": "mysterious_shard", "count": [10, 35]},
+                {"item_id": "towel.zip", "count": [1, 5]},
+                {"item_id": "auto_sign_coupon", "count": [1, 5]},
             ],
             "legend": [
-                {
-                    "item_id": "mysterybox_lv1",
-                    "count": [1, 2]
-                },
-                {
-                    "item_id": "talisman",
-                    "count": [1, 4]
-                }
-            ]
+                {"item_id": "mysterybox_lv1", "count": [1, 2]},
+                {"item_id": "talisman", "count": [1, 4]},
+            ],
         }
 
     def use(self, args):

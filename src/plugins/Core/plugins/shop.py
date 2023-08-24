@@ -17,7 +17,7 @@ SHOP_ITEMS = {
     "3": {"id": "mysterious_shard", "count": 1, "data": {}},
     # "3": {"id": "towel.zip", "count": 1, "data": {}},
     "4": {"id": "mysterybox_lv1", "count": 1, "data": {}},
-    "5": {"id": "pawcoin", "count": 1, "data": {}}
+    "5": {"id": "pawcoin", "count": 1, "data": {}},
 }
 mystery_box.SHOP_ITEMS = SHOP_ITEMS
 
