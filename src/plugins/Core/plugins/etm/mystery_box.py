@@ -33,13 +33,13 @@ class MysteryBoxLevel1(Item):
             })
         for _ in range(random.randint(0, 2)):
             items.append({
-                "id": (item := random.choice(self.get_items()["rare"])),
+                "id": (item := random.choice(self.get_items()["rare"]))["item_id"],
                 "count":random.randint(item["count"][0], item["count"][1]),
                 "data": {}
             })
         if random.random() <= 0.25:
             items.append({
-                "id": (item := random.choice(self.get_items()["rare"])),
+                "id": (item := random.choice(self.get_items()["rare"]))["item_id"],
                 "count":random.randint(item["count"][0], item["count"][1]),
                 "data": {}
             })
