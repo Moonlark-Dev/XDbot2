@@ -11,22 +11,21 @@ def load_json(name: str) -> dict:
 def get_base_properties(_type: str = "primary") -> dict:
     return load_json(f"base_properties/{_type}")
 
+from .contingent import Contingent
 
 class Monomer:
     def __init__(
-        self, weapons: str, relics: dict[str, dict], ball: str, hp: int
+        self, weapons: str, relics: dict[str, dict], ball: str, hp: int, contingent: Contingent
     ) -> None:
         base_properties = get_base_properties()
         self._default_data = base_properties.copy()
         self.gain_list = []
         self.triggers = {}
-        self.battle_skill_points = 3
+        self.contingent = contingent
         self.buff = []
         self.hp = hp
 
-        self.enemy: Monomer
-        self.reduced_action_value: int = 0
-        self.action_value: int
+        self.reduced_action_value: float = 0.0
 
         self.get_weapons(weapons)
         self.get_ball(ball)
@@ -120,17 +119,17 @@ class Monomer:
 
     def effect_add_battle_skill_points(self, effect: dict) -> None:
         if effect["target"]:
-            if self.enemy.battle_skill_points < 5:
-                self.enemy.battle_skill_points += 1
-        elif self.battle_skill_points < 5:
-            self.battle_skill_points += 1
+            if self.contingent.enemy.battle_skill_points < 5:
+                self.contingent.enemy.battle_skill_points += 1
+        elif self.contingent.battle_skill_points < 5:
+            self.contingent.battle_skill_points += 1
 
     def effect_remove_battle_skill_points(self, effect: dict) -> None:
         if effect["target"]:
-            if self.enemy.battle_skill_points > 0:
-                self.enemy.battle_skill_points -= 1
-        elif self.battle_skill_points > 0:
-            self.battle_skill_points -= 1
+            if self.contingent.enemy.battle_skill_points > 0:
+                self.contingent.enemy.battle_skill_points -= 1
+        elif self.contingent.enemy.battle_skill_points > 0:
+            self.contingent.enemy.battle_skill_points -= 1
 
     def prepare_before_fighting(self) -> None:
         pass
@@ -154,6 +153,12 @@ class Monomer:
 
     def effect_add_buff(self, effect: dict) -> None:
         pass
+
+    def get_action_value(self):
+        return 10000 / self.data["speed"] - self.reduced_action_value
+    
+    def reduce_action_value(self, count: int):
+        self.reduced_action_value += count
 
     def prepare_before_action(self) -> None:
         pass
