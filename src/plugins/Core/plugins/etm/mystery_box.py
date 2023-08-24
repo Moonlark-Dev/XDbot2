@@ -65,7 +65,7 @@ class MysteryBoxLevel1(Item):
                 },
                 {
                     "item_id": "mysterious_shard",
-                    "count": [5, 30]
+                    "count": [5, 25]
                 },
                 {
                     "item_id": "pawcoin",
@@ -95,7 +95,7 @@ class MysteryBoxLevel1(Item):
                 },
                 {
                     "item_id": "mysterious_shard",
-                    "count": [10, 45]
+                    "count": [10, 40]
                 },
                 {
                     "item_id": "towel.zip",
