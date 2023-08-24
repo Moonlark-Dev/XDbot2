@@ -12,5 +12,3 @@ class Controller:
 
     def create_logger_block(self, message: str = ""):
         self.logs.append([message])
-
-    def make_attack(self, _from: Monomer, )
