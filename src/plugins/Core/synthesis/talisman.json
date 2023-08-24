@@ -1,0 +1,21 @@
+{
+    "id": 1,
+    "result": [
+        {
+            "id": "talisman",
+            "count": 1,
+            "data": {}
+        }
+    ],
+    "required": [
+        {
+            "id": "dice",
+            "count": 10,
+            "data": {}
+        },
+        {
+            "id": "mysterious_shard",
+            "count": 23
+        }
+    ]
+}
