@@ -1,4 +1,3 @@
-
 class Controller:
     def __init__(self, active: list, passive: list) -> None:
         self.active = active

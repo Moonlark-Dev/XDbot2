@@ -6,6 +6,7 @@ import os.path
 
 SKIP = False
 
+
 def load_json(name: str) -> dict:
     return json.load(open(os.path.join(path.res_path, name), encoding="utf-8"))
 
@@ -190,7 +191,7 @@ class Monomer:
                     self.attacked(15 if buff_data["cling"] == 0 else 10, "冰", None)
             if buff_data["cling"] == 0:
                 self.buff.pop(buff_name)
-    
+
     def attacked(self, harm: float, attribute: str, from_monomer):
         self.run_tigger("our.attacked")
         if self.toughness_strips > 0 and attribute in self.get_weakness():
@@ -210,7 +211,6 @@ class Monomer:
             weakness.add(load_json(f"kits/{relics}")["weakness"])
         return list(weakness)
 
-
     def has_buff(self, buff_name: str):
         return buff_name in self.buff.items()
 
@@ -218,7 +218,7 @@ class Monomer:
         self.run_tigger("action.start")
         self.run_buff_effect()
         if self.has_buff("freezing"):
-            return SKIP        
+            return SKIP
 
     def prepare_before_the_round(self) -> None:
         self.run_tigger("round.start")
