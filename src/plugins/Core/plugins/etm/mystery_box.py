@@ -27,7 +27,7 @@ class MysteryBoxLevel1(Item):
         items = []
         for _ in range(random.randint(2, 4)):
             items.append({
-                "id": (item := random.choice(self.get_items()["ordinary"])),
+                "id": (item := random.choice(self.get_items()["ordinary"]))["item_id"],
                 "count":random.randint(item["count"][0], item["count"][1]),
                 "data": {}
             })
