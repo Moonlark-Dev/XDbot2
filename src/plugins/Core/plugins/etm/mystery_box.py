@@ -65,7 +65,7 @@ class MysteryBoxLevel1(Item):
                 },
                 {
                     "item_id": "mysterious_shard",
-                    "count": [5, 25]
+                    "count": [5, 30]
                 },
                 {
                     "item_id": "pawcoin",
@@ -85,7 +85,7 @@ class MysteryBoxLevel1(Item):
                 },
                 {
                     "item_id": "vimcoin",
-                    "count": [1, 20]
+                    "count": [5, 20]
                 }
             ],
             "rare": [
