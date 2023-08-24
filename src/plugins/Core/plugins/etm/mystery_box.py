@@ -61,19 +61,19 @@ class MysteryBoxLevel1(Item):
             "ordinary": [
                 {
                     "item_id": "dice",
-                    "count": [2, 10]
+                    "count": [5, 16]
                 },
                 {
                     "item_id": "mysterious_shard",
-                    "count": [5, 37]
+                    "count": [15, 37]
                 },
                 {
                     "item_id": "mysterious_shard",
-                    "count": [10, 30]
+                    "count": [5, 35]
                 },
                 {
                     "item_id": "pawcoin",
-                    "count": [2, 10]
+                    "count": [2, 20]
                 },
                 {
                     "item_id": "towel",
@@ -98,16 +98,16 @@ class MysteryBoxLevel1(Item):
                     "count": [15, 40]
                 },
                 {
+                    "item_id": "mysterious_shard",
+                    "count": [12, 50]
+                },
+                {
                     "item_id": "towel.zip",
-                    "count": [1, 2]
+                    "count": [1, 5]
                 },
                 {
                     "item_id": "auto_sign_coupon",
                     "count": [1, 5]
-                },
-                {
-                    "item_id": "exp",
-                    "count": [1, 20]
                 }
             ],
             "legend": [
