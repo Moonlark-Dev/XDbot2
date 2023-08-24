@@ -1,8 +1,10 @@
 import random
 import json
+from typing import Literal
 from . import path
 import os.path
 
+SKIP = False
 
 def load_json(name: str) -> dict:
     return json.load(open(os.path.join(path.res_path, name), encoding="utf-8"))
@@ -29,7 +31,8 @@ class Monomer:
         self.gain_list = []
         self.triggers = {}
         self.contingent = contingent
-        self.buff = []
+        self.buff = {}
+        self.toughness_strips = 100
         self.hp = hp
 
         self.reduced_action_value: float = 0.0
@@ -178,8 +181,44 @@ class Monomer:
     def reduce_action_value(self, count: int):
         self.reduced_action_value += count
 
-    def prepare_before_action(self) -> None:
+    def run_buff_effect(self):
+        for buff_name in list(self.buff.keys()):
+            buff_data = self.buff[buff_name]
+            buff_data["cling"] -= 1
+            match buff_name:
+                case "freezing":
+                    self.attacked(15 if buff_data["cling"] == 0 else 10, "冰", None)
+            if buff_data["cling"] == 0:
+                self.buff.pop(buff_name)
+    
+    def attacked(self, harm: float, attribute: str, from_monomer):
+        self.run_tigger("our.attacked")
+        if self.toughness_strips > 0 and attribute in self.get_weakness():
+            self.toughness_strips -= 15 * from_monomer.data["elemental_mastery"]
+        if self.toughness_strips > 0:
+            harm *= 0.8 if attribute in self.get_weakness() else 0.9
+        self.hp -= 1 if self.data.get("fatal_injury_protection", False) else harm
+        self.data["fatal_injury_protection"] = False
+        if self.hp <= 0:
+            self.hp = 0
+            self.run_tigger("our.died")
+            self.contingent.died(self)
+
+    def get_weakness(self):
+        weakness = set()
+        for relics in self.relics:
+            weakness.add(load_json(f"kits/{relics}")["weakness"])
+        return list(weakness)
+
+
+    def has_buff(self, buff_name: str):
+        return buff_name in self.buff.items()
+
+    def prepare_before_action(self) -> Literal[False] | None:
         self.run_tigger("action.start")
+        self.run_buff_effect()
+        if self.has_buff("freezing"):
+            return SKIP        
 
     def prepare_before_the_round(self) -> None:
         self.run_tigger("round.start")

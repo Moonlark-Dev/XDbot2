@@ -1,6 +1,6 @@
 from .contingent import Contingent
 from .round_boundaries import RoundBoundaries
-from .monomer import Monomer
+from .monomer import Monomer, SKIP
 
 
 class Scheduler:
@@ -28,8 +28,8 @@ class Scheduler:
                 break
 
     def on_monomer_action(self, monomer: Monomer):
-        monomer.prepare_before_action()
-        monomer.start_action()
+        if monomer.prepare_before_action() != SKIP and self.is_battle_ongoing():
+            monomer.start_action()
         monomer.reduced_action_value = 0.0
 
     def prepare_round(self):
