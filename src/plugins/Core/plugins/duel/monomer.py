@@ -12,7 +12,7 @@ def load_json(name: str) -> dict:
 
 
 def get_base_properties(_type: str = "primary") -> dict:
-    return load_json(f"base_properties/{_type}")
+    return load_json(f"base_properties/{_type}.json")
 
 
 from .contingent import Contingent
@@ -25,13 +25,12 @@ class Monomer:
         relics: dict[str, dict],
         ball: str,
         hp: int,
-        contingent: Contingent,
     ) -> None:
         base_properties = get_base_properties()
         self._default_data = base_properties.copy()
         self.gain_list = []
         self.triggers = {}
-        self.contingent = contingent
+        self.contingent: Contingent
         self.buff = {}
         self.toughness_strips = 100
         self.hp = hp
@@ -54,6 +53,9 @@ class Monomer:
         kits[self.weapons["kit"]] = kits.get(self.weapons["kit"], 0) + 1
         kits[self.ball["kit"]] = kits.get(self.ball["kit"], 0) + 1
         return kits
+
+    def set_contingent(self, contingent):
+        self.contingent = contingent
 
     def get_kit_gain(self) -> None:
         for kit, count in list(self.get_kits().items()):
@@ -82,23 +84,23 @@ class Monomer:
                     .items()
                 )
 
-    def on_action(self):
-        pass
-
     def start_action(self):
         self.run_tigger("action.start")
+        # 随便写的
+        self.contingent.enemy.monomers[0].attacked(20.0, "物理", self)
+        
 
     def get_weapons(self, weapons: str) -> None:
         self.weapons = load_json(f"kits/{weapons}.json")["weapons"]
         self.weapons["kit"] = weapons
         if "gain" in self.weapons.keys():
-            self.gain_list += self.weapons.items()
+            self.gain_list += list(self.weapons["gain"].items())
 
     def get_ball(self, ball: str) -> None:
         self.ball = load_json(f"kits/{ball}.json")["ball"]
         self.ball["kit"] = ball
         if "gain" in self.ball.keys():
-            self.gain_list += self.ball.items()
+            self.gain_list += list(self.ball["gain"].items())
 
     def get_relics_gain(self, relics: dict[str, dict]) -> None:
         self.relics = []
