@@ -192,16 +192,18 @@ async def handle_reply(
                 await finish("reply.403", [], event.user_id)
 
         elif argv[0] in ["show", "view", "查看"]:
-            await finish("reply.show_data", [
-                event.group_id,
-                argv[1],
-                (data := get_rule_data(event.group_id, argv[1]))["user_id"],
-                data["match"]["type"],
-                data["match"]["text"],
-                data["reply"]
-            ], event.user_id)
-
-        
+            await finish(
+                "reply.show_data",
+                [
+                    event.group_id,
+                    argv[1],
+                    (data := get_rule_data(event.group_id, argv[1]))["user_id"],
+                    data["match"]["type"],
+                    data["match"]["text"],
+                    data["reply"],
+                ],
+                event.user_id,
+            )
 
     except:
         await error.report()
