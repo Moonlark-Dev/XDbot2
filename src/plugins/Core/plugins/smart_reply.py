@@ -40,11 +40,11 @@ def get_rule_reply(rule_id: str, group_id: int):
 
 
 @on_message().handle()
-async def match_rules(event: GroupMessageEvent):
+async def match_rules(matcher: Matcher, event: GroupMessageEvent):
     message = str(event.get_message())
     for rule_id in get_rules(event.group_id):
         if is_matched_rule(rule_id, event.group_id, message):
-            pass
+            await matcher.finish(get_rule_reply(rule_id, group_id))
 
 
 def get_matcher_type(argv: str):
