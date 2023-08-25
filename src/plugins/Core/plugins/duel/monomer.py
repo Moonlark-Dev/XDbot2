@@ -20,11 +20,7 @@ from .contingent import Contingent
 
 class Monomer:
     def __init__(
-        self,
-        weapons: str,
-        relics: dict[str, dict],
-        ball: str,
-        hp: int,
+        self, weapons: str, relics: dict[str, dict], ball: str, hp: int
     ) -> None:
         base_properties = get_base_properties()
         self._default_data = base_properties.copy()
@@ -88,7 +84,6 @@ class Monomer:
         self.run_tigger("action.start")
         # 随便写的
         self.contingent.enemy.monomers[0].attacked(20.0, "物理", self)
-        
 
     def get_weapons(self, weapons: str) -> None:
         self.weapons = load_json(f"kits/{weapons}.json")["weapons"]
