@@ -109,13 +109,14 @@ def get_reply_id(group_id: int):
         else:
             length += 1
 
+
 def remove_matcher(group_id: int, rule_id: str, user_id: str, force: bool = False):
     if get_rule_data(group_id, rule_id)["user_id"] == user_id or force:
         os.remove(f"data/reply/g{group_id}/{rule_id}.json")
         return SUCCESS
     else:
         return FAILED
-    
+
 
 async def create_matcher(
     user_id: str,
@@ -183,14 +184,12 @@ async def handle_reply(
                         False,
                         True,
                     )
-        
+
         elif argv[0] in ["remove", "delete", "删除"]:
             if remove_matcher(event.group_id, argv[1], event.get_user_id()):
                 await finish("currency.ok", [], event.user_id)
             else:
                 await finish("reply.403", [], event.user_id)
-
-        
 
     except:
         await error.report()
