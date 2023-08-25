@@ -1,5 +1,6 @@
 {
     "name": "冻结",
     "information": "",
+    "negative": true,
     "effect": []
 }
