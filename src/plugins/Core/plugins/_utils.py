@@ -75,6 +75,12 @@ class Json:
         else:
             self.data = json.load(open(file=self.path, encoding="utf-8"))
 
+    def set_to(self, obj: dict):
+        self.data.update(obj)
+        for key in list(obj.keys()):
+            self.changed_key.add(key)
+        self.save()
+
     def to_dict(self) -> dict:
         return self.data
 

@@ -1,114 +1,92 @@
+from nonebot.params import ArgPlainText
+from nonebot.typing import T_State
 import re
-from nonebot import on_command, on_message
-from nonebot.adapters.onebot.v11 import GroupMessageEvent, Message
-from nonebot.exception import FinishedException
-from nonebot.params import CommandArg
-import json
-from . import _smart_reply as _
-from . import _lang as lang
-from . import _error
-import traceback
-import random
-import time
+import difflib
+import os.path
+from nonebot import on_message
+from ._utils import *
+from .su import su
+from .etm import economy
 
-reply = on_command("reply", aliases={"调教"})
-reply_sender = on_message()
-latest_send = time.time()
+def get_matcher_type(argv: str):
+    reply_matcher_types = [
+        ["regex", "re", "正则", "正则表达式"],
+        ["keyword", "kwd", "关键词"],
+        ["fullmatch", "full", "完全匹配"],
+        ["fuzzymatch", "fuzzy", "模糊匹配"]
+    ]
+    for _type in reply_matcher_types:
+        if argv in _type:
+            return _type[0]
 
-
-@reply_sender.handle()
-async def reply_sender_handle(event: GroupMessageEvent):
-    global latest_send
-    try:
-        if time.time() - latest_send < 5:
-            await reply_sender.finish()
-        data = _.get_list()
-        message = str(event.get_message())
-        user_id = event.get_user_id()
-        for item in list(data.values()):
-            if (
-                item["global"]
-                or item["group_id"] == event.group_id
-                or item["user_id"] == user_id
-            ):
-                if re.match(item["matcher"], message):
-                    latest_send = time.time()
-                    await reply_sender.finish(Message(random.choice(item["text"])))
-    except FinishedException:
-        raise FinishedException()
-    except BaseException:
-        await _error.report(traceback.format_exc())
-
-
-# [HELPSTART] Version: 2
-# Command: reply
-# Info: 调教XDbot
-# Msg: 调教XDbot
-# Usage: reply
-# Usage: reply remove <ID>
-# Usage: reply get <ID>
-# Usage: reply list
-# Usage: reply all
-# Usage: reply add <正则表达式>\n<回复内容1>\n[回复内容2]\n[...]
-# [HELPEND]
-
-
-@reply.handle()
-async def reply_command(event: GroupMessageEvent, message: Message = CommandArg()):
-    try:
-        msg = str(message).replace("&#91", "[").replace("&#93;", "]")
-        # 防止部分Windows客户端换行为\r\n导致无法正常匹配
-        arguments = msg.splitlines()[0].split(" ")
-        user_id = event.get_user_id()
-        if arguments[0] == "":
-            await reply.finish(lang.text("reply.need_argv", [], user_id))
-        elif arguments[0] == "add":
-            matcher = arguments[1]
-            reply_text = msg.split("\n")[1:]
-            reply_id = await _.create_reply(
-                matcher, reply_text, event.group_id, user_id
-            )
-            await reply.finish(lang.text("reply.add_finish", [str(reply_id)], user_id))
-        elif arguments[0] == "remove":
-            if _.remove_reply(arguments[1], user_id):
-                await reply.finish(lang.text("reply.finish", [], user_id))
-            else:
-                await reply.finish(lang.text("reply.403", [], user_id))
-        elif arguments[0] in ["get", "show"]:
-            data = _.get_list()[arguments[1]]
-            await reply.finish(
-                lang.text(
-                    "reply.show_data",
-                    [arguments[1], data["matcher"], data["global"], data["text"]],
-                    user_id,
-                )
-            )
-        elif arguments[0] in ["list", "ls"]:
-            data = _.get_list()
-            reply_list = []
-            for key in list(data.keys()):
-                if data[key]["user_id"] == user_id:
-                    reply_list.append(f"#{key}")
-            await reply.finish(
-                lang.text("reply.mydata", [" ".join(reply_list)], user_id)
-            )
-        elif arguments[0] in ["all"]:
-            data = _.get_list()
-            data_list = []
-            for key in list(data.keys()):
-                if data[key]["global"] or data[key]["group_id"] == event.group_id:
-                    data_list.append(f"#{key}")
-            await reply.finish(
-                lang.text("reply.alldata", [" ".join(data_list)], user_id)
-            )
+def get_reply_id(group_id: int):
+    length = 0
+    while True:
+        if not os.path.isfile(f"data/reply/g{group_id}/{length}.json"):
+            return length
         else:
-            await reply.finish(lang.text("reply.need_argv", [], user_id))
+            length += 1
 
-    except KeyError:
-        await reply.finish(lang.text("reply.not_found", [], event.get_user_id()))
-    except IndexError:
-        await reply.finish(lang.text("reply.need_argv", [], event.get_user_id()))
-    except FinishedException:
-        raise FinishedException()
-    except BaseException:
-        await _error.report(traceback.format_exc(), reply)
+def create_matcher(user_id: str, group_id: int, matcher_type: str, matcher_data: str, reply_text: list[str]):
+    reply_id = get_reply_id(group_id)
+    Json(f"reply/g{group_id}/{reply_id}.json").set_to({
+        "id": reply_id,
+        "match": {
+            "type": matcher_type,
+            "text": matcher_data
+        },
+        "reply": reply_text,
+        "group_id": group_id,
+        "user_id": user_id
+    })
+    return reply_id
+
+
+reply_command = on_command("reply", aliases={"调教"})
+
+@reply_command.handle()
+async def handle_reply(state: T_State, matcher: Matcher, event: GroupMessageEvent, message: Message = CommandArg()):
+    try:
+        argv = message.extract_plain_text().splitlines()[0].split(" ")
+
+        if argv[0] in ["add", "添加"]:
+            state["matcher_type"] = get_matcher_type(argv[1])
+            if len(message.extract_plain_text().splitlines()) > 1:
+                matcher.set_arg("match_text", Message("\n".join(message.extract_plain_text().splitlines()[1:])))
+                await send_text("reply.add_reply_text", [], event.user_id)
+            else:
+                await send_text("reply.add_match_text", [], event.user_id)
+            
+    except:
+        await error.report()
+
+@reply_command.got("match_text")
+async def receive_matchtext(state: T_State, event: GroupMessageEvent, match_text: str = ArgPlainText()):
+    try:
+        if match_text in ["cancel", "取消"]:
+            await finish("reply.canceled", [], event.user_id)
+        state["match_text"] = match_text
+        state["reply_text"] = []
+        await send_text("reply.add_reply_text", [], event.user_id)
+    except:
+        await error.report()
+
+@reply_command.got("reply_text")
+async def receive_replytext(state: T_State, event: GroupMessageEvent, reply_text: str = ArgPlainText()):
+    try:
+        if reply_text in ["cancel", "取消"]:
+            await finish("reply.canceled", [], event.user_id)
+        if reply_text in ["finish", "ok", "完成"]:
+            await finish("reply.done", [
+                create_matcher(
+                    event.get_user_id(),
+                    event.group_id,
+                    state["matcher_type"],
+                    state["match_text"],
+                    state["reply_text"]
+                )
+            ], event.user_id)
+        state["reply_text"].append(reply_text)
+        await reply_command.reject(lang.text("reply.reject", [], event.user_id))
+    except:
+        await error.report()
