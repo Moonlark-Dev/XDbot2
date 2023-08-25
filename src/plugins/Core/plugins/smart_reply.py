@@ -34,8 +34,10 @@ def is_matched_rule(rule_id: str, group_id: int, message: str):
     except:
         pass
 
+
 def get_rule_reply(rule_id: str, group_id: int):
     return random.choice(Json(f"reply/g{group_id}/{rule_id}.json")["reply"])
+
 
 @on_message().handle()
 async def match_rules(matcher: Matcher, event: GroupMessageEvent):
@@ -84,13 +86,16 @@ async def create_matcher(
             "user_id": user_id,
         }
     )
-    await error.report((
-        f"「新调教数据投稿（#{reply_id}）」\n"
-        f"群聊：{group_id}\n"
-        f"触发器类型：{matcher_type}\n"
-        f"触发文本：{matcher_data}\n"
-        f"回复文本：{reply_text}"
-    ), feedback=False)
+    await error.report(
+        (
+            f"「新调教数据投稿（#{reply_id}）」\n"
+            f"群聊：{group_id}\n"
+            f"触发器类型：{matcher_type}\n"
+            f"触发文本：{matcher_data}\n"
+            f"回复文本：{reply_text}"
+        ),
+        feedback=False,
+    )
     return reply_id
 
 
