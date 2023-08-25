@@ -273,5 +273,5 @@
   "reply.need_argv": "无效参数！使用「/help reply」获取更多信息",
   "reply.403": "权限不足！",
   "reply.not_found": "错误：数据不存在！",
-  "reply.show_data": "「调教数据（Reply#{}）」\n表达式：{}\n全局：{}\n文本：{}"
+  "reply.show_data": "「调教数据（{}/{}）」\n投稿者：{}\n触发器类型：{}\n触发文本：{}\n回复文本：{}"
 }
