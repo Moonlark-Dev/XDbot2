@@ -10,24 +10,25 @@
         },
         "skill": {
             "name": "冰霜裂痕",
+            "type": "attack",
             "attack": {
                 "type": "diffusion",
-                "value": 0.95,
-                "effect": [
-                    {
-                        "function": "add_buff",
-                        "target": 1,
-                        "ragne": 1,
-                        "buff": "freezing",
-                        "cling": 3,
-                        "probability": 0.2,
-                        "data": {}
-                    }
-                ]
+                "value": 0.95
             },
-            "gain": {
-                "attack": 0.1
-            }
+            "effect": [
+                {
+                    "function": "add_buff",
+                    "target": 1,
+                    "range": 1,
+                    "buff": "freezing",
+                    "cling": 3,
+                    "probability": 0.2,
+                    "data": {}
+                }
+            ]
+        },
+        "gain": {
+            "attack": 0.1
         }
     },
     "relics": {
@@ -72,7 +73,7 @@
             "effect": [
                 {
                     "function": "add_trigger",
-                    "condition": "our.attack.primary",
+                    "condition": "our.hit.enemy",
                     "effect": [
                         {
                             "function": "verify_probabilities",

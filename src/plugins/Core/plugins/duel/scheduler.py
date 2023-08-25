@@ -28,6 +28,8 @@ class Scheduler:
                 break
 
     def on_monomer_action(self, monomer: Monomer):
+        for i in range(len(self.monomers)):
+            self.monomers[i].prepare_before_other_action()
         if monomer.prepare_before_action() != SKIP and self.is_battle_ongoing():
             monomer.start_action()
         monomer.reduced_action_value = 0.0

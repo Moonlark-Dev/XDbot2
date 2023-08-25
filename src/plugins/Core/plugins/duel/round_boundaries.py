@@ -18,6 +18,9 @@ class RoundBoundaries:
     def prepare_before_action(self) -> None:
         pass
 
+    def prepare_before_other_action(self):
+        pass
+
     def prepare_before_the_round(self) -> None:
         pass
 

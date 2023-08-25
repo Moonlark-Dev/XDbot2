@@ -29,6 +29,7 @@ class Monomer:
         self.buff = {}
         self.toughness_strips = 100
         self.hp = hp
+        self.energy = 20
 
         self.contingent: Contingent
         self.latest_attacked_monomer: Monomer
@@ -42,6 +43,9 @@ class Monomer:
         self._default_data = self.parse_gain(self.gain_list)
         self.data = self._default_data.copy()
         del self.gain_list
+
+    def add_enegy(self, count: int):
+        self.energy += count * (1 + self.data["charging_efficiency"])
 
     def get_kits(self) -> dict:
         kits = {}
@@ -81,10 +85,54 @@ class Monomer:
                     .items()
                 )
 
+    def prepare_before_other_action(self):
+        pass
+
     def start_action(self):
         self.run_tigger("action.start")
-        # 随便写的
-        self.contingent.enemy.monomers[0].attacked(20.0, "物理", self)
+        if self.weapons["skill"]["type"] == "treat" and (self.hp / self.data["health"]) <= 0.3: # 治疗型
+            _type = "skill"
+        elif self.contingent.battle_skill_points >= 2 and self.weapons["skill"]["type"] != "treat":
+            _type = "skill"
+        else:
+            _type = "primary"
+        if _type == "skill":
+            self.contingent.battle_skill_points -= 1
+            if "attack" in self.weapons["skill"].keys():
+                self.make_attack(
+                    (data := self.weapons["skill"]["attack"])["type"],
+                    data["value"],
+                    self.weapons["element"]
+                )
+            if "effect" in self.weapons["skill"].keys():
+                self.parse_effect(self.weapons["skill"]["effect"])
+            self.add_enegy(30)
+        else:
+            self.make_attack(
+                (data := self.weapons["attack"])["type"],
+                data["value"],
+                self.weapons["element"]
+            )
+            self.add_enegy(20)
+            
+
+    def make_attack(self,_type: str, value: float, attribute: str):
+        if _type in ["single", "diffusion"]:
+            target = self.get_lowest_hp_monomer(self.contingent.enemy)
+            self.latest_attacked_monomer = target
+            if _type == "diffusion":
+                if (_tmp_pos := self.contingent.enemy.monomers.index(target)) > 0:
+                    self.contingent.enemy.monomers[_tmp_pos - 1].attacked(self.get_harm(value) * 0.25, attribute, self)
+                if _tmp_pos != len(self.contingent.enemy.monomers) - 1:
+                    self.contingent.enemy.monomers[_tmp_pos + 1].attacked(self.get_harm(value), attribute, self)
+            target.attacked(self.get_harm(value), attribute, self)
+        else:
+            pass    # TODO 弹射（random）
+        self.contingent.run_tigger("our.hit.enemy")
+
+    def get_harm(self, value: float):
+        return self.data["attack"] * value * ((1 + self.data["cirtical_damage"]) if random.random() <= self.data["cirtical_strike_chance"] else 1)
+
 
     def get_weapons(self, weapons: str) -> None:
         self.weapons = load_json(f"kits/{weapons}.json")["weapons"]
@@ -180,7 +228,7 @@ class Monomer:
                             effect["buff"],
                             effect["cling"],
                             effect["data"],
-                            effect["probabiltiy"],
+                            effect["probability"],
                             self,
                         )
                     case 1:
@@ -188,7 +236,7 @@ class Monomer:
                             effect["buff"],
                             effect["cling"],
                             effect["data"],
-                            effect["probabiltiy"],
+                            effect["probability"],
                             self,
                         )
                     case 2:
@@ -198,7 +246,7 @@ class Monomer:
                                 effect["buff"],
                                 effect["cling"],
                                 effect["data"],
-                                effect["probabiltiy"],
+                                effect["probability"],
                                 self,
                             )
 
@@ -209,7 +257,7 @@ class Monomer:
                             effect["buff"],
                             effect["cling"],
                             effect["data"],
-                            effect["probabiltiy"],
+                            effect["probability"],
                             self,
                         )
                     case 1:
@@ -231,7 +279,7 @@ class Monomer:
                                 effect["buff"],
                                 effect["cling"],
                                 effect["data"],
-                                effect["probabiltiy"],
+                                effect["probability"],
                                 self,
                             )
                     case 2:
@@ -239,7 +287,7 @@ class Monomer:
                             effect["buff"],
                             effect["cling"],
                             effect["data"],
-                            effect["probabiltiy"],
+                            effect["probability"],
                             self,
                         )
                     case 3:
@@ -247,7 +295,7 @@ class Monomer:
                             effect["buff"],
                             effect["cling"],
                             effect["data"],
-                            effect["probabiltiy"],
+                            effect["probability"],
                             self,
                         )
                     case 4:
@@ -256,13 +304,13 @@ class Monomer:
                                 effect["buff"],
                                 effect["cling"],
                                 effect["data"],
-                                effect["probabiltiy"],
+                                effect["probability"],
                                 self,
                             )
 
     def get_lowest_hp_monomer(self, base: Contingent):
         lowest_hp_monomer: Monomer = base.monomers[0]
-        for i in base.monomers:
+        for i in range(len(base.monomers)):
             if base.monomers[i].hp <= lowest_hp_monomer.hp:
                 lowest_hp_monomer = base.monomers[i]
         return lowest_hp_monomer
