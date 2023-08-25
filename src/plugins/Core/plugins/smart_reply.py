@@ -70,7 +70,7 @@ async def handle_reply(
                     "match_text",
                     Message("\n".join(message.extract_plain_text().splitlines()[1:])),
                 )
-                await send_text("reply.add_reply_text", [], event.user_id)
+                # await send_text("reply.add_reply_text", [], event.user_id)
             else:
                 await send_text("reply.add_match_text", [], event.user_id)
 
