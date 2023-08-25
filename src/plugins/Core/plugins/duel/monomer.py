@@ -34,6 +34,7 @@ class Monomer:
         self.contingent: Contingent
         self.latest_attacked_monomer: Monomer
         self.reduced_action_value: float = 0.0
+        self.shield = 0
 
         self.get_weapons(weapons)
         self.get_ball(ball)
@@ -46,6 +47,7 @@ class Monomer:
 
     def add_enegy(self, count: int):
         self.energy += count * (1 + self.data["charging_efficiency"])
+        self.energy = min(100, self.energy)
 
     def get_kits(self) -> dict:
         kits = {}
@@ -86,7 +88,9 @@ class Monomer:
                 )
 
     def prepare_before_other_action(self):
-        pass
+        if self.energy >= 100:
+            self.energy = 0
+            self.parse_effect(self.ball["skill"]["effect"])
 
     def start_action(self):
         self.run_tigger("action.start")
@@ -108,6 +112,7 @@ class Monomer:
                 self.parse_effect(self.weapons["skill"]["effect"])
             self.add_enegy(30)
         else:
+            self.contingent.battle_skill_points += 1
             self.make_attack(
                 (data := self.weapons["attack"])["type"],
                 data["value"],
@@ -218,6 +223,8 @@ class Monomer:
                     self.effect_remove_battle_skill_points(effect)
                 case "add_buff":
                     self.effect_add_buff(effect)
+                case "add_shield":
+                    self.shield += self.data[effect["thickness"]["base"]] * effect["thickness"]["value"]
 
     def effect_add_buff(self, effect: dict) -> None:
         match effect["target"]:
@@ -261,27 +268,30 @@ class Monomer:
                             self,
                         )
                     case 1:
-                        _tmp_monomers = [self.latest_attacked_monomer]
-                        if (
-                            _tmp_pos := self.contingent.enemy.monomers.index(
-                                self.latest_attacked_monomer
-                            )
-                        ) > 0:
-                            _tmp_monomers.append(
-                                self.contingent.enemy.monomers[_tmp_pos - 1]
-                            )
-                        if _tmp_pos != len(self.contingent.enemy.monomers) - 1:
-                            _tmp_monomers.append(
-                                self.contingent.enemy.monomers[_tmp_pos + 1]
-                            )
-                        for i in range(len(_tmp_monomers)):
-                            _tmp_monomers[i].add_buff(
-                                effect["buff"],
-                                effect["cling"],
-                                effect["data"],
-                                effect["probability"],
-                                self,
-                            )
+                        try:
+                            _tmp_monomers = [self.latest_attacked_monomer]
+                            if (
+                                _tmp_pos := self.contingent.enemy.monomers.index(
+                                    self.latest_attacked_monomer
+                                )
+                            ) > 0:
+                                _tmp_monomers.append(
+                                    self.contingent.enemy.monomers[_tmp_pos - 1]
+                                )
+                            if _tmp_pos != len(self.contingent.enemy.monomers) - 1:
+                                _tmp_monomers.append(
+                                    self.contingent.enemy.monomers[_tmp_pos + 1]
+                                )
+                            for i in range(len(_tmp_monomers)):
+                                _tmp_monomers[i].add_buff(
+                                    effect["buff"],
+                                    effect["cling"],
+                                    effect["data"],
+                                    effect["probability"],
+                                    self,
+                                )
+                        except:
+                            pass
                     case 2:
                         self.get_lowest_hp_monomer(self.contingent.enemy).add_buff(
                             effect["buff"],
@@ -354,19 +364,28 @@ class Monomer:
                     self.attacked(15 if buff_data["cling"] == 0 else 10, "冰", None)
             if buff_data["cling"] == 0:
                 self.buff.pop(buff_name)
+        
 
     def attacked(self, harm: float, attribute: str, from_monomer):
         self.run_tigger("our.attacked")
-        if self.toughness_strips > 0 and attribute in self.get_weakness():
+        if self.toughness_strips > 0 and attribute in self.get_weakness() and not self.shield:
             self.toughness_strips -= 15 * from_monomer.data["elemental_mastery"]
         if self.toughness_strips > 0:
             harm *= 0.8 if attribute in self.get_weakness() else 0.9
+            harm *= 1 - min(0.75, self.data["defense"] / 2)
+        if self.shield >= harm:
+            self.shield -= harm
+            harm = 0
+        else:
+            harm -= self.shield
+            self.shield = 0
         self.hp -= 1 if self.data.get("fatal_injury_protection", False) else harm
         self.data["fatal_injury_protection"] = False
         if self.hp <= 0:
             self.hp = 0
             self.run_tigger("our.died")
             self.contingent.died(self)
+        self.add_enegy(10)
 
     def get_weakness(self):
         weakness = set()

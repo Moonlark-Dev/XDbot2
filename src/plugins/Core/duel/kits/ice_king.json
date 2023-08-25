@@ -47,17 +47,10 @@
             "name": "寒冰守护",
             "effect": [
                 {
-                    "function": "add_buff",
-                    "buff": "shield",
-                    "target": 0,
-                    "ragne": 1,
-                    "probability": 1.0,
-                    "cling": 5,
-                    "data": {
-                        "thickness": {
-                            "base": "hp",
-                            "value": 0.2
-                        }
+                    "function": "add_shield",
+                    "thickness": {
+                        "base": "health",
+                        "value": 0.2
                     }
                 }
             ]
@@ -108,7 +101,7 @@
         },
         "resonance": {
             "gain": {
-                "ice_attack": 0.1
+                "attack": 0.1
             }
         }
     }

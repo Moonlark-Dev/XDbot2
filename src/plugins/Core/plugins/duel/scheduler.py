@@ -15,7 +15,15 @@ class Scheduler:
     def start_fighting(self):
         self.prepare_fighting()
         while self.is_battle_ongoing():
+            print("\n\nRound Start ...")
             self.start_round()
+            print("Round End ...")
+            print("HP(a): ", end="")
+            for m in self.active.monomers:
+                print(m.hp, end=" ")
+            print("HP(p): ", end="")
+            for m in self.passive.monomers:
+                print(m.hp, end=" ")
 
     def start_round(self):
         self.prepare_round()
