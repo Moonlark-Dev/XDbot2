@@ -271,8 +271,9 @@
   "synthesis.done": "合成成功！\n消耗物品：\n{}\n获得物品：\n{}",
   "synthesis.item_not_enough": "合成失败：所需材料不足",
 
-  "reply.add_reply_text": "[SR] 请发送回复文本（发送「cancle」取消）",
-  "reply.add_match_text": "[SR] 请发送匹配文本（发送「cancle」取消）",
+  "reply.add_reply_text": "[SR] 请发送回复文本（发送「cancel」取消）",
+  "reply.add_match_text": "[SR] 请发送匹配文本（发送「cancel」取消）",
   "reply.canceled": "[SR] 操作已取消！",
-  "reply.reject": "[SR] 回复文本添加成功，您可以继续添加，或发送「finish」提交（发送「cancle」取消）"
+  "reply.reject": "[SR] 回复文本添加成功，您可以继续添加，或发送「finish」提交（发送「cancel」取消）",
+  "reply.done": "[SR] 数据已添加（#{}）！"
 }
