@@ -18,6 +18,7 @@ async def handle_basic_reply_rule(matcher: Matcher, event: GroupMessageEvent):
             if re.match(item["matcher"], event.get_plaintext()):
                 await matcher.finish(Message(random.choice(item["text"])))
 
+
 def get_rules(group_id: int):
     try:
         return os.listdir(f"data/reply/g{group_id}/")
