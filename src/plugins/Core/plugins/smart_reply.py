@@ -8,7 +8,15 @@ from nonebot import on_message
 from ._utils import *
 from .su import su
 from .etm import economy
+from . import _smart_reply
 
+
+@on_message().handle()
+async def handle_basic_reply_rule(matcher: Matcher, event: GroupMessageEvent):
+    for item in list(_smart_reply.get_list().values()):
+        if item["group_id"] == event.group_id:
+            if re.match(item["matcher"], event.get_plaintext()):
+                await matcher.finish(Message(random.choice(item["text"])))
 
 def get_rules(group_id: int):
     try:
