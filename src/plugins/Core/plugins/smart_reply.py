@@ -171,7 +171,7 @@ async def handle_reply(
             else:
                 await send_text("reply.add_match_text", [], event.user_id)
 
-        elif argv[0] in ["get-source", "获取来源"]:
+        elif argv[0] in ["get-source", "获取来源", "source", "来源"]:
             for msg in sent_messages:
                 if msg["message_id"] == event.reply.message_id:
                     await finish(
@@ -206,9 +206,17 @@ async def handle_reply(
                 False,
                 True,
             )
+        
+        else:
+            await finish(
+                "reply.need_argv",
+                [],
+                event.user_id
+            )
 
     except:
         await error.report()
+        await reply_command.finish()
 
 
 @reply_command.got("match_text")
