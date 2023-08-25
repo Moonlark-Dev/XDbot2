@@ -1,3 +1,4 @@
+import random
 from nonebot.params import ArgPlainText
 from nonebot.typing import T_State
 import re
@@ -8,6 +9,36 @@ from ._utils import *
 from .su import su
 from .etm import economy
 
+def get_rules(group_id: int):
+    try:
+        return os.listdir(f"data/reply/g{group_id}/")
+    except OSError:
+        return []
+
+def is_matched_rule(rule_id: str, group_id: int, message: str):
+    try:
+        data = Json(f"reply/g{group_id}/{rule_id}.json")["match"]
+        match data["type"]:
+            case "regex":
+                return bool(re.match(re.compile(data["text"], re.DOTALL), message))
+            case "keyword":
+                return data["text"] in message
+            case "fullmatch":
+                return data["text"] == message
+            case "fuzzymatch":
+                return difflib.SequenceMatcher(None, data["text"], message).ratio() >= 0.75
+    except:
+        pass
+
+def get_rule_reply(rule_id: str, group_id: int):
+    return random.choice(Json(f"reply/g{group_id}/{rule_id}.json")["reply"])
+
+@on_message().handle()
+async def match_rules(event: GroupMessageEvent):
+    message = str(event.get_message())
+    for rule_id in get_rules(event.group_id):
+        if is_matched_rule(rule_id, event.group_id, message):
+            pass
 
 def get_matcher_type(argv: str):
     reply_matcher_types = [
