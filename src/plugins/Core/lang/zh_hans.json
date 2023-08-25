@@ -16,6 +16,7 @@
   "_error.github": "建议前往：{} 提交一个 Issue 或使用 /report 指令反馈该问题",
   "cave.name": "回声洞",
   "cave.new": "「回声洞新投稿（{}）」\n",
+  "cave.user_cd": "用户冷却中（{}s）",
   "cave.added": "回声洞（{}）已添加",
   "cave.data_collecting": "收集数据ing",
   "cave.cannot_comment": "评论失败：权限不足（需要 cave.add）",

@@ -10,7 +10,7 @@ from . import _error
 from .etm import exp, economy
 from . import _lang, _messenger
 import httpx
-from ._utils import Json
+from ._utils import Json, finish
 from nonebot import on_command, get_app, on_message
 from nonebot.adapters.onebot.v11 import Bot, Message, GroupMessageEvent
 from nonebot.permission import SUPERUSER
@@ -337,7 +337,10 @@ async def cave_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent):
             case _:
                 cd_time = 3600
 
-        if time.time() - (latest_use.get(str(event.group_id)) or 0) < cd_time:
+    
+        if time.time() - latest_use.get(f"u{event.user_id}", 0) < 600:
+            await finish("cave.user_cd", [time.time() - latest_use.get(f"u{event.user_id}", 0)], event.user_id, True, False)
+        if time.time() - (latest_use.get(f"g{event.group_id}") or 0) < cd_time:
             await cave.finish(
                 _lang.text(
                     "cave.cd",
@@ -345,7 +348,7 @@ async def cave_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent):
                         str(
                             round(
                                 cd_time
-                                - (time.time() - latest_use[str(event.group_id)]),
+                                - (time.time() - latest_use[f"g{event.group_id}"]),
                                 3,
                             )
                         )
@@ -382,7 +385,8 @@ async def cave_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent):
         )
         if len(cave_messages) >= 10:
             cave_messages.pop(0)
-        latest_use[str(event.group_id)] = time.time()
+        latest_use[f"g{event.group_id}"] = time.time()
+        latest_use[f"u{event.user_id}"] = time.time()
         json.dump(latest_use, open("data/cave.latest_use.json", "w", encoding="utf-8"))
         if random.random() <= 0.25:
             economy.add_vi(str(event.user_id), t := random.randint(1, 10))
