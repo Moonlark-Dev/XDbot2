@@ -67,6 +67,7 @@ def is_matched_rule(rule_id: str, group_id: int, message: str):
 def get_rule_reply(rule_id: str, group_id: int):
     return random.choice(Json(f"reply/g{group_id}/{rule_id}.json")["reply"])
 
+
 # [HELPSTART] Version: 2
 # Command: reply
 # Usage: reply add {regex|keyword|fullmatch|fuzzymatch}\n[匹配内容]：添加匹配规则
@@ -77,6 +78,7 @@ def get_rule_reply(rule_id: str, group_id: int):
 # Msg: 调教模块
 # Info: 调教XDbot2，支持正则、关键词、完整、模糊四种匹配模式
 # [HELPEND]
+
 
 @on_message().handle()
 async def match_rules(bot: Bot, event: GroupMessageEvent):
