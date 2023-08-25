@@ -86,7 +86,7 @@ async def receive_matchtext(
         if match_text in ["cancel", "取消"]:
             await finish("reply.canceled", [], event.user_id)
         state["match_text"] = match_text
-        state["reply_text"] = []
+        state["_reply_text"] = []
         await send_text("reply.add_reply_text", [], event.user_id)
     except:
         await error.report()
@@ -108,12 +108,12 @@ async def receive_replytext(
                         event.group_id,
                         state["matcher_type"],
                         state["match_text"],
-                        state["reply_text"],
+                        state["_reply_text"],
                     )
                 ],
                 event.user_id,
             )
-        state["reply_text"].append(reply_text)
+        state["_reply_text"].append(reply_text)
         await reply_command.reject(lang.text("reply.reject", [], event.user_id))
     except:
         await error.report()
