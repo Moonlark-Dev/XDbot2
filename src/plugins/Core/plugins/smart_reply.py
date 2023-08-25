@@ -96,24 +96,22 @@ async def receive_matchtext(
 async def receive_replytext(
     state: T_State, event: GroupMessageEvent, reply_text: str = ArgPlainText()
 ):
-    try:
-        if reply_text in ["cancel", "取消"]:
-            await finish("reply.canceled", [], event.user_id)
-        if reply_text in ["finish", "ok", "完成"]:
-            await finish(
-                "reply.done",
-                [
-                    create_matcher(
-                        event.get_user_id(),
-                        event.group_id,
-                        state["matcher_type"],
-                        state["match_text"],
-                        state["_reply_text"],
-                    )
-                ],
-                event.user_id,
-            )
-        state["_reply_text"].append(reply_text)
-        await reply_command.reject(lang.text("reply.reject", [], event.user_id))
-    except:
-        await error.report()
+    if reply_text in ["cancel", "取消"]:
+        await finish("reply.canceled", [], event.user_id)
+    if reply_text in ["finish", "ok", "完成"]:
+        await finish(
+            "reply.done",
+            [
+                create_matcher(
+                    event.get_user_id(),
+                    event.group_id,
+                    state["matcher_type"],
+                    state["match_text"],
+                    state["_reply_text"],
+                )
+            ],
+            event.user_id,
+        )
+    state["_reply_text"].append(reply_text)
+    await reply_command.reject(lang.text("reply.reject", [], event.user_id))
+    
