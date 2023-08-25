@@ -3,12 +3,14 @@ class Contingent:
         self.monomers: list = monomers
         self.enemy: Contingent
         self.battle_skill_points = 3
+        for i in range(len(self.monomers)):
+            self.monomers[i].set_contingent(self)
 
     def died(self, monoer):
         self.monomers.pop(self.monomers.index(monoer))
-        for i in self.monomers:
+        for i in range(len(self.monomers)):
             _monomer = self.monomers[i]
             _monomer.run_tigger("enemy.killed.our")
-        for i in self.enemy.monomers:
-            _monomer = self.monomers[i]
+        for i in range(len(self.enemy.monomers)):
+            _monomer = self.enemy.monomers[i]
             _monomer.run_tigger("out.killed.enemy")
