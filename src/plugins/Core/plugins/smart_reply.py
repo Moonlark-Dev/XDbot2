@@ -19,13 +19,17 @@ async def handle_basic_reply_rule(bot: Bot, event: GroupMessageEvent):
     for key, item in list(_smart_reply.get_list().items()):
         if item["group_id"] == event.group_id:
             if re.match(item["matcher"], event.get_plaintext()):
-                sent_messages.append({
-                    "message_id": (await bot.send_group_msg(
-                        message=Message(random.choice(item["text"])),
-                        group_id=event.group_id
-                    ))["message_id"],
-                    "from_id": f"old/{key}"
-                })
+                sent_messages.append(
+                    {
+                        "message_id": (
+                            await bot.send_group_msg(
+                                message=Message(random.choice(item["text"])),
+                                group_id=event.group_id,
+                            )
+                        )["message_id"],
+                        "from_id": f"old/{key}",
+                    }
+                )
                 sent_messages = sent_messages[-20:]
 
 
@@ -35,10 +39,12 @@ def get_rules(group_id: int):
     except OSError:
         return []
 
+
 def get_rule_data(group_id: int, rule_id: str):
     if rule_id.startswith("old/"):
         return _smart_reply.get_list()[rule_id.replace("old/", "")]
     return Json(f"reply/g{group_id}/{rule_id}.json").to_dict()
+
 
 def is_matched_rule(rule_id: str, group_id: int, message: str):
     try:
@@ -61,6 +67,7 @@ def is_matched_rule(rule_id: str, group_id: int, message: str):
 def get_rule_reply(rule_id: str, group_id: int):
     return random.choice(Json(f"reply/g{group_id}/{rule_id}.json")["reply"])
 
+
 @on_message().handle()
 async def match_rules(bot: Bot, event: GroupMessageEvent):
     global sent_messages
@@ -68,12 +75,17 @@ async def match_rules(bot: Bot, event: GroupMessageEvent):
     for _rule_id in get_rules(event.group_id):
         rule_id = _rule_id.replace(".json", "")
         if is_matched_rule(rule_id, event.group_id, message):
-            sent_messages.append({
-                "message_id": (await bot.send_group_msg(
-                    message=Message(get_rule_reply(rule_id, event.group_id)),
-                    group_id=event.group_id))["message_id"],
-                "from_id": f"{rule_id}"
-            })
+            sent_messages.append(
+                {
+                    "message_id": (
+                        await bot.send_group_msg(
+                            message=Message(get_rule_reply(rule_id, event.group_id)),
+                            group_id=event.group_id,
+                        )
+                    )["message_id"],
+                    "from_id": f"{rule_id}",
+                }
+            )
             sent_messages = sent_messages[-20:]
 
 
@@ -150,14 +162,20 @@ async def handle_reply(
                 )
             else:
                 await send_text("reply.add_match_text", [], event.user_id)
-        
+
         elif argv[0] in ["get-source", "获取来源"]:
             for msg in sent_messages:
                 if msg["message_id"] == event.reply.message_id:
-                    await finish("reply.getsource", [
-                        msg["from_id"],
-                        get_rule_data(event.group_id, msg["from_id"])["user_id"]
-                    ], event.user_id, False, True)
+                    await finish(
+                        "reply.getsource",
+                        [
+                            msg["from_id"],
+                            get_rule_data(event.group_id, msg["from_id"])["user_id"],
+                        ],
+                        event.user_id,
+                        False,
+                        True,
+                    )
 
     except:
         await error.report()
