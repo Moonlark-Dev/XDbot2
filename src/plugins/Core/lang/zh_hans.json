@@ -6,7 +6,7 @@
   "lang.lang_author": "维护者：{}",
   "lang.compatibility": "兼容性：{} / {} {}%",
   "cave.error_to_download_images": "投稿失败：下载图片时发生错误，请稍后重试",
-  "help.tips": "小贴士：\n<...>：必要参数\n[...]：可选参数\n{...|...}：选择参数\n \n「：」后为指令说明\n指令前缀：{}",
+  "help.tips": "指令前缀：{}\n「<...>」为必要参数\n「[...]」为可选参数\n「{...|....}」为选择参数（需在给出的选项中选择）\n发送「/? <想要执行的操作或命令>」使用 GPTCommandHelp",
   "lang.keylost": "缺失键：{}",
   "lang.empty": "请使用 {} 设置语言",
   "lang.success": "成功设置语言为 {} ",
