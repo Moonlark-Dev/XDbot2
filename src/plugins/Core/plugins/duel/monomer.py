@@ -176,33 +176,89 @@ class Monomer:
             case 0:
                 match effect["range"]:
                     case 0:
-                        self.add_buff(effect["buff"], effect["cling"], effect["data"], effect["probabiltiy"], self)
+                        self.add_buff(
+                            effect["buff"],
+                            effect["cling"],
+                            effect["data"],
+                            effect["probabiltiy"],
+                            self,
+                        )
                     case 1:
-                        self.get_lowest_hp_monomer(self.contingent).add_buff(effect["buff"], effect["cling"], effect["data"], effect["probabiltiy"], self)
+                        self.get_lowest_hp_monomer(self.contingent).add_buff(
+                            effect["buff"],
+                            effect["cling"],
+                            effect["data"],
+                            effect["probabiltiy"],
+                            self,
+                        )
                     case 2:
                         for i in self.contingent.monomers:
                             monomer = self.contingent.monomers[i]
-                            monomer.add_buff(effect["buff"], effect["cling"], effect["data"], effect["probabiltiy"], self)
+                            monomer.add_buff(
+                                effect["buff"],
+                                effect["cling"],
+                                effect["data"],
+                                effect["probabiltiy"],
+                                self,
+                            )
 
             case 1:
                 match effect["range"]:
                     case 0:
-                        self.latest_attacked_monomer.add_buff(effect["buff"], effect["cling"], effect["data"], effect["probabiltiy"], self)
+                        self.latest_attacked_monomer.add_buff(
+                            effect["buff"],
+                            effect["cling"],
+                            effect["data"],
+                            effect["probabiltiy"],
+                            self,
+                        )
                     case 1:
                         _tmp_monomers = [self.latest_attacked_monomer]
-                        if (_tmp_pos := self.contingent.enemy.monomers.index(self.latest_attacked_monomer)) > 0:
-                            _tmp_monomers.append(self.contingent.enemy.monomers[_tmp_pos - 1])
+                        if (
+                            _tmp_pos := self.contingent.enemy.monomers.index(
+                                self.latest_attacked_monomer
+                            )
+                        ) > 0:
+                            _tmp_monomers.append(
+                                self.contingent.enemy.monomers[_tmp_pos - 1]
+                            )
                         if _tmp_pos != len(self.contingent.enemy.monomers) - 1:
-                            _tmp_monomers.append(self.contingent.enemy.monomers[_tmp_pos + 1])
+                            _tmp_monomers.append(
+                                self.contingent.enemy.monomers[_tmp_pos + 1]
+                            )
                         for i in range(len(_tmp_monomers)):
-                            _tmp_monomers[i].add_buff(effect["buff"], effect["cling"], effect["data"], effect["probabiltiy"], self)
+                            _tmp_monomers[i].add_buff(
+                                effect["buff"],
+                                effect["cling"],
+                                effect["data"],
+                                effect["probabiltiy"],
+                                self,
+                            )
                     case 2:
-                        self.get_lowest_hp_monomer(self.contingent.enemy).add_buff(effect["buff"], effect["cling"], effect["data"], effect["probabiltiy"], self)
+                        self.get_lowest_hp_monomer(self.contingent.enemy).add_buff(
+                            effect["buff"],
+                            effect["cling"],
+                            effect["data"],
+                            effect["probabiltiy"],
+                            self,
+                        )
                     case 3:
-                        random.choice(self.contingent.enemy.monomers).add_buff(effect["buff"], effect["cling"], effect["data"], effect["probabiltiy"], self)
+                        random.choice(self.contingent.enemy.monomers).add_buff(
+                            effect["buff"],
+                            effect["cling"],
+                            effect["data"],
+                            effect["probabiltiy"],
+                            self,
+                        )
                     case 4:
                         for i in self.contingent.enemy.monomers:
-                            self.contingent.enemy.monomers[i].add_buff(effect["buff"], effect["cling"], effect["data"], effect["probabiltiy"], self)
+                            self.contingent.enemy.monomers[i].add_buff(
+                                effect["buff"],
+                                effect["cling"],
+                                effect["data"],
+                                effect["probabiltiy"],
+                                self,
+                            )
 
     def get_lowest_hp_monomer(self, base: Contingent):
         lowest_hp_monomer: Monomer = base.monomers[0]
@@ -211,8 +267,12 @@ class Monomer:
                 lowest_hp_monomer = base.monomers[i]
         return lowest_hp_monomer
 
-    def add_buff(self, buff: str, cling: int, data: dict, probability: float, from_monomer):
-        if load_json(f"buff/{buff}.json")["negative"] and random.random() > self.get_hit_probability(probability, from_monomer):
+    def add_buff(
+        self, buff: str, cling: int, data: dict, probability: float, from_monomer
+    ):
+        if load_json(f"buff/{buff}.json")[
+            "negative"
+        ] and random.random() > self.get_hit_probability(probability, from_monomer):
             return
         if buff in self.buff.keys():
             self.buff[buff]["cling"] += cling
@@ -221,11 +281,15 @@ class Monomer:
             self.buff[buff] = {
                 "cling": cling,
                 "negative": load_json(f"buff/{buff}.json")["negative"],
-                "data": data
+                "data": data,
             }
 
     def get_hit_probability(self, basic_probability: float, from_monomer):
-        return basic_probability * (1 + from_monomer.data["effect_hit"]) * (1 - self.data["effect_resistance"])
+        return (
+            basic_probability
+            * (1 + from_monomer.data["effect_hit"])
+            * (1 - self.data["effect_resistance"])
+        )
 
     def get_action_value(self):
         return 10000 / self.data["speed"] - self.reduced_action_value
