@@ -114,4 +114,3 @@ async def receive_replytext(
         )
     state["_reply_text"].append(reply_text)
     await reply_command.reject(lang.text("reply.reject", [], event.user_id))
-    
