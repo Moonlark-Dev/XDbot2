@@ -206,13 +206,9 @@ async def handle_reply(
                 False,
                 True,
             )
-        
+
         else:
-            await finish(
-                "reply.need_argv",
-                [],
-                event.user_id
-            )
+            await finish("reply.need_argv", [], event.user_id)
 
     except:
         await error.report()
