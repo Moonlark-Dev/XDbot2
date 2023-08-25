@@ -275,5 +275,5 @@
   "reply.add_match_text": "[SR] 请发送匹配文本（发送「cancel」取消）",
   "reply.canceled": "操作已取消！",
   "reply.reject": "[SR] 回复文本添加成功，您可以继续添加，或发送「finish」提交（发送「cancel」取消）",
-  "reply.done": "数据已添加（#{}）！"
+  "reply.done": "【编号：{}】数据添加成功！"
 }
