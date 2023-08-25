@@ -45,7 +45,7 @@ async def match_rules(matcher: Matcher, event: GroupMessageEvent):
     for _rule_id in get_rules(event.group_id):
         rule_id = _rule_id.replace(".json", "")
         if is_matched_rule(rule_id, event.group_id, message):
-            await matcher.finish(get_rule_reply(rule_id, group_id))
+            await matcher.finish(get_rule_reply(rule_id, event.group_id))
 
 
 def get_matcher_type(argv: str):
