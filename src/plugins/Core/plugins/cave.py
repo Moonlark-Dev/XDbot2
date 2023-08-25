@@ -339,7 +339,7 @@ async def cave_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent):
 
     
         if time.time() - latest_use.get(f"u{event.user_id}", 0) < 600:
-            await finish("cave.user_cd", [time.time() - latest_use.get(f"u{event.user_id}", 0)], event.user_id, True, False)
+            await finish("cave.user_cd", [round(600 - time.time() - latest_use.get(f"u{event.user_id}", 0), 3)], event.user_id, True, False)
         if time.time() - (latest_use.get(f"g{event.group_id}") or 0) < cd_time:
             await cave.finish(
                 _lang.text(
