@@ -51,13 +51,6 @@ class MysteryBoxLevel1(Item):
                     "data": item.get("data", {}),
                 }
             )
-        items.append({
-                    "id": "weapons",
-                    "count": 1,
-                    "data": {
-                        "kit": "scrorching_sun_phantom"
-                    }
-                })
         
 
         items = json2items(items)
