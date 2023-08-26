@@ -13,7 +13,7 @@
             "type": "attack",
             "attack": {
                 "type": "diffusion",
-                "value": 0.95
+                "value": 0.87
             },
             "effect": [
                 {

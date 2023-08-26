@@ -9,6 +9,9 @@ class RoundBoundaries:
         self.data["is_roundboundaries"] = True
         self.reduced_action_value: float = 0.0
 
+    def set_controller(self, _):
+        pass
+
     def get_action_value(self):
         return 10000 / self.data["speed"] - self.reduced_action_value
 

@@ -1,0 +1,78 @@
+{
+    "name": "皮革套",
+    "rarity": 1,
+    "weapons": {
+        "name": "木斧",
+        "element": "物理",
+        "attack": {
+            "type": "single",
+            "value": 0.62
+        },
+        "skill": {
+            "name": "暴击",
+            "effect": [],
+            "type": "attack",
+            "attack": {
+                "type": "single",
+                "value": 0.93
+            }
+        },
+        "gain": {
+            "attack": 0.1
+        }
+    },
+    "relics": {
+        "hand": "皮革手套",
+        "torso": "皮革外套",
+        "leg": "皮革裤子",
+        "feet": "皮革鞋子",
+        "weakness": "火"
+    },
+    "ball": {
+        "name": "粘液球",
+        "gain": {
+            "health": 0.3
+        },
+        "skill": {
+            "name": "回复",
+            "type": "treat",
+            "effect": [
+                {
+                    "function": "add_hp",
+                    "value": 0.25
+                }
+            ]
+        }
+    },
+    "kit_effect": {
+        "2": {
+            "gain": {
+                "health": 0.12
+            }
+        },
+        "4": {
+            "gain": {
+                "attack": 0.15
+            }
+        },
+        "6": {
+            "effect": [
+                {
+                    "function": "verify_probabilities",
+                    "probability": 0.1
+                },
+                {
+                    "function": "update_gain",
+                    "gain": {
+                        "fatal_injury_protection": true
+                    }
+                }
+            ]
+        },
+        "resonance": {
+            "gain": {
+                "cirtical_strike_chance": 0.25
+            }
+        }
+    }
+}

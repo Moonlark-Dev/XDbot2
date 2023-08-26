@@ -1,0 +1,112 @@
+{
+    "name": "炎日幻影",
+    "rarity": 1,
+    "weapons": {
+        "name": "炙阳长剑",
+        "element": "火",
+        "attack": {
+            "type": "single",
+            "value": 0.70
+        },
+        "skill": {
+            "name": "太阳燃烧",
+            "type": "attack",
+            "attack": {
+                "type": "diffusion",
+                "value": 0.90
+            },
+            "effect": [
+                {
+                    "function": "add_buff",
+                    "target": 1,
+                    "range": 1,
+                    "buff": "burn",
+                    "cling": 5,
+                    "probability": 0.25,
+                    "data": {}
+                }
+            ],
+            "gain": {
+                "effect_hit": 0.15
+            }
+        }
+    },
+    "relics": {
+        "hand": "炎纹护手",
+        "torso": "日炎战衣",
+        "leg": "火焰护腿",
+        "feet": "灼地步靴",
+        "weakness": "冰"
+    },
+    "ball": {
+        "name": "日辉宝珠",
+        "gain": {
+            "speed": 0.1
+        },
+        "skill": {
+            "name": "火焰之舞",
+            "type": "attack",
+            "effect": [
+                {
+                    "function": "make_attack",
+                    "name": "日辉宝珠·火焰之舞",
+                    "element": "火",
+                    "attack": {
+                        "type": "random",
+                        "value": 0.214
+                    }
+                }
+            ]
+        }
+        
+    },
+    "kit_effect": {
+        "2": {
+            "gain": {
+                "attack": 0.2
+            }
+        },
+        "4": {
+            "effect": [
+                {
+                    "function": "add_trigger",
+                    "condition": "our.attacked",
+                    "effect": [
+                        {
+                            "function": "add_buff",
+                            "target": 1,
+                            "range": 4,
+                            "buff": "burn",
+                            "cling": 4,
+                            "probability": 0.15,
+                            "data": {}
+                        }
+                    ]
+                }
+            ]
+        },
+        "6": {
+            "effect": [
+                {
+                    "function": "add_trigger",
+                    "condition": "our.hit.enemy",
+                    "effect": [
+                        {
+                            "function": "verify_probabilities",
+                            "probability": 0.1
+                        },
+                        {
+                            "function": "add_hp",
+                            "value": 0.1
+                        }
+                    ]
+                }
+            ]
+        },
+        "resonance": {
+            "gain": {
+                "attack": 0.15
+            }
+        }
+    }
+}

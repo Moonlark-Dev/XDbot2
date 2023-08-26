@@ -16,11 +16,12 @@ def get_base_properties(_type: str = "primary") -> dict:
 
 
 from .contingent import Contingent
+from .controller import Controller
 
 
 class Monomer:
     def __init__(
-        self, weapons: str, relics: dict[str, dict], ball: str, hp: int
+        self, weapons: str, relics: dict[str, dict], ball: str, hp: int, name: str
     ) -> None:
         base_properties = get_base_properties()
         self._default_data = base_properties.copy()
@@ -29,9 +30,11 @@ class Monomer:
         self.buff = {}
         self.toughness_strips = 100
         self.hp = hp
+        self.name = name
         self.energy = 20
 
         self.contingent: Contingent
+        self.controller: Controller
         self.latest_attacked_monomer: Monomer
         self.reduced_action_value: float = 0.0
         self.shield = 0
@@ -44,6 +47,9 @@ class Monomer:
         self._default_data = self.parse_gain(self.gain_list)
         self.data = self._default_data.copy()
         del self.gain_list
+
+    def set_controller(self, controller: Controller):
+        self.controller = controller
 
     def add_enegy(self, count: int):
         self.energy += count * (1 + self.data["charging_efficiency"])
@@ -88,8 +94,12 @@ class Monomer:
                 )
 
     def prepare_before_other_action(self):
+        if self.has_buff("freezing"):
+            self.controller.add_logger(f"[{self.name}]: 你被冻结了，无法行动！\n")
+            return
         if self.energy >= 100:
             self.energy = 0
+            self.controller.add_logger(f'[{self.name}]: 发动了终结技 <{self.ball["skill"]["name"]}>\n')
             self.parse_effect(self.ball["skill"]["effect"])
 
     def start_action(self):
@@ -108,6 +118,7 @@ class Monomer:
                     data["value"],
                     self.weapons["element"]
                 )
+                self.controller.add_logger(f'[{self.name}]: 使用了 <{self.weapons["skill"]["name"]}>\n')
             if "effect" in self.weapons["skill"].keys():
                 self.parse_effect(self.weapons["skill"]["effect"])
             self.add_enegy(30)
@@ -119,7 +130,7 @@ class Monomer:
                 self.weapons["element"]
             )
             self.add_enegy(20)
-            
+            self.controller.add_logger(f'[{self.name}]: 使用了 <普通攻击>\n')
 
     def make_attack(self,_type: str, value: float, attribute: str):
         if _type in ["single", "diffusion"]:
@@ -131,8 +142,13 @@ class Monomer:
                 if _tmp_pos != len(self.contingent.enemy.monomers) - 1:
                     self.contingent.enemy.monomers[_tmp_pos + 1].attacked(self.get_harm(value), attribute, self)
             target.attacked(self.get_harm(value), attribute, self)
-        else:
-            pass    # TODO 弹射（random）
+        elif _type == "random":
+            for i in range(5):
+                try:
+                    self.latest_attacked_monomer = random.choice(self.contingent.enemy.monomers)
+                except:
+                    break
+                self.latest_attacked_monomer.attacked(self.get_harm(value), attribute, self)
         self.contingent.run_tigger("our.hit.enemy")
 
     def get_harm(self, value: float):
@@ -173,10 +189,11 @@ class Monomer:
     def effect_add_hp(self, effect: dict) -> None:
         if isinstance(effect["value"], float):
             self.hp += self.data["health"] * (
-                1 + effect["value"] + self.data["therapeutic_volume_bonus"]
+                effect["value"] + self.data["therapeutic_volume_bonus"]
             )
         else:
             self.hp += effect["value"] * (1 + self.data["therapeutic_volume_bonus"])
+        self.hp = min(self.hp, self.data["health"])
 
     def effect_add_trigger(self, effect: dict):
         if effect["condition"] not in self.triggers.keys():
@@ -225,6 +242,14 @@ class Monomer:
                     self.effect_add_buff(effect)
                 case "add_shield":
                     self.shield += self.data[effect["thickness"]["base"]] * effect["thickness"]["value"]
+                case "make_attack":
+                    self.effect_make_attack(effect)
+                case "update_gain":
+                    self.data = self.parse_gain(effect["gain"])
+
+    def effect_make_attack(self, effect: dict):
+        self.controller.add_logger(f"[{self.name}]: 使用了 <{effect['name']}>\n")
+        self.make_attack(effect["attack"]["type"], effect["attack"]["value"], effect["element"])
 
     def effect_add_buff(self, effect: dict) -> None:
         match effect["target"]:
@@ -341,6 +366,7 @@ class Monomer:
                 "negative": load_json(f"buff/{buff}.json")["negative"],
                 "data": data,
             }
+        self.controller.add_logger(f"[{self.name}]: 被赋予 buff：{buff}\n")
 
     def get_hit_probability(self, basic_probability: float, from_monomer):
         return (
@@ -362,6 +388,8 @@ class Monomer:
             match buff_name:
                 case "freezing":
                     self.attacked(15 if buff_data["cling"] == 0 else 10, "冰", None)
+                case "burn":
+                    self.attacked(17, "火", None)
             if buff_data["cling"] == 0:
                 self.buff.pop(buff_name)
         
@@ -394,12 +422,13 @@ class Monomer:
         return list(weakness)
 
     def has_buff(self, buff_name: str):
-        return buff_name in self.buff.items()
+        return buff_name in self.buff.keys()
 
     def prepare_before_action(self) -> Literal[False] | None:
         self.run_tigger("action.start")
         self.run_buff_effect()
         if self.has_buff("freezing"):
+            self.controller.add_logger(f"[{self.name}]: 你被冻结了，无法行动！\n")
             return SKIP
 
     def prepare_before_the_round(self) -> None:
