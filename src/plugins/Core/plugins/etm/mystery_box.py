@@ -70,6 +70,7 @@ class MysteryBoxLevel1(Item):
             bag.add_item(self.user_id, item.item_id, item.count, item.data)
             reply_text += f"\n{self.length}. {item.data['display_name']} x{item.count}"
             self.length += 1
+        print("\n".join(reply_text[1:]))
         return reply_text[1:]
 
     def get_items(self):
