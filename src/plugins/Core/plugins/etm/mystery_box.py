@@ -52,8 +52,8 @@ class MysteryBoxLevel1(Item):
                 }
             )
         items.append({
-                    "item_id": "weapons",
-                    "count": [1, 1],
+                    "id": "weapons",
+                    "count": 1,
                     "data": {
                         "kit": "scrorching_sun_phantom"
                     }
