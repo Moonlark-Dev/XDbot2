@@ -6,6 +6,7 @@ class Weapons(Item):
     def on_register(self):
         self.basic_data["maximum_stack"] = 1
         self.basic_data["price"] = 20
+        self.item_id = "weapons"
         self.basic_data["useable"] = False
 
     def _after_register(self):
