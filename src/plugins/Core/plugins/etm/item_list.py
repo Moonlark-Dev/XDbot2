@@ -6,6 +6,7 @@ from .pawcoin import PawCoin
 from .pouch import Pouch
 from .mystery_box import MysteryBoxLevel1, MysteriousShard
 from .vimcoin import VimCoin
+from .weapons import Weapons
 from .experience import Experience
 from .towel_zip import TowelZip, Towel
 
@@ -23,4 +24,5 @@ ITEMS = {
     "mysterious_shard": MysteriousShard,
     "auto_sign_coupon": AutoSignCoupon,
     "auto_sign_coupon_actived": AutoSignCouponActived,
+    "weapons": Weapons
 }

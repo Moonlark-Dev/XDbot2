@@ -32,7 +32,7 @@ class MysteryBoxLevel1(Item):
                         "item_id"
                     ],
                     "count": random.randint(item["count"][0], item["count"][1]),
-                    "data": {},
+                    "data": item.get("data", {}),
                 }
             )
         for _ in range(random.randint(2, 3)):
@@ -40,7 +40,7 @@ class MysteryBoxLevel1(Item):
                 {
                     "id": (item := random.choice(self.get_items()["rare"]))["item_id"],
                     "count": random.randint(item["count"][0], item["count"][1]),
-                    "data": {},
+                    "data": item.get("data", {}),
                 }
             )
         if random.random() <= 0.25:
@@ -48,7 +48,7 @@ class MysteryBoxLevel1(Item):
                 {
                     "id": (item := random.choice(self.get_items()["rare"]))["item_id"],
                     "count": random.randint(item["count"][0], item["count"][1]),
-                    "data": {},
+                    "data": item.get("data", {}),
                 }
             )
 
@@ -80,10 +80,24 @@ class MysteryBoxLevel1(Item):
                 {"item_id": "mysterious_shard", "count": [10, 35]},
                 {"item_id": "towel.zip", "count": [1, 5]},
                 {"item_id": "auto_sign_coupon", "count": [1, 5]},
+                {
+                    "item_id": "weapons",
+                    "count": [1, 1],
+                    "data": {
+                        "kit": "leather_case"
+                    }
+                }
             ],
             "legend": [
                 {"item_id": "mysterybox_lv1", "count": [1, 2]},
                 {"item_id": "talisman", "count": [1, 4]},
+                {
+                    "item_id": "weapons",
+                    "count": [1, 1],
+                    "data": {
+                        "kit": "scrorching_sun_phantom"
+                    }
+                }
             ],
         }
 
