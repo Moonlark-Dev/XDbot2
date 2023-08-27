@@ -4,7 +4,7 @@ from .talisman import Talisman
 from .book_and_quill import BookAndQuill
 from .pawcoin import PawCoin
 from .pouch import Pouch
-from .mystery_box import MysteryBoxLevel1, MysteriousShard, MysteryBoxLv3 
+from .mystery_box import MysteryBoxLevel1, MysteriousShard, MysteryBoxLv3
 from .vimcoin import VimCoin
 from .duel_things import Weapons, Ball
 from .experience import Experience
@@ -26,5 +26,5 @@ ITEMS = {
     "auto_sign_coupon_actived": AutoSignCouponActived,
     "weapons": Weapons,
     "ball": Ball,
-    "mysterybox_lv3": MysteryBoxLv3 
+    "mysterybox_lv3": MysteryBoxLv3,
 }

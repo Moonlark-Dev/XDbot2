@@ -21,17 +21,19 @@ class Scheduler:
         while self.is_battle_ongoing():
             self.create_round_logger()
             self.start_round()
-        
+
     def create_round_logger(self):
         self.controller.create_logger_block("\n========【回合开始】========\n")
         for i in range(len(self.monomers)):
             if not self.monomers[i].data.get("is_roundboundaries", False):
-                self.controller.add_logger((
-                    f"{self.monomers[i].name}:\n"
-                    f"  HP: {self.monomers[i].hp}\n"
-                    f"  Energy: {self.monomers[i].energy}\n"
-                    f"  Shield: {self.monomers[i].shield}\n"
-                ))
+                self.controller.add_logger(
+                    (
+                        f"{self.monomers[i].name}:\n"
+                        f"  HP: {self.monomers[i].hp}\n"
+                        f"  Energy: {self.monomers[i].energy}\n"
+                        f"  Shield: {self.monomers[i].shield}\n"
+                    )
+                )
 
     def start_round(self):
         self.prepare_round()

@@ -13,6 +13,7 @@ def json2items(items, user_id=None):
 
 SHOP_ITEMS = {}
 
+
 class MysteryBoxLevel1(Item):
     def on_register(self):
         self.basic_data: NbtDict = {
@@ -50,7 +51,6 @@ class MysteryBoxLevel1(Item):
                     "data": item.get("data", {}),
                 }
             )
-        
 
         items = json2items(items)
         if not self.length:
@@ -83,10 +83,8 @@ class MysteryBoxLevel1(Item):
                 {
                     "item_id": "weapons",
                     "count": [1, 1],
-                    "data": {
-                        "kit": "leather_case"
-                    }
-                }
+                    "data": {"kit": "leather_case"},
+                },
             ],
             "legend": [
                 {"item_id": "mysterybox_lv1", "count": [1, 2]},
@@ -94,10 +92,8 @@ class MysteryBoxLevel1(Item):
                 {
                     "item_id": "weapons",
                     "count": [1, 1],
-                    "data": {
-                        "kit": "scrorching_sun_phantom"
-                    }
-                }
+                    "data": {"kit": "scrorching_sun_phantom"},
+                },
             ],
         }
 
@@ -126,8 +122,8 @@ class MysteryBoxLevel1(Item):
             msg = [f"错误：数量不足（拥有 {self.count} 个）"]
         return msg
 
-class MysteryBoxLv3(MysteryBoxLevel1):
 
+class MysteryBoxLv3(MysteryBoxLevel1):
     def on_register(self):
         super().on_register()
         self.item_id = "mysterybox_lv3"
@@ -135,7 +131,6 @@ class MysteryBoxLv3(MysteryBoxLevel1):
         self.basic_data["display_message"] = "并不普通的的盒子，散发着一些神秘的气息。\n \n「盒子里好像……发光了？」"
         self.basic_data["display_name"] = "Mystery Box (⭐️⭐️⭐️)"
 
-    
     def get_items(self):
         return {
             "ordinary": [
@@ -149,23 +144,33 @@ class MysteryBoxLv3(MysteryBoxLevel1):
                 {"item_id": "mysterious_shard", "count": [10, 35]},
                 {"item_id": "towel.zip", "count": [1, 5]},
                 {"item_id": "auto_sign_coupon", "count": [1, 5]},
-                {"item_id": "weapons", "count": [1, 1], "data": {"kit": "leather_case"}},
+                {
+                    "item_id": "weapons",
+                    "count": [1, 1],
+                    "data": {"kit": "leather_case"},
+                },
                 {"item_id": "ball", "count": [1, 1], "data": {"kit": "leather_case"}},
             ],
             "rare": [
                 {"item_id": "mysterybox_lv1", "count": [1, 2]},
                 {"item_id": "talisman", "count": [1, 4]},
                 {"item_id": "vimcoin", "count": [20, 60]},
-
-                {"item_id": "weapons", "count": [1, 1], "data": {"kit": "scrorching_sun_phantom"}},
-                {"item_id": "ball", "count": [1, 1], "data": {"kit": "scrorching_sun_phantom"}},
+                {
+                    "item_id": "weapons",
+                    "count": [1, 1],
+                    "data": {"kit": "scrorching_sun_phantom"},
+                },
+                {
+                    "item_id": "ball",
+                    "count": [1, 1],
+                    "data": {"kit": "scrorching_sun_phantom"},
+                },
                 {"item_id": "weapons", "count": [1, 1], "data": {"kit": "ice_king"}},
                 {"item_id": "ball", "count": [1, 1], "data": {"kit": "ice_king"}},
             ],
-            "legend": [
-                {"item_id": "mysterybox_lv3", "count": [1, 2]}
-            ],
+            "legend": [{"item_id": "mysterybox_lv3", "count": [1, 2]}],
         }
+
 
 class MysteriousShard(Item):
     def on_register(self):
@@ -176,5 +181,3 @@ class MysteriousShard(Item):
             "price": 2,
             "useable": False,
         }
-
-    

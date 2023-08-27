@@ -99,14 +99,22 @@ class Monomer:
             return
         if self.energy >= 100:
             self.energy = 0
-            self.controller.add_logger(f'[{self.name}]: 发动了终结技 <{self.ball["skill"]["name"]}>\n')
+            self.controller.add_logger(
+                f'[{self.name}]: 发动了终结技 <{self.ball["skill"]["name"]}>\n'
+            )
             self.parse_effect(self.ball["skill"]["effect"])
 
     def start_action(self):
         self.run_tigger("action.start")
-        if self.weapons["skill"]["type"] == "treat" and (self.hp / self.data["health"]) <= 0.3: # 治疗型
+        if (
+            self.weapons["skill"]["type"] == "treat"
+            and (self.hp / self.data["health"]) <= 0.3
+        ):  # 治疗型
             _type = "skill"
-        elif self.contingent.battle_skill_points >= 2 and self.weapons["skill"]["type"] != "treat":
+        elif (
+            self.contingent.battle_skill_points >= 2
+            and self.weapons["skill"]["type"] != "treat"
+        ):
             _type = "skill"
         else:
             _type = "primary"
@@ -116,9 +124,11 @@ class Monomer:
                 self.make_attack(
                     (data := self.weapons["skill"]["attack"])["type"],
                     data["value"],
-                    self.weapons["element"]
+                    self.weapons["element"],
                 )
-                self.controller.add_logger(f'[{self.name}]: 使用了 <{self.weapons["skill"]["name"]}>\n')
+                self.controller.add_logger(
+                    f'[{self.name}]: 使用了 <{self.weapons["skill"]["name"]}>\n'
+                )
             if "effect" in self.weapons["skill"].keys():
                 self.parse_effect(self.weapons["skill"]["effect"])
             self.add_enegy(30)
@@ -127,33 +137,48 @@ class Monomer:
             self.make_attack(
                 (data := self.weapons["attack"])["type"],
                 data["value"],
-                self.weapons["element"]
+                self.weapons["element"],
             )
             self.add_enegy(20)
-            self.controller.add_logger(f'[{self.name}]: 使用了 <普通攻击>\n')
+            self.controller.add_logger(f"[{self.name}]: 使用了 <普通攻击>\n")
 
-    def make_attack(self,_type: str, value: float, attribute: str):
+    def make_attack(self, _type: str, value: float, attribute: str):
         if _type in ["single", "diffusion"]:
             target = self.get_lowest_hp_monomer(self.contingent.enemy)
             self.latest_attacked_monomer = target
             if _type == "diffusion":
                 if (_tmp_pos := self.contingent.enemy.monomers.index(target)) > 0:
-                    self.contingent.enemy.monomers[_tmp_pos - 1].attacked(self.get_harm(value) * 0.25, attribute, self)
+                    self.contingent.enemy.monomers[_tmp_pos - 1].attacked(
+                        self.get_harm(value) * 0.25, attribute, self
+                    )
                 if _tmp_pos != len(self.contingent.enemy.monomers) - 1:
-                    self.contingent.enemy.monomers[_tmp_pos + 1].attacked(self.get_harm(value), attribute, self)
+                    self.contingent.enemy.monomers[_tmp_pos + 1].attacked(
+                        self.get_harm(value), attribute, self
+                    )
             target.attacked(self.get_harm(value), attribute, self)
         elif _type == "random":
             for i in range(5):
                 try:
-                    self.latest_attacked_monomer = random.choice(self.contingent.enemy.monomers)
+                    self.latest_attacked_monomer = random.choice(
+                        self.contingent.enemy.monomers
+                    )
                 except:
                     break
-                self.latest_attacked_monomer.attacked(self.get_harm(value), attribute, self)
+                self.latest_attacked_monomer.attacked(
+                    self.get_harm(value), attribute, self
+                )
         self.contingent.run_tigger("our.hit.enemy")
 
     def get_harm(self, value: float):
-        return self.data["attack"] * value * ((1 + self.data["cirtical_damage"]) if random.random() <= self.data["cirtical_strike_chance"] else 1)
-
+        return (
+            self.data["attack"]
+            * value
+            * (
+                (1 + self.data["cirtical_damage"])
+                if random.random() <= self.data["cirtical_strike_chance"]
+                else 1
+            )
+        )
 
     def get_weapons(self, weapons: str) -> None:
         self.weapons = load_json(f"kits/{weapons}.json")["weapons"]
@@ -241,7 +266,10 @@ class Monomer:
                 case "add_buff":
                     self.effect_add_buff(effect)
                 case "add_shield":
-                    self.shield += self.data[effect["thickness"]["base"]] * effect["thickness"]["value"]
+                    self.shield += (
+                        self.data[effect["thickness"]["base"]]
+                        * effect["thickness"]["value"]
+                    )
                 case "make_attack":
                     self.effect_make_attack(effect)
                 case "update_gain":
@@ -249,7 +277,9 @@ class Monomer:
 
     def effect_make_attack(self, effect: dict):
         self.controller.add_logger(f"[{self.name}]: 使用了 <{effect['name']}>\n")
-        self.make_attack(effect["attack"]["type"], effect["attack"]["value"], effect["element"])
+        self.make_attack(
+            effect["attack"]["type"], effect["attack"]["value"], effect["element"]
+        )
 
     def effect_add_buff(self, effect: dict) -> None:
         match effect["target"]:
@@ -392,11 +422,14 @@ class Monomer:
                     self.attacked(17, "火", None)
             if buff_data["cling"] == 0:
                 self.buff.pop(buff_name)
-        
 
     def attacked(self, harm: float, attribute: str, from_monomer):
         self.run_tigger("our.attacked")
-        if self.toughness_strips > 0 and attribute in self.get_weakness() and not self.shield:
+        if (
+            self.toughness_strips > 0
+            and attribute in self.get_weakness()
+            and not self.shield
+        ):
             self.toughness_strips -= 15 * from_monomer.data["elemental_mastery"]
         if self.toughness_strips > 0:
             harm *= 0.8 if attribute in self.get_weakness() else 0.9

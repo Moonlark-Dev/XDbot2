@@ -17,6 +17,7 @@ from nonebot.adapters.onebot.v11.event import PokeNotifyEvent
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.permission import SUPERUSER
 from nonebot.adapters.onebot.v11.permission import GROUP_OWNER, GROUP_ADMIN
+
 # from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot.adapters.onebot.v11.event import GroupMessageEvent
 
@@ -137,9 +138,7 @@ async def repetitionHandle(event: GroupMessageEvent):
         if event.get_user_id() not in repetitionCache[event.group_id]["user"]:
             if event.get_plaintext() == repetitionCache[event.group_id]["message"]:
                 repetitionCache[event.group_id]["user"].append(event.get_user_id())
-                if len(repetitionCache[event.group_id]["user"]) >= random.randint(
-                    2, 5
-                ):
+                if len(repetitionCache[event.group_id]["user"]) >= random.randint(2, 5):
                     if (
                         len(repetitionCache[event.group_id]["user"])
                         <= random.randint(0, 50)
@@ -156,7 +155,6 @@ async def repetitionHandle(event: GroupMessageEvent):
                         latestSend = time.time()
             else:
                 repetitionCache.pop(event.group_id)
-
 
 
 @imageSender.handle()
@@ -217,6 +215,7 @@ async def imageSenderHandle(event: GroupMessageEvent):
     except Exception:
         await _error.report(traceback.format_exc())
 
+
 # [HELPSTART] Version: 2
 # Command: remark
 # Usage: remark {on|off}
@@ -224,18 +223,32 @@ async def imageSenderHandle(event: GroupMessageEvent):
 # Msg: 自主发言开关
 # [HELPEND]
 
-@on_command("remark", permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER, aliases={"发言"}).handle()
-async def handle_remark_command(event: GroupMessageEvent, message: Message = CommandArg()):
+
+@on_command(
+    "remark", permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER, aliases={"发言"}
+).handle()
+async def handle_remark_command(
+    event: GroupMessageEvent, message: Message = CommandArg()
+):
     try:
         if message.extract_plain_text().lower() in ["on", "enable", "开启"]:
             Json("reply.remark.json")[str(event.group_id)] = True
         elif message.extract_plain_text().lower() in ["off", "disable", "关闭"]:
             Json("reply.remark.json")[str(event.group_id)] = False
         else:
-            Json("reply.remark.json")[str(event.group_id)] = not bool(Json("reply.remark.json")[str(event.group_id)])
-        await finish(f"reply.{'enabled' if Json('reply.remark.json')[str(event.group_id)] else 'disabled'}", [], event.user_id, False, True)
+            Json("reply.remark.json")[str(event.group_id)] = not bool(
+                Json("reply.remark.json")[str(event.group_id)]
+            )
+        await finish(
+            f"reply.{'enabled' if Json('reply.remark.json')[str(event.group_id)] else 'disabled'}",
+            [],
+            event.user_id,
+            False,
+            True,
+        )
     except:
         await _error.report()
+
 
 @imageSaver.handle()
 async def imageSaverHandle(event: GroupMessageEvent):
@@ -278,7 +291,6 @@ async def imageSaverHandle(event: GroupMessageEvent):
                         _lang.text("reply.good_image", [], event.get_user_id())
                     )
                     latestSend = time.time()
-
 
     except Exception:
         await _error.report(traceback.format_exc())
