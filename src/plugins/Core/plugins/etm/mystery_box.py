@@ -32,7 +32,7 @@ class MysteryBoxLevel1(Item):
                         "item_id"
                     ],
                     "count": random.randint(item["count"][0], item["count"][1]),
-                    "data": {},
+                    "data": item.get("data", {}),
                 }
             )
         for _ in range(random.randint(2, 3)):
@@ -40,7 +40,7 @@ class MysteryBoxLevel1(Item):
                 {
                     "id": (item := random.choice(self.get_items()["rare"]))["item_id"],
                     "count": random.randint(item["count"][0], item["count"][1]),
-                    "data": {},
+                    "data": item.get("data", {}),
                 }
             )
         if random.random() <= 0.25:
@@ -48,7 +48,7 @@ class MysteryBoxLevel1(Item):
                 {
                     "id": (item := random.choice(self.get_items()["rare"]))["item_id"],
                     "count": random.randint(item["count"][0], item["count"][1]),
-                    "data": {},
+                    "data": item.get("data", {}),
                 }
             )
 
@@ -80,10 +80,20 @@ class MysteryBoxLevel1(Item):
                 {"item_id": "mysterious_shard", "count": [10, 35]},
                 {"item_id": "towel.zip", "count": [1, 5]},
                 {"item_id": "auto_sign_coupon", "count": [1, 5]},
+                # {
+                #     "item_id": "weapons",
+                #     "count": [1, 1],
+                #     "data": {"kit": "leather_case"},
+                # },
             ],
             "legend": [
                 {"item_id": "mysterybox_lv1", "count": [1, 2]},
                 {"item_id": "talisman", "count": [1, 4]},
+                # {
+                #     "item_id": "weapons",
+                #     "count": [1, 1],
+                #     "data": {"kit": "scrorching_sun_phantom"},
+                # },
             ],
         }
 
@@ -105,11 +115,61 @@ class MysteryBoxLevel1(Item):
                 try:
                     msg.append(self.use_item())
                 except BaseException:
+                    print(f"发生错误：{traceback.format_exc()}")
                     msg.append(f"发生错误：{traceback.format_exc()}")
             self.count -= count
         else:
             msg = [f"错误：数量不足（拥有 {self.count} 个）"]
         return msg
+
+
+class MysteryBoxLv3(MysteryBoxLevel1):
+    def on_register(self):
+        super().on_register()
+        self.item_id = "mysterybox_lv3"
+        self.basic_data["price"] = 64
+        self.basic_data["display_message"] = "并不普通的的盒子，散发着一些神秘的气息。\n \n「盒子里好像……发光了？」"
+        self.basic_data["display_name"] = "Mystery Box (⭐️⭐️⭐️)"
+
+    def get_items(self):
+        return {
+            "ordinary": [
+                {"item_id": "dice", "count": [5, 16]},
+                {"item_id": "mysterious_shard", "count": [5, 30]},
+                {"item_id": "pawcoin", "count": [2, 15]},
+                {"item_id": "towel", "count": [1, 16]},
+                {"item_id": "book_and_quill", "count": [1, 1]},
+                {"item_id": "pouch", "count": [1, 1]},
+                {"item_id": "vimcoin", "count": [5, 20]},
+                {"item_id": "mysterious_shard", "count": [10, 35]},
+                {"item_id": "towel.zip", "count": [1, 5]},
+                {"item_id": "auto_sign_coupon", "count": [1, 5]},
+                # {
+                #     "item_id": "weapons",
+                #     "count": [1, 1],
+                #     "data": {"kit": "leather_case"},
+                # },
+                # {"item_id": "ball", "count": [1, 1], "data": {"kit": "leather_case"}},
+            ],
+            "rare": [
+                {"item_id": "mysterybox_lv1", "count": [1, 2]},
+                {"item_id": "talisman", "count": [1, 4]},
+                {"item_id": "vimcoin", "count": [20, 60]},
+                # {
+                #     "item_id": "weapons",
+                #     "count": [1, 1],
+                #     "data": {"kit": "scrorching_sun_phantom"},
+                # },
+                # {
+                #     "item_id": "ball",
+                #     "count": [1, 1],
+                #     "data": {"kit": "scrorching_sun_phantom"},
+                # },
+                # {"item_id": "weapons", "count": [1, 1], "data": {"kit": "ice_king"}},
+                # {"item_id": "ball", "count": [1, 1], "data": {"kit": "ice_king"}},
+            ],
+            "legend": [{"item_id": "mysterybox_lv3", "count": [1, 2]}],
+        }
 
 
 class MysteriousShard(Item):

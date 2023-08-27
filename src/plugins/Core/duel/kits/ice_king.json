@@ -10,24 +10,25 @@
         },
         "skill": {
             "name": "冰霜裂痕",
+            "type": "attack",
             "attack": {
                 "type": "diffusion",
-                "value": 0.95,
-                "effect": [
-                    {
-                        "function": "add_buff",
-                        "target": 1,
-                        "ragne": 1,
-                        "buff": "freezing",
-                        "cling": 3,
-                        "probability": 0.2,
-                        "data": {}
-                    }
-                ]
+                "value": 0.87
             },
-            "gain": {
-                "attack": 0.1
-            }
+            "effect": [
+                {
+                    "function": "add_buff",
+                    "target": 1,
+                    "range": 1,
+                    "buff": "freezing",
+                    "cling": 3,
+                    "probability": 0.2,
+                    "data": {}
+                }
+            ]
+        },
+        "gain": {
+            "attack": 0.1
         }
     },
     "relics": {
@@ -46,17 +47,10 @@
             "name": "寒冰守护",
             "effect": [
                 {
-                    "function": "add_buff",
-                    "buff": "shield",
-                    "target": 0,
-                    "ragne": 1,
-                    "probability": 1.0,
-                    "cling": 5,
-                    "data": {
-                        "thickness": {
-                            "base": "hp",
-                            "value": 0.2
-                        }
+                    "function": "add_shield",
+                    "thickness": {
+                        "base": "health",
+                        "value": 0.2
                     }
                 }
             ]
@@ -72,7 +66,7 @@
             "effect": [
                 {
                     "function": "add_trigger",
-                    "condition": "our.attack.primary",
+                    "condition": "our.hit.enemy",
                     "effect": [
                         {
                             "function": "verify_probabilities",
@@ -107,7 +101,7 @@
         },
         "resonance": {
             "gain": {
-                "ice_attack": 0.1
+                "attack": 0.1
             }
         }
     }

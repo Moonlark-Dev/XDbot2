@@ -14,3 +14,8 @@ class Contingent:
         for i in range(len(self.enemy.monomers)):
             _monomer = self.enemy.monomers[i]
             _monomer.run_tigger("out.killed.enemy")
+
+    def run_tigger(self, event: str):
+        for i in range(len(self.monomers)):
+            _monomer = self.monomers[i]
+            _monomer.run_tigger(event)

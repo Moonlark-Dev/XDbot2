@@ -16,11 +16,12 @@ def get_base_properties(_type: str = "primary") -> dict:
 
 
 from .contingent import Contingent
+from .controller import Controller
 
 
 class Monomer:
     def __init__(
-        self, weapons: str, relics: dict[str, dict], ball: str, hp: int
+        self, weapons: str, relics: dict[str, dict], ball: str, hp: int, name: str
     ) -> None:
         base_properties = get_base_properties()
         self._default_data = base_properties.copy()
@@ -29,10 +30,14 @@ class Monomer:
         self.buff = {}
         self.toughness_strips = 100
         self.hp = hp
+        self.name = name
+        self.energy = 20
 
         self.contingent: Contingent
+        self.controller: Controller
         self.latest_attacked_monomer: Monomer
         self.reduced_action_value: float = 0.0
+        self.shield = 0
 
         self.get_weapons(weapons)
         self.get_ball(ball)
@@ -42,6 +47,13 @@ class Monomer:
         self._default_data = self.parse_gain(self.gain_list)
         self.data = self._default_data.copy()
         del self.gain_list
+
+    def set_controller(self, controller: Controller):
+        self.controller = controller
+
+    def add_enegy(self, count: int):
+        self.energy += count * (1 + self.data["charging_efficiency"])
+        self.energy = min(100, self.energy)
 
     def get_kits(self) -> dict:
         kits = {}
@@ -81,10 +93,92 @@ class Monomer:
                     .items()
                 )
 
+    def prepare_before_other_action(self):
+        if self.has_buff("freezing"):
+            self.controller.add_logger(f"[{self.name}]: 你被冻结了，无法行动！\n")
+            return
+        if self.energy >= 100:
+            self.energy = 0
+            self.controller.add_logger(
+                f'[{self.name}]: 发动了终结技 <{self.ball["skill"]["name"]}>\n'
+            )
+            self.parse_effect(self.ball["skill"]["effect"])
+
     def start_action(self):
         self.run_tigger("action.start")
-        # 随便写的
-        self.contingent.enemy.monomers[0].attacked(20.0, "物理", self)
+        if (
+            self.weapons["skill"]["type"] == "treat"
+            and (self.hp / self.data["health"]) <= 0.3
+        ):  # 治疗型
+            _type = "skill"
+        elif (
+            self.contingent.battle_skill_points >= 2
+            and self.weapons["skill"]["type"] != "treat"
+        ):
+            _type = "skill"
+        else:
+            _type = "primary"
+        if _type == "skill":
+            self.contingent.battle_skill_points -= 1
+            if "attack" in self.weapons["skill"].keys():
+                self.make_attack(
+                    (data := self.weapons["skill"]["attack"])["type"],
+                    data["value"],
+                    self.weapons["element"],
+                )
+                self.controller.add_logger(
+                    f'[{self.name}]: 使用了 <{self.weapons["skill"]["name"]}>\n'
+                )
+            if "effect" in self.weapons["skill"].keys():
+                self.parse_effect(self.weapons["skill"]["effect"])
+            self.add_enegy(30)
+        else:
+            self.contingent.battle_skill_points += 1
+            self.make_attack(
+                (data := self.weapons["attack"])["type"],
+                data["value"],
+                self.weapons["element"],
+            )
+            self.add_enegy(20)
+            self.controller.add_logger(f"[{self.name}]: 使用了 <普通攻击>\n")
+
+    def make_attack(self, _type: str, value: float, attribute: str):
+        if _type in ["single", "diffusion"]:
+            target = self.get_lowest_hp_monomer(self.contingent.enemy)
+            self.latest_attacked_monomer = target
+            if _type == "diffusion":
+                if (_tmp_pos := self.contingent.enemy.monomers.index(target)) > 0:
+                    self.contingent.enemy.monomers[_tmp_pos - 1].attacked(
+                        self.get_harm(value) * 0.25, attribute, self
+                    )
+                if _tmp_pos != len(self.contingent.enemy.monomers) - 1:
+                    self.contingent.enemy.monomers[_tmp_pos + 1].attacked(
+                        self.get_harm(value), attribute, self
+                    )
+            target.attacked(self.get_harm(value), attribute, self)
+        elif _type == "random":
+            for i in range(5):
+                try:
+                    self.latest_attacked_monomer = random.choice(
+                        self.contingent.enemy.monomers
+                    )
+                except:
+                    break
+                self.latest_attacked_monomer.attacked(
+                    self.get_harm(value), attribute, self
+                )
+        self.contingent.run_tigger("our.hit.enemy")
+
+    def get_harm(self, value: float):
+        return (
+            self.data["attack"]
+            * value
+            * (
+                (1 + self.data["cirtical_damage"])
+                if random.random() <= self.data["cirtical_strike_chance"]
+                else 1
+            )
+        )
 
     def get_weapons(self, weapons: str) -> None:
         self.weapons = load_json(f"kits/{weapons}.json")["weapons"]
@@ -120,10 +214,11 @@ class Monomer:
     def effect_add_hp(self, effect: dict) -> None:
         if isinstance(effect["value"], float):
             self.hp += self.data["health"] * (
-                1 + effect["value"] + self.data["therapeutic_volume_bonus"]
+                effect["value"] + self.data["therapeutic_volume_bonus"]
             )
         else:
             self.hp += effect["value"] * (1 + self.data["therapeutic_volume_bonus"])
+        self.hp = min(self.hp, self.data["health"])
 
     def effect_add_trigger(self, effect: dict):
         if effect["condition"] not in self.triggers.keys():
@@ -170,6 +265,21 @@ class Monomer:
                     self.effect_remove_battle_skill_points(effect)
                 case "add_buff":
                     self.effect_add_buff(effect)
+                case "add_shield":
+                    self.shield += (
+                        self.data[effect["thickness"]["base"]]
+                        * effect["thickness"]["value"]
+                    )
+                case "make_attack":
+                    self.effect_make_attack(effect)
+                case "update_gain":
+                    self.data = self.parse_gain(effect["gain"])
+
+    def effect_make_attack(self, effect: dict):
+        self.controller.add_logger(f"[{self.name}]: 使用了 <{effect['name']}>\n")
+        self.make_attack(
+            effect["attack"]["type"], effect["attack"]["value"], effect["element"]
+        )
 
     def effect_add_buff(self, effect: dict) -> None:
         match effect["target"]:
@@ -180,7 +290,7 @@ class Monomer:
                             effect["buff"],
                             effect["cling"],
                             effect["data"],
-                            effect["probabiltiy"],
+                            effect["probability"],
                             self,
                         )
                     case 1:
@@ -188,7 +298,7 @@ class Monomer:
                             effect["buff"],
                             effect["cling"],
                             effect["data"],
-                            effect["probabiltiy"],
+                            effect["probability"],
                             self,
                         )
                     case 2:
@@ -198,7 +308,7 @@ class Monomer:
                                 effect["buff"],
                                 effect["cling"],
                                 effect["data"],
-                                effect["probabiltiy"],
+                                effect["probability"],
                                 self,
                             )
 
@@ -209,37 +319,40 @@ class Monomer:
                             effect["buff"],
                             effect["cling"],
                             effect["data"],
-                            effect["probabiltiy"],
+                            effect["probability"],
                             self,
                         )
                     case 1:
-                        _tmp_monomers = [self.latest_attacked_monomer]
-                        if (
-                            _tmp_pos := self.contingent.enemy.monomers.index(
-                                self.latest_attacked_monomer
-                            )
-                        ) > 0:
-                            _tmp_monomers.append(
-                                self.contingent.enemy.monomers[_tmp_pos - 1]
-                            )
-                        if _tmp_pos != len(self.contingent.enemy.monomers) - 1:
-                            _tmp_monomers.append(
-                                self.contingent.enemy.monomers[_tmp_pos + 1]
-                            )
-                        for i in range(len(_tmp_monomers)):
-                            _tmp_monomers[i].add_buff(
-                                effect["buff"],
-                                effect["cling"],
-                                effect["data"],
-                                effect["probabiltiy"],
-                                self,
-                            )
+                        try:
+                            _tmp_monomers = [self.latest_attacked_monomer]
+                            if (
+                                _tmp_pos := self.contingent.enemy.monomers.index(
+                                    self.latest_attacked_monomer
+                                )
+                            ) > 0:
+                                _tmp_monomers.append(
+                                    self.contingent.enemy.monomers[_tmp_pos - 1]
+                                )
+                            if _tmp_pos != len(self.contingent.enemy.monomers) - 1:
+                                _tmp_monomers.append(
+                                    self.contingent.enemy.monomers[_tmp_pos + 1]
+                                )
+                            for i in range(len(_tmp_monomers)):
+                                _tmp_monomers[i].add_buff(
+                                    effect["buff"],
+                                    effect["cling"],
+                                    effect["data"],
+                                    effect["probability"],
+                                    self,
+                                )
+                        except:
+                            pass
                     case 2:
                         self.get_lowest_hp_monomer(self.contingent.enemy).add_buff(
                             effect["buff"],
                             effect["cling"],
                             effect["data"],
-                            effect["probabiltiy"],
+                            effect["probability"],
                             self,
                         )
                     case 3:
@@ -247,7 +360,7 @@ class Monomer:
                             effect["buff"],
                             effect["cling"],
                             effect["data"],
-                            effect["probabiltiy"],
+                            effect["probability"],
                             self,
                         )
                     case 4:
@@ -256,13 +369,13 @@ class Monomer:
                                 effect["buff"],
                                 effect["cling"],
                                 effect["data"],
-                                effect["probabiltiy"],
+                                effect["probability"],
                                 self,
                             )
 
     def get_lowest_hp_monomer(self, base: Contingent):
         lowest_hp_monomer: Monomer = base.monomers[0]
-        for i in base.monomers:
+        for i in range(len(base.monomers)):
             if base.monomers[i].hp <= lowest_hp_monomer.hp:
                 lowest_hp_monomer = base.monomers[i]
         return lowest_hp_monomer
@@ -283,6 +396,7 @@ class Monomer:
                 "negative": load_json(f"buff/{buff}.json")["negative"],
                 "data": data,
             }
+        self.controller.add_logger(f"[{self.name}]: 被赋予 buff：{buff}\n")
 
     def get_hit_probability(self, basic_probability: float, from_monomer):
         return (
@@ -304,21 +418,35 @@ class Monomer:
             match buff_name:
                 case "freezing":
                     self.attacked(15 if buff_data["cling"] == 0 else 10, "冰", None)
+                case "burn":
+                    self.attacked(17, "火", None)
             if buff_data["cling"] == 0:
                 self.buff.pop(buff_name)
 
     def attacked(self, harm: float, attribute: str, from_monomer):
         self.run_tigger("our.attacked")
-        if self.toughness_strips > 0 and attribute in self.get_weakness():
+        if (
+            self.toughness_strips > 0
+            and attribute in self.get_weakness()
+            and not self.shield
+        ):
             self.toughness_strips -= 15 * from_monomer.data["elemental_mastery"]
         if self.toughness_strips > 0:
             harm *= 0.8 if attribute in self.get_weakness() else 0.9
+            harm *= 1 - min(0.75, self.data["defense"] / 2)
+        if self.shield >= harm:
+            self.shield -= harm
+            harm = 0
+        else:
+            harm -= self.shield
+            self.shield = 0
         self.hp -= 1 if self.data.get("fatal_injury_protection", False) else harm
         self.data["fatal_injury_protection"] = False
         if self.hp <= 0:
             self.hp = 0
             self.run_tigger("our.died")
             self.contingent.died(self)
+        self.add_enegy(10)
 
     def get_weakness(self):
         weakness = set()
@@ -327,12 +455,13 @@ class Monomer:
         return list(weakness)
 
     def has_buff(self, buff_name: str):
-        return buff_name in self.buff.items()
+        return buff_name in self.buff.keys()
 
     def prepare_before_action(self) -> Literal[False] | None:
         self.run_tigger("action.start")
         self.run_buff_effect()
         if self.has_buff("freezing"):
+            self.controller.add_logger(f"[{self.name}]: 你被冻结了，无法行动！\n")
             return SKIP
 
     def prepare_before_the_round(self) -> None:

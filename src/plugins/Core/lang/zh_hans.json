@@ -68,6 +68,8 @@
   "reply.good_image": "好图，是我的了",
   "reply.pass": "使用 /su img re pass {} [组] 通过\n",
   "reply.rm": "使用 /su img re rm {} 删除\n",
+  "reply.enabled": "自主发言已启用",
+  "reply.disabled": "自主发言已禁用",
   "rule.run": "正在执行：{}",
   "rule.error": " {} 规则未找到",
   "setu.cd": "冷却中，剩余 {}秒",
