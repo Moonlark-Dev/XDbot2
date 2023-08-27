@@ -4,17 +4,19 @@
 import asyncio
 import json
 import random
+from ._utils import Json, CommandArg, finish
 import re
 import time
 import traceback
 from nonebot.exception import FinishedException
 from . import _error
 from . import _lang
-from nonebot import on_message, on_type
+from nonebot import on_message, on_type, on_command
 from nonebot.rule import to_me
 from nonebot.adapters.onebot.v11.event import PokeNotifyEvent
 from nonebot.adapters.onebot.v11 import Message
-
+from nonebot.permission import SUPERUSER
+from nonebot.adapters.onebot.v11.permission import GROUP_OWNER, GROUP_ADMIN
 # from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot.adapters.onebot.v11.event import GroupMessageEvent
 
@@ -160,6 +162,8 @@ async def repetitionHandle(event: GroupMessageEvent):
 @imageSender.handle()
 async def imageSenderHandle(event: GroupMessageEvent):
     try:
+        if not Json("reply.remark.json").get(str(event.group_id), True):
+            await imageSender.finish()
         global latestSend
         if time.time() - latestSend > 120:
             if (
@@ -213,11 +217,32 @@ async def imageSenderHandle(event: GroupMessageEvent):
     except Exception:
         await _error.report(traceback.format_exc())
 
+# [HELPSTART] Version: 2
+# Command: remark
+# Usage: remark {on|off}
+# Info: 开启/关闭自主发言 [*superuser *group_owner *group_admin *group]
+# Msg: 自主发言开关
+# [HELPEND]
+
+@on_command("remark", permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER, aliases={"发言"}).handle()
+async def handle_remark_command(event: GroupMessageEvent, message: Message = CommandArg()):
+    try:
+        if message.extract_plain_text().lower() in ["on", "enable", "开启"]:
+            Json("reply.remark.json")[str(event.group_id)] = True
+        elif message.extract_plain_text().lower() in ["off", "disable", "关闭"]:
+            Json("reply.remark.json")[str(event.group_id)] = False
+        else:
+            Json("reply.remark.json")[str(event.group_id)] = not bool(Json("reply.remark.json")[str(event.group_id)])
+        await finish(f"reply.{'enabled' if Json('reply.remark.json')[str(event.group_id)] else 'disabled'}", [], event.user_id, False, True)
+    except:
+        await _error.report()
 
 @imageSaver.handle()
 async def imageSaverHandle(event: GroupMessageEvent):
     try:
         global latestSend
+        if not Json("reply.remark.json").get(str(event.group_id), True):
+            await imageSaver.finish()
         if time.time() - latestSend > 90:
             if (
                 event.group_id
