@@ -1,4 +1,4 @@
-# XDbot2 develop 2308301959
+# XDbot2 develop 2308302007
 
 # /!\ 提示：
 # 此文件为 XDbot2 更新脚本，用于更改部分数据以便 XDbot2 正常运行
@@ -125,6 +125,6 @@ for data in list(get_list().values()):
         data["user_id"],
         data["group_id"],
         "regex",
-        data["match"],
+        data["matcher"],
         data["reply"]
     )
