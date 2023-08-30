@@ -9,6 +9,7 @@ from typing import Any
 import os
 import os.path
 
+
 class Json:
     def __init__(self, path: str) -> None:
         self.path = os.path.join("data", path)
@@ -96,6 +97,7 @@ def get_reply_id(group_id: int):
         else:
             length += 1
 
+
 async def create_matcher(
     user_id: str,
     group_id: int,
@@ -120,16 +122,15 @@ def get_list() -> dict:
     data.pop("count")
     return data.copy()
 
+
 import asyncio
+
 
 async def main():
     for data in list(get_list().values()):
         await create_matcher(
-            data["user_id"],
-            data["group_id"],
-            "regex",
-            data["matcher"],
-            data["text"]
+            data["user_id"], data["group_id"], "regex", data["matcher"], data["text"]
         )
+
 
 asyncio.run(main())
