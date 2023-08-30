@@ -29,7 +29,7 @@ commandHelp = {
         "name": "cave",
         "info": "随机、投稿或查询 回声洞",
         "msg": "回声洞",
-        "usage": ["cave：随机一条回声洞", "cave-a <内容>：投稿一条回声洞（见cave(1)）", "cave-s：查看回声洞状态"],
+        "usage": ["cave：随机一条回声洞", "cave-a <内容>：投稿一条回声洞（见cave(1)）", "cave-s：查看回声洞状态", "cave-s <ID> <内容...>：添加评论"],
     }
 }
 MAX_NODE_MESSAGE = 100
