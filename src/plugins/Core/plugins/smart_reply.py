@@ -173,7 +173,10 @@ async def handle_reply(
     message: Message = CommandArg(),
 ):
     try:
-        argv = message.extract_plain_text().splitlines()[0].split(" ")
+        try:
+            argv = message.extract_plain_text().splitlines()[0].split(" ")
+        except IndexError:
+            argv = message.extract_plain_text().split(" ")
 
         if argv[0] in ["add", "添加"]:
             state["matcher_type"] = get_matcher_type(argv[1])
@@ -230,7 +233,7 @@ async def handle_reply(
                         "nickname": "XDbot2 Smart Reply",
                         "content": lang.text("reply.list_title", [
                             (page := int(argv[1]) if len(argv) >= 2 else 1),
-                            math.ceil(100 / len(rule_list := get_rules(event.group_id)))
+                            math.ceil(len(rule_list := get_rules(event.group_id)) / 100)
                         ], event.user_id)
                     }
                 }]
