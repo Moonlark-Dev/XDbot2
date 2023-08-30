@@ -1,4 +1,4 @@
-# XDbot2 develop 2308302007
+# XDbot2 develop 2308302012
 
 # /!\ 提示：
 # 此文件为 XDbot2 更新脚本，用于更改部分数据以便 XDbot2 正常运行
@@ -120,11 +120,16 @@ def get_list() -> dict:
     data.pop("count")
     return data.copy()
 
-for data in list(get_list().values()):
-    create_matcher(
-        data["user_id"],
-        data["group_id"],
-        "regex",
-        data["matcher"],
-        data["text"]
-    )
+import asyncio
+
+async def main():
+    for data in list(get_list().values()):
+        await create_matcher(
+            data["user_id"],
+            data["group_id"],
+            "regex",
+            data["matcher"],
+            data["text"]
+        )
+
+asyncio.run(main())
