@@ -126,5 +126,5 @@ for data in list(get_list().values()):
         data["group_id"],
         "regex",
         data["matcher"],
-        data["reply"]
+        data["text"]
     )
