@@ -23,6 +23,24 @@ SUCCESS: bool = True
 FAILED: bool = False
 
 
+def create_command(cmd: str, aliases: set = set(), **kwargs):
+    matcher = on_command(cmd, aliases=aliases, **kwargs)
+
+    def deco(func):
+        async def handler(
+            bot: Bot, event: MessageEvent, message: Message = CommandArg()
+        ):
+            try:
+                await func(bot, event, message)
+            except:
+                await error.report()
+
+        matcher.append_handler(handler)
+        return handler
+
+    return deco
+
+
 async def send_text(
     key: str,
     _format: list = [],

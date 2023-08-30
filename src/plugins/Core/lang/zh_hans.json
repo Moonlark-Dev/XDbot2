@@ -22,6 +22,7 @@
   "cave.cannot_add": "投稿失败：权限不足（需要 cave.add）",
   "cave.data_finish": "总数：{}\n有效：{}\n图片：{}",
   "cave.notfound": "回声洞（{}）不存在",
+  "cave.commented": "评论成功（#{}）！",
   "ct.nodata": "暂无数据",
   "mcver.mcver": "最新版本：{}\n最新快照：{}",
   "mcver.enabled": "Minecraft 更新推送 已启用",
@@ -166,8 +167,6 @@
   "pouch.not_enough_space": "收纳袋空间不足！",
   "bank.usage": "用法：/bank {view|lend|repay} [参数...]",
   "pouch.put": "已置入：{} x{}",
-  "currency.no_money": "余额不足！（需要 {} vim）",
-  "currency.ok": "完成！",
   "bank.full": "失败：超过贷款限制（当前最多可贷：{}vim）",
   "bank.item": "\n{}. {}vim （利息：{}vim）",
   "bank.view": "「银行账户详细信息」\n当前债务：{}vim\n===================={}",
@@ -274,5 +273,10 @@
   "reply.need_argv": "无效参数！使用「/help reply」获取更多信息",
   "reply.403": "权限不足！",
   "reply.not_found": "错误：数据不存在！",
-  "reply.show_data": "「调教数据（{}/{}）」\n投稿者：{}\n触发器类型：{}\n触发文本：{}\n回复文本：{}"
+  "reply.show_data": "「调教数据（{}/{}）」\n投稿者：{}\n触发器类型：{}\n触发文本：{}\n回复文本：{}",
+
+
+  "currency.no_money": "余额不足！（需要 {} vim）",
+  "currency.ok": "完成！",
+  "currency.wrong_argv": "错误：不正确的参数！\n使用「/help {}」获取更多信息"
 }
