@@ -240,6 +240,7 @@ async def handle_reply(
             except ValueError:
                 await finish("currency.wrong_argv", ["reply"], event.user_id, False, True)
             for rule_id in rule_list[(page - 1) * 100:page * 100]:
+                rule_id = rule_id.replace(".json", "")
                 node_messages.append({
                     "type": "node",
                     "data": {
