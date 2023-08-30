@@ -8,29 +8,29 @@ from nonebot import on_message
 from ._utils import *
 from .su import su
 from .etm import economy
-from . import _smart_reply
+# from . import _smart_reply
 
 sent_messages = []
 
 
-@on_message().handle()
-async def handle_basic_reply_rule(bot: Bot, event: GroupMessageEvent):
-    global sent_messages
-    for key, item in list(_smart_reply.get_list().items()):
-        if item["group_id"] == event.group_id:
-            if re.match(item["matcher"], event.get_plaintext()):
-                sent_messages.append(
-                    {
-                        "message_id": (
-                            await bot.send_group_msg(
-                                message=Message(random.choice(item["text"])),
-                                group_id=event.group_id,
-                            )
-                        )["message_id"],
-                        "from_id": f"old/{key}",
-                    }
-                )
-                sent_messages = sent_messages[-20:]
+# @on_message().handle()
+# async def handle_basic_reply_rule(bot: Bot, event: GroupMessageEvent):
+#     global sent_messages
+#     for key, item in list(_smart_reply.get_list().items()):
+#         if item["group_id"] == event.group_id:
+#             if re.match(item["matcher"], event.get_plaintext()):
+#                 sent_messages.append(
+#                     {
+#                         "message_id": (
+#                             await bot.send_group_msg(
+#                                 message=Message(random.choice(item["text"])),
+#                                 group_id=event.group_id,
+#                             )
+#                         )["message_id"],
+#                         "from_id": f"old/{key}",
+#                     }
+#                 )
+#                 sent_messages = sent_messages[-20:]
 
 
 def get_rules(group_id: int):
@@ -41,8 +41,8 @@ def get_rules(group_id: int):
 
 
 def get_rule_data(group_id: int, rule_id: str):
-    if rule_id.startswith("old/"):
-        return _smart_reply.get_list()[rule_id.replace("old/", "")]
+    # if rule_id.startswith("old/"):
+    #     return _smart_reply.get_list()[rule_id.replace("old/", "")]
     return Json(f"reply/g{group_id}/{rule_id}.json").to_dict()
 
 
