@@ -13,7 +13,7 @@ async def handle_cave_comment_command(bot: Bot, event: MessageEvent, message: Me
         await finish("cave.cannot_comment", [], str(event.user_id))
     cave_id = message.extract_plain_text().split(" ")[0]
     if not check_cave_id(cave_id):
-         await finish("cave.notfound", [], event.user_id, False, True)
+         await finish("cave.notfound", [cave_id], event.user_id, False, True)
     if not " ".join(str(message).split(" ")[1:]).strip():
          await finish("currency.wrong_argv", ["cave"], event.user_id, False, True)
     cave_comments = json.load(open("data/cave.comments.json", encoding="utf-8"))
