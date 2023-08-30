@@ -31,4 +31,4 @@ async def handle_cave_comment_command(bot: Bot, event: MessageEvent, message: Me
         f"{comment_text}\n"
         f"{event.get_session_id()}"
     ), feedback=False)
-    await finish("cave.commented", [cave_id, cave_comments[cave_id]['count'] - 1], event.user_id, True, True)
+    await finish("cave.commented", [cave_comments[cave_id]['count'] - 1], event.user_id, True, True)

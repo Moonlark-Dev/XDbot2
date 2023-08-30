@@ -22,7 +22,7 @@
   "cave.cannot_add": "投稿失败：权限不足（需要 cave.add）",
   "cave.data_finish": "总数：{}\n有效：{}\n图片：{}",
   "cave.notfound": "回声洞（{}）不存在",
-  "cave.commented": "评论成功（{}#{}）！",
+  "cave.commented": "评论成功（#{}）！",
   "ct.nodata": "暂无数据",
   "mcver.mcver": "最新版本：{}\n最新快照：{}",
   "mcver.enabled": "Minecraft 更新推送 已启用",
