@@ -262,10 +262,12 @@ async def handle_reply(
                 group_id=event.group_id,
                 messages=node_messages
             )
+            await reply_command.finish()
             
 
         else:
             await finish("reply.need_argv", [], event.user_id)
+        await reply_command.finish()
 
     except:
         await error.report()
