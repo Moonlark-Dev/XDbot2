@@ -216,7 +216,7 @@ async def handle_reply(
                     (data := get_rule_data(event.group_id, argv[1]))["user_id"],
                     data["match"]["type"],
                     data["match"]["text"],
-                    data["reply"],
+                    "\n  " + "\n  ".join(data["reply"])
                 ],
                 event.user_id,
                 False,
@@ -252,7 +252,7 @@ async def handle_reply(
                                 (data := get_rule_data(event.group_id, rule_id))["user_id"],
                                 data["match"]["type"],
                                 data["match"]["text"],
-                                data["reply"],
+                                "\n  " + "\n  ".join(data["reply"])
                             ],
                             event.user_id)
                     }
