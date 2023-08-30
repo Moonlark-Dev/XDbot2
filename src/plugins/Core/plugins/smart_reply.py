@@ -212,7 +212,6 @@ async def handle_reply(
             await finish(
                 "reply.show_data",
                 [
-                    event.group_id,
                     argv[1],
                     (data := get_rule_data(event.group_id, argv[1]))["user_id"],
                     data["match"]["type"],
@@ -249,7 +248,6 @@ async def handle_reply(
                         "content": lang.text(
                             "reply.show_data",
                             [
-                                event.group_id,
                                 rule_id,
                                 (data := get_rule_data(event.group_id, rule_id))["user_id"],
                                 data["match"]["type"],

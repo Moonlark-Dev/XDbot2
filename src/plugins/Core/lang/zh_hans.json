@@ -274,7 +274,7 @@
   "reply.403": "权限不足！",
   "reply.list_title": "「调教数据列表」\n当前页面：{}/{}\n使用 /reply list <页> 查看更多",
   "reply.not_found": "错误：数据不存在！",
-  "reply.show_data": "「调教数据（{}/{}）」\n投稿者：{}\n触发器类型：{}\n触发文本：{}\n回复文本：{}",
+  "reply.show_data": "「调教数据（#{}）」\n投稿者：{}\n触发器类型：{}\n触发文本：{}\n回复文本：{}",
 
 
   "currency.no_money": "余额不足！（需要 {} vim）",
