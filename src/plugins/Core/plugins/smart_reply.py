@@ -249,7 +249,7 @@ async def handle_reply(
                             "reply.show_data",
                             [
                                 event.group_id,
-                                argv[1],
+                                rule_id,
                                 (data := get_rule_data(event.group_id, rule_id))["user_id"],
                                 data["match"]["type"],
                                 data["match"]["text"],
