@@ -1,3 +1,4 @@
+import math
 import random
 from nonebot.params import ArgPlainText
 from nonebot.typing import T_State
@@ -167,6 +168,7 @@ reply_command = on_command("reply", aliases={"调教"})
 async def handle_reply(
     state: T_State,
     matcher: Matcher,
+    bot: Bot,
     event: GroupMessageEvent,
     message: Message = CommandArg(),
 ):
@@ -218,6 +220,47 @@ async def handle_reply(
                 False,
                 True,
             )
+
+        elif argv[0] in ["list", "all", "列表", "查看全部", ""]:
+            try:
+                node_messages = [{
+                    "type": "node",
+                    "data": {
+                        "uin": event.self_id,
+                        "nickname": "XDbot2 Smart Reply",
+                        "content": lang.text("reply.list_title", [
+                            (page := int(argv[1]) if len(argv) >= 2 else 1),
+                            math.ceil(100 / len(rule_list := get_rules(event.group_id)))
+                        ], event.user_id)
+                    }
+                }]
+            except ValueError:
+                await finish("currency.wrong_argv", ["reply"], event.user_id, False, True)
+            for rule_id in rule_list[(page - 1) * 100:page * 100]:
+                node_messages.append({
+                    "type": "node",
+                    "data": {
+                        "uin": event.self_id,
+                        "nickname": "XDbot2 Smart Reply",
+                        "content": lang.text(
+                            "reply.show_data",
+                            [
+                                event.group_id,
+                                argv[1],
+                                (data := get_rule_data(event.group_id, rule_id))["user_id"],
+                                data["match"]["type"],
+                                data["match"]["text"],
+                                data["reply"],
+                            ],
+                            event.user_id)
+                    }
+                })
+            await bot.call_api(
+                "send_group_forward_msg",
+                group_id=event.group_id,
+                messages=node_messages
+            )
+            
 
         else:
             await finish("reply.need_argv", [], event.user_id)
