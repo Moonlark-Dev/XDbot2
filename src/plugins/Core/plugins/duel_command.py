@@ -32,6 +32,8 @@ async def init_monomer(bot: Bot, user_id: int) -> Monomer:
 async def init_duel(bot: Bot, active_user_id: int, passive_user_id: int) -> Scheduler:
     active_contingent = Contingent([await init_monomer(bot, active_user_id)])
     passive_contingent = Contingent([await init_monomer(bot, passive_user_id)])
+    active_contingent.enemy = passive_contingent
+    passive_contingent.enemy = active_contingent
     return Scheduler(active_contingent, passive_contingent)
 
 
