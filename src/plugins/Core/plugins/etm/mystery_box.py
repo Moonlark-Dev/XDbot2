@@ -161,16 +161,17 @@ class MysteryBoxLv3(MysteryBoxLevel1):
                     "count": [1, 1],
                     "data": {"kit": "scrorching_sun_phantom"},
                 },
+            ],
+            "legend": [
+                {"item_id": "mysterybox_lv3", "count": [1, 2]},
+                {"item_id": "weapons", "count": [1, 1], "data": {"kit": "ice_king"}},
+                {"item_id": "ball", "count": [1, 1], "data": {"kit": "ice_king"}},
+
                 {
                     "item_id": "ball",
                     "count": [1, 1],
                     "data": {"kit": "scrorching_sun_phantom"},
-                },
-                {"item_id": "weapons", "count": [1, 1], "data": {"kit": "ice_king"}},
-            ],
-            "legend": [
-                {"item_id": "mysterybox_lv3", "count": [1, 2]},
-                {"item_id": "ball", "count": [1, 1], "data": {"kit": "ice_king"}},
+                }
             ],
         }
 
