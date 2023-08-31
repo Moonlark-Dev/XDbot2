@@ -58,6 +58,7 @@ def create_group_command(cmd: str, aliases: set = set(), **kwargs):
 
     return deco
 
+
 async def send_text(
     key: str,
     _format: list = [],
