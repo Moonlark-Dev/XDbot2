@@ -42,7 +42,7 @@ class Item:
                 text("currency.ok", [], self.user_id)
             ]
         except AttributeError:
-            return (await self.use(arg)) or [text("currency.ok", [], self.user_id)]
+            return (self.use(arg)) or [text("currency.ok", [], self.user_id)]
 
     def use(self, args):
         try:
