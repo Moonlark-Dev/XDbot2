@@ -1,4 +1,3 @@
-from plugins.Core.plugins import duel
 from ._utils import *
 import asyncio
 from .duel.contingent import Contingent
