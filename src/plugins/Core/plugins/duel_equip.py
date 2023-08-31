@@ -1,4 +1,3 @@
-from typing import LiteralString
 from ._utils import *
 from .duel.monomer import load_json, Monomer
 
@@ -8,7 +7,7 @@ def get_user_equip(user_id: int, _type: str = "weapons") -> dict:
     return load_json(f"kits/{equip}.json")
 
 
-def get_weakness(user_id: int) -> LiteralString:
+def get_weakness(user_id: int) -> str:
     monomer = Monomer(
         Json(f"duel/u{user_id}.json").get("weapons", "leather_case"),
         Json(f"duel/u{user_id}.json").get("relics", {}),
