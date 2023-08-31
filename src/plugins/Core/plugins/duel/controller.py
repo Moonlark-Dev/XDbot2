@@ -7,5 +7,5 @@ class Controller:
         print(message, end="")
 
     def create_logger_block(self, message: str = ""):
-        self.logs.append([message])
+        self.logs.append(message)
         print(message, end="")
