@@ -94,11 +94,7 @@ class MysteryBoxLevel1(Item):
                     "count": [1, 1],
                     "data": {"kit": "scrorching_sun_phantom"},
                 },
-                {
-                    "item_id": "ball",
-                    "count": [1, 1],
-                    "data": {"kit": "leather_case"},
-                },
+                {"item_id": "ball", "count": [1, 1], "data": {"kit": "leather_case"}},
             ],
         }
 
@@ -174,7 +170,7 @@ class MysteryBoxLv3(MysteryBoxLevel1):
             ],
             "legend": [
                 {"item_id": "mysterybox_lv3", "count": [1, 2]},
-                {"item_id": "ball", "count": [1, 1], "data": {"kit": "ice_king"}}
+                {"item_id": "ball", "count": [1, 1], "data": {"kit": "ice_king"}},
             ],
         }
 
