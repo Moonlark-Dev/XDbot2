@@ -39,7 +39,7 @@
             "effect": [
                 {
                     "function": "add_hp",
-                    "value": 0.2
+                    "value": 0.25
                 }
             ]
         }
