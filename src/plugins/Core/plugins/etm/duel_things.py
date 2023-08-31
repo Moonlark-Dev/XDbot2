@@ -14,7 +14,9 @@ class Weapons(Item):
         if not self.data["useable"]:
             return ["失败：物品无法被使用"]
         if not argv:
-            old_weapon = Json(f"duel/u{self.user_id}.json").get("weapons", "leather_case")
+            old_weapon = Json(f"duel/u{self.user_id}.json").get(
+                "weapons", "leather_case"
+            )
             Json(f"duel/u{self.user_id}.json")["weapons"] = self.data["kit"]
             self.data["kit"] = old_weapon
             self._after_register()
@@ -40,7 +42,6 @@ class Ball(Item):
             kit_data := load_json(f"kits/{self.data['kit']}.json")
         )["ball"]["name"]
         self.data["display_message"] = f"所属套装：{kit_data['name']}\n" "面位球（暂无说明）"
-
 
     def use(self, argv: str):
         if not self.data["useable"]:
