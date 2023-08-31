@@ -52,7 +52,7 @@ def parse_result_node_messages(bot: Bot, scheduler: Scheduler):
 async def handle_duel_command(bot, event: GroupMessageEvent, message: Message):
     if event.user_id not in duel_requests.keys():
         await finish("duel.no_request", [], event.user_id)
-    if event.group_id != duel_requests[event.user_id]:
+    if event.group_id != duel_requests[event.user_id]["user_id"]:
         await finish("duel.no_request", [], event.user_id)
     if duel_requests[event.user_id]["accepted"]:
         await finish("duel.no_request", [], event.user_id)
