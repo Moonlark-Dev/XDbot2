@@ -32,7 +32,7 @@ async def show_equip(event: MessageEvent, argv: list[str]) -> None:
                     # 遗器（保留位置）
                     ball_kit_data["ball"]["name"],
                     ball_kit_data["level"],
-                    get_weakness(event.user_id),
+                    get_weakness(event.user_id) or "无",    # 不写本地化是因为没什么必要
                 ],
                 event.user_id,
                 False,
