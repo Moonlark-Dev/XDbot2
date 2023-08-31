@@ -1,9 +1,11 @@
 from ._utils import *
 from .duel.monomer import load_json, Monomer
 
+
 def get_user_equip(user_id: int, _type: str = "weapons") -> str:
     equip = Json(f"duel/u{user_id}.json").get(_type, "leather_case")
     return load_json(f"kits/{equip}.json")
+
 
 def get_weakness(user_id: int):
     monomer = Monomer(
@@ -11,9 +13,10 @@ def get_weakness(user_id: int):
         Json(f"duel/u{user_id}.json").get("relics", {}),
         Json(f"duel/u{user_id}.json").get("ball", "leather_case"),
         100,
-        f"u{user_id}"
+        f"u{user_id}",
     )
     return " ".join(monomer.get_weakness())
+
 
 async def show_equip(event: MessageEvent, argv: list[str]) -> None:
     match argv[1]:
@@ -22,16 +25,20 @@ async def show_equip(event: MessageEvent, argv: list[str]) -> None:
                 "duel_equip.show_euqip",
                 [
                     event.user_id,
-                    (weapon_kit_data := get_user_equip(event.user_id, "weapons"))["weapons"]["name"],
+                    (weapon_kit_data := get_user_equip(event.user_id, "weapons"))[
+                        "weapons"
+                    ]["name"],
                     weapon_kit_data["level"],
                     # 遗器
-                    (ball_kit_data := get_user_equip(event.user_id, "ball"))["ball"]["name"],
+                    (ball_kit_data := get_user_equip(event.user_id, "ball"))["ball"][
+                        "name"
+                    ],
                     ball_kit_data["level"],
-                    get_weakness()
+                    get_weakness(),
                 ],
                 event.user_id,
                 False,
-                True
+                True,
             )
 
 
