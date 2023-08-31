@@ -44,7 +44,11 @@ def parse_result_node_messages(bot: Bot, scheduler: Scheduler):
         node_messages.append(
             {
                 "type": "node",
-                "data": {"uin": bot.self_id, "nickname": "XDbot2 Duel", "content": log.replace("[", "\\[")},
+                "data": {
+                    "uin": bot.self_id,
+                    "nickname": "XDbot2 Duel",
+                    "content": log.replace("[", "\\["),
+                },
             }
         )
     return node_messages
