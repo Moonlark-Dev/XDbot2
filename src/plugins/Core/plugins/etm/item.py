@@ -2,6 +2,7 @@ from .item_basic_data import BASIC_DATA
 import traceback
 from .economy import IllegalQuantityException
 from .nbt import NbtDict
+from .._lang import text
 
 
 class Item:
@@ -33,9 +34,15 @@ class Item:
     def use_item(self):
         ...
 
-    def use(self, args):
+    async def on_use(self, arg):
         if not self.data["useable"]:
             return ["失败：物品无法被使用"]
+        try:
+            return (await self.async_use(arg)) or [text("currency.ok", [], self.user_id)]
+        except AttributeError:
+            return (await self.use(arg)) or [text("currency.ok", [], self.user_id)]
+
+    def use(self, args):
 
         try:
             count = int(args)

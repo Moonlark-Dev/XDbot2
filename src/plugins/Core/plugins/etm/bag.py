@@ -95,8 +95,4 @@ def add_item(user_id, item_id, item_count=1, item_data={}):
 
 async def use_item(user_id, item_pos, argv=""):
     user_id = str(user_id)
-    try:
-        # print(user_id, item_pos, bags[user_id])
-        return bags[user_id][item_pos].use(argv)
-    except NameError:
-        return await bags[user_id][item_pos].async_use(argv)
+    return await bags[user_id][item_pos].on_use(argv)
