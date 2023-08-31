@@ -1,11 +1,12 @@
+from plugins.Core.plugins import duel
 from ._utils import *
 import asyncio
 from .duel.contingent import Contingent
 from .duel.monomer import Monomer
+import time
 from .duel.scheduler import Scheduler
 
 duel_requests = {}
-
 
 @create_group_command("duel")
 async def handle_duel_command(bot, event: GroupMessageEvent, message: Message) -> None:
@@ -14,9 +15,24 @@ async def handle_duel_command(bot, event: GroupMessageEvent, message: Message) -
         "accepted": False,
         "active": event.user_id,
         "group_id": event.group_id,
+        "time": (create_time := time.time())
     }
     await send_text("duel.duel_request", [passive_qq, event.user_id], passive_qq)
-    # 过期后删除
+    
+    async def remove_data() -> None:
+        await asyncio.sleep(180)
+        if passive_qq not in duel_requests.keys():
+            return
+        if duel_requests["active"] != event.user_id:
+            return
+        if duel_requests["group_id"] != event.group_id:
+            return
+        if duel_requests["time"] != create_time:
+            return
+        duel_requests.pop(passive_qq)
+    
+    asyncio.create_task(remove_data())
+
 
 
 async def init_monomer(bot: Bot, user_id: int) -> Monomer:
@@ -50,8 +66,21 @@ def parse_result_node_messages(bot: Bot, scheduler: Scheduler):
     return node_messages
 
 
+@create_group_command("duel-refuse")
+async def handle_duel_refuse_command(bot, event: GroupMessageEvent, message: Message):
+    if event.user_id not in duel_requests.keys():
+        await finish("duel.no_request", [], event.user_id)
+    if event.group_id != duel_requests[event.user_id]["group_id"]:
+        await finish("duel.no_request", [], event.user_id)
+    if duel_requests[event.user_id]["accepted"]:
+        await finish("duel.no_request", [], event.user_id)
+    duel_requests.pop(event.user_id)
+    await finish("currency.ok", [], event.user_id)
+
+
+
 @create_group_command("duel-accept")
-async def handle_duel_command(bot, event: GroupMessageEvent, message: Message):
+async def handle_duel_accept_command(bot, event: GroupMessageEvent, message: Message):
     if event.user_id not in duel_requests.keys():
         await finish("duel.no_request", [], event.user_id)
     if event.group_id != duel_requests[event.user_id]["group_id"]:
