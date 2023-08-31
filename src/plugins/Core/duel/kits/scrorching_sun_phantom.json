@@ -21,8 +21,8 @@
                     "target": 1,
                     "range": 1,
                     "buff": "burn",
-                    "cling": 5,
-                    "probability": 0.25,
+                    "cling": 4,
+                    "probability": 0.27,
                     "data": {}
                 }
             ],

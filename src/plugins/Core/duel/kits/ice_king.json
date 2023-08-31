@@ -21,7 +21,7 @@
                     "target": 1,
                     "range": 1,
                     "buff": "freezing",
-                    "cling": 3,
+                    "cling": 2,
                     "probability": 0.2,
                     "data": {}
                 }
