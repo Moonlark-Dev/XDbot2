@@ -19,7 +19,7 @@ def get_weakness(user_id: int):
 
 
 async def show_equip(event: MessageEvent, argv: list[str]) -> None:
-    match get_list_item(argv, 1):
+    match get_list_item(argv, 1, ""):
         case "":
             await finish(
                 "duel_equip.show_euqip",
