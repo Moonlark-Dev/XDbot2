@@ -1,6 +1,6 @@
 {
     "name": "寒冰王者",
-    "rarity": 1,
+    "level": 1,
     "weapons": {
         "name": "冰之刃",
         "element": "冰",
