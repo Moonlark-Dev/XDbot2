@@ -35,7 +35,7 @@ class Ball(Item):
         self.basic_data["maximum_stack"] = 1
         self.basic_data["price"] = 40
         self.item_id = "ball"
-        self.basic_data["useable"] = False
+        self.basic_data["useable"] = True
 
     def _after_register(self):
         self.data["display_name"] = (
