@@ -276,8 +276,8 @@
   "reply.show_data": "「调教数据（#{}）」\n投稿者：{}\n触发器类型：{}\n触发文本：{}\n回复文本：{}",
 
   "duel_equip.show_euqip": "「当前装备（{}）」\n武器：{} (Lv: {})\n遗器：<未解锁>\n面位球：{} (Lv: {})\n弱点：{}",
-
-
+  "duel.duel_request": "[CQ:at,qq={}] [DL] [CQ:at,qq={}] 向你发送了一个决斗申请。\n \n使用「/duel-accept」接受\n使用「/duel-refuse」拒绝\n \n请求将在三分钟后过期",
+  "duel.no_request": "[DL] 错误：没有可用决斗申请",
 
   "currency.no_money": "余额不足！（需要 {} vim）",
   "currency.ok": "完成！",

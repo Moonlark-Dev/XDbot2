@@ -41,6 +41,23 @@ def create_command(cmd: str, aliases: set = set(), **kwargs):
     return deco
 
 
+def create_group_command(cmd: str, aliases: set = set(), **kwargs):
+    matcher = on_command(cmd, aliases=aliases, **kwargs)
+
+    def deco(func):
+        async def handler(
+            bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()
+        ):
+            try:
+                await func(bot, event, message)
+            except:
+                await error.report()
+
+        matcher.append_handler(handler)
+        return handler
+
+    return deco
+
 async def send_text(
     key: str,
     _format: list = [],
