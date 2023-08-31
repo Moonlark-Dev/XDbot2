@@ -77,6 +77,15 @@ async def handle_duel_refuse_command(bot, event: GroupMessageEvent, message: Mes
     duel_requests.pop(event.user_id)
     await finish("currency.ok", [], event.user_id)
 
+# [HELPSTART] Version: 2
+# Command: duel
+# Msg: 决斗系统
+# Info: 决斗系统（公开测试） [*group]
+# Usage: duel-equip：查看装备
+# Usage: duel <@用户>：发起决斗请求
+# Usage: duel-accept：接受决斗请求
+# Usage duel-refuse：拒绝决斗请求
+# [HELPEND]
 
 @create_group_command("duel-accept")
 async def handle_duel_accept_command(bot, event: GroupMessageEvent, message: Message):
