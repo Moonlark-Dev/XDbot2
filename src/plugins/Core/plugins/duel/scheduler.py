@@ -23,7 +23,7 @@ class Scheduler:
             self.start_round()
 
     def create_round_logger(self):
-        self.controller.create_logger_block("\n======【回合开始】======\n")
+        self.controller.create_logger_block("======【回合开始】======\n")
         for i in range(len(self.monomers)):
             if not self.monomers[i].data.get("is_roundboundaries", False):
                 self.controller.add_logger(
