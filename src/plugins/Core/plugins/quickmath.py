@@ -99,8 +99,8 @@ async def send_quick_math() -> None:
                 matcher.destroy()
                 answered = True
                 Json(f"quickmath/u{event.user_id}.json")["points"] = (
-                        Json(f"quickmath/u{event.user_id}.json").get("points", 0)
-                        + add_points
+                    Json(f"quickmath/u{event.user_id}.json").get("points", 0)
+                    + add_points
                 )
                 Json("quickmath/group_unanswered.json")[str(event.group_id)] = 0
             except:
@@ -157,7 +157,10 @@ async def quick_math_command(
 @on_message().handle()
 async def reset_group_unanswered(event: GroupMessageEvent) -> None:
     if Json("quickmath/group_unanswered.json").get(f"{event.group_id}", 0) >= 3:
-        Json("quickmath/group_unanswered.json")[f"{event.group_id}"] = int(random.choice("011222"))
+        Json("quickmath/group_unanswered.json")[f"{event.group_id}"] = int(
+            random.choice("011222")
+        )
+
 
 # [HELPSTART] Version: 2
 # Command: quick-math
