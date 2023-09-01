@@ -4,9 +4,8 @@ import os.path
 from typing import Any
 
 # 快捷访问
-from nonebot import on_shell_command
+from nonebot import on_message
 from nonebot import on_command
-from nonebot.rule import ArgumentParser
 from nonebot.permission import SUPERUSER
 from nonebot.params import CommandArg
 from nonebot.matcher import Matcher

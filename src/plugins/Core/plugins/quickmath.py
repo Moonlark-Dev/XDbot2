@@ -12,13 +12,13 @@ import asyncio
 
 
 require("nonebot_plugin_apscheduler")
-eggs = {
-    "0/0=?": "regex>([nN][aA][nN])|(0)",
-    "1/0=?": "regex>[iI][nN][fF]",
-    "creeper?": "regex>[aA][wW]+.*?[mM][aA][N](.*?)",
-    "undefined+undefined=?": "regex>[nN][aA][nN]|[uU][nN][dD][fF][iI][nN][eE][dD]",
-    "114+514=?": "regex>哼+啊+|114|514|114514|1919|810|1919810",
-}
+# eggs = {
+#     "0/0=?": "regex>([nN][aA][nN])|(0)",
+#     "1/0=?": "regex>[iI][nN][fF]",
+#     "creeper?": "regex>[aA][wW]+.*?[mM][aA][N](.*?)",
+#     "undefined+undefined=?": "regex>[nN][aA][nN]|[uU][nN][dD][fF][iI][nN][eE][dD]",
+#     "114+514=?": "regex>哼+啊+|114|514|114514|1919|810|1919810",
+# }
 
 
 def render_question(question_string: str) -> bytes:
@@ -52,7 +52,7 @@ def check_group(group_id: int) -> bool:
     )
 
 
-def generate_question():
+def generate_question() -> tuple:
     if random.random() <= 0.5:
         question = (
             f"{random.randint(0, 50)}{random.choice('+-*')}{random.randint(1, 50)}"
@@ -70,7 +70,7 @@ def generate_question():
 
 
 @scheduler.scheduled_job("cron", minute="*/2", id="send_quick_math")
-async def send_quick_math():
+async def send_quick_math() -> None:
     try:
         if not check_group(group := get_group()):
             return
@@ -121,7 +121,7 @@ async def send_quick_math():
 @on_command("quick-math", aliases={"qm"}).handle()
 async def quick_math_command(
     matcher: Matcher, event: GroupMessageEvent, message: Message = CommandArg()
-):
+) -> None:
     try:
         groups = json.load(
             open("data/quick_math.enabled_groups.json", encoding="utf-8")
@@ -150,10 +150,14 @@ async def quick_math_command(
         json.dump(
             groups, open("data/quick_math.enabled_groups.json", "w", encoding="utf-8")
         )
-        # refresh_group_unanswered(groups)
     except BaseException:
         await error.report()
 
+
+@on_message().handle()
+async def reset_group_unanswered(event: GroupMessageEvent) -> None:
+    if Json("quickmath/group_unanswered.json").get(f"{event.group_id}", 0) >= 3:
+        Json("quickmath/group_unanswered.json")[f"{event.group_id}"] = int(random.choice("011222"))
 
 # [HELPSTART] Version: 2
 # Command: quick-math
