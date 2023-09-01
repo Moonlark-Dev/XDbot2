@@ -110,15 +110,18 @@ async def send_quick_math():
         if not answered:
             matcher.destroy()
             await bot.delete_msg(message_id=msg_id)
-            Json("quickmath/group_unanswered.json")[str(group)] = Json(
-                "quickmath/group_unanswered.json").get(str(group), 0) + 1
+            Json("quickmath/group_unanswered.json")[str(group)] = (
+                Json("quickmath/group_unanswered.json").get(str(group), 0) + 1
+            )
 
     except:
         await error.report()
 
 
 @on_command("quick-math", aliases={"qm"}).handle()
-async def quick_math_command(matcher: Matcher, event: GroupMessageEvent, message: Message = CommandArg()):
+async def quick_math_command(
+    matcher: Matcher, event: GroupMessageEvent, message: Message = CommandArg()
+):
     try:
         groups = json.load(
             open("data/quick_math.enabled_groups.json", encoding="utf-8")
@@ -136,10 +139,14 @@ async def quick_math_command(matcher: Matcher, event: GroupMessageEvent, message
         else:
             if event.group_id in groups:
                 groups.pop(groups.index(event.group_id))
-                await matcher.send(lang.text("quick_math.disable", [], event.get_user_id()))
+                await matcher.send(
+                    lang.text("quick_math.disable", [], event.get_user_id())
+                )
             else:
                 groups.append(event.group_id)
-                await matcher.send(lang.text("quick_math.enable", [], event.get_user_id()))
+                await matcher.send(
+                    lang.text("quick_math.enable", [], event.get_user_id())
+                )
         json.dump(
             groups, open("data/quick_math.enabled_groups.json", "w", encoding="utf-8")
         )
