@@ -35,7 +35,8 @@ def assign_ranks(users: list[dict[str, str | int]]) -> list[dict[str, str | int]
 def format_time(seconds):
     h = int(seconds / 3600)
     m = int(seconds / 60) % 60
-    return f"{h}:{m}"
+    s = seconds % 60
+    return f"{h}:{m}:{s}"
 
 
 def search_user_in_ranking(
@@ -44,7 +45,7 @@ def search_user_in_ranking(
     for user in ranked_users:
         if user_id == user["user_id"]:
             return user
-    return {"user_id": user_id, "points": 0, "ranking": None}
+    return {"user_id": user_id, "points": 0, "ranking": 999}
 
 
 @create_command("qm-point", aliases={"quick-math-point", "qm-p", "qm-pr"})
@@ -62,7 +63,7 @@ async def handle_qm_point_command(
     users = assign_ranks(sorted(users, key=lambda x: x["points"], reverse=True))
     reply_text = lang.text(
         "quickmath_points.ranking_title",
-        [format_time(int((int((time.time() - 28800) / 86400) + 1) * 86400 - time.time()))],
+        [format_time(int((int((time.time()) / 86400) + 1) * 86400  - 28800 - time.time()))],
         event.user_id,
     )
     for user in users[:13]:
