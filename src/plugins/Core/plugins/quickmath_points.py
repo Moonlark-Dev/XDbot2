@@ -75,7 +75,7 @@ async def handle_qm_point_command(
             ],
             event.user_id,
         )
-    reply_text += "\n" + lang.text("sign.hr", [], event.user_id)
+    reply_text += "\n" + lang.text("sign.hr", [], event.user_id) + "\n"
     reply_text += lang.text(
         "quickmath_points.ranking_item",
         [
