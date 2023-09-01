@@ -64,7 +64,7 @@ def generate_question() -> tuple:
         a, b = random.randint(1, 10), random.randint(1, 10)
         eq = Eq(a * x + b, random.randint(1, 50))  # type: ignore
         ans = solve(eq)
-        question = latex(eq)
+        question = latex(eq).replace(" ", "")
         answer = [(tmp := str(ans).replace("[", "").replace("]", "")), str(eval(tmp))]
     return question, answer
 

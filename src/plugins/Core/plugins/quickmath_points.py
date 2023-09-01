@@ -40,7 +40,8 @@ async def reset_point():
                 {"id": "exp", "count": user["rewards"]["exp"], "data": {}},
             ],
         )
-        Json(f"quickmath/u{user}.json")["points"] = 0
+        Json(f"quickmath/u{user['user_id']}.json")["points"] = 0
+    Json(f"quickmath/global.json")["count"] = 0
 
 
 def assign_rewards(
