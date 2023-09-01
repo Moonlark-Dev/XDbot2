@@ -55,11 +55,10 @@ def check_group(group_id: int) -> bool:
 def generate_question():
     if random.random() <= 0.5:
         question = (
-            f"{random.randint(0, 50)}{random.choice('+-*/')}{random.randint(1, 50)}"
+            f"{random.randint(0, 50)}{random.choice('+-*')}{random.randint(1, 50)}"
         )
         answer = [
-            str(tmp := eval(question)),
-            f"{(tmp := float.as_integer_ratio(tmp))[0]}/{tmp[1]}",
+            str(tmp := eval(question))
         ]
         question += "=?"
     else:
