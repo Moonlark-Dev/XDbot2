@@ -57,9 +57,7 @@ def generate_question():
         question = (
             f"{random.randint(0, 50)}{random.choice('+-*')}{random.randint(1, 50)}"
         )
-        answer = [
-            str(tmp := eval(question))
-        ]
+        answer = [str(tmp := eval(question))]
         question += "=?"
     else:
         x = Symbol("x")
