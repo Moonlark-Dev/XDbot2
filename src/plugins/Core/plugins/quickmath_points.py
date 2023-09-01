@@ -19,41 +19,38 @@ async def reset_point():
                 "points": Json(f"quickmath/u{user}.json").get("points", 0),
             }
         )
-    users = assign_rewards(assign_ranks(sorted(users, key=lambda x: x["points"], reverse=True)))
+    users = assign_rewards(
+        assign_ranks(sorted(users, key=lambda x: x["points"], reverse=True))
+    )
     for user in users:
         await send_email(
             user["user_id"],
             lang.text("quickmath_points.email_title", [], user["user_id"]),
-            lang.text("quickmath_points.email_text", [
-                time.strftime("%Y/%m/%d", time.localtime(time.time() - 43200)),
-                user["points"],
-                user["ranking"]
-            ], user["user_id"]),
+            lang.text(
+                "quickmath_points.email_text",
+                [
+                    time.strftime("%Y/%m/%d", time.localtime(time.time() - 43200)),
+                    user["points"],
+                    user["ranking"],
+                ],
+                user["user_id"],
+            ),
             [
-                {
-                    "id": "vimcoin",
-                    "count": user["rewards"]["vimcoin"],
-                    "data": {}
-                },
-                {
-                    "id": "exp",
-                    "count": user["rewards"]["exp"],
-                    "data": {}
-                }
-            ]
+                {"id": "vimcoin", "count": user["rewards"]["vimcoin"], "data": {}},
+                {"id": "exp", "count": user["rewards"]["exp"], "data": {}},
+            ],
         )
         Json(f"quickmath/u{user}.json")["points"] = 0
 
 
-def assign_rewards(ranked_users: list[dict[str, str | int | dict]]) -> list[dict[str, str | int | dict]]:
+def assign_rewards(
+    ranked_users: list[dict[str, str | int | dict]]
+) -> list[dict[str, str | int | dict]]:
     answered_count = Json(f"quickmath/global.json").get("count", 0)
     user_list = ranked_users.copy()
     for i in range(len(user_list)):
         user = user_list[i]
-        user["rewards"] = {
-            "vimcoin": answered_count * 4,
-            "exp": answered_count * 4
-        }
+        user["rewards"] = {"vimcoin": answered_count * 4, "exp": answered_count * 4}
     for i in range(math.ceil(len(user_list) * 0.75)):
         user = user_list[i]
         user["rewards"]["vimcoin"] += answered_count * 3

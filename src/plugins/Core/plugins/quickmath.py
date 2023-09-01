@@ -104,8 +104,7 @@ async def send_quick_math() -> None:
                 )
                 Json("quickmath/group_unanswered.json")[str(event.group_id)] = 0
                 Json(f"quickmath/global.json")["count"] = (
-                        Json(f"quickmath/global.json").get("count", 0)
-                        + 1
+                    Json(f"quickmath/global.json").get("count", 0) + 1
                 )
             except:
                 await error.report()
