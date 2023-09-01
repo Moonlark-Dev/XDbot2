@@ -1,7 +1,7 @@
 from io import BytesIO
 import time
-import json
 from ._utils import *
+import json
 import random
 from sympy import Symbol, Eq, solve, latex
 from nonebot_plugin_apscheduler import scheduler
@@ -91,16 +91,16 @@ async def send_quick_math() -> None:
             try:
                 await send_text(
                     "quick_math.rightanswer1",
-                    [(add_score := int(2 * (20 - time.time() + send_time)))],
+                    [(add_points := int(2 * (20 - time.time() + send_time)))],
                     event.user_id,
                     False,
                     True,
                 )
                 matcher.destroy()
                 answered = True
-                Json(f"etm/{event.user_id}/quickmath.json")["score"] = (
-                    Json(f"etm/{event.user_id}/quickmath.json").get("score", 0)
-                    + add_score
+                Json(f"quickmath/u{event.user_id}.json")["points"] = (
+                        Json(f"quickmath/u{event.user_id}.json").get("points", 0)
+                        + add_points
                 )
                 Json("quickmath/group_unanswered.json")[str(event.group_id)] = 0
             except:
