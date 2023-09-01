@@ -92,7 +92,7 @@ async def send_quick_math():
                 await send_text(
                     "quick_math.rightanswer",
                     [(add_score := 2 * (time.time() - send_time))],
-                    evnet.user_id,
+                    event.user_id,
                     True,
                     True,
                 )
