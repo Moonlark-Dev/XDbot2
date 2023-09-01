@@ -35,7 +35,7 @@ def assign_ranks(users: list[dict[str, str | int]]) -> list[dict[str, str | int]
 def format_time(seconds):
     h = int(seconds / 3600)
     m = int(seconds / 60) % 60
-    return f"{h}h{m}min"
+    return f"{h}:{m}'"
 
 
 def search_user_in_ranking(
