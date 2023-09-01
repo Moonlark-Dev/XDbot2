@@ -21,6 +21,7 @@ from nonebot.adapters.onebot.v11 import Message
 
 SUCCESS: bool = True
 FAILED: bool = False
+SKIP: None = None
 
 
 def create_command(cmd: str, aliases: set = set(), **kwargs):
