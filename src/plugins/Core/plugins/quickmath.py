@@ -57,7 +57,7 @@ def generate_question():
         question = (
             f"{random.randint(0, 50)}{random.choice('+-*')}{random.randint(1, 50)}"
         )
-        answer = [str(tmp := eval(question))]
+        answer = [str(eval(question))]
         question += "=?"
     else:
         x = Symbol("x")
@@ -102,6 +102,7 @@ async def send_quick_math():
                     Json(f"etm/{event.user_id}/quickmath.json").get("score", 0)
                     + add_score
                 )
+                Json("quickmath/group_unanswered.json")[str(event.group_id)] = 0
             except:
                 await error.report()
 
@@ -109,6 +110,47 @@ async def send_quick_math():
         if not answered:
             matcher.destroy()
             await bot.delete_msg(message_id=msg_id)
+            Json("quickmath/group_unanswered.json")[str(group)] = Json(
+                "quickmath/group_unanswered.json").get(str(group), 0) + 1
 
     except:
         await error.report()
+
+
+@on_command("quick-math", aliases={"qm"}).handle()
+async def quick_math_command(matcher: Matcher, event: GroupMessageEvent, message: Message = CommandArg()):
+    try:
+        groups = json.load(
+            open("data/quick_math.enabled_groups.json", encoding="utf-8")
+        )
+        if str(message) in ["on", "enable", "开启", "启用"]:
+            if event.group_id not in groups:
+                groups.append(event.group_id)
+            await matcher.send(lang.text("quick_math.enable", [], event.get_user_id()))
+        elif str(message) in ["off", "disable", "关闭", "禁用"]:
+            try:
+                groups.pop(groups.index(event.group_id))
+            except IndexError:
+                pass
+            await matcher.send(lang.text("quick_math.disable", [], event.get_user_id()))
+        else:
+            if event.group_id in groups:
+                groups.pop(groups.index(event.group_id))
+                await matcher.send(lang.text("quick_math.disable", [], event.get_user_id()))
+            else:
+                groups.append(event.group_id)
+                await matcher.send(lang.text("quick_math.enable", [], event.get_user_id()))
+        json.dump(
+            groups, open("data/quick_math.enabled_groups.json", "w", encoding="utf-8")
+        )
+        # refresh_group_unanswered(groups)
+    except BaseException:
+        await error.report()
+
+
+# [HELPSTART] Version: 2
+# Command: quick-math
+# Usage: qm {on|off}
+# Info: 开启/关闭速算
+# Msg: 速算
+# [HELPEND]
