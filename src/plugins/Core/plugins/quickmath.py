@@ -167,7 +167,8 @@ async def reset_group_unanswered(event: GroupMessageEvent) -> None:
 
 # [HELPSTART] Version: 2
 # Command: quick-math
-# Usage: qm {on|off}
-# Info: 开启/关闭速算
+# Usage: qm {on|off}：开启/关闭速算
+# Usage: qm-p：查看速算积分排行
+# Info: 速算
 # Msg: 速算
 # [HELPEND]
