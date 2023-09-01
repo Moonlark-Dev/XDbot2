@@ -42,6 +42,7 @@ async def reset_point():
                 }
             ]
         )
+        Json(f"quickmath/u{user}.json")["points"] = 0
 
 
 def assign_rewards(ranked_users: list[dict[str, str | int | dict]]) -> list[dict[str, str | int | dict]]:
