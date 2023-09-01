@@ -1,6 +1,6 @@
 {
     "name": "皮革套",
-    "rarity": 1,
+    "level": 0,
     "weapons": {
         "name": "木斧",
         "element": "物理",
@@ -14,7 +14,7 @@
             "type": "attack",
             "attack": {
                 "type": "single",
-                "value": 0.93
+                "value": 0.90
             }
         },
         "gain": {
@@ -59,7 +59,7 @@
             "effect": [
                 {
                     "function": "verify_probabilities",
-                    "probability": 0.1
+                    "probability": 0.01
                 },
                 {
                     "function": "update_gain",

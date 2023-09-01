@@ -1,3 +1,4 @@
+import math
 import random
 from nonebot.params import ArgPlainText
 from nonebot.typing import T_State
@@ -8,29 +9,30 @@ from nonebot import on_message
 from ._utils import *
 from .su import su
 from .etm import economy
-from . import _smart_reply
+
+# from . import _smart_reply
 
 sent_messages = []
 
 
-@on_message().handle()
-async def handle_basic_reply_rule(bot: Bot, event: GroupMessageEvent):
-    global sent_messages
-    for key, item in list(_smart_reply.get_list().items()):
-        if item["group_id"] == event.group_id:
-            if re.match(item["matcher"], event.get_plaintext()):
-                sent_messages.append(
-                    {
-                        "message_id": (
-                            await bot.send_group_msg(
-                                message=Message(random.choice(item["text"])),
-                                group_id=event.group_id,
-                            )
-                        )["message_id"],
-                        "from_id": f"old/{key}",
-                    }
-                )
-                sent_messages = sent_messages[-20:]
+# @on_message().handle()
+# async def handle_basic_reply_rule(bot: Bot, event: GroupMessageEvent):
+#     global sent_messages
+#     for key, item in list(_smart_reply.get_list().items()):
+#         if item["group_id"] == event.group_id:
+#             if re.match(item["matcher"], event.get_plaintext()):
+#                 sent_messages.append(
+#                     {
+#                         "message_id": (
+#                             await bot.send_group_msg(
+#                                 message=Message(random.choice(item["text"])),
+#                                 group_id=event.group_id,
+#                             )
+#                         )["message_id"],
+#                         "from_id": f"old/{key}",
+#                     }
+#                 )
+#                 sent_messages = sent_messages[-20:]
 
 
 def get_rules(group_id: int):
@@ -41,8 +43,8 @@ def get_rules(group_id: int):
 
 
 def get_rule_data(group_id: int, rule_id: str):
-    if rule_id.startswith("old/"):
-        return _smart_reply.get_list()[rule_id.replace("old/", "")]
+    # if rule_id.startswith("old/"):
+    #     return _smart_reply.get_list()[rule_id.replace("old/", "")]
     return Json(f"reply/g{group_id}/{rule_id}.json").to_dict()
 
 
@@ -167,11 +169,15 @@ reply_command = on_command("reply", aliases={"调教"})
 async def handle_reply(
     state: T_State,
     matcher: Matcher,
+    bot: Bot,
     event: GroupMessageEvent,
     message: Message = CommandArg(),
 ):
     try:
-        argv = message.extract_plain_text().splitlines()[0].split(" ")
+        try:
+            argv = message.extract_plain_text().splitlines()[0].split(" ")
+        except IndexError:
+            argv = message.extract_plain_text().split(" ")
 
         if argv[0] in ["add", "添加"]:
             state["matcher_type"] = get_matcher_type(argv[1])
@@ -207,20 +213,77 @@ async def handle_reply(
             await finish(
                 "reply.show_data",
                 [
-                    event.group_id,
                     argv[1],
                     (data := get_rule_data(event.group_id, argv[1]))["user_id"],
                     data["match"]["type"],
                     data["match"]["text"],
-                    data["reply"],
+                    "\n· " + "\n· ".join(data["reply"]),
                 ],
                 event.user_id,
                 False,
                 True,
             )
 
+        elif argv[0] in ["list", "all", "列表", "查看全部", ""]:
+            try:
+                node_messages = [
+                    {
+                        "type": "node",
+                        "data": {
+                            "uin": event.self_id,
+                            "nickname": "XDbot2 Smart Reply",
+                            "content": lang.text(
+                                "reply.list_title",
+                                [
+                                    (page := int(argv[1]) if len(argv) >= 2 else 1),
+                                    math.ceil(
+                                        len(rule_list := get_rules(event.group_id))
+                                        / 100
+                                    ),
+                                ],
+                                event.user_id,
+                            ),
+                        },
+                    }
+                ]
+            except ValueError:
+                await finish(
+                    "currency.wrong_argv", ["reply"], event.user_id, False, True
+                )
+            for rule_id in rule_list[(page - 1) * 100 : page * 100]:
+                rule_id = rule_id.replace(".json", "")
+                node_messages.append(
+                    {
+                        "type": "node",
+                        "data": {
+                            "uin": event.self_id,
+                            "nickname": "XDbot2 Smart Reply",
+                            "content": lang.text(
+                                "reply.show_data",
+                                [
+                                    rule_id,
+                                    (data := get_rule_data(event.group_id, rule_id))[
+                                        "user_id"
+                                    ],
+                                    data["match"]["type"],
+                                    data["match"]["text"],
+                                    "\n· " + "\n· ".join(data["reply"]),
+                                ],
+                                event.user_id,
+                            ),
+                        },
+                    }
+                )
+            await bot.call_api(
+                "send_group_forward_msg",
+                group_id=event.group_id,
+                messages=node_messages,
+            )
+            await reply_command.finish()
+
         else:
             await finish("reply.need_argv", [], event.user_id)
+        await reply_command.finish()
 
     except:
         await error.report()

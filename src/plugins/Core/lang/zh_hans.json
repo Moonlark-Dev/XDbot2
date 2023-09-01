@@ -142,6 +142,7 @@
   "ghot.day": "群热度排行（今日排行）：\n",
   "ghot.total": "群热度排行（总排行）：\n",
   "quick_math.rightanswer": "回答正确，获得了：\n1. VimCoin x{}\n2. 经验 x{}",
+  "quick_math.rightanswer1": "回答正确！获得了 {} 速算积分",
   "quick_math.enable": "快速数学已在本群启用",
   "quick_math.disable": "快速数学已在本群禁用",
   "quick_calculus.enable": "快速微积分已在本群启用",
@@ -269,12 +270,20 @@
   "reply.reject": "[SR] 回复文本添加成功，您可以继续添加，或发送「finish」提交（发送「cancel」取消）",
   "reply.done": "【编号：{}】数据添加成功！",
   "reply.getsource": "「调教数据来源查询」\n数据编号：{}\n投稿者：{}",
-
   "reply.need_argv": "无效参数！使用「/help reply」获取更多信息",
   "reply.403": "权限不足！",
+  "reply.list_title": "「调教数据列表」\n当前页面：{}/{}\n使用 /reply list <页> 查看更多",
   "reply.not_found": "错误：数据不存在！",
-  "reply.show_data": "「调教数据（{}/{}）」\n投稿者：{}\n触发器类型：{}\n触发文本：{}\n回复文本：{}",
+  "reply.show_data": "「调教数据（#{}）」\n投稿者：{}\n触发器类型：{}\n触发文本：{}\n回复文本：{}",
 
+  "duel_equip.show_euqip": "「当前装备（{}）」\n武器：{} (Lv: {})\n遗器：<未解锁>\n面位球：{} (Lv: {})\n弱点：{}",
+  "duel.duel_request": "[CQ:at,qq={}] [DL] [CQ:at,qq={}] 向你发送了一个决斗申请。\n \n使用「/duel-accept」接受\n使用「/duel-refuse」拒绝\n \n请求将在三分钟后过期",
+  "duel.no_request": "[DL] 错误：没有可用决斗申请",
+
+  "quickmath_points.ranking_title": "「速算积分榜（剩余{}）」\n",
+  "quickmath_points.ranking_item": "{}. {}: {}\n",
+  "quickmath_points.email_title": "速算积分结算通知",
+  "quickmath_points.email_text": "您在 {} 日速算中获得了 {} 积分，排名第 {}。",
 
   "currency.no_money": "余额不足！（需要 {} vim）",
   "currency.ok": "完成！",

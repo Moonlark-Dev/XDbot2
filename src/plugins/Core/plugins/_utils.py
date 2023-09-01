@@ -4,9 +4,8 @@ import os.path
 from typing import Any
 
 # 快捷访问
-from nonebot import on_shell_command
+from nonebot import on_message
 from nonebot import on_command
-from nonebot.rule import ArgumentParser
 from nonebot.permission import SUPERUSER
 from nonebot.params import CommandArg
 from nonebot.matcher import Matcher
@@ -21,6 +20,7 @@ from nonebot.adapters.onebot.v11 import Message
 
 SUCCESS: bool = True
 FAILED: bool = False
+SKIP: None = None
 
 
 def create_command(cmd: str, aliases: set = set(), **kwargs):
@@ -29,6 +29,24 @@ def create_command(cmd: str, aliases: set = set(), **kwargs):
     def deco(func):
         async def handler(
             bot: Bot, event: MessageEvent, message: Message = CommandArg()
+        ):
+            try:
+                await func(bot, event, message)
+            except:
+                await error.report()
+
+        matcher.append_handler(handler)
+        return handler
+
+    return deco
+
+
+def create_group_command(cmd: str, aliases: set = set(), **kwargs):
+    matcher = on_command(cmd, aliases=aliases, **kwargs)
+
+    def deco(func):
+        async def handler(
+            bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()
         ):
             try:
                 await func(bot, event, message)

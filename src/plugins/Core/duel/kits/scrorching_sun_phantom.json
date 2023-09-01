@@ -1,6 +1,6 @@
 {
     "name": "炎日幻影",
-    "rarity": 1,
+    "level": 1,
     "weapons": {
         "name": "炙阳长剑",
         "element": "火",
@@ -21,8 +21,8 @@
                     "target": 1,
                     "range": 1,
                     "buff": "burn",
-                    "cling": 5,
-                    "probability": 0.25,
+                    "cling": 4,
+                    "probability": 0.27,
                     "data": {}
                 }
             ],

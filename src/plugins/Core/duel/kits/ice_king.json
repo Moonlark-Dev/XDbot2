@@ -1,6 +1,6 @@
 {
     "name": "寒冰王者",
-    "rarity": 1,
+    "level": 1,
     "weapons": {
         "name": "冰之刃",
         "element": "冰",
@@ -21,7 +21,7 @@
                     "target": 1,
                     "range": 1,
                     "buff": "freezing",
-                    "cling": 3,
+                    "cling": 2,
                     "probability": 0.2,
                     "data": {}
                 }
