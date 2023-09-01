@@ -86,18 +86,19 @@ async def send_quick_math():
         answered = False
 
         @matcher.handle()
-        async def handle_quickmath_answer(event: GroupMessageEvent):
+        async def handle_quickmath_answer(event: GroupMessageEvent) -> None:
             nonlocal answered
             try:
                 await send_text(
-                    "quick_math.rightanswer",
-                    [(add_score := 2 * (time.time() - send_time))],
+                    "quick_math.rightanswer1",
+                    [(add_score := int(2 * (20 - time.time() + send_time)))],
                     event.user_id,
-                    True,
+                    False,
                     True,
                 )
                 matcher.destroy()
                 answered = True
+                Json(f"etm/{event.user_id}/quickmath.json")["score"] = Json(f"etm/{event.user_id}/quickmath.json").get("score", 0) + add_score
             except:
                 await error.report()
 

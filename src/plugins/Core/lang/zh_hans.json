@@ -142,6 +142,7 @@
   "ghot.day": "群热度排行（今日排行）：\n",
   "ghot.total": "群热度排行（总排行）：\n",
   "quick_math.rightanswer": "回答正确，获得了：\n1. VimCoin x{}\n2. 经验 x{}",
+  "quick_math.rightanswer1": "回答正确！获得了 {} 速算积分",
   "quick_math.enable": "快速数学已在本群启用",
   "quick_math.disable": "快速数学已在本群禁用",
   "quick_calculus.enable": "快速微积分已在本群启用",
