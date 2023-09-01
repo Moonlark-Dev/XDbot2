@@ -63,7 +63,11 @@ async def handle_qm_point_command(
     users = assign_ranks(sorted(users, key=lambda x: x["points"], reverse=True))
     reply_text = lang.text(
         "quickmath_points.ranking_title",
-        [format_time(int((int((time.time()) / 86400) + 1) * 86400  - 28800 - time.time()))],
+        [
+            format_time(
+                int((int((time.time()) / 86400) + 1) * 86400 - 28800 - time.time())
+            )
+        ],
         event.user_id,
     )
     for user in users[:13]:
