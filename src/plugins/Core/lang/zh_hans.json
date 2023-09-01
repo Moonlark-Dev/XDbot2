@@ -282,6 +282,8 @@
 
   "quickmath_points.ranking_title": "「速算积分榜（剩余{}）」\n",
   "quickmath_points.ranking_item": "{}. {}: {}\n",
+  "quickmath_points.email_title": "速算积分结算通知",
+  "quickmath_points.email_text": "您在 {} 日速算中获得了 {} 积分，排名第 {}。",
 
   "currency.no_money": "余额不足！（需要 {} vim）",
   "currency.ok": "完成！",
