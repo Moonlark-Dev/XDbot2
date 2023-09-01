@@ -98,7 +98,10 @@ async def send_quick_math():
                 )
                 matcher.destroy()
                 answered = True
-                Json(f"etm/{event.user_id}/quickmath.json")["score"] = Json(f"etm/{event.user_id}/quickmath.json").get("score", 0) + add_score
+                Json(f"etm/{event.user_id}/quickmath.json")["score"] = (
+                    Json(f"etm/{event.user_id}/quickmath.json").get("score", 0)
+                    + add_score
+                )
             except:
                 await error.report()
 
