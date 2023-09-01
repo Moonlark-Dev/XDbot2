@@ -48,7 +48,7 @@ def search_user_in_ranking(
     return {"user_id": user_id, "points": 0, "ranking": None}
 
 
-@create_command("qm-point", aliases={"quick-math-point"})
+@create_command("qm-point", aliases={"quick-math-point", "qm-p", "qm-pr"})
 async def handle_qm_point_command(
     bot: Bot, event: MessageEvent, message: Message, matcher: Matcher = Matcher()
 ) -> None:
@@ -71,7 +71,7 @@ async def handle_qm_point_command(
             "quickmath_points.ranking_item",
             [
                 user["ranking"],
-                (await bot.get_stranger_info(user_id=int(user["user_id"])))["ncikname"],
+                (await bot.get_stranger_info(user_id=int(user["user_id"])))["nickname"],
                 user["points"],
             ],
             event.user_id,
