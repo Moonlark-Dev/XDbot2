@@ -29,7 +29,7 @@ def push_changes(command_name) -> str:
     return subprocess.Popen(["git", "push"], shell=True).communicate()[0].decode("utf-8")
 
 
-@create_command("create-mampage")
+@create_command("create-manpage")
 async def create_manpage(_bot: Bot, event: MessageEvent, message: Message, matcher: Matcher = Matcher()):
     session = await get_chatgpt_reply([{
         "role": "user",
