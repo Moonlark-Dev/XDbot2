@@ -41,6 +41,8 @@ def generate_prompt(command_help: dict) -> str:
 
 用法示例需要添加指令前缀`/`
 
+替换`<...>`时需要将`<`和`>`一并替换
+
 命令帮助如下：
 """
     prompt += (
