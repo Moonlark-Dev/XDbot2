@@ -42,7 +42,7 @@ async def create_manpage(_bot: Bot, event: MessageEvent, message: Message, match
         os.mkdir(f"docs/{message.extract_plain_text()}")
     except OSError:
         pass
-    with open(path := f"docs/{message.extract_plain_text()}/0.md", "w", encoding="urf-8") as f:
+    with open(path := f"docs/{message.extract_plain_text()}/0.md", "w", encoding="utf-8") as f:
         f.write(session["choices"][0]["message"]["content"])
     await send_text("create_manpage.saved", [path], event.user_id)
     await matcher.send(push_changes(message.extract_plain_text()))
