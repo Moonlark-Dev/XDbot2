@@ -11,7 +11,7 @@ async def get_command_help(command_name: str, user_id: int) -> dict | None:
 
 
 def generate_prompt(command_help: dict) -> str:
-    prompt = """请参考以下指令帮助，写一个类似的指令文档，需要包含名称、描述、权限、用法、示例（不包含输出示例）等信息，示例如下：
+    prompt = """请参考以下指令帮助，写一个指令文档，需要包含名称、描述、权限、用法、示例（不包含输出示例）等信息，示例如下：
 
 ```markdown
 # 指令帮助 —— 命令名
