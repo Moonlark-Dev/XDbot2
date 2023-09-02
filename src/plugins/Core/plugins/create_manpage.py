@@ -13,9 +13,9 @@ async def get_command_help(command_name: str, user_id: int) -> dict | None:
 
 def generate_prompt(command_help: dict) -> str:
     prompt = (
-        "请参考以下信息，写一个指令文档，需要包含命令名、介绍、权限、用法、用法示例等信息，允许使用 markdown，Reply me in Chinese\n\n"
+        "请参考以下指令帮助，写一个类似 Manpage 的指令文档，需要包含名称、描述、权限、用法、示例等信息，允许使用 markdown（但不能使用代码块），内容尽量详细，Reply me in Chinese\n\n"
         f"命令名：{command_help['name']}\n"
-        f"简介（[...]内为权限，以*开头，使用空格分割，没有则为 everyone）：{command_help['info']}\n"
+        f"简介（[...]内为权限，以*开头，使用空格分割，没有则为 *everyone）：{command_help['info']}\n"
         "所有用法（<...>为必要参数，[...]为可选参数，{...|...}为选择参数）："
     )
     for usage in command_help["usage"]:
