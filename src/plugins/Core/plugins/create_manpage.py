@@ -1,6 +1,7 @@
 # [DEVELOP]
 from ._utils import *
 import subprocess
+import os
 from .chatgptv2 import get_chatgpt_reply
 
 
@@ -22,8 +23,9 @@ def generate_prompt(command_help: dict) -> str:
 
 
 def push_changes(command_name) -> str:
+    subprocess.Popen(["git", "add", "-A"], shell=True).communicate()
     subprocess.Popen(
-        ["git", "commit", "-a", "-m", f"[add] Create manpage for {command_name}"],
+        ["git", "commit", "-m", f"[add] Create manpage for {command_name}"],
         shell=True).communicate()
     subprocess.Popen(["git", "pull"], shell=True).communicate()
     return subprocess.Popen(["git", "push"], shell=True).communicate()[0].decode("utf-8")
@@ -35,6 +37,11 @@ async def create_manpage(_bot: Bot, event: MessageEvent, message: Message, match
         "role": "user",
         "content": generate_prompt(await get_command_help(message.extract_plain_text(), event.user_id))
     }])
+    await matcher.send(session["choices"][0]["message"]["content"])
+    try:
+        os.mkdir(f"docs/{message.extract_plain_text()}")
+    except OSError:
+        pass
     with open(path := f"docs/{message.extract_plain_text()}/0.md") as f:
         f.write(session["choices"][0]["message"]["content"])
     await send_text("create_manpage.saved", [path], event.user_id)
