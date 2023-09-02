@@ -283,7 +283,7 @@ async def handle_reply(
 
         else:
             await finish("reply.need_argv", [], event.user_id)
-        await reply_command.finish()
+        # await reply_command.finish()
 
     except:
         await error.report()

@@ -75,7 +75,13 @@ pluginsModule = dict()
 
 
 def check_plugin(plugin: str) -> bool:
-    if (not is_develop) and plugin == "node_manager.py":
+    try:
+        with open(os.path.join(path, "plugins", plugin), encoding="utf-8") as f:
+            if (text := f.read()).startswith("# [DEVELOP]") and not is_develop:
+                return False
+            elif text.startswith("# [MASTER]") and is_develop:
+                return False
+    except:
         return False
     return (
         plugin.endswith(".py")
