@@ -1,6 +1,5 @@
 # [DEVELOP]
 from ._utils import *
-import subprocess
 import os
 from .chatgptv2 import get_chatgpt_reply
 
@@ -15,7 +14,7 @@ def generate_prompt(command_help: dict) -> str:
     prompt = (
         "请参考以下指令帮助，写一个类似 Manpage 的指令文档，需要包含名称、描述、权限、用法、示例等信息，允许使用 markdown（但不能使用代码块），内容尽量详细，Reply me in Chinese\n\n"
         f"命令名：{command_help['name']}\n"
-        f"简介（[...]内为权限，以*开头，使用空格分割，没有则为 *everyone）：{command_help['info']}\n"
+        f"简介（[...]内为权限，以*开头（需要去掉*），使用空格分割，没有则为 *everyone）：{command_help['info']}\n"
         "所有用法（<...>为必要参数，[...]为可选参数，{...|...}为选择参数）："
     )
     for usage in command_help["usage"]:
@@ -24,11 +23,8 @@ def generate_prompt(command_help: dict) -> str:
 
 
 def push_changes(command_name) -> str:
-    subprocess.Popen(["git", "add", "-A"], shell=True).communicate()
-    subprocess.Popen(
-        ["git", "commit", "-m", f"[add] Create manpage for {command_name}"],
-        shell=True).communicate()
-    subprocess.Popen(["git", "pull"], shell=True).communicate()
+    os.system("git add -A")
+    os.system(f"git commit -a -m \"[add] Create manpage for {command_name}\"")
     return os.popen("git push").read()
 
 
