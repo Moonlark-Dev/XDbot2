@@ -11,8 +11,37 @@ async def get_command_help(command_name: str, user_id: int) -> dict | None:
 
 
 def generate_prompt(command_help: dict) -> str:
-    prompt = (
-        "请参考以下指令帮助，写一个类似 Manpage 的指令文档，需要包含名称、描述、权限、用法、示例（不包含输出示例）等信息，允许使用不包含代码块的的 markdown，内容尽量详细，Reply me in Chinese\n\n"
+    prompt = """请参考以下指令帮助，写一个类似的指令文档，需要包含名称、描述、权限、用法、示例（不包含输出示例）等信息，示例如下：
+
+```markdown
+# 指令帮助 —— <命令名>"
+
+## 描述：
+...
+
+### 权限：
+
+- `everyone`
+
+## 用法
+
+### `用法1`
+
+- 说明：用法说明
+- 示例：`用法示例`
+
+### 用法二
+
+- 说明：用法说明
+- 示例：`用法示例`
+
+
+本 ManPage 使用 ChatGPT-3.5-Turbo 生成
+```
+
+命令帮助如下：
+"""
+    prompt += (
         f"命令名：{command_help['name']}\n"
         f"简介（[...]内为权限，以*开头（需要去掉*），使用空格分割，没有则为 *everyone）：{command_help['info']}\n"
         "所有用法（<...>为必要参数，[...]为可选参数，{...|...}为选择参数）："
