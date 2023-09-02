@@ -5,7 +5,7 @@ from .chatgptv2 import get_chatgpt_reply
 
 
 async def get_command_help(command_name: str, user_id: int) -> dict | None:
-    if not (data := Json("help.json")[command_name]):
+    if (data := Json("help.json")[command_name]) is not None:
         return data
     await finish("create_manpage.404", [], user_id, False, True)
 
