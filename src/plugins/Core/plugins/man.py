@@ -32,7 +32,7 @@ async def manHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg
                 else:
                     break
         else:
-            command = re.search(r"[A-Za-z]+", argument)
+            command = re.search(r"[A-Za-z\-_]+", argument)
             page = re.search(r"[0-9]+", argument) or "0"
             if command:
                 command = command.group(0)
