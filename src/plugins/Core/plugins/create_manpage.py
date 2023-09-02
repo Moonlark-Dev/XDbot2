@@ -57,22 +57,32 @@ def generate_prompt(command_help: dict) -> str:
 
 def push_changes(command_name) -> str:
     os.system("git add -A")
-    os.system(f"git commit -a -m \"[add] Create manpage for {command_name}\"")
+    os.system(f'git commit -a -m "[add] Create manpage for {command_name}"')
     return os.popen("git push").read()
 
 
 @create_command("create-manpage")
-async def create_manpage(_bot: Bot, event: MessageEvent, message: Message, matcher: Matcher = Matcher()):
-    session = await get_chatgpt_reply([{
-        "role": "user",
-        "content": generate_prompt(await get_command_help(message.extract_plain_text(), event.user_id))
-    }])
+async def create_manpage(
+    _bot: Bot, event: MessageEvent, message: Message, matcher: Matcher = Matcher()
+):
+    session = await get_chatgpt_reply(
+        [
+            {
+                "role": "user",
+                "content": generate_prompt(
+                    await get_command_help(message.extract_plain_text(), event.user_id)
+                ),
+            }
+        ]
+    )
     await matcher.send(session["choices"][0]["message"]["content"])
     try:
         os.mkdir(f"docs/{message.extract_plain_text()}")
     except OSError:
         pass
-    with open(path := f"docs/{message.extract_plain_text()}/0.md", "w", encoding="utf-8") as f:
+    with open(
+        path := f"docs/{message.extract_plain_text()}/0.md", "w", encoding="utf-8"
+    ) as f:
         f.write(session["choices"][0]["message"]["content"])
     await send_text("create_manpage.saved", [path], event.user_id)
     await matcher.send(push_changes(message.extract_plain_text()))
