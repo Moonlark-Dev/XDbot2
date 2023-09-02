@@ -39,6 +39,8 @@ def generate_prompt(command_help: dict) -> str:
 本 ManPage 使用 ChatGPT-3.5-Turbo 生成
 ```
 
+用法示例需要添加指令前缀`/`
+
 命令帮助如下：
 """
     prompt += (
