@@ -25,7 +25,7 @@ def generate_prompt(command_help: dict) -> str:
 
 ## 用法
 
-### `<用法1>`
+### `<用法1（如 calc <表达式>）>`
 
 - 说明：<用法说明>
 - 示例：`<用法示例>`
