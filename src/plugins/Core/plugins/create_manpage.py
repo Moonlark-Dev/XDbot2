@@ -14,11 +14,12 @@ async def get_command_help(command_name: str, user_id: int) -> dict | None:
 def generate_prompt(command_help: dict) -> str:
     prompt = (
         "请参考以下信息，写一个指令文档，允许使用部分 markdown 语法，说明尽量简短，Reply me in Chinese\n\n"
-        f"# Command: {command_help['name']}\n"
-        f"# Info: {command_help['info']}\n"
+        f"Command: {command_help['name']}\n"
+        f"Info: {command_help['info']}\n"
+        "Usage:"
     )
     for usage in command_help["usage"]:
-        prompt += f"\n# Usage: {usage}"
+        prompt += f"- {usage}"
     return prompt
 
 
@@ -28,7 +29,7 @@ def push_changes(command_name) -> str:
         ["git", "commit", "-m", f"[add] Create manpage for {command_name}"],
         shell=True).communicate()
     subprocess.Popen(["git", "pull"], shell=True).communicate()
-    return subprocess.Popen(["git", "push"], shell=True).communicate()[0].decode("utf-8")
+    return os.popen("git push").read()
 
 
 @create_command("create-manpage")
