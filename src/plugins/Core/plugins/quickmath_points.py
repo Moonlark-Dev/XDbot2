@@ -82,11 +82,14 @@ def get_quickmath_user_list() -> list[str]:
 def assign_ranks(users: list[dict[str, str | int]]) -> list[dict[str, str | int]]:
     currect_ranking = 0
     currect_minimum_pints = 1145141919810
+    user_count_in_currect_ranking = 1
     ranked_users = []
     for user in users:
         if user["points"] < currect_minimum_pints:
-            currect_ranking += 1
+            currect_ranking += user_count_in_currect_ranking
             currect_minimum_pints = user["points"]
+            user_count_in_currect_ranking = 0
+        user_count_in_currect_ranking += 1
         ranked_users.append(
             {
                 "user_id": user["user_id"],
