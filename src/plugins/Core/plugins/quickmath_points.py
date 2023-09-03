@@ -72,7 +72,8 @@ def get_quickmath_user_list() -> list[str]:
     try:
         for file in os.listdir("data/quickmath"):
             if file.startswith("u") and file.endswith(".json"):
-                user_list.append(file[1:-5])
+                if Json(f"quickmath/{file}")["points"]:
+                    user_list.append(file[1:-5])
     except OSError:
         pass
     return user_list
