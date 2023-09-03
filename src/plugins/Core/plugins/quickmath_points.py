@@ -72,7 +72,8 @@ def get_quickmath_user_list() -> list[str]:
     try:
         for file in os.listdir("data/quickmath"):
             if file.startswith("u") and file.endswith(".json"):
-                user_list.append(file[1:-5])
+                if Json(f"quickmath/{file}")["points"]:
+                    user_list.append(file[1:-5])
     except OSError:
         pass
     return user_list
@@ -81,11 +82,14 @@ def get_quickmath_user_list() -> list[str]:
 def assign_ranks(users: list[dict[str, str | int]]) -> list[dict[str, str | int]]:
     currect_ranking = 0
     currect_minimum_pints = 1145141919810
+    user_count_in_currect_ranking = 1
     ranked_users = []
     for user in users:
         if user["points"] < currect_minimum_pints:
-            currect_ranking += 1
+            currect_ranking += user_count_in_currect_ranking
             currect_minimum_pints = user["points"]
+            user_count_in_currect_ranking = 0
+        user_count_in_currect_ranking += 1
         ranked_users.append(
             {
                 "user_id": user["user_id"],
@@ -111,7 +115,7 @@ def search_user_in_ranking(
     return {"user_id": user_id, "points": 0, "ranking": 999}
 
 
-@create_command("qm-point", aliases={"quick-math-point", "qm-p", "qm-pr"})
+@create_command("qm-point", aliases={"quick-math-point", "qm-p", "qmp"})
 async def handle_qm_point_command(
     bot: Bot, event: MessageEvent, _message: Message, matcher: Matcher = Matcher()
 ) -> None:

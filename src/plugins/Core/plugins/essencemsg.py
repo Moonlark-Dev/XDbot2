@@ -1,5 +1,5 @@
 from nonebot.adapters.onebot.v11 import Bot, Message
-from nonebot import on_command, on_message, on_regex
+from nonebot import on_command, on_message, on_endswith
 from nonebot.params import CommandArg
 from nonebot.adapters.onebot.v11.event import GroupMessageEvent, MessageEvent
 from nonebot.adapters.onebot.v11.permission import GROUP_ADMIN, GROUP_OWNER
@@ -23,7 +23,7 @@ def writeConfig(cfg):
 
 
 configCommand = on_command("essencemsg", aliases={"essmsg"}, permission=SUPERUSER)
-essencemsgCommand = on_regex(".*精华", permission=GROUP_ADMIN | GROUP_OWNER | SUPERUSER)
+essencemsgCommand = on_endswith("精华", permission=GROUP_ADMIN | GROUP_OWNER | SUPERUSER)
 
 
 @configCommand.handle()
