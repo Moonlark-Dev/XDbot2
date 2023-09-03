@@ -112,7 +112,7 @@ def search_user_in_ranking(
     return {"user_id": user_id, "points": 0, "ranking": 999}
 
 
-@create_command("qm-point", aliases={"quick-math-point", "qm-p", "qm-pr"})
+@create_command("qm-point", aliases={"quick-math-point", "qm-p", "qmp"})
 async def handle_qm_point_command(
     bot: Bot, event: MessageEvent, _message: Message, matcher: Matcher = Matcher()
 ) -> None:
