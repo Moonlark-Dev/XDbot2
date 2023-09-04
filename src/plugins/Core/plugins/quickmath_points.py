@@ -131,7 +131,9 @@ async def handle_qm_point_command(
                 "points": Json(f"quickmath/u{user}.json").get("points", 0),
             }
         )
-    users = assign_rewards(assign_ranks(sorted(users, key=lambda x: x["points"], reverse=True)))
+    users = assign_rewards(
+        assign_ranks(sorted(users, key=lambda x: x["points"], reverse=True))
+    )
     reply_text = lang.text(
         "quickmath_points.ranking_title",
         [
@@ -164,5 +166,9 @@ async def handle_qm_point_command(
         event.user_id,
     )
     reply_text += lang.text("sign.hr", [], event.user_id)
-    reply_text += lang.text("quickmath_points.qus_count", [Json("quickmath/global.json")["count"]], event.user_id)
+    reply_text += lang.text(
+        "quickmath_points.qus_count",
+        [Json("quickmath/global.json")["count"]],
+        event.user_id,
+    )
     await matcher.finish(reply_text)
