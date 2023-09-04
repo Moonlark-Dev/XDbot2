@@ -290,5 +290,6 @@
 
   "currency.no_money": "余额不足！（需要 {} vim）",
   "currency.ok": "完成！",
-  "currency.wrong_argv": "错误：不正确的参数！\n使用「/help {}」获取更多信息"
+  "currency.wrong_argv": "错误：不正确的参数！\n使用「/help {}」获取更多信息",
+  "whoami.text": "用户 ID: {}\n用户呢称: {}"
 }
