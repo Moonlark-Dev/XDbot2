@@ -4,7 +4,7 @@ from nonebot.adapters.onebot.v11 import MessageEvent, GroupMessageEvent, Private
 
 @create_command("whoami")
 async def _(event: MessageEvent):
-    await finish(MessageSegment.reply(event.message_id) + MessageSegment.text(f"{event.sender.nickname}"))
+    await finish("whoami.text", [event.sender.user_id, event.sender.nickname], event.sender.user_id, False, True)
 
 # [HELPSTART] Version: 2
 # Command: whoami
