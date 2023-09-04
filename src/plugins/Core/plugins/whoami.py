@@ -1,9 +1,10 @@
 from _utils import *
-from nonebot import on_command
-from nonebot.adapters.onebot.v11 import MessageEvent, GroupMessageEvent, PrivateMessageEvent, MessageSegment
+#from nonebot import on_command
+from nonebot.adapters.onebot.v11 import MessageEvent
+#, GroupMessageEvent, PrivateMessageEvent, MessageSegment
 
 @create_command("whoami")
-async def _(event: MessageEvent):
+async def _(_bot, event: MessageEvent, _message):
     await finish("whoami.text", [event.sender.user_id, event.sender.nickname], event.sender.user_id, False, True)
 
 # [HELPSTART] Version: 2
