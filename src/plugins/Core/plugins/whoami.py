@@ -1,4 +1,4 @@
-from _utils import *
+from ._utils import *
 #from nonebot import on_command
 from nonebot.adapters.onebot.v11 import MessageEvent
 #, GroupMessageEvent, PrivateMessageEvent, MessageSegment
