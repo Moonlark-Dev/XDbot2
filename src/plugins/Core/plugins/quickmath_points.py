@@ -51,17 +51,21 @@ def assign_rewards(
     user_list = ranked_users.copy()
     for i in range(len(user_list)):
         user = user_list[i]
+        user["level"] = "D"
         user["rewards"] = {"vimcoin": answered_count * 4, "exp": answered_count * 4}
     for i in range(math.ceil(len(user_list) * 0.75)):
         user = user_list[i]
+        user["level"] = "C"
         user["rewards"]["vimcoin"] += answered_count * 3
         user["rewards"]["exp"] += answered_count * 3
     for i in range(math.ceil(len(user_list) * 0.5)):
         user = user_list[i]
+        user["level"] = "B"
         user["rewards"]["vimcoin"] += answered_count * 3
         user["rewards"]["exp"] += answered_count * 2
     for i in range(math.ceil(len(user_list) * 0.25)):
         user = user_list[i]
+        user["level"] = "A"
         user["rewards"]["vimcoin"] += answered_count * 2
         user["rewards"]["exp"] += answered_count * 1
     return user_list
@@ -127,7 +131,9 @@ async def handle_qm_point_command(
                 "points": Json(f"quickmath/u{user}.json").get("points", 0),
             }
         )
-    users = assign_ranks(sorted(users, key=lambda x: x["points"], reverse=True))
+    users = assign_rewards(
+        assign_ranks(sorted(users, key=lambda x: x["points"], reverse=True))
+    )
     reply_text = lang.text(
         "quickmath_points.ranking_title",
         [
@@ -143,6 +149,7 @@ async def handle_qm_point_command(
             [
                 user["ranking"],
                 (await bot.get_stranger_info(user_id=int(user["user_id"])))["nickname"],
+                user["level"],
                 user["points"],
             ],
             event.user_id,
@@ -153,8 +160,15 @@ async def handle_qm_point_command(
         [
             (user := search_user_in_ranking(event.get_user_id(), users))["ranking"],
             event.sender.nickname,
+            user["level"],
             user["points"],
         ],
+        event.user_id,
+    )
+    reply_text += lang.text("sign.hr", [], event.user_id)
+    reply_text += lang.text(
+        "quickmath_points.qus_count",
+        [Json("quickmath/global.json")["count"]],
         event.user_id,
     )
     await matcher.finish(reply_text)
