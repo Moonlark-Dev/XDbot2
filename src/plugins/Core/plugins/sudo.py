@@ -22,26 +22,34 @@ async def sudo_command(bot: Bot, event: MessageEvent):
                 if need_change:
                     if isinstance(event, GroupMessageEvent):
                         try:
-                            user_info = await bot.get_group_member_info(group_id=event.group_id, user_id=replace_user_id, no_cache=True)
-                            event.sender.age = user_info['age']
-                            event.sender.level = user_info['level']
-                            event.sender.sex = user_info['sex']
-                            event.sender.nickname = user_info['nickname']
-                            event.sender.area = user_info['area']
-                            event.sender.card = user_info['card']
-                            event.sender.role = user_info['role']
+                            user_info = await bot.get_group_member_info(
+                                group_id=event.group_id,
+                                user_id=replace_user_id,
+                                no_cache=True,
+                            )
+                            event.sender.age = user_info["age"]
+                            event.sender.level = user_info["level"]
+                            event.sender.sex = user_info["sex"]
+                            event.sender.nickname = user_info["nickname"]
+                            event.sender.area = user_info["area"]
+                            event.sender.card = user_info["card"]
+                            event.sender.role = user_info["role"]
                         except ActionFailed:
-                            user_info = await bot.get_stranger_info(user_id=replace_user_id, no_cache=True)
-                            event.sender.age = user_info['age']
-                            event.sender.level = user_info['level']
-                            event.sender.sex = user_info['sex']
-                            event.sender.nickname = user_info['nickname']
+                            user_info = await bot.get_stranger_info(
+                                user_id=replace_user_id, no_cache=True
+                            )
+                            event.sender.age = user_info["age"]
+                            event.sender.level = user_info["level"]
+                            event.sender.sex = user_info["sex"]
+                            event.sender.nickname = user_info["nickname"]
                     else:
-                        user_info = await bot.get_stranger_info(user_id=replace_user_id, no_cache=True)
-                        event.sender.age = user_info['age']
-                        event.sender.level = user_info['level']
-                        event.sender.sex = user_info['sex']
-                        event.sender.nickname = user_info['nickname']
+                        user_info = await bot.get_stranger_info(
+                            user_id=replace_user_id, no_cache=True
+                        )
+                        event.sender.age = user_info["age"]
+                        event.sender.level = user_info["level"]
+                        event.sender.sex = user_info["sex"]
+                        event.sender.nickname = user_info["nickname"]
                 event.message = Message(
                     " ".join(str(event.get_message()).split(" ")[2:])
                 )
