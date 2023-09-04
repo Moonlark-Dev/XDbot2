@@ -1,7 +1,6 @@
 from ._utils import *
 from nonebot.message import event_preprocessor
 from .su import su
-import json
 
 
 @event_preprocessor
@@ -21,7 +20,7 @@ async def sudo_command(bot: Bot, event: MessageEvent):
                 event.sender.user_id = replace_user_id
                 if need_change:
                     if isinstance(event, GroupMessageEvent):
-                        user_info = json.loads(await bot.get_group_member_info(group_id=event.group_id, user_id=replace_user_id))
+                        user_info = await bot.get_group_member_info(group_id=event.group_id, user_id=replace_user_id)
                         event.sender.age = user_info['age']
                         event.sender.level = user_info['level']
                         event.sender.sex = user_info['sex']
@@ -30,7 +29,7 @@ async def sudo_command(bot: Bot, event: MessageEvent):
                         event.sender.card = user_info['card']
                         event.sender.role = user_info['role']
                     else:
-                        user_info = json.loads(await bot.get_stranger_info(user_id=replace_user_id, no_cache=True))
+                        user_info = await bot.get_stranger_info(user_id=replace_user_id, no_cache=True)
                         event.sender.age = user_info['age']
                         event.sender.level = user_info['level']
                         event.sender.sex = user_info['sex']
