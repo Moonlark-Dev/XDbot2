@@ -21,5 +21,5 @@ async def _(_bot, event: MessageEvent, _message):
 # Command: whoami
 # Info: 获取用户信息。
 # Msg: 我是谁？
-# Usage: whoami: 获取使用用户的信息
+# Usage: whoami: 获取使用用户的信息。
 # [HELPEND]
