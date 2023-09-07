@@ -19,7 +19,7 @@ async def _(_bot, event: MessageEvent, _message):
 
 # [HELPSTART] Version: 2
 # Command: whoami
-# Info: 我是谁？
-# Msg: 我是谁
-# Usage: whoami: 我是谁？
+# Info: 获取用户信息。
+# Msg: 我是谁？
+# Usage: whoami: 获取使用用户的信息
 # [HELPEND]
