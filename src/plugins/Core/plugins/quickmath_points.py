@@ -116,7 +116,7 @@ def search_user_in_ranking(
     for user in ranked_users:
         if user_id == user["user_id"]:
             return user
-    return {"user_id": user_id, "level": "N" "points": 0, "ranking": 999}
+    return {"user_id": user_id, "level": "N", "points": 0, "ranking": 999}
 
 
 @create_command("qm-point", aliases={"quick-math-point", "qm-p", "qmp"})
