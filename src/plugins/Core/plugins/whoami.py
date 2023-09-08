@@ -19,19 +19,22 @@ async def _(_bot, event: MessageEvent, message: Message = CommandArg()):
     elif args[0] == "detail":
         await finish(
             "whoami.text.detail",
-            [event.sender.user_id, event.sender.nickname, event.sender.sex, event.sender.age, event.sender.level, event.sender.role, event.sender.title],
+            [
+                event.sender.user_id,
+                event.sender.nickname,
+                event.sender.sex,
+                event.sender.age,
+                event.sender.level,
+                event.sender.role,
+                event.sender.title,
+            ],
             event.sender.user_id,
             False,
             True,
         )
     else:
-        await finish(
-            "whoami.findhelp",
-            [],
-            event.sender.user_id,
-            False,
-            True,
-        )
+        await finish("whoami.findhelp", [], event.sender.user_id, False, True)
+
 
 # [HELPSTART] Version: 2
 # Command: whoami
