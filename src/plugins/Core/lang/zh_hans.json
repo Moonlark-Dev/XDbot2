@@ -295,5 +295,5 @@
 
   "whoami.text": "用户 ID: {}\n用户呢称: {}",
   "whoami.text.detail": "用户 ID: {}\n用户呢称: {}\n用户性别: {}\n用户年龄: {}\n用户等级: {}\n用户权限: {}\n用户名片: {}",
-  "whoami.text.findhelp": "错误：不正确的参数！"
+  "whoami.findhelp": "错误：不正确的参数！"
 }
