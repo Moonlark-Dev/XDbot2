@@ -1,7 +1,8 @@
 groups:
   - name: xxtg666 # name of the group
-    reviewers: 2 # how many reviewers do you want to assign?
-    internal_reviewers: 1 # how many reviewers do you want to assign when the PR author belongs to this group?
+    reviewers: 3 # how many reviewers do you want to assign?
+    internal_reviewers: 2 # how many reviewers do you want to assign when the PR author belongs to this group?
     usernames: # github usernames of the reviewers
       - xxtg666
       - This-is-XiaoDeng
+      - XieXiLin2
