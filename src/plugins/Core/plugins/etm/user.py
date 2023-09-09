@@ -23,3 +23,9 @@ def get_hp(user_id: int) -> int:
         user_data["health"] = max_hp
         change_user_data(user_id, user_data)
     return user_data["health"]
+
+
+def remove_hp(user_id: int, count: int) -> None:
+    user_data = get_user_data(user_id)
+    user_data["health"] -= count
+    change_user_data(user_id, user_data)

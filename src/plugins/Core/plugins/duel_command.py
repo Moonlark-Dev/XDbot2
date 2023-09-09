@@ -5,6 +5,8 @@ from .duel.monomer import Monomer
 import time
 from .duel.scheduler import Scheduler
 from nonebot_plugin_apscheduler import scheduler as nonebot_scheduler
+from .etm.user import remove_hp, get_hp
+from .etm.health import get_data
 import os
 import re
 
@@ -49,7 +51,7 @@ async def init_monomer(bot: Bot, user_id: int) -> Monomer:
         Json(f"duel/u{user_id}.json").get("weapons", "leather_case"),
         Json(f"duel/u{user_id}.json").get("relics", {}),
         Json(f"duel/u{user_id}.json").get("ball", "leather_case"),
-        100,
+        get_hp(user_id),
         (await bot.get_stranger_info(user_id=user_id))["nickname"],
         Json(f"duel/u{user_id}.json").get("weapons_level", 1),
         Json(f"duel/u{user_id}.json").get("ball_level", 1)
@@ -107,7 +109,11 @@ async def handle_force_duel(bot, event: GroupMessageEvent, message: Message):
         # 后续考虑接入体力
         Json(f"duel/u{event.user_id}")["force_duel_count"] += 1
         scheduler = await init_duel(bot, event.user_id, passive_user_id)
-        scheduler.start_fighting()
+        tmp = {
+            True: [event.user_id, passive_user_id],
+            False: [passive_user_id, event.user_id]
+        }[scheduler.start_fighting()]
+        remove_hp(tmp[0], int(get_data(tmp[0], "attack") * 0.12))
         await bot.call_api(
             "send_group_forward_msg",
             group_id=event.group_id,
@@ -128,7 +134,11 @@ async def handle_duel_accept_command(bot, event: GroupMessageEvent, _message: Me
     scheduler = await init_duel(
         bot, duel_requests[event.user_id]["active"], event.user_id
     )
-    scheduler.start_fighting()
+    tmp = {
+        False: [event.user_id, duel_requests[event.user_id]["active"]],
+        True: [duel_requests[event.user_id]["active"], event.user_id]
+    }[scheduler.start_fighting()]
+    remove_hp(tmp[0], int(get_data(tmp[0], "attack") * 0.07))
     await bot.call_api(
         "send_group_forward_msg",
         group_id=event.group_id,

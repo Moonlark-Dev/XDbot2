@@ -464,6 +464,7 @@ class Monomer:
         self.hp -= 1 if self.data.get("fatal_injury_protection", False) else harm
         self.data["fatal_injury_protection"] = False
         if self.hp <= 0:
+            self._hp = self.hp
             self.hp = 0
             self.run_tigger("our.died")
             self.contingent.died(self)
