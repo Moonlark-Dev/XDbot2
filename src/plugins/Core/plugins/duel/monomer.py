@@ -117,10 +117,12 @@ class Monomer:
         ):  # 治疗型
             _type = "skill"
         elif (
-            self.contingent.battle_skill_points >= 2
-            and self.weapons["skill"]["type"] != "treat"
+            self.weapons["skill"]["type"] != "treat"
+            and random.random() <= (self.contingent.battle_skill_points / 5) ** 2
         ):
             _type = "skill"
+        elif self.contingent.battle_skill_points == 0:
+            _type = "primary"
         else:
             _type = "primary"
         if _type == "skill":

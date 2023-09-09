@@ -41,6 +41,8 @@ async def init_monomer(bot: Bot, user_id: int) -> Monomer:
         Json(f"duel/u{user_id}.json").get("ball", "leather_case"),
         100,
         (await bot.get_stranger_info(user_id=user_id))["nickname"],
+        Json(f"duel/u{user_id}.json").get("weapons_level", 1),
+        Json(f"duel/u{user_id}.json").get("ball_level", 1)
     )
 
 
