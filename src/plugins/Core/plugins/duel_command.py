@@ -18,7 +18,7 @@ duel_requests = {}
 )
 async def reset_force_duel_count():
     for file in os.listdir("data/duel"):
-        if re.match(r"^u[0-9]+\.json$", file):
+        if file.startswith("u") and file.endswith(".json"):
             Json(f"duel/{file}")["force_duel_count"] = 0
 
 
@@ -106,10 +106,10 @@ async def handle_duel_refuse_command(_bot, event: GroupMessageEvent, _message: M
 
 @create_group_command("duel-force")
 async def handle_force_duel(bot, event: GroupMessageEvent, message: Message):
-    if Json(f"duel/u{event.user_id}").get("force_duel_count", 0) < 10:
+    if Json(f"duel/u{event.user_id}.json").get("force_duel_count", 0) < 10:
         passive_user_id = int(str(message).replace("[CQ:at,qq=", "").replace("]", ""))
         # 后续考虑接入体力
-        Json(f"duel/u{event.user_id}")["force_duel_count"] += 1
+        Json(f"duel/u{event.user_id}.json")["force_duel_count"] += 1
         scheduler = await init_duel(bot, event.user_id, passive_user_id)
         tmp = {
             False: [event.user_id, passive_user_id],
