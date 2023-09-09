@@ -21,6 +21,7 @@ class Scheduler:
         while self.is_battle_ongoing():
             self.create_round_logger()
             self.start_round()
+        return self.is_active_survive()
 
     def create_round_logger(self):
         self.controller.create_logger_block("======【回合开始】======\n")
@@ -37,7 +38,7 @@ class Scheduler:
 
     def start_round(self):
         self.prepare_round()
-        while self.is_battle_ongoing():
+        while self._is_battle_ongoing():
             action_monomer = self.get_action_monomer()
             if not action_monomer.data.get("is_roundboundaries", False):
                 self.on_monomer_action(self.get_action_monomer())
@@ -48,7 +49,7 @@ class Scheduler:
     def on_monomer_action(self, monomer: Monomer):
         for i in range(len(self.monomers)):
             self.monomers[i].prepare_before_other_action()
-        if monomer.prepare_before_action() != SKIP and self.is_battle_ongoing():
+        if monomer.prepare_before_action() != SKIP and self._is_battle_ongoing():
             monomer.start_action()
         monomer.reduced_action_value = 0.0
 
