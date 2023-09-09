@@ -16,3 +16,10 @@ def get_user_data(user_id):
 
 def change_user_data(user_id, data):
     _data.basic_data[str(user_id)] = data
+
+
+def get_hp(user_id: int) -> int:
+    if (user_data := get_user_data(user_id))["health"] >= (max_hp := get_max_hp(user_id)):
+        user_data["health"] = max_hp
+        change_user_data(user_id, user_data)
+    return user_data["health"]
