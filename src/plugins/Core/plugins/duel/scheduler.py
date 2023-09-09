@@ -73,7 +73,9 @@ class Scheduler:
     def is_battle_ongoing(self):
         if not (is_battle_ongoing := self._is_battle_ongoing()):
             self.create_round_logger()
-            self.controller.add_logger(f"\n战斗结束：{'主动' if self.is_active_survive() else '被动'}方胜利")
+            self.controller.add_logger(
+                f"\n战斗结束：{'主动' if self.is_active_survive() else '被动'}方胜利"
+            )
         return is_battle_ongoing
 
     def is_active_survive(self):

@@ -33,7 +33,9 @@ class Weapons(Item):
         self.data["display_name"] = (
             kit_data := load_json(f"kits/{self.data['kit']}.json")
         )["weapons"]["name"]
-        self.data["display_message"] = f"所属套装：{kit_data['name']}\n等级：{self.data['level']}\n" "武器（暂无说明）"
+        self.data["display_message"] = (
+            f"所属套装：{kit_data['name']}\n等级：{self.data['level']}\n" "武器（暂无说明）"
+        )
 
 
 class Ball(Item):
@@ -48,7 +50,9 @@ class Ball(Item):
         self.data["display_name"] = (
             kit_data := load_json(f"kits/{self.data['kit']}.json")
         )["ball"]["name"]
-        self.data["display_message"] = f"所属套装：{kit_data['name']}\n等级：{self.data['level']}\n" "面位球（暂无说明）"
+        self.data["display_message"] = (
+            f"所属套装：{kit_data['name']}\n等级：{self.data['level']}\n" "面位球（暂无说明）"
+        )
 
     def use(self, argv: str):
         if not self.data["useable"]:

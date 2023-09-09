@@ -19,14 +19,14 @@ def get_base_properties(_type: str = "primary") -> dict:
 
 class Monomer:
     def __init__(
-            self,
-            weapons: str,
-            relics: dict[str, dict],
-            ball: str,
-            hp: int,
-            name: str,
-            weapons_level: int = 1,
-            ball_level: int = 1
+        self,
+        weapons: str,
+        relics: dict[str, dict],
+        ball: str,
+        hp: int,
+        name: str,
+        weapons_level: int = 1,
+        ball_level: int = 1,
     ) -> None:
         base_properties = get_base_properties()
         self._default_data = base_properties.copy()
@@ -188,7 +188,9 @@ class Monomer:
         )
 
     def get_weapons(self, weapons: str, level: int) -> None:
-        self.weapons = self.parse_level_data(load_json(f"kits/{weapons}.json")["weapons"], level)
+        self.weapons = self.parse_level_data(
+            load_json(f"kits/{weapons}.json")["weapons"], level
+        )
         self.weapons["kit"] = weapons
         if "gain" in self.weapons.keys():
             self.gain_list += list(self.weapons["gain"].items())

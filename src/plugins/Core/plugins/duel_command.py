@@ -13,7 +13,9 @@ import re
 duel_requests = {}
 
 
-@nonebot_scheduler.scheduled_job("cron", hour="0", minute="0", second="0", id="reset_force_duel_count")
+@nonebot_scheduler.scheduled_job(
+    "cron", hour="0", minute="0", second="0", id="reset_force_duel_count"
+)
 async def reset_force_duel_count():
     for file in os.listdir("data/duel"):
         if re.match(r"^u[0-9]+\.json$", file):
@@ -54,7 +56,7 @@ async def init_monomer(bot: Bot, user_id: int) -> Monomer:
         get_hp(user_id),
         (await bot.get_stranger_info(user_id=user_id))["nickname"],
         Json(f"duel/u{user_id}.json").get("weapons_level", 1),
-        Json(f"duel/u{user_id}.json").get("ball_level", 1)
+        Json(f"duel/u{user_id}.json").get("ball_level", 1),
     )
 
 
@@ -111,7 +113,7 @@ async def handle_force_duel(bot, event: GroupMessageEvent, message: Message):
         scheduler = await init_duel(bot, event.user_id, passive_user_id)
         tmp = {
             False: [event.user_id, passive_user_id],
-            True: [passive_user_id, event.user_id]
+            True: [passive_user_id, event.user_id],
         }[scheduler.start_fighting()]
         remove_hp(tmp[0], int(get_data(tmp[0], "attack") * 0.47))
         await bot.call_api(
@@ -136,7 +138,7 @@ async def handle_duel_accept_command(bot, event: GroupMessageEvent, _message: Me
     )
     tmp = {
         True: [event.user_id, duel_requests[event.user_id]["active"]],
-        False: [duel_requests[event.user_id]["active"], event.user_id]
+        False: [duel_requests[event.user_id]["active"], event.user_id],
     }[scheduler.start_fighting()]
     remove_hp(tmp[0], int(get_data(tmp[0], "attack") * 0.28))
     await bot.call_api(
