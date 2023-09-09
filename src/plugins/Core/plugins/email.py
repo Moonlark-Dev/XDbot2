@@ -29,7 +29,7 @@ def render_email(data, user_id):
         "email.email",
         [
             data["subject"],
-            time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime()),
+            time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime(data["time"])),
             data["from"],
             data["message"],
         ],
