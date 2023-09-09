@@ -197,10 +197,13 @@ class Monomer:
         _data = data.copy()
         for key, value in list(_data.items()):
             if isinstance(value, list) and len(value) == 5:
-                _data[key] = value[level]
+                _data[key] = value[level - 1]
             elif isinstance(value, dict):
-                _data[key] = self.parse_level_data(value)
-            # elif isinstance(value, list):
+                _data[key] = self.parse_level_data(value, level)
+            elif isinstance(value, list):
+                for i in range(len(value)):
+                    if isinstance(value[i], dict):
+                        value[i] = self.parse_level_data(value[i], level)
         return _data
 
     def get_ball(self, ball: str, level: int) -> None:
