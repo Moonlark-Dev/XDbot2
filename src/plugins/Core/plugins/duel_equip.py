@@ -28,10 +28,10 @@ async def show_equip(event: MessageEvent, argv: list[str]) -> None:
                 [
                     event.user_id,
                     weapon_kit_data["weapons"]["name"],
-                    weapon_kit_data["level"],
+                    Json(f"duel/u{event.user_id}.json").get("weapons_level", 1),
                     # 遗器（保留位置）
                     ball_kit_data["ball"]["name"],
-                    ball_kit_data["level"],
+                    Json(f"duel/u{event.user_id}.json").get("ball_level", 1),
                     get_weakness(event.user_id) or "无",  # 不写本地化是因为没什么必要
                 ],
                 event.user_id,
