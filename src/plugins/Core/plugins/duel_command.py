@@ -113,7 +113,7 @@ async def handle_force_duel(bot, event: GroupMessageEvent, message: Message):
             False: [event.user_id, passive_user_id],
             True: [passive_user_id, event.user_id]
         }[scheduler.start_fighting()]
-        remove_hp(tmp[0], int(get_data(tmp[0], "attack") * 0.12))
+        remove_hp(tmp[0], int(get_data(tmp[0], "attack") * 0.47))
         await bot.call_api(
             "send_group_forward_msg",
             group_id=event.group_id,
@@ -138,7 +138,7 @@ async def handle_duel_accept_command(bot, event: GroupMessageEvent, _message: Me
         True: [event.user_id, duel_requests[event.user_id]["active"]],
         False: [duel_requests[event.user_id]["active"], event.user_id]
     }[scheduler.start_fighting()]
-    remove_hp(tmp[0], int(get_data(tmp[0], "attack") * 0.07))
+    remove_hp(tmp[0], int(get_data(tmp[0], "attack") * 0.28))
     await bot.call_api(
         "send_group_forward_msg",
         group_id=event.group_id,
