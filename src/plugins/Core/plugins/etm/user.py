@@ -36,9 +36,15 @@ def remove_hp(user_id: int, count: int) -> None:
         origin_vimcoin = user_data["vimcoin"]
         user_data["vimcoin"] *= 0.5 if user_data["vimcoin"] > 0 else 1.5
         send_message(
-            lang.text("etm_user.died", [reduced_vimcoin := user_data["vimcoin"] - origin_vimcoin], user_id),
-            str(user_id)
+            lang.text(
+                "etm_user.died",
+                [reduced_vimcoin := user_data["vimcoin"] - origin_vimcoin],
+                user_id,
+            ),
+            str(user_id),
         )
         user_data["health"] = get_max_hp(user_id)
-        Json("droped_vimcoin.json")["count"] = Json("droped_vimcoin.json").get("count", 0) + reduced_vimcoin
+        Json("droped_vimcoin.json")["count"] = (
+            Json("droped_vimcoin.json").get("count", 0) + reduced_vimcoin
+        )
     change_user_data(user_id, user_data)
