@@ -365,7 +365,7 @@ class Monomer:
                                     effect["probability"],
                                     self,
                                 )
-                        except IndexError:
+                        except IndexError | ValueError:
                             pass
                     case 2:
                         self.get_lowest_hp_monomer(self.contingent.enemy).add_buff(
