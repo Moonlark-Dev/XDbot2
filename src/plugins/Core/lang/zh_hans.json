@@ -285,6 +285,8 @@
   "quickmath_points.email_title": "速算积分结算通知",
   "quickmath_points.email_text": "您在 {} 日速算中获得了 {} 积分，排名第 {}。",
   "quickmath_points.qus_count": "\n今日答题总数：{}",
+  "quickmath_points.level_rewards_title": "\n结算后奖励：",
+  "quickmath_points.level_rewards": "\n{}: {}vi {}exp",
 
   "create_manpage.404": "未找到命令",
   "create_manpage.saved": "Manpage 已保存到 {}",

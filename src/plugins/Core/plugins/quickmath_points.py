@@ -168,7 +168,21 @@ async def handle_qm_point_command(
     reply_text += lang.text("sign.hr", [], event.user_id)
     reply_text += lang.text(
         "quickmath_points.qus_count",
-        [Json("quickmath/global.json")["count"]],
+        [count := Json("quickmath/global.json")["count"]],
         event.user_id,
+    )
+    reply_text += lang.text("sign.hr", [], event.user_id)
+    reply_text += lang.text("quickmath_points.level_rewards_title", [], event.user_id)
+    reply_text += lang.text(
+        "quickmath_points.level_rewards", ["A", 12 * count, 10 * count], event.user_id
+    )
+    reply_text += lang.text(
+        "quickmath_points.level_rewards", ["B", 10 * count, 9 * count], event.user_id
+    )
+    reply_text += lang.text(
+        "quickmath_points.level_rewards", ["C", 7 * count, 7 * count], event.user_id
+    )
+    reply_text += lang.text(
+        "quickmath_points.level_rewards", ["D", 4 * count, 4 * count], event.user_id
     )
     await matcher.finish(reply_text)
