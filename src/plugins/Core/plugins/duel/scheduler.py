@@ -10,7 +10,7 @@ class Scheduler:
         self.passive = passive
         self.controller = Controller()
         self.round_boundaries = RoundBoundaries()
-        self.monomers: list[Monomer] = (
+        self.monomers: list[Monomer | RoundBoundaries] = (
             self.active.monomers + self.passive.monomers + [self.round_boundaries]
         )
         for i in range(len(self.monomers)):
@@ -57,7 +57,7 @@ class Scheduler:
             self.monomers[i].prepare_before_the_round()
 
     def get_action_monomer(self):
-        self.monomers: list[Monomer] = (
+        self.monomers: list[Monomer | RoundBoundaries] = (
             self.active.monomers + self.passive.monomers + [self.round_boundaries]
         )
         self.monomers = sorted(self.monomers, key=lambda x: x.get_action_value())
@@ -66,21 +66,25 @@ class Scheduler:
             self.monomers[i].reduce_action_value(action_value_to_reduce)
         return self.monomers[0]
 
-    def is_battle_ongoing(self):
+    def _is_battle_ongoing(self):
         return self.is_active_survive() and self.is_passive_survive()
+
+    def is_battle_ongoing(self):
+        if not (is_battle_ongoing := self._is_battle_ongoing()):
+            self.create_round_logger()
+            self.controller.add_logger(f"\n战斗结束：{'主动' if self.is_active_survive() else '被动'}方胜利")
+        return is_battle_ongoing
 
     def is_active_survive(self):
         for monomer in self.active.monomers:
             if monomer.hp > 0:
                 return True
-        self.controller.add_logger("\n战斗结束：被动方胜利")
         return False
 
     def is_passive_survive(self):
         for monomer in self.passive.monomers:
             if monomer.hp > 0:
                 return True
-        self.controller.add_logger("\n战斗结束：主动方胜利")
         return False
 
     def prepare_fighting(self):
