@@ -110,8 +110,8 @@ async def handle_force_duel(bot, event: GroupMessageEvent, message: Message):
         Json(f"duel/u{event.user_id}")["force_duel_count"] += 1
         scheduler = await init_duel(bot, event.user_id, passive_user_id)
         tmp = {
-            True: [event.user_id, passive_user_id],
-            False: [passive_user_id, event.user_id]
+            False: [event.user_id, passive_user_id],
+            True: [passive_user_id, event.user_id]
         }[scheduler.start_fighting()]
         remove_hp(tmp[0], int(get_data(tmp[0], "attack") * 0.12))
         await bot.call_api(
@@ -135,8 +135,8 @@ async def handle_duel_accept_command(bot, event: GroupMessageEvent, _message: Me
         bot, duel_requests[event.user_id]["active"], event.user_id
     )
     tmp = {
-        False: [event.user_id, duel_requests[event.user_id]["active"]],
-        True: [duel_requests[event.user_id]["active"], event.user_id]
+        True: [event.user_id, duel_requests[event.user_id]["active"]],
+        False: [duel_requests[event.user_id]["active"], event.user_id]
     }[scheduler.start_fighting()]
     remove_hp(tmp[0], int(get_data(tmp[0], "attack") * 0.07))
     await bot.call_api(
