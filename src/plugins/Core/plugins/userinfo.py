@@ -1,7 +1,7 @@
 from nonebot import on_command
 from nonebot.adapters.onebot.v11.event import MessageEvent
 from nonebot.adapters.onebot.v11.bot import Bot
-from .etm import user, exp, economy
+from .etm import user, exp, economy, health
 from .etm.data import basic_data
 from . import _lang as lang
 from . import _error as error
@@ -34,7 +34,7 @@ async def show_panel(bot: Bot, event: MessageEvent):
                 f"  {lang.text('userinfo.level', [], qq)}：Lv{level} ({int(exp.get_exp(qq))} / {(level)**2 - (level-1)**2} exp)\n"
                 f"        [{'=' * max(bar_filled-1, 0)}>{'  ' * (10 - bar_filled)}]\n"
                 f"  {lang.text('userinfo.vimcoin', [], qq)}：{round(data['vimcoin'], 2)}vim (No. {_rk + 1})\n"
-                f"  {lang.text('userinfo.health', [], qq)}：{data['health']} / 20"
+                f"  {lang.text('userinfo.health', [], qq)}：{data['health']} / {health.get_max_hp(event.user_id)}"
             )
         )
 

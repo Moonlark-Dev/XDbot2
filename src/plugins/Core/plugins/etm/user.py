@@ -1,6 +1,7 @@
 from . import data as _data
+from .health import get_max_hp
 
-RAW_DATA = {"user_id": None, "exp": 0, "health": 20, "vimcoin": 0}
+RAW_DATA = {"user_id": None, "exp": 0, "health": 100, "vimcoin": 0}
 
 
 def get_user_data(user_id):
@@ -9,6 +10,7 @@ def get_user_data(user_id):
     except KeyError:
         data = RAW_DATA.copy()
         data["user_id"] = str(user_id)
+        data["health"] = get_max_hp(user_id)
         return data
 
 
