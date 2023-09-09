@@ -6,14 +6,14 @@
         "element": "冰",
         "attack": {
             "type": "single",
-            "value": 0.70
+            "value": [0.70, 0.75, 0.80, 0.85, 0.90]
         },
         "skill": {
             "name": "冰霜裂痕",
             "type": "attack",
             "attack": {
                 "type": "diffusion",
-                "value": 0.87
+                "value": [0.87, 0.92, 0.97, 1.02, 1.02]
             },
             "effect": [
                 {
@@ -21,8 +21,8 @@
                     "target": 1,
                     "range": 1,
                     "buff": "freezing",
-                    "cling": 2,
-                    "probability": 0.2,
+                    "cling": [2, 2, 3, 3, 3],
+                    "probability": [0.2, 0.21, 0.22, 0.25, 0.27],
                     "data": {}
                 }
             ]
@@ -50,7 +50,7 @@
                     "function": "add_shield",
                     "thickness": {
                         "base": "health",
-                        "value": 0.2
+                        "value": [0.2, 0.2, 0.21, 0.22, 0.23]
                     }
                 }
             ]

@@ -1,8 +1,10 @@
-import random
 import json
-from typing import Literal
-from . import path
 import os.path
+import random
+
+from . import path
+from .contingent import Contingent
+from .controller import Controller
 
 SKIP = False
 
@@ -15,13 +17,16 @@ def get_base_properties(_type: str = "primary") -> dict:
     return load_json(f"base_properties/{_type}.json")
 
 
-from .contingent import Contingent
-from .controller import Controller
-
-
 class Monomer:
     def __init__(
-        self, weapons: str, relics: dict[str, dict], ball: str, hp: int, name: str
+            self,
+            weapons: str,
+            relics: dict[str, dict],
+            ball: str,
+            hp: int,
+            name: str,
+            weapons_level: int = 1,
+            ball_level: int = 1
     ) -> None:
         base_properties = get_base_properties()
         self._default_data = base_properties.copy()
@@ -39,8 +44,8 @@ class Monomer:
         self.reduced_action_value: float = 0.0
         self.shield = 0
 
-        self.get_weapons(weapons)
-        self.get_ball(ball)
+        self.get_weapons(weapons, weapons_level)
+        self.get_ball(ball, ball_level)
         self.get_relics_gain(relics)
         self.get_kit_gain()
 
@@ -162,7 +167,7 @@ class Monomer:
                     self.latest_attacked_monomer = random.choice(
                         self.contingent.enemy.monomers
                     )
-                except:
+                except IndexError:
                     break
                 self.latest_attacked_monomer.attacked(
                     self.get_harm(value), attribute, self
@@ -180,14 +185,24 @@ class Monomer:
             )
         )
 
-    def get_weapons(self, weapons: str) -> None:
-        self.weapons = load_json(f"kits/{weapons}.json")["weapons"]
+    def get_weapons(self, weapons: str, level: int) -> None:
+        self.weapons = self.parse_level_data(load_json(f"kits/{weapons}.json")["weapons"], level)
         self.weapons["kit"] = weapons
         if "gain" in self.weapons.keys():
             self.gain_list += list(self.weapons["gain"].items())
 
-    def get_ball(self, ball: str) -> None:
-        self.ball = load_json(f"kits/{ball}.json")["ball"]
+    def parse_level_data(self, data: dict[str, any], level: int = 1) -> dict:
+        _data = data.copy()
+        for key, value in list(_data.items()):
+            if isinstance(value, list) and len(value) == 5:
+                _data[key] = value[level]
+            elif isinstance(value, dict):
+                _data[key] = self.parse_level_data(value)
+            # elif isinstance(value, list):
+        return _data
+
+    def get_ball(self, ball: str, level: int) -> None:
+        self.ball = self.parse_level_data(load_json(f"kits/{ball}.json")["ball"], level)
         self.ball["kit"] = ball
         if "gain" in self.ball.keys():
             self.gain_list += list(self.ball["gain"].items())
@@ -345,7 +360,7 @@ class Monomer:
                                     effect["probability"],
                                     self,
                                 )
-                        except:
+                        except IndexError:
                             pass
                     case 2:
                         self.get_lowest_hp_monomer(self.contingent.enemy).add_buff(
@@ -373,7 +388,8 @@ class Monomer:
                                 self,
                             )
 
-    def get_lowest_hp_monomer(self, base: Contingent):
+    @staticmethod
+    def get_lowest_hp_monomer(base: Contingent):
         lowest_hp_monomer: Monomer = base.monomers[0]
         for i in range(len(base.monomers)):
             if base.monomers[i].hp <= lowest_hp_monomer.hp:
@@ -457,7 +473,7 @@ class Monomer:
     def has_buff(self, buff_name: str):
         return buff_name in self.buff.keys()
 
-    def prepare_before_action(self) -> Literal[False] | None:
+    def prepare_before_action(self) -> bool:
         self.run_tigger("action.start")
         self.run_buff_effect()
         if self.has_buff("freezing"):
