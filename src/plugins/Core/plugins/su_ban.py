@@ -63,7 +63,7 @@ async def su_ban(bot: Bot, message: Message = CommandArg()):
             try:
                 if argument[2] in ["--disable-notice", "-d"]:
                     await su.finish()
-            except KeyError:
+            except IndexError:
                 pass
             multiAccoutData = json.load(
                 open("data/su.multiaccoutdata.ro.json", encoding="utf-8")
