@@ -4,12 +4,22 @@ from .duel.contingent import Contingent
 from .duel.monomer import Monomer
 import time
 from .duel.scheduler import Scheduler
+from nonebot_plugin_apscheduler import scheduler as nonebot_scheduler
+import os
+import re
 
 duel_requests = {}
 
 
+@nonebot_scheduler.scheduled_job("cron", hour="0", minute="0", second="0", id="reset_force_duel_count")
+async def reset_force_duel_count():
+    for file in os.listdir("data/duel"):
+        if re.match(r"^u[0-9]+\.json$", file):
+            Json(f"duel/{file}")["force_duel_count"] = 0
+
+
 @create_group_command("duel")
-async def handle_duel_command(bot, event: GroupMessageEvent, message: Message) -> None:
+async def handle_duel_command(_bot, event: GroupMessageEvent, message: Message) -> None:
     passive_qq = int(str(message).replace("[CQ:at,qq=", "").replace("]", "").strip())
     duel_requests[passive_qq] = {
         "accepted": False,
@@ -68,7 +78,7 @@ def parse_result_node_messages(bot: Bot, scheduler: Scheduler):
 
 
 @create_group_command("duel-refuse")
-async def handle_duel_refuse_command(bot, event: GroupMessageEvent, message: Message):
+async def handle_duel_refuse_command(_bot, event: GroupMessageEvent, _message: Message):
     if event.user_id not in duel_requests.keys():
         await finish("duel.no_request", [], event.user_id)
     if event.group_id != duel_requests[event.user_id]["group_id"]:
@@ -90,8 +100,23 @@ async def handle_duel_refuse_command(bot, event: GroupMessageEvent, message: Mes
 # [HELPEND]
 
 
+@create_group_command("duel-force")
+async def handle_force_duel(bot, event: GroupMessageEvent, message: Message):
+    if Json(f"duel/u{event.user_id}").get("force_duel_count", 0) < 10:
+        passive_user_id = int(str(message).replace("[CQ:at,qq=", "").replace("]", ""))
+        # 后续考虑接入体力
+        Json(f"duel/u{event.user_id}")["force_duel_count"] += 1
+        scheduler = await init_duel(bot, event.user_id, passive_user_id)
+        scheduler.start_fighting()
+        await bot.call_api(
+            "send_group_forward_msg",
+            group_id=event.group_id,
+            messages=parse_result_node_messages(bot, scheduler),
+        )
+
+
 @create_group_command("duel-accept")
-async def handle_duel_accept_command(bot, event: GroupMessageEvent, message: Message):
+async def handle_duel_accept_command(bot, event: GroupMessageEvent, _message: Message):
     if event.user_id not in duel_requests.keys():
         await finish("duel.no_request", [], event.user_id)
     if event.group_id != duel_requests[event.user_id]["group_id"]:
