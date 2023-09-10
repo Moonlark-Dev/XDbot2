@@ -94,7 +94,8 @@ async def checkout_xdbot(
         await error.report()
 
 @create_command("cb", aliases={"change-branch"}, permission=SUPERUSER)
-async def change_branch(_bot, _event, message, matcher: Matcher = Matcher()):
+async def change_branch(_bot, _event, _message, matcher: Matcher = Matcher()):
+    message = _message.extract_plain_text()
     commands = [
         ["git", "checkout", "-b", message],
         ["git", "checkout", message],
