@@ -95,7 +95,7 @@ async def checkout_xdbot(
 
 @create_command("cb", aliases={"change-branch"}, permission=SUPERUSER)
 async def change_branch(_bot, _event, message, matcher: Matcher = Matcher()):
-    await matcher.finish(os.popen(f"git checkout -b {message};git checkout {message}; git pull").read())
+    await matcher.finish(os.popen(f"git checkout -b {message};git checkout {message}; git pull origin {message}").read())
 
 
 @event_preprocessor
