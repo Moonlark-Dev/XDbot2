@@ -8,7 +8,7 @@ from . import _error as error
 from . import _lang as lang
 import os
 from nonebot import on_command
-from ._utils import Json
+from ._utils import *
 from nonebot.matcher import Matcher
 from nonebot.adapters.onebot.v11 import MessageEvent
 from nonebot.adapters.onebot.v11 import GroupMessageEvent
@@ -70,18 +70,21 @@ async def update_xdbot(matcher: Matcher, event: MessageEvent):
 
 
 # [HELPSTART] Version: 2
-# Command: checkout
-# Usage: checkout
+# Command: switch
+# Usage: switch {develop|master}
 # Msg: 切换 XDbot2 节点
 # Info: 切换 XDbot2 节点（详见 node(0)）
+# [HELPEND]
 
 
-@on_command("checkout", permission=GROUP_ADMIN | GROUP_OWNER | SUPERUSER).handle()
+@on_command(
+    "checkout", aliases={"switch"}, permission=GROUP_ADMIN | GROUP_OWNER | SUPERUSER
+).handle()
 async def checkout_xdbot(
     matcher: Matcher, event: GroupMessageEvent, node: Message = CommandArg()
 ):
     try:
-        if node.extract_plain_text() == "develop":
+        if node.extract_plain_text().startswith("develop"):
             Json("node_manager.groups.json")[str(event.group_id)] = True
             await matcher.finish(lang.text("node_manager.enabled", [], event.user_id))
         else:
@@ -89,6 +92,11 @@ async def checkout_xdbot(
             await matcher.finish(lang.text("node_manager.disabled", [], event.user_id))
     except:
         await error.report()
+
+
+@create_command("cb", alaises={"change-branch"}, permission=SUPERUSER)
+async def change_branch(_bot, _event, message, matcher: Matcher = Matcher()):
+    await matcher.finish(os.popen(f"git checkout -b {message}; git pull").read())
 
 
 @event_preprocessor
