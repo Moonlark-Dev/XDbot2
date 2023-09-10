@@ -76,7 +76,10 @@ async def update_xdbot(matcher: Matcher, event: MessageEvent):
 # Info: 切换 XDbot2 节点（详见 node(0)）
 # [HELPEND]
 
-@on_command("checkout", aliases={"switch"}, permission=GROUP_ADMIN | GROUP_OWNER | SUPERUSER).handle()
+
+@on_command(
+    "checkout", aliases={"switch"}, permission=GROUP_ADMIN | GROUP_OWNER | SUPERUSER
+).handle()
 async def checkout_xdbot(
     matcher: Matcher, event: GroupMessageEvent, node: Message = CommandArg()
 ):
@@ -90,9 +93,11 @@ async def checkout_xdbot(
     except:
         await error.report()
 
+
 @create_command("cb", alaises={"change-branch"}, permission=SUPERUSER)
 async def change_branch(_bot, _event, message, matcher: Matcher = Matcher()):
     await matcher.finish(os.popen(f"git checkout -b {message}; git pull").read())
+
 
 @event_preprocessor
 async def _(event: GroupMessageEvent):
