@@ -36,6 +36,7 @@ def get_reply_message(event: MessageEvent) -> str:
     else:
         return ""
 
+
 @preview.handle()
 async def preview_website(event: MessageEvent, message: Message = CommandArg()):
     global latest_time
