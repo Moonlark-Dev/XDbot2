@@ -89,6 +89,8 @@ async def send_quick_math() -> None:
         async def handle_quickmath_answer(event: GroupMessageEvent) -> None:
             nonlocal answered
             try:
+                if event.group_id != group:
+                    await matcher.finish()
                 await send_text(
                     "quick_math.rightanswer1",
                     [(add_points := int(2 * (20 - time.time() + send_time)))],
