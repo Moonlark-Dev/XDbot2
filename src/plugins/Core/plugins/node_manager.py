@@ -99,7 +99,7 @@ async def checkout_xdbot(
 async def change_branch(_bot, _event, _message, matcher: Matcher = Matcher()):
     message = _message.extract_plain_text()
     commands = [
-        ["git", "checkout", "-b", message],
+        ["git", "fetch", "origin"],
         ["git", "checkout", message],
         ["git", "pull", "origin", message],
     ]
