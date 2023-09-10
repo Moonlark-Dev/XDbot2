@@ -103,7 +103,7 @@ async def change_branch(_bot, _event, _message, matcher: Matcher = Matcher()):
     ]
     for cmd in commands:
         output = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
-        await matcher.finish(output.decode("utf-8"))
+        await matcher.send(output.decode("utf-8"))
 
 
 @event_preprocessor
