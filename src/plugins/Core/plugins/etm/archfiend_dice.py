@@ -19,7 +19,7 @@ class ArchfiendDice(Item):
         }
         self.item_id = "archfiend_dice"
 
-    def on_use(self, _arg):
+    def use(self, _arg):
         if not economy.use_vimcoin(self.user_id, 6.6):
             return [lang.text("currency.no_money", [6.6], self.user_id)]
         match random.randint(1, 12):
