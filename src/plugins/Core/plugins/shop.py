@@ -47,7 +47,7 @@ async def shop_handler(event: MessageEvent, message: Message = CommandArg()):
         elif arguments[0] == "buy":
             item = items.json2items([SHOP_ITEMS[arguments[1]]])[0]
             if len(arguments) >= 3:
-                count = int(arguments[2])
+                count = min(int(arguments[2]), int(item.data["maximum_stack"]))
             else:
                 count = 1
             if economy.use_vi(qq, item.data["price"] * count)[0]:
