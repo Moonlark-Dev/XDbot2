@@ -15,6 +15,7 @@ from nonebot.adapters.onebot.v11 import GroupMessageEvent
 from nonebot.adapters import Message
 from nonebot.params import CommandArg
 import subprocess
+
 # from .su import su
 from . import _error
 
@@ -93,13 +94,14 @@ async def checkout_xdbot(
     except:
         await error.report()
 
+
 @create_command("cb", aliases={"change-branch"}, permission=SUPERUSER)
 async def change_branch(_bot, _event, _message, matcher: Matcher = Matcher()):
     message = _message.extract_plain_text()
     commands = [
         ["git", "checkout", "-b", message],
         ["git", "checkout", message],
-        ["git", "pull", "origin", message]
+        ["git", "pull", "origin", message],
     ]
     for cmd in commands:
         output = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
