@@ -102,7 +102,7 @@ async def change_branch(_bot, _event, _message, matcher: Matcher = Matcher()):
         ["git", "pull", "origin", message]
     ]
     for cmd in commands:
-        await matcher.send(subprocess.Popen(cmd, shell=True).communicate()[0].decode("utf-8"))
+        await matcher.send(subprocess.Popen(cmd).communicate()[1].decode("utf-8"))
 
 
 @event_preprocessor
