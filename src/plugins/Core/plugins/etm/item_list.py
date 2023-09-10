@@ -17,7 +17,7 @@ ITEMS = {
     "book_and_quill": BookAndQuill,
     "talisman": Talisman,
     "pouch": Pouch,
-    "archfiend_dict": ArchfiendDice,
+    "archfiend_dice": ArchfiendDice,
     "towel.zip": TowelZip,
     "towel": Towel,
     "vimcoin": VimCoin,

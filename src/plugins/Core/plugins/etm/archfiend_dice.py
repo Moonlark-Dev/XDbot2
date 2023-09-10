@@ -17,7 +17,7 @@ class ArchfiendDice(Item):
             "maximum_stack": 1,
             "price": 37
         }
-        self.item_id = "archfiend_dict"
+        self.item_id = "archfiend_dice"
 
     def on_use(self, _arg):
         if not economy.use_vimcoin(self.user_id, 6.6):
