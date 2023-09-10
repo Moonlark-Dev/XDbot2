@@ -17,6 +17,6 @@ def get_data(user_id: int, key: str) -> any:
             100,
             f"u{user_id}",
             user_data.get("weapons_level", 1),
-            user_data.get("ball_level", 0),
+            user_data.get("ball_level", 1),
         ).data[key]
     )
