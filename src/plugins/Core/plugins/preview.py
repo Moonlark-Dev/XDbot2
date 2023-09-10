@@ -30,6 +30,13 @@ builtin_urls = {
 # [HELPEND]
 
 
+def get_reply_message(event: MessageEvent) -> str:
+    if event.reply:
+        return event.reply.message.extract_plain_text()
+    else:
+        return ""
+
+
 @preview.handle()
 async def preview_website(event: MessageEvent, message: Message = CommandArg()):
     global latest_time
@@ -38,7 +45,7 @@ async def preview_website(event: MessageEvent, message: Message = CommandArg()):
             await preview.finish(f"冷却中（{10 - time.time() + latest_time}s）")
         latest_time = time.time()
         # 解析参数
-        url = str(message)
+        url = str(message) or get_reply_message(event)
         if url in builtin_urls.keys():
             url = builtin_urls[url]
             if "%group_id%" in url:
