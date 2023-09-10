@@ -4,6 +4,7 @@ from .talisman import Talisman
 from .book_and_quill import BookAndQuill
 from .pawcoin import PawCoin
 from .pouch import Pouch
+from .archfiend_dice import ArchfiendDice
 from .mystery_box import MysteryBoxLevel1, MysteriousShard, MysteryBoxLv3
 from .vimcoin import VimCoin
 from .duel_things import Weapons, Ball
@@ -16,6 +17,7 @@ ITEMS = {
     "book_and_quill": BookAndQuill,
     "talisman": Talisman,
     "pouch": Pouch,
+    "archfiend_dict": ArchfiendDice,
     "towel.zip": TowelZip,
     "towel": Towel,
     "vimcoin": VimCoin,
