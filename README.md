@@ -12,7 +12,7 @@
 
 ## 简介
 
-IT Craft XDBot2（下简称`XDbot2`）是一个简单的QQ功能型机器人，基于 Nonebot2 + OnebotV11 编写
+IT Craft XDBot2（下简称`XDbot2`）是一个简单的QQ功能型机器人，基于 Nonebot2 + Onebot V11 编写
 
 相比于[XDbot](https://github.com/This-is-XiaoDeng/XDbot)，XDbot2拥有这些特性
 

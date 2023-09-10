@@ -12,7 +12,7 @@
 
 ## Introduction
 
-IT Craft XDBot2(Hereinafter referred to as `XDbot2`) is a simple functional QQ Bot, based on Nonebot2 + OnebotV11
+IT Craft XDBot2(Hereinafter referred to as `XDbot2`) is a simple functional QQ Bot, based on Nonebot2 + Onebot V11
 
 Compared to [XDbot](https://github.com/This-is-XiaoDeng/XDbot), XDbot2 has these new features
 
