@@ -18,9 +18,11 @@ whoAtme = on_command(
 whoAtmeWriter = on_message()
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 
-# [HELPSTART]
-# !Usage 1 wam
-# !Info 1 谁At我
+# [HELPSTART] Version: 2
+# Command: whoAtMe
+# Usage: whoAtMe
+# Info: 谁 @ 我了？
+# Msg: 查看谁 @ 了我。
 # [HELPEND]
 
 
