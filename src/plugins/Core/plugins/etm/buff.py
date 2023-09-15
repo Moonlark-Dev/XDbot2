@@ -1,50 +1,65 @@
 from time import time
 from . import data
+import json
 
-BUFFERS = {"护符": {"max_effect": lambda _: 5, "default_level": None}}
-
-
-def get_buff_level(user_id, buff_id):
-    try:
-        buff = data.buff[user_id]
-        if buff["endtime"] is not None:
-            if time() > buff["endtime"]:
-                data.buff[user_id].pop(buff_id)
-                return BUFFERS[buff_id]["default_level"]
-        return data.buff[user_id][buff_id]["level"]
-    except BaseException:
-        return BUFFERS[buff_id]["default_level"]
+BUFF_LIST = json.load(open("src/plugins/Core/plugins/etm/buffs.json", encoding="utf-8"))
 
 
-def effect_buff(user_id, buff_id):
-    try:
-        data.buff[user_id][buff_id]["effect_count"] += 1
-        if data.buff[user_id][buff_id]["effect_count"] >= BUFFERS[buff_id][
-            "max_effect"
-        ](data.buff[user_id][buff_id]["level"]):
-            data.buff[user_id].pop(buff_id)
-        return True
-    except BaseException:
-        return False
+def refresh_buff():
+    for user_id, buffs in list(data.buff.items()):
+        for buff in buffs:
+            if buff.get("number_of_times_remaining", 114514) <= 0 or time() > buff.get("end_time", time() + 114514):
+                data.buff[user_id].pop(data.buff[user_id].index(buff))
+
+#
+# def get_buff_level(user_id, buff_id):
+#     try:
+#         buff = data.buff[user_id]
+#         if buff["endtime"] is not None:
+#             if time() > buff["endtime"]:
+#                 data.buff[user_id].pop(buff_id)
+#                 return BUFF_LIST[buff_id]["default_level"]
+#         return data.buff[user_id][buff_id]["level"]
+#     except BaseException:
+#         return BUFF_LIST[buff_id]["default_level"]
 
 
-def can_effect(user_id, buff_id):
-    try:
-        if data.buff[user_id][buff_id]["effect_count"] >= BUFFERS[buff_id][
-            "max_effect"
-        ](data.buff[user_id][buff_id]["level"]):
-            return False
-        return True
-    except BaseException:
-        return False
+def effect_buff(user_id: str, buff_id: str) -> bool:
+    refresh_buff()
+    length = 0
+    for buff in list(data.buff[user_id].values()):
+        if buff["buff_id"] == buff_id and "number_of_times_remaining" in buff.keys():
+            data.buff[user_id][length]["number_of_times_remaining"] -= 1
+            refresh_buff()
+            return True
+        elif buff["buff_id"] == buff_id:
+            return True
+        length += 1
+    return False
 
 
-def give_buff(user_id, buff_id, buff_level, endtime=None, effect_count=0):
+def has_buff(user_id: str, buff_id: str, levels: list = []) -> bool:
+    refresh_buff()
+    for buff in list(data.buff[user_id].values()):
+        if buff["buff_id"] == buff_id:
+            if levels and buff["level"] not in levels:
+                continue
+            return True
+    return False
+
+
+def add_buff(user_id: str, buff_id: str, buff_level: int = 1):
     if user_id not in data.buff.keys():
-        data.buff[user_id] = {}
-    data.buff[user_id][buff_id] = {
-        "level": buff_level,
-        "endtime": endtime,
-        "effect_count": effect_count,
-    }
+        data.buff[user_id] = []
+    buff_data = BUFF_LIST[buff_id].copy()
+    buff_data["buff_id"] = buff_id
+    for key in list(buff_data.keys()):
+        if isinstance(buff_data[key], list):
+            buff_data[key] = buff_data[key][buff_level - 1]
+    if "max_effect" in buff_data.keys():
+        buff_data["number_of_times_remaining"] = buff_data["max_effect"]
+    if buff_data["duration"]:
+        buff_data["end_time"] = time() + buff_data["duration"]
+    data.buff[user_id].append(buff_data)
+
     data.save_data()
