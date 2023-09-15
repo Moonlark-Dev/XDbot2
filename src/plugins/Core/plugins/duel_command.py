@@ -7,13 +7,8 @@ import random
 from .duel.scheduler import Scheduler
 from nonebot_plugin_apscheduler import scheduler as nonebot_scheduler
 from .etm.user import remove_hp, get_hp
-from .etm.user import remove_hp, get_hp
-from .etm.user import remove_hp, get_hp
-from .etm.user import remove_hp, get_hp
-from .etm.user import remove_hp, get_hp
 from .etm.health import get_data
 import os
-import re
 
 duel_requests = {}
 
