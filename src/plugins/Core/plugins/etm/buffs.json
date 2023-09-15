@@ -2,6 +2,7 @@
   "护符": {
     "is_gain": true,
     "max_effect": 5,
-    "duration": null
+    "duration": null,
+    "duel_buff": false
   }
 }
