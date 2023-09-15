@@ -3,8 +3,13 @@ import asyncio
 from .duel.contingent import Contingent
 from .duel.monomer import Monomer
 import time
+import random
 from .duel.scheduler import Scheduler
 from nonebot_plugin_apscheduler import scheduler as nonebot_scheduler
+from .etm.user import remove_hp, get_hp
+from .etm.user import remove_hp, get_hp
+from .etm.user import remove_hp, get_hp
+from .etm.user import remove_hp, get_hp
 from .etm.user import remove_hp, get_hp
 from .etm.health import get_data
 import os
@@ -104,6 +109,10 @@ async def handle_duel_refuse_command(_bot, event: GroupMessageEvent, _message: M
 # [HELPEND]
 
 
+def get_hp_to_reduce(winner_id: int, is_active_win: bool) -> float:
+    return get_data(winner_id, "attack") * ((0.5 if is_active_win else 0.3) + random.random())
+
+
 @create_group_command("duel-force")
 async def handle_force_duel(bot, event: GroupMessageEvent, message: Message):
     if Json(f"duel/u{event.user_id}.json").get("force_duel_count", 0) < 10:
@@ -112,10 +121,10 @@ async def handle_force_duel(bot, event: GroupMessageEvent, message: Message):
         Json(f"duel/u{event.user_id}.json")["force_duel_count"] += 1
         scheduler = await init_duel(bot, event.user_id, passive_user_id)
         tmp = {
-            False: [event.user_id, passive_user_id],
-            True: [passive_user_id, event.user_id],
+            False: [event.user_id, get_hp_to_reduce(passive_user_id, False)],
+            True: [passive_user_id, get_hp_to_reduce(event.user_id, True)],
         }[scheduler.start_fighting()]
-        remove_hp(tmp[0], int(get_data(tmp[0], "attack") * 0.46))
+        remove_hp(tmp[0], int(tmp[1]))
         await bot.call_api(
             "send_group_forward_msg",
             group_id=event.group_id,
@@ -140,7 +149,7 @@ async def handle_duel_accept_command(bot, event: GroupMessageEvent, _message: Me
         True: [event.user_id, duel_requests[event.user_id]["active"]],
         False: [duel_requests[event.user_id]["active"], event.user_id],
     }[scheduler.start_fighting()]
-    remove_hp(tmp[0], int(get_data(tmp[0], "attack") * 0.27))
+    remove_hp(tmp[0], int(get_data(tmp[0], "attack") * random.random()))
     await bot.call_api(
         "send_group_forward_msg",
         group_id=event.group_id,

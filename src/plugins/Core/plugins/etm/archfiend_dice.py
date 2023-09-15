@@ -4,13 +4,14 @@ from .user import remove_hp
 import random
 from .._utils import lang
 
+
 class ArchfiendDice(Item):
 
     def on_register(self):
         self.basic_data = {
             "display_name": "恶魔骰子",
             "display_message": (
-                "直接来自回扣城（Straight from Kickback City）！\n \n"
+                "Straight from Kickback City！\n \n"
                 "消耗 6.6vi 在 1 和 6 之间滚动，增益介于 -45HP 和 +45HP 之间。\n"
                 "如果你掷出了 6，你将失去这个骰子并获得 75 vimcoins"
             ),
