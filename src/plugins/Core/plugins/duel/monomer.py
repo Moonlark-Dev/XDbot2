@@ -10,7 +10,7 @@ SKIP = False
 
 
 def load_json(name: str) -> dict:
-    return json.load(open(os.path.join(path.res_path, name), encoding="utf-8"))
+    return json.load(open(os.path.join(path.res_path, name.replace("leathcer_case.json", "leather_case.json")), encoding="utf-8"))
 
 
 def get_base_properties(_type: str = "primary") -> dict:
