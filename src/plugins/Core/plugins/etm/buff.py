@@ -8,8 +8,11 @@ BUFF_LIST = json.load(open("src/plugins/Core/plugins/etm/buffs.json", encoding="
 def refresh_buff():
     for user_id, buffs in list(data.buff.items()):
         for buff in buffs:
-            if buff.get("number_of_times_remaining", 114514) <= 0 or time() > buff.get("end_time", time() + 114514):
+            if buff.get("number_of_times_remaining", 114514) <= 0 or time() > buff.get(
+                "end_time", time() + 114514
+            ):
                 data.buff[user_id].pop(data.buff[user_id].index(buff))
+
 
 #
 # def get_buff_level(user_id, buff_id):

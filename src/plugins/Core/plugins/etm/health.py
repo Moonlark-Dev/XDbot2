@@ -9,9 +9,7 @@ def get_max_hp(user_id: int) -> int:
 def get_data(user_id: int, key: str) -> any:
     return int(
         monomer.Monomer(
-            (user_data := Json(f"duel/u{user_id}.json")).get(
-                "weapons", "leather_case"
-            ),
+            (user_data := Json(f"duel/u{user_id}.json")).get("weapons", "leather_case"),
             user_data.get("realics", {}),
             user_data.get("ball", "leather_case"),
             100,

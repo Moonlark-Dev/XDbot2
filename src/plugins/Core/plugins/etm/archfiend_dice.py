@@ -6,7 +6,6 @@ from .._utils import lang
 
 
 class ArchfiendDice(Item):
-
     def on_register(self):
         self.basic_data = {
             "display_name": "恶魔骰子",
@@ -16,7 +15,7 @@ class ArchfiendDice(Item):
                 "如果你掷出了 6，你将失去这个骰子并获得 75 vimcoins"
             ),
             "maximum_stack": 1,
-            "price": 37
+            "price": 37,
         }
         self.item_id = "archfiend_dice"
 
@@ -44,4 +43,3 @@ class ArchfiendDice(Item):
                 economy.add_vi(self.user_id, 75)
                 self.count = 0
                 return [lang.text("archfient_dice.info_6", [], self.user_id)]
-

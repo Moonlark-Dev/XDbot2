@@ -105,7 +105,9 @@ async def handle_duel_refuse_command(_bot, event: GroupMessageEvent, _message: M
 
 
 def get_hp_to_reduce(winner_id: int, is_active_win: bool) -> float:
-    return get_data(winner_id, "attack") * ((0.5 if is_active_win else 0.3) + random.random())
+    return get_data(winner_id, "attack") * (
+        (0.5 if is_active_win else 0.3) + random.random()
+    )
 
 
 @create_group_command("duel-force")
