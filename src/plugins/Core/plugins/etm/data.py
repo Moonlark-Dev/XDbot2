@@ -47,7 +47,7 @@ def load_data():
                 pass
             try:
                 buff[user] = json.load(
-                    open(f"data/etm/{user}/buff.json", encoding="utf-8")
+                    open(f"data/etm/{user}/buff1.json", encoding="utf-8")
                 )
             except BaseException:
                 pass

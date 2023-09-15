@@ -13,5 +13,5 @@ class Talisman(Item):
         }
 
     def use_item(self):
-        buff.give_buff(self.user_id, "护符", 1)
+        buff.add_buff(self.user_id, "护符", 1)
         return "护符已生效"

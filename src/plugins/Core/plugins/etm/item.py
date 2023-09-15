@@ -9,7 +9,7 @@ class Item:
     def __init__(self, count, data, user_id):
         self.count = count
         self.item_id = ""  # dice"
-        self.basic_data: NbtDict = {}  # type: ignore
+        self.basic_data = {}  # type: ignore
         # 初始化
         self.on_register()
         # 设置 NBT

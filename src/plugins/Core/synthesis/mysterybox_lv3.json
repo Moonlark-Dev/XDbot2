@@ -1,5 +1,5 @@
 {
-    "id": 3,
+    "id": 2,
     "result": [
         {
             "id": "mysterybox_lv3",
@@ -9,8 +9,13 @@
     ],
     "required": [
         {
+            "id": "mysterybox_lv1",
+            "count": 1,
+            "data": {}
+        },
+        {
             "id": "mysterious_shard",
-            "count": 64,
+            "count": 32,
             "data": {}
         }
     ]

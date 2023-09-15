@@ -93,7 +93,7 @@ class Dice(Item):
             return _lang.text("dice.2..9", [c], self.user_id), c, 0
         elif c == 1:  # 1
             achievement.increase_unlock_progress("什么欧皇", user_id)
-            if buff.can_effect(user_id, "护符") and random.random() <= 0.75:
+            if buff.has_buff(user_id, "护符") and random.random() <= 0.75:
                 buff.effect_buff(user_id, "护符")
                 return _lang.text("dice.1-1", [c], self.user_id), c, 0
             else:

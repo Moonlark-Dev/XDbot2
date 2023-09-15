@@ -38,7 +38,7 @@ def remove_hp(user_id: int, count: int) -> None:
         send_message(
             lang.text(
                 "etm_user.died",
-                [reduced_vimcoin := user_data["vimcoin"] - origin_vimcoin],
+                [reduced_vimcoin := origin_vimcoin - user_data["vimcoin"]],
                 user_id,
             ),
             str(user_id),
