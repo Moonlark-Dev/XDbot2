@@ -37,7 +37,7 @@ def get_template() -> str:
     """
     with open("src/plugins/Core/ehm/template.md", encoding="utf-8") as f:
         return f.read()
-    
+
 
 def _check_err_data_file(file_name: str) -> bool:
     """检查文件是否为错误数据文件
@@ -51,7 +51,7 @@ def _check_err_data_file(file_name: str) -> bool:
     return (not file_name.startswith("_")) and file_name.endswith(".json")
 
 
-def get_error_data(error_log: str) -> dict[str, str|list]:
+def get_error_data(error_log: str) -> dict[str, str | list]:
     """获取错误数据
 
     Args:
