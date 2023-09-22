@@ -42,8 +42,18 @@ def effect_buff(user_id: str, buff_id: str) -> bool:
 
 
 def has_buff(user_id: str, buff_id: str, levels: list = []) -> bool:
+    """用户是否拥有Buff
+
+    Args:
+        user_id (str): 用户ID
+        buff_id (str): 效果ID
+        levels (list, optional): 允许的等级，空列表则为全部. Defaults to [].
+
+    Returns:
+        bool: 用户是否拥有符合条件的效果
+    """
     refresh_buff()
-    for buff in list(data.buff[user_id].values()):
+    for buff in data.buff[user_id]:
         if buff["buff_id"] == buff_id:
             if levels and buff["level"] not in levels:
                 continue
@@ -52,9 +62,19 @@ def has_buff(user_id: str, buff_id: str, levels: list = []) -> bool:
 
 
 def get_remain_times(user_id: str, buff_id: str, levels: list = []) -> int:
+    """获取用户符合条件的效果剩余的生效次数
+
+    Args:
+        user_id (str): 用户ID
+        buff_id (str): 效果ID
+        levels (list, optional): 允许的等级，空列表则为不筛选等级. Defaults to [].
+
+    Returns:
+        int: 剩余生效次数
+    """
     refresh_buff()
     times = 0
-    for buff in list(data.buff[user_id].values()):
+    for buff in data.buff[user_id]:
         if buff["buff_id"] == buff_id:
             if levels and buff["level"] not in levels:
                 continue
