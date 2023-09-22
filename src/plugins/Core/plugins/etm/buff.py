@@ -51,7 +51,18 @@ def has_buff(user_id: str, buff_id: str, levels: list = []) -> bool:
     return False
 
 
-def add_buff(user_id: str, buff_id: str, buff_level: int = 1):
+def get_remain_times(user_id: str, buff_id: str, levels: list = []) -> int:
+    refresh_buff()
+    times = 0
+    for buff in list(data.buff[user_id].values()):
+        if buff["buff_id"] == buff_id:
+            if levels and buff["level"] not in levels:
+                continue
+            times += buff["number_of_times_remaining"]
+    return times
+            
+
+def add_buff(user_id: str, buff_id: str, buff_level: int = 1, duration: int | None = None):
     if user_id not in data.buff.keys():
         data.buff[user_id] = []
     buff_data = BUFF_LIST[buff_id].copy()
@@ -63,6 +74,8 @@ def add_buff(user_id: str, buff_id: str, buff_level: int = 1):
         buff_data["number_of_times_remaining"] = buff_data["max_effect"]
     if buff_data["duration"]:
         buff_data["end_time"] = time() + buff_data["duration"]
+    if duration:
+        buff_data["end_time"] = time() + duration
     data.buff[user_id].append(buff_data)
 
     data.save_data()

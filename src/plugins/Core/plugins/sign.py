@@ -2,7 +2,7 @@ from nonebot import on_command, on_regex
 from . import _error as error
 from nonebot.adapters.onebot.v11.event import MessageEvent
 from . import _lang as lang
-from .etm import economy, exp, user, achievement
+from .etm import economy, exp, user, achievement, buff
 import traceback
 import random
 import time
@@ -41,6 +41,8 @@ def _sign(qq):
         json.dump(data, open("data/etm/sign.json", "w", encoding="utf-8"))
         if add_vi == Decimal(0):
             achievement.unlock("+0！", qq)
+        if exp.get_level(qq) >= 30:
+            buff.add_buff(qq, "每日GPT限免", duration=(int(time.time() / 86400) + 1) * 86400 - time.time())
 
         return "\n".join(
             [
