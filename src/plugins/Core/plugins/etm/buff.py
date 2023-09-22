@@ -30,7 +30,7 @@ def refresh_buff():
 def effect_buff(user_id: str, buff_id: str) -> bool:
     refresh_buff()
     length = 0
-    for buff in list(data.buff[user_id].values()):
+    for buff in data.buff[user_id]:
         if buff["buff_id"] == buff_id and "number_of_times_remaining" in buff.keys():
             data.buff[user_id][length]["number_of_times_remaining"] -= 1
             refresh_buff()
