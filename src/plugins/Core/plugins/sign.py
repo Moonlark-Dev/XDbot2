@@ -14,7 +14,15 @@ sign = on_regex("^(签到|.sign)$")
 sign_rank = on_command("sign-rank")
 
 
-def _sign(qq):
+def _sign(qq) -> str:
+    """用户签到
+
+    Args:
+        qq (str): 操作目标QQ
+
+    Returns:
+        str: 显示的文本
+    """
     data = json.load(open("data/etm/sign.json", encoding="utf-8"))
     date = int((time.time() + 28800) / 86400)
     if qq not in data["latest"]:
@@ -41,7 +49,7 @@ def _sign(qq):
         json.dump(data, open("data/etm/sign.json", "w", encoding="utf-8"))
         if add_vi == Decimal(0):
             achievement.unlock("+0！", qq)
-        if exp.get_level(qq) >= 30:
+        if int(exp.get_level(qq)) >= 30:
             buff.add_buff(qq, "每日GPT限免", duration=(int(time.time() / 86400) + 1) * 86400 - time.time())
 
         return "\n".join(
