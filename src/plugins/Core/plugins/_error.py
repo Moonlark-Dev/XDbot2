@@ -27,35 +27,64 @@ except:
 
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 IGNORED_EXCEPTION = ["NetWorkError", "IllegalQuantityException"]
-ehm = {}
-ehm["errors"] = {}
-for file in os.listdir(os.path.abspath("src/plugins/Core/ehm")):
-    try:
-        data = json.load(
-            open(
-                os.path.join(os.path.abspath("src/plugins/Core/ehm"), file),
-                encoding="utf-8",
-            )
-        )
-        ehm["errors"][data.pop("match")] = data
-    except:
-        pass
-ehm["unknown"] = json.load(
-    open(
-        os.path.join(os.path.abspath("src/plugins/Core/ehm"), "unknown_error.json"),
-        encoding="utf-8",
-    )
-)
-ehm["templ"] = open(
-    os.path.join(os.path.abspath("src/plugins/Core/ehm"), "template.md"),
-    encoding="utf-8",
-).read()
 
 
-# , event: MessageEvent | GroupMessageEvent | None = None):
+def get_template() -> str:
+    """获取错误处理手册模板
+
+    Returns:
+        str: 模板文件内容（未替换）
+    """
+    with open("src/plugins/Core/ehm/template.md", encoding="utf-8") as f:
+        return f.read()
+    
+
+def _check_err_data_file(file_name: str) -> bool:
+    """检查文件是否为错误数据文件
+
+    Args:
+        file_name (str): 文件名
+
+    Returns:
+        bool: 文件是否为错误数据文件
+    """
+    return (not file_name.startswith("_")) and file_name.endswith(".json")
+
+
+def get_error_data(error_log: str) -> dict[str, str|list]:
+    """获取错误数据
+
+    Args:
+        error_log (str): 异常日志
+
+    Returns:
+        dict[str, str|list]: EHM数据
+    """
+    for file in os.listdir("src/plugins/Core/plugins/ehm"):
+        if not _check_err_data_file(file):
+            continue
+        with open(f"src/plugins/Core/plugins/ehm/{file}", encoding="utf-8") as f:
+            ehm = json.load(f)
+        if re.match(re.compile(ehm["match"], re.DOTALL), error_log):
+            return ehm
+    with open("src/plugins/Core/ehm/_unknown_error.json", encoding="utf-8") as f:
+        return json.load(f)
+
+
 async def report(
     _err: str | None = None, matcher: Matcher = Matcher(), event=None, feedback=True
-):
+) -> None:
+    """Report a message
+
+    Args:
+        _err (str | None, optional): 上报的信息. Defaults to None.
+        matcher (Matcher, optional): 当前事件触发器. Defaults to Matcher().
+        event (_type_, optional): 不重要的参数，已弃用. Defaults to None.
+        feedback (bool, optional): 是否对用户提示「处理失败」. Defaults to True.
+
+    Returns:
+        None: 无返回
+    """
     err = _err or traceback.format_exc()
     error = err.splitlines()[-1]
     logger.debug(error)
@@ -71,18 +100,13 @@ async def report(
         # reply = MessageSegment.text("") if not event else MessageSegment.reply(event.message_id)
         if feedback:
             try:
-                data = None
-                for reg, _data in list(ehm["errors"].items()):
-                    if re.search(re.compile(reg, re.DOTALL), err):
-                        data = _data
-                if not data:
-                    data = ehm["unknown"]
+                error_data = get_error_data(err)
                 filename = f"data/_error.cache_{time.time()}.ro.png"
                 markdown2image.md2img(
-                    ehm["templ"]
+                    get_template()
                     .replace("%error%", error)
-                    .replace("%because%", "\n".join(data["because"]))
-                    .replace("%do%", "- " + "\n- ".join(data["do"]))
+                    .replace("%because%", "\n".join(error_data["because"]))
+                    .replace("%do%", "- " + "\n- ".join(error_data["do"]))
                     .replace("%log%", err),
                     filename,
                 )
@@ -108,6 +132,6 @@ async def report(
         return None
     logger.error(err)
     # 记录错误
-    data = json.load(open("data/_error.count.json", encoding="utf-8"))
-    data["count"] += 1
-    json.dump(data, open("data/_error.count.json", "w", encoding="utf-8"))
+    error_data = json.load(open("data/_error.count.json", encoding="utf-8"))
+    error_data["count"] += 1
+    json.dump(error_data, open("data/_error.count.json", "w", encoding="utf-8"))
