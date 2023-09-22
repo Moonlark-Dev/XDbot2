@@ -67,21 +67,22 @@ def init_lists(_ast: list) -> list:
 
 
 def init_pre(_ast: list) -> list:
-    ast = _ast.copy()
-    code_data = []
-    for i in range(len(ast)):
-        item = ast[i]
-        if isinstance(item, dict):
-            if item["type"] == "code" and item["parentNode"] == "pre":
-                code_data.append([i, item["class"].split("-")[1]])
-            else:
-                item["innerHTML"] = init_pre(item["innerHTML"])
-    temp1 = 0
-    for pos, lang in code_data:
-        ast.insert(pos + temp1, lang)
-        ast.insert(pos + temp1 + 1, {"type": "br", "innerHTML": []})
-        temp1 += 2
-    return ast
+    return _ast  # 跳过处理
+    # ast = _ast.copy()
+    # code_data = []
+    # for i in range(len(ast)):
+    #     item = ast[i]
+    #     if isinstance(item, dict):
+    #         if item["type"] == "code" and item["parentNode"] == "pre":
+    #             code_data.append([i, item["class"].split("-")[1]])
+    #         else:
+    #             item["innerHTML"] = init_pre(item["innerHTML"])
+    # temp1 = 0
+    # for pos, lang in code_data:
+    #     ast.insert(pos + temp1, lang)
+    #     ast.insert(pos + temp1 + 1, {"type": "br", "innerHTML": []})
+    #     temp1 += 2
+    # return ast
 
 
 def init_style(_ast: list, inherited_style: dict = {}) -> list:
@@ -154,15 +155,18 @@ def get_size(ast: list) -> tuple[int, int]:  # , list]:
     for item in ast:
         match item["type"]:
             case "text":
-                widget_size = list(
-                    ImageFont.truetype(
-                        item["style"].get("font-family")
-                        or os.path.join(path, "font/HYRunYuan-55W.ttf"),
-                        item["style"].get("font-size")
-                        or default_style["text"].get("font-size")
-                        or 20,
-                    ).getsize(item["innerHTML"][0])
-                )
+                widget_size = [
+                    int(
+                        ImageFont.truetype(
+                            item["style"].get("font-family")
+                            or os.path.join(path, "font/HYRunYuan-55W.ttf"),
+                            font_size := item["style"].get("font-size")
+                            or default_style["text"].get("font-size")
+                            or 20,
+                        ).getlength(item["innerHTML"][0])
+                    ),
+                    font_size + 5,
+                ]
             case "br":
                 size[0] = max(size[0], line_size[0])
                 size[1] += line_size[1]
