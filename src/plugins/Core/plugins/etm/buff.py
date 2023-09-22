@@ -80,9 +80,11 @@ def get_remain_times(user_id: str, buff_id: str, levels: list = []) -> int:
                 continue
             times += buff["number_of_times_remaining"]
     return times
-            
 
-def add_buff(user_id: str, buff_id: str, buff_level: int = 1, duration: int | None = None):
+
+def add_buff(
+    user_id: str, buff_id: str, buff_level: int = 1, duration: int | None = None
+):
     if user_id not in data.buff.keys():
         data.buff[user_id] = []
     buff_data = BUFF_LIST[buff_id].copy()

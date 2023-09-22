@@ -27,7 +27,12 @@ openai.api_key = Json("chatgpt.config.json")["api_key"]
 def get_user_info(user_id: str) -> str:
     user_data = Json(f"gpt/users/{user_id}.json")
     return lang.text(
-        "chatgpt.user_info", [user_data["token"] or 0, (user_data["free"] or 0) + buff.get_remain_times(user_id, "每日GPT限免")], user_id
+        "chatgpt.user_info",
+        [
+            user_data["token"] or 0,
+            (user_data["free"] or 0) + buff.get_remain_times(user_id, "每日GPT限免"),
+        ],
+        user_id,
     )
 
 
@@ -81,7 +86,11 @@ def change_session(user_id: str, session: str) -> None:
 
 def check_user_tokens(user_id: str) -> bool:
     user_data = Json(f"gpt/users/{user_id}.json")
-    return user_data.get("token", 0) > 0 or user_data.get("free", 0) > 0 or buff.has_buff(user_id, "每日GPT限免")
+    return (
+        user_data.get("token", 0) > 0
+        or user_data.get("free", 0) > 0
+        or buff.has_buff(user_id, "每日GPT限免")
+    )
 
 
 def get_session_messages(session_id: str) -> list[dict]:
@@ -151,7 +160,12 @@ def generate_gpt_reply(gpt_reply: str, used_token: int, user_id: str) -> str:
         )
     else:
         token_usage_msg = lang.text(
-            "chatgpt.free", [Json(f"gpt/users/{user_id}.json")["free"] + buff.get_remain_times(user_id, "每日GPT限免")], user_id
+            "chatgpt.free",
+            [
+                Json(f"gpt/users/{user_id}.json")["free"]
+                + buff.get_remain_times(user_id, "每日GPT限免")
+            ],
+            user_id,
         )
     return lang.text("chatgpt.reply", [token_usage_msg, gpt_reply], user_id)
 

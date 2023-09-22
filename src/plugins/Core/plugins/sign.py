@@ -50,7 +50,11 @@ def _sign(qq) -> str:
         if add_vi == Decimal(0):
             achievement.unlock("+0！", qq)
         if exp.get_user_level(qq) >= 30:
-            buff.add_buff(qq, "每日GPT限免", duration=(int(time.time() / 86400) + 1) * 86400 - time.time())
+            buff.add_buff(
+                qq,
+                "每日GPT限免",
+                duration=(int(time.time() / 86400) + 1) * 86400 - time.time(),
+            )
 
         return "\n".join(
             [
