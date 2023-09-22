@@ -60,7 +60,7 @@ def get_error_data(error_log: str) -> dict[str, str|list]:
     Returns:
         dict[str, str|list]: EHM数据
     """
-    for file in os.listdir("src/plugins/Core/plugins/ehm"):
+    for file in os.listdir("src/plugins/Core/ehm"):
         if not _check_err_data_file(file):
             continue
         with open(f"src/plugins/Core/ehm/{file}", encoding="utf-8") as f:
