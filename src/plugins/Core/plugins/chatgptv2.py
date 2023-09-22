@@ -27,7 +27,7 @@ openai.api_key = Json("chatgpt.config.json")["api_key"]
 def get_user_info(user_id: str) -> str:
     user_data = Json(f"gpt/users/{user_id}.json")
     return lang.text(
-        "chatgpt.user_info", [user_data["token"] or 0, user_data["free"] or 0], user_id
+        "chatgpt.user_info", [user_data["token"] or 0, (user_data["free"] or 0) + buff.get_remain_times(user_id, "每日GPT限免")], user_id
     )
 
 
