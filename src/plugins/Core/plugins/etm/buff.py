@@ -30,7 +30,7 @@ def refresh_buff():
 def effect_buff(user_id: str, buff_id: str) -> bool:
     refresh_buff()
     length = 0
-    for buff in list(data.buff[user_id].values()):
+    for buff in data.buff[user_id]:
         if buff["buff_id"] == buff_id and "number_of_times_remaining" in buff.keys():
             data.buff[user_id][length]["number_of_times_remaining"] -= 1
             refresh_buff()
@@ -42,8 +42,18 @@ def effect_buff(user_id: str, buff_id: str) -> bool:
 
 
 def has_buff(user_id: str, buff_id: str, levels: list = []) -> bool:
+    """用户是否拥有Buff
+
+    Args:
+        user_id (str): 用户ID
+        buff_id (str): 效果ID
+        levels (list, optional): 允许的等级，空列表则为全部. Defaults to [].
+
+    Returns:
+        bool: 用户是否拥有符合条件的效果
+    """
     refresh_buff()
-    for buff in list(data.buff[user_id].values()):
+    for buff in data.buff[user_id]:
         if buff["buff_id"] == buff_id:
             if levels and buff["level"] not in levels:
                 continue
@@ -51,7 +61,30 @@ def has_buff(user_id: str, buff_id: str, levels: list = []) -> bool:
     return False
 
 
-def add_buff(user_id: str, buff_id: str, buff_level: int = 1):
+def get_remain_times(user_id: str, buff_id: str, levels: list = []) -> int:
+    """获取用户符合条件的效果剩余的生效次数
+
+    Args:
+        user_id (str): 用户ID
+        buff_id (str): 效果ID
+        levels (list, optional): 允许的等级，空列表则为不筛选等级. Defaults to [].
+
+    Returns:
+        int: 剩余生效次数
+    """
+    refresh_buff()
+    times = 0
+    for buff in data.buff[user_id]:
+        if buff["buff_id"] == buff_id:
+            if levels and buff["level"] not in levels:
+                continue
+            times += buff["number_of_times_remaining"]
+    return times
+
+
+def add_buff(
+    user_id: str, buff_id: str, buff_level: int = 1, duration: int | None = None
+):
     if user_id not in data.buff.keys():
         data.buff[user_id] = []
     buff_data = BUFF_LIST[buff_id].copy()
@@ -63,6 +96,8 @@ def add_buff(user_id: str, buff_id: str, buff_level: int = 1):
         buff_data["number_of_times_remaining"] = buff_data["max_effect"]
     if buff_data["duration"]:
         buff_data["end_time"] = time() + buff_data["duration"]
+    if duration:
+        buff_data["end_time"] = time() + duration
     data.buff[user_id].append(buff_data)
 
     data.save_data()

@@ -83,7 +83,7 @@ def save_data():
     _save_data("achi_unlock_progress", achi_unlock_progress)
     _save_data("bag", bags)
     _save_data("user", basic_data)
-    _save_data("buff", buff)
+    _save_data("buff1", buff)
     _save_data("bank_lead_data", bank_lead_data)
     _save_data("emails", emails)
 
