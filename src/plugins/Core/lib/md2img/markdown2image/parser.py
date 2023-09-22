@@ -3,10 +3,8 @@ import marko
 
 preserve_nodes_for_line_breaks = ["code"]
 
-
 def markdown2html(markdown: str) -> str:
     return f"<html>{marko.convert(markdown)}</html>"
-
 
 def parse_dom(nodes: list, parent_node: str | None = None) -> list:
     ast, item = [], {}
@@ -27,7 +25,10 @@ def parse_dom(nodes: list, parent_node: str | None = None) -> list:
                 item = node.data.replace("\n", "")
             else:
                 _item = node.data.splitlines()
-                item = {"type": "span", "innerHTML": []}
+                item = {
+                    "type": "span",
+                    "innerHTML": []
+                }
                 for i in _item:
                     item["innerHTML"].append(i)
                     item["innerHTML"].append({"type": "br", "innerHTML": []})
@@ -37,13 +38,13 @@ def parse_dom(nodes: list, parent_node: str | None = None) -> list:
         item = {}
     return ast
 
-
 def parse_html(html: str) -> list:
     dom = xml.dom.minidom.parseString(html)
     ast = parse_dom(dom.childNodes)
     # print(ast, "\n")
     return ast
 
-
 def parse(markdown: str) -> list:
     return parse_html(markdown2html(markdown))
+
+     
