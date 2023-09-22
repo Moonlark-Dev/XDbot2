@@ -21,6 +21,14 @@ def get_exp(user_id):
 
 
 def get_user_level(user_id):
+    """获取用户等级
+
+    Args:
+        user_id (str): 用户ID
+
+    Returns:
+        int: 用户的等级
+    """
     return get_level(_get_exp(user_id))
 
 

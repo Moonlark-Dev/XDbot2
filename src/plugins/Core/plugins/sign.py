@@ -49,7 +49,7 @@ def _sign(qq) -> str:
         json.dump(data, open("data/etm/sign.json", "w", encoding="utf-8"))
         if add_vi == Decimal(0):
             achievement.unlock("+0！", qq)
-        if int(exp.get_level(qq)) >= 30:
+        if exp.get_user_level(qq) >= 30:
             buff.add_buff(qq, "每日GPT限免", duration=(int(time.time() / 86400) + 1) * 86400 - time.time())
 
         return "\n".join(
