@@ -63,7 +63,7 @@ def get_error_data(error_log: str) -> dict[str, str|list]:
     for file in os.listdir("src/plugins/Core/plugins/ehm"):
         if not _check_err_data_file(file):
             continue
-        with open(f"src/plugins/Core/plugins/ehm/{file}", encoding="utf-8") as f:
+        with open(f"src/plugins/Core/ehm/{file}", encoding="utf-8") as f:
             ehm = json.load(f)
         if re.match(re.compile(ehm["match"], re.DOTALL), error_log):
             return ehm
