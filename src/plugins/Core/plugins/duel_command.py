@@ -127,7 +127,7 @@ async def handle_force_duel(bot, event: GroupMessageEvent, message: Message):
             group_id=event.group_id,
             messages=parse_result_node_messages(bot, scheduler),
         )
-        await finish("duel.result", [tmp[2]], event.user_id, False, True)
+        await finish("duel.result", [tmp[2]], event.user_id, False, True, , parse_cq_code=True)
 
 
 @create_group_command("duel-accept")
