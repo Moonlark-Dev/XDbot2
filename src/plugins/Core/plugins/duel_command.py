@@ -153,5 +153,5 @@ async def handle_duel_accept_command(bot, event: GroupMessageEvent, _message: Me
         group_id=event.group_id,
         messages=parse_result_node_messages(bot, scheduler),
     )
-    await finish("duel.result", [tmp[1]], tmp[1], False)
+    await finish("duel.result", [tmp[1]], tmp[1], False, parse_cq_code=True)
     
