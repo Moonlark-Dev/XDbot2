@@ -279,7 +279,7 @@
   "duel_equip.show_euqip": "「当前装备（{}）」\n武器：{} (Lv: {})\n遗器：<未解锁>\n面位球：{} (Lv: {})\n弱点：{}",
   "duel.duel_request": "[CQ:at,qq={}] [DL] [CQ:at,qq={}] 向你发送了一个决斗申请。\n \n使用「/duel-accept」接受\n使用「/duel-refuse」拒绝\n \n请求将在三分钟后过期",
   "duel.no_request": "[DL] 错误：没有可用决斗申请",
-  "duel.result": "[DL] 战斗结束，胜者为 [[CQ:at,qq={}]]！",
+  "duel.result": "[DL] 战斗结束，胜者为 [CQ:at,qq={}]！",
 
   "quickmath_points.ranking_title": "「速算积分榜（剩余{}）」\n",
   "quickmath_points.ranking_item": "{}. {}: {}-{}\n",
