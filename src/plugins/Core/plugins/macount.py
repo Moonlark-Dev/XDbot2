@@ -35,8 +35,8 @@ async def get_messages(bot: Bot, group_id: int) -> list:
         except Exception:
             logger.warning(traceback.format_exc())
             break
-        for message in message_list["messages"]:
-            if message["time"] >= time.time() - 600:
+        for message in message_list["messages"][::-1]:
+            if time.time() - message["time"] <= 600:
                 messages.append(message["raw_message"])
                 message_seq = message["message_seq"]
             else:
