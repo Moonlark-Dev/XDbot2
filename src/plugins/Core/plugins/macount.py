@@ -83,7 +83,7 @@ def get_ma_count(messages: list[str]) -> int:
 # [HELPSTART] Version: 2
 # Command: ma-count
 # Info: 计算近 10 分钟消息含妈量
-# Msg: 含妈量检测
+# Msg: 计算含妈量
 # Usage: ma-count
 # [HELPEND]
 
