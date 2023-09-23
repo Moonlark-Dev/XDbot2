@@ -76,7 +76,8 @@ def get_rule_reply(rule_id: str, group_id: int):
 # Usage: reply show <数据编号>：查看调教数据
 # Usage: reply source：（需回复）获取回复来源
 # Usage: reply remove <数据编号>：删除数据
-# Usage: reply list：（未完成）查看数据列表
+# Usage: reply list：查看数据列表
+# Usage: reply fork <群号> <数据编号>：复刻调教数据
 # Msg: 调教模块
 # Info: 调教XDbot2，支持正则、关键词、完整、模糊四种匹配模式
 # [HELPEND]
