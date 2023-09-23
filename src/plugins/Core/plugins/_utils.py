@@ -152,6 +152,8 @@ class Json:
         try:
             local_data = json.load(open(file=self.path, encoding="utf-8"))
         except FileNotFoundError:
+            if not self.changed_key.__len__():
+                return
             local_data = {}
         for key in list(self.changed_key):
             try:

@@ -1,4 +1,3 @@
-import math
 import random
 from nonebot.params import ArgPlainText
 from nonebot.typing import T_State
@@ -42,7 +41,7 @@ def get_rules(group_id: int):
         return []
 
 
-def get_rule_data(group_id: int, rule_id: str):
+def get_rule_data(group_id: int, rule_id: str):# -> dict:
     # if rule_id.startswith("old/"):
     #     return _smart_reply.get_list()[rule_id.replace("old/", "")]
     return Json(f"reply/g{group_id}/{rule_id}.json").to_dict()
@@ -299,7 +298,18 @@ async def handle_reply(
             await reply_command.finish()
 
         elif argv[0] in ["fork", "copy", "复刻"]:
-            await finish("reply.fork_successful", [fork_reply_data(get_rule_data(event.group_id, argv[1]), event.group_id)], event.user_id)
+            if not (base_data := get_rule_data(int(argv[1]), argv[2])):
+                await finish("reply.not_found", [], event.user_id)
+            await finish(
+                "reply.fork_successful", 
+                [
+                    fork_reply_data(
+                        base_data,
+                        event.group_id
+                    )
+                ],
+                event.user_id
+            )
 
         else:
             await finish("reply.need_argv", [], event.user_id)
