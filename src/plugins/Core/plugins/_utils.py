@@ -81,9 +81,12 @@ async def finish(
     at_sender: bool = True,
     reply_message: bool = False,
     matcher: Matcher = Matcher(),
+    parse_cq_code: bool = False,
 ) -> None:
     await matcher.finish(
-        lang.text(key, _format, user_id),
+        Message(lang.text(key, _format, user_id))
+        if parse_cq_code
+        else lang.text(key, _format, user_id),
         at_sender=at_sender,
         reply_message=reply_message,
     )
