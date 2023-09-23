@@ -277,7 +277,7 @@
   "reply.not_found": "错误：数据不存在！",
   "reply.show_data": "「调教数据（#{}）」\n投稿者：{}\n触发器类型：{}\n触发文本：{}\n回复文本：{}",
 
-  "duel_equip.show_equip": "【当前装备】\n[武器]: {} (Lv {})\n[面位球]: {} (Lv {})\n【遗器】\n{}\n【套装效果】\n{}",
+  "duel_equip.show_equip": "「当前装备」\n[武器]: {} (Lv {})\n[面位球]: {} (Lv {})\n【遗器】\n{}【套装效果】\n{}",
   "duel_equip.relics": "-> [{}]: {} (+{})\n",
   "duel_equip.relics_hand": "手部",
   "duel_equip.relics_torso": "躯干",
