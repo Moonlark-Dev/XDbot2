@@ -127,10 +127,11 @@ async def handle_force_duel(bot, event: GroupMessageEvent, message: Message):
             group_id=event.group_id,
             messages=parse_result_node_messages(bot, scheduler),
         )
+        await finish("duel.result", [tmp[1]], event.user_id, False, True)
 
 
 @create_group_command("duel-accept")
-async def handle_duel_accept_command(bot, event: GroupMessageEvent, _message: Message):
+async def handle_duel_accept_command(bot, event: GroupMessageEvent, _message: Message) -> None:
     if event.user_id not in duel_requests.keys():
         await finish("duel.no_request", [], event.user_id)
     if event.group_id != duel_requests[event.user_id]["group_id"]:
@@ -146,9 +147,11 @@ async def handle_duel_accept_command(bot, event: GroupMessageEvent, _message: Me
         True: [event.user_id, duel_requests[event.user_id]["active"]],
         False: [duel_requests[event.user_id]["active"], event.user_id],
     }[scheduler.start_fighting()]
-    remove_hp(tmp[0], int(get_data(tmp[0], "attack") * random.random()))
+    remove_hp(tmp[0], int(get_data(tmp[1], "attack") * random.random()))
     await bot.call_api(
         "send_group_forward_msg",
         group_id=event.group_id,
         messages=parse_result_node_messages(bot, scheduler),
     )
+    await finish("duel.result", [tmp[1]], tmp[1], False)
+    
