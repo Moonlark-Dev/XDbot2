@@ -299,7 +299,10 @@
   "whoami.text": "用户 ID: {}\n用户呢称: {}",
   "whoami.text.detail": "用户 ID: {}\n用户呢称: {}\n用户性别: {}\n用户年龄: {}\n用户等级: {}\n用户权限: {}\n用户名片: {}",
   "whoami.findhelp": "错误：不正确的参数！",
+
   "etm_user.died": "You died and lost {} vimcoin(s)!",
   "archfient_dice.info_1_5": "数字是：{}！{}HP",
-  "archfient_dice.info_6": "数字是：6！+45HP，获得了 75vim\n物品「恶魔骰子」已损坏"
+  "archfient_dice.info_6": "数字是：6！+45HP，获得了 75vim\n物品「恶魔骰子」已损坏",
+
+  "macount.info": "消息含妈量（近 10 分钟）：{}% ({}/{})"
 }
