@@ -6,8 +6,9 @@ import difflib
 import os.path
 from nonebot import on_message
 from ._utils import *
-from .su import su
-from .etm import economy
+# from .su import su
+import math
+# from .etm import economy
 
 # from . import _smart_reply
 
