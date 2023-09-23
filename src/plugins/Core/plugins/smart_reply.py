@@ -115,6 +115,22 @@ def get_matcher_type(argv: str):
             return _type[0]
 
 
+def fork_reply_data(base_data: dict, group_id: int) -> int:
+    """复刻调教数据
+
+    Args:
+        base_data (dict): 源调教数据
+        group_id (int): 目标群聊
+
+    Returns:
+        int: 新的数据编号
+    """
+    base_data["id"] = get_reply_id(group_id)
+    base_data["group_id"] = group_id
+    Json(f"reply/g{group_id}/{base_data['id']}.json").set_to(base_data)
+    return base_data["id"]
+
+
 def get_reply_id(group_id: int):
     length = 0
     while True:
@@ -280,6 +296,9 @@ async def handle_reply(
                 messages=node_messages,
             )
             await reply_command.finish()
+
+        elif argv[0] in ["fork", "copy", "复刻"]:
+            await finish("reply.fork_successful", [fork_reply_data(get_rule_data(event.group_id, argv[1]), event.group_id)], event.user_id)
 
         else:
             await finish("reply.need_argv", [], event.user_id)
