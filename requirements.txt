@@ -1,6 +1,6 @@
 nonebot2==2.0.0rc3
 nb-cli==1.0.3
-nonebot-adapter-onebot==2.2.1
+nonebot-adapter-onebot
 pillow
 psutil
 pyecharts
@@ -10,3 +10,4 @@ openai
 sentry_sdk
 playwright
 sympy
+pypinyin
