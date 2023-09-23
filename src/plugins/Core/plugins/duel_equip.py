@@ -18,21 +18,40 @@ def get_weakness(user_id: int) -> str:
     return " ".join(monomer.get_weakness())
 
 
+def get_relics_info(relics_data: dict[str, dict], user_id: int) -> str:
+    text = ""
+    for _type, data in list(relics_data.items()):
+        kit = data["kit"]
+        text += lang.text("duel_equip.relics", [
+            lang.text(f"duel_equip.relics_{_type}", [], user_id),
+            load_json(f"kits/{kit}.json")["relics"][_type],
+            data["level"]
+        ])
+        for gain in data["gain_list"]:
+            text += lang.text("duel_equip.relics_gain", [
+                gain["name"],
+                data["value"] if isinstance(data["value"], int) else f"{data['value'] * 100}%"
+            ])
+    return text[:-1] + "\n"
+
+
 async def show_equip(event: MessageEvent, argv: list[str]) -> None:
     match get_list_item(argv, 1, ""):
         case "":
             weapon_kit_data = get_user_equip(event.user_id, "weapons")
             ball_kit_data = get_user_equip(event.user_id, "ball")
             await finish(
-                "duel_equip.show_euqip",
+                "duel_equip.show_equip",
                 [
-                    event.user_id,
                     weapon_kit_data["weapons"]["name"],
                     Json(f"duel/u{event.user_id}.json").get("weapons_level", 1),
-                    # 遗器（保留位置）
                     ball_kit_data["ball"]["name"],
                     Json(f"duel/u{event.user_id}.json").get("ball_level", 1),
-                    get_weakness(event.user_id) or "无",  # 不写本地化是因为没什么必要
+                    get_relics_info(
+                        Json(f"duel/u{event.user_id}.json").get("relics", {}), 
+                        event.user_id
+                    ),
+                    "TODO"
                 ],
                 event.user_id,
                 False,
