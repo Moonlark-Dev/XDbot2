@@ -32,6 +32,7 @@ async def get_messages(bot: Bot, group_id: int, message_id: int) -> list:
         for message in message_list:
             if message["time"] >= time.time() - 600:
                 messages.append(message["raw_message"])
+                message_seq = message["message_id"]
             else:
                 return messages
     return messages
