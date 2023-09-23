@@ -1,3 +1,4 @@
+import os.path
 import random
 from nonebot.params import ArgPlainText
 from nonebot.typing import T_State
@@ -147,6 +148,20 @@ def remove_matcher(group_id: int, rule_id: str, user_id: str, force: bool = Fals
         return SUCCESS
     else:
         return FAILED
+
+
+def is_rule_id_available(group_id: int, rule_id: str) -> bool:
+    """
+    检查数据编号是否有效
+
+    Args:
+        group_id (int): 群号
+        rule_id (str): 数据编号
+
+    Returns:
+        bool: 数据编号是否有效
+    """
+    return os.path.isfile(f"data/reply/g{group_id}/{rule_id}.json")
 
 
 async def create_matcher(
@@ -299,13 +314,13 @@ async def handle_reply(
             await reply_command.finish()
 
         elif argv[0] in ["fork", "copy", "复刻"]:
-            if not (base_data := get_rule_data(int(argv[1]), argv[2])):
+            if not is_rule_id_available(int(argv[1]), argv[2]):
                 await finish("reply.not_found", [], event.user_id)
             await finish(
                 "reply.fork_successful", 
                 [
                     fork_reply_data(
-                        base_data,
+                        get_rule_data(int(argv[1]), argv[2]),
                         event.group_id
                     )
                 ],
