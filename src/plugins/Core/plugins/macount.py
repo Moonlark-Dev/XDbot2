@@ -5,7 +5,7 @@ import pypinyin
 from ._utils import *
 
 
-async def get_messages(bot: Bot, group_id: int, message_id: int) -> list:
+async def get_messages(bot: Bot, group_id: int) -> list:
     """
     获取指定群聊十分钟内的历史消息
 
@@ -18,21 +18,27 @@ async def get_messages(bot: Bot, group_id: int, message_id: int) -> list:
         list: 消息列表
     """
     messages = []
-    message_seq = message_id
+    message_seq = 0
     while True:
         try:
-            message_list = await bot.call_api(
-                "get_group_msg_history",
-                message_seq=message_seq,
-                group_id=group_id
-            )
+            if message_seq == 0:
+                message_list = await bot.call_api(
+                    "get_group_msg_history",
+                    group_id=group_id
+                )
+            else:
+                message_list = await bot.call_api(
+                    "get_group_msg_history",
+                    message_seq=message_seq,
+                    group_id=group_id
+                )
         except Exception:
             logger.warning(traceback.format_exc())
             break
         for message in message_list:
             if message["time"] >= time.time() - 600:
                 messages.append(message["raw_message"])
-                message_seq = message["message_id"]
+                message_seq = message["real_id"]
             else:
                 return messages
     return messages
@@ -78,7 +84,7 @@ def get_ma_count(messages: list[str]) -> int:
 async def handle_ma_count_command(bot: Bot, event: GroupMessageEvent, message: Message):
     await finish("macount.info", [
         round(
-            (ma_count := get_ma_count(message_list := await get_messages(bot, event.group_id, event.message_id))) / (message_length := get_text_length(message_list)),
+            (ma_count := get_ma_count(message_list := await get_messages(bot, event.group_id))) / (message_length := get_text_length(message_list)),
             3
         ),
         ma_count, message_length
