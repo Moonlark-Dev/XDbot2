@@ -7,8 +7,10 @@ import difflib
 import os.path
 from nonebot import on_message
 from ._utils import *
+
 # from .su import su
 import math
+
 # from .etm import economy
 
 # from . import _smart_reply
@@ -43,7 +45,7 @@ def get_rules(group_id: int):
         return []
 
 
-def get_rule_data(group_id: int, rule_id: str):# -> dict:
+def get_rule_data(group_id: int, rule_id: str):  # -> dict:
     # if rule_id.startswith("old/"):
     #     return _smart_reply.get_list()[rule_id.replace("old/", "")]
     return Json(f"reply/g{group_id}/{rule_id}.json").to_dict()
@@ -317,14 +319,9 @@ async def handle_reply(
             if not is_rule_id_available(int(argv[1]), argv[2]):
                 await finish("reply.not_found", [], event.user_id)
             await finish(
-                "reply.fork_successful", 
-                [
-                    fork_reply_data(
-                        get_rule_data(int(argv[1]), argv[2]),
-                        event.group_id
-                    )
-                ],
-                event.user_id
+                "reply.fork_successful",
+                [fork_reply_data(get_rule_data(int(argv[1]), argv[2]), event.group_id)],
+                event.user_id,
             )
 
         else:
