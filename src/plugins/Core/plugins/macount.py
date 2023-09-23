@@ -88,4 +88,4 @@ async def handle_ma_count_command(bot: Bot, event: GroupMessageEvent, message: M
             3
         ),
         ma_count, message_length
-    ], event.user_id)   
+    ], event.user_id, False, True)   
