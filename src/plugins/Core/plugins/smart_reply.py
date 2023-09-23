@@ -1,4 +1,4 @@
-import math
+import os.path
 import random
 from nonebot.params import ArgPlainText
 from nonebot.typing import T_State
@@ -7,8 +7,11 @@ import difflib
 import os.path
 from nonebot import on_message
 from ._utils import *
-from .su import su
-from .etm import economy
+
+# from .su import su
+import math
+
+# from .etm import economy
 
 # from . import _smart_reply
 
@@ -42,7 +45,7 @@ def get_rules(group_id: int):
         return []
 
 
-def get_rule_data(group_id: int, rule_id: str):
+def get_rule_data(group_id: int, rule_id: str):  # -> dict:
     # if rule_id.startswith("old/"):
     #     return _smart_reply.get_list()[rule_id.replace("old/", "")]
     return Json(f"reply/g{group_id}/{rule_id}.json").to_dict()
@@ -76,7 +79,8 @@ def get_rule_reply(rule_id: str, group_id: int):
 # Usage: reply show <数据编号>：查看调教数据
 # Usage: reply source：（需回复）获取回复来源
 # Usage: reply remove <数据编号>：删除数据
-# Usage: reply list：（未完成）查看数据列表
+# Usage: reply list：查看数据列表
+# Usage: reply fork <群号> <数据编号>：复刻调教数据
 # Msg: 调教模块
 # Info: 调教XDbot2，支持正则、关键词、完整、模糊四种匹配模式
 # [HELPEND]
@@ -115,6 +119,22 @@ def get_matcher_type(argv: str):
             return _type[0]
 
 
+def fork_reply_data(base_data: dict, group_id: int) -> int:
+    """复刻调教数据
+
+    Args:
+        base_data (dict): 源调教数据
+        group_id (int): 目标群聊
+
+    Returns:
+        int: 新的数据编号
+    """
+    base_data["id"] = get_reply_id(group_id)
+    base_data["group_id"] = group_id
+    Json(f"reply/g{group_id}/{base_data['id']}.json").set_to(base_data)
+    return base_data["id"]
+
+
 def get_reply_id(group_id: int):
     length = 0
     while True:
@@ -130,6 +150,20 @@ def remove_matcher(group_id: int, rule_id: str, user_id: str, force: bool = Fals
         return SUCCESS
     else:
         return FAILED
+
+
+def is_rule_id_available(group_id: int, rule_id: str) -> bool:
+    """
+    检查数据编号是否有效
+
+    Args:
+        group_id (int): 群号
+        rule_id (str): 数据编号
+
+    Returns:
+        bool: 数据编号是否有效
+    """
+    return os.path.isfile(f"data/reply/g{group_id}/{rule_id}.json")
 
 
 async def create_matcher(
@@ -280,6 +314,15 @@ async def handle_reply(
                 messages=node_messages,
             )
             await reply_command.finish()
+
+        elif argv[0] in ["fork", "copy", "复刻"]:
+            if not is_rule_id_available(int(argv[1]), argv[2]):
+                await finish("reply.not_found", [], event.user_id)
+            await finish(
+                "reply.fork_successful",
+                [fork_reply_data(get_rule_data(int(argv[1]), argv[2]), event.group_id)],
+                event.user_id,
+            )
 
         else:
             await finish("reply.need_argv", [], event.user_id)
