@@ -84,7 +84,7 @@ def get_ma_count(messages: list[str]) -> int:
 async def handle_ma_count_command(bot: Bot, event: GroupMessageEvent, message: Message):
     await finish("macount.info", [
         round(
-            (ma_count := get_ma_count(message_list := await get_messages(bot, event.group_id))) / (message_length := get_text_length(message_list)),
+            (ma_count := get_ma_count(message_list := await get_messages(bot, event.group_id))) / (message_length := get_text_length(message_list)) * 100,
             3
         ),
         ma_count, message_length
