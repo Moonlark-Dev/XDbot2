@@ -23,14 +23,11 @@ async def get_messages(bot: Bot, group_id: int) -> list:
         try:
             if message_seq == 0:
                 message_list = await bot.call_api(
-                    "get_group_msg_history",
-                    group_id=group_id
+                    "get_group_msg_history", group_id=group_id
                 )
             else:
                 message_list = await bot.call_api(
-                    "get_group_msg_history",
-                    message_seq=message_seq,
-                    group_id=group_id
+                    "get_group_msg_history", message_seq=message_seq, group_id=group_id
                 )
         except Exception:
             logger.warning(traceback.format_exc())
@@ -90,10 +87,23 @@ def get_ma_count(messages: list[str]) -> int:
 
 @create_group_command("m-count", {"ma-count", "含妈量"})
 async def handle_ma_count_command(bot: Bot, event: GroupMessageEvent, message: Message):
-    await finish("macount.info", [
-        round(
-            (ma_count := get_ma_count(message_list := await get_messages(bot, event.group_id))) / (message_length := get_text_length(message_list)) * 100,
-            3
-        ),
-        ma_count, message_length
-    ], event.user_id, False, True)   
+    await finish(
+        "macount.info",
+        [
+            round(
+                (
+                    ma_count := get_ma_count(
+                        message_list := await get_messages(bot, event.group_id)
+                    )
+                )
+                / (message_length := get_text_length(message_list))
+                * 100,
+                3,
+            ),
+            ma_count,
+            message_length,
+        ],
+        event.user_id,
+        False,
+        True,
+    )
