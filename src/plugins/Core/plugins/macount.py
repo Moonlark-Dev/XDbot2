@@ -80,6 +80,14 @@ def get_ma_count(messages: list[str]) -> int:
     return count
 
 
+# [HELPSTART] Version: 2
+# Command: ma-count
+# Info: 计算近 10 分钟消息含妈量
+# Msg: 含妈量检测
+# Usage: ma-count
+# [HELPEND]
+
+
 @create_group_command("m-count", {"ma-count", "含妈量"})
 async def handle_ma_count_command(bot: Bot, event: GroupMessageEvent, message: Message):
     await finish("macount.info", [
