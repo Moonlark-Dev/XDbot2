@@ -306,11 +306,13 @@ class Monomer:
                 case "update_gain":
                     self.data = self.parse_gain(effect["gain"])
                 case "wait_action":
-                    self.paused_effect.append({
-                        "type": "action",
-                        "count": effect["count"],
-                        "effect": effect["effect"]
-                    })
+                    self.paused_effect.append(
+                        {
+                            "type": "action",
+                            "count": effect["count"],
+                            "effect": effect["effect"],
+                        }
+                    )
                 case "restore_energy":
                     self.add_enegy(effect["value"])
 
@@ -508,7 +510,9 @@ class Monomer:
                 self.paused_effect[i]["count"] -= 1
                 if self.paused_effect[i]["count"] <= 0:
                     self.parse_effect(self.paused_effect[i]["count"])
-                    paused_effect_needed_remove.append(i - len(paused_effect_needed_remove))
+                    paused_effect_needed_remove.append(
+                        i - len(paused_effect_needed_remove)
+                    )
         for length in paused_effect_needed_remove:
             self.paused_effect.pop(length)
         self.run_buff_effect()
