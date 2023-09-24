@@ -41,7 +41,71 @@
         "weakness": "风"
     },
     "ball": {
-        "name": "暴风宝珠"
+        "name": "暴风宝珠",
+        "gain": {
+            "charging_efficiency": 0.15
+        },
+        "skill": {
+            "name": "雷霆护盾",
+            "effect": [
+                {
+                    "function": "add_shield",
+                    "thickness": {
+                        "base": "health",
+                        "value": [0.1, 0.12, 0.15, 0.18, 0.22]
+                    }
+                }
+            ]
+        }
+    },
+    "kit_effect": {
+        "2": {
+            "gain": {
+                "break_the_special_attack": 0.2
+            }
+        },
+        "4": {
+            "effect": [
+                {
+                    "function": "add_trigger",
+                    "condition": "enemy.hit.our",
+                    "effect": [
+                        {
+                            "function": "verify_probabilities",
+                            "probability": 0.25
+                        },
+                        {
+                            "function": "make_attack",
+                            "name": "雷霆爆炸",
+                            "element": "雷",
+                            "attack": {
+                                "type": "single",
+                                "value": 1.13
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "6": {
+            "effect": [
+                {
+                    "function": "add_trigger",
+                    "condition": "our.used_skill",
+                    "effect": [
+                        {
+                            "function": "restore_energy",
+                            "value": 10
+                        }
+                    ]
+                }
+            ]
+        },
+        "resonance": {
+            "gain": {
+                "attack": 0.2
+            }
+        }
     }
 
 }

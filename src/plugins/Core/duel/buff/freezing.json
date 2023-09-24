@@ -2,5 +2,13 @@
     "name": "冻结",
     "information": "",
     "negative": true,
-    "effect": []
+    "effect": [
+        {
+            "function": "update_gain",
+            "gain": {
+                "speed": -0.1
+            }
+        }
+    ]
+    
 }

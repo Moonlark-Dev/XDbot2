@@ -5,3 +5,5 @@ add_battle_skill_points
 remove_battle_skill_points
 verify_probabilities
 add_trigger
+wait_action
+restore_energy

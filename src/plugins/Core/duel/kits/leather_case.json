@@ -6,7 +6,7 @@
         "element": "物理",
         "attack": {
             "type": "single",
-            "value": [0.62, 0.64, 0.68, 0.70, 0.72]
+            "value": [0.62, 0.65, 0.69, 0.74, 0.80]
         },
         "skill": {
             "name": "暴击",
@@ -14,7 +14,7 @@
             "type": "attack",
             "attack": {
                 "type": "single",
-                "value": [0.90, 0.92, 0.94, 0.96, 1.00]
+                "value": [0.90, 0.95, 1.00, 1.07, 1.15]
             }
         },
         "gain": {
@@ -39,7 +39,7 @@
             "effect": [
                 {
                     "function": "add_hp",
-                    "value": [0.25, 0.26, 0.27, 0.28, 0.29]
+                    "value": [0.25, 0.27, 0.31, 0.36, 0.42]
                 }
             ]
         }
@@ -59,20 +59,30 @@
             "effect": [
                 {
                     "function": "verify_probabilities",
-                    "probability": 0.01
+                    "probability": 0.02
                 },
                 {
                     "function": "update_gain",
                     "gain": {
-                        "fatal_injury_protection": true
+                        "fatal_injury_protection": true,
+                        "defense": -0.05
                     }
                 }
             ]
         },
         "resonance": {
             "gain": {
-                "cirtical_strike_chance": 0.25
-            }
+                "cirtical_strike_chance": 0.19
+            },
+            "effect": [
+                {
+                    "function": "update_gain",
+                    "gain": {
+                        "fatal_injury_protection": true,
+                        "defense": -0.03
+                    }
+                }
+            ]
         }
     }
 }

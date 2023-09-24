@@ -44,6 +44,7 @@ class Monomer:
         self.hp = hp
         self.name = name
         self.energy = 20
+        self.paused_effect = []
 
         self.contingent: Contingent
         self.controller: Controller
@@ -145,6 +146,7 @@ class Monomer:
                 )
             if "effect" in self.weapons["skill"].keys():
                 self.parse_effect(self.weapons["skill"]["effect"])
+            self.run_tigger("our.used_skill")
             self.add_enegy(30)
         else:
             self.contingent.battle_skill_points += 1
@@ -303,6 +305,14 @@ class Monomer:
                     self.effect_make_attack(effect)
                 case "update_gain":
                     self.data = self.parse_gain(effect["gain"])
+                case "wait_action":
+                    self.paused_effect.append({
+                        "type": "action",
+                        "count": effect["count"],
+                        "effect": effect["effect"]
+                    })
+                case "restore_energy":
+                    self.add_enegy(effect["value"])
 
     def effect_make_attack(self, effect: dict):
         self.controller.add_logger(f"[{self.name}]: 使用了 <{effect['name']}>\n")
@@ -492,6 +502,15 @@ class Monomer:
 
     def prepare_before_action(self) -> bool:
         self.run_tigger("action.start")
+        paused_effect_needed_remove = []
+        for i in range(len(self.paused_effect)):
+            if self.paused_effect[i]["type"] == "action":
+                self.paused_effect[i]["count"] -= 1
+                if self.paused_effect[i]["count"] <= 0:
+                    self.parse_effect(self.paused_effect[i]["count"])
+                    paused_effect_needed_remove.append(i - len(paused_effect_needed_remove))
+        for length in paused_effect_needed_remove:
+            self.paused_effect.pop(length)
         self.run_buff_effect()
         if self.has_buff("freezing"):
             self.controller.add_logger(f"[{self.name}]: 你被冻结了，无法行动！\n")

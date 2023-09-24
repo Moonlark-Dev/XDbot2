@@ -6,7 +6,7 @@
         "element": "冰",
         "attack": {
             "type": "single",
-            "value": [0.70, 0.75, 0.80, 0.85, 0.90]
+            "value": [0.87, 0.93, 1.00, 1.08, 1.16]
         },
         "skill": {
             "name": "冰霜裂痕",
@@ -22,7 +22,7 @@
                     "range": 1,
                     "buff": "freezing",
                     "cling": [2, 2, 3, 3, 3],
-                    "probability": [0.2, 0.21, 0.22, 0.25, 0.27],
+                    "probability": [0.15, 0.16, 0.17, 0.19, 0.21],
                     "data": {}
                 }
             ]
@@ -50,7 +50,7 @@
                     "function": "add_shield",
                     "thickness": {
                         "base": "health",
-                        "value": [0.2, 0.2, 0.21, 0.22, 0.23]
+                        "value": [0.1, 0.12, 0.15, 0.18, 0.22]
                     }
                 }
             ]
@@ -70,7 +70,7 @@
                     "effect": [
                         {
                             "function": "verify_probabilities",
-                            "probability": 0.3
+                            "probability": 0.35
                         },
                         {
                             "function": "make_attack",
@@ -94,6 +94,24 @@
                         {
                             "function": "add_hp",
                             "value": 0.1
+                        },
+                        {
+                            "function": "update_gain",
+                            "gain": {
+                                "attack": 0.1
+                            }
+                        },
+                        {
+                            "function": "wait_action",
+                            "count": 3,
+                            "effect": [
+                                {
+                                    "function": "update_gain",
+                                    "gain": {
+                                        "attack": -0.1
+                                    }
+                                }
+                            ]
                         }
                     ]
                 }
@@ -101,7 +119,9 @@
         },
         "resonance": {
             "gain": {
-                "attack": 0.1
+                "attack": 0.1,
+                "cirtical_strike_chance": 0.1,
+                "defense": -0.03
             }
         }
     }
