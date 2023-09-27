@@ -1,0 +1,111 @@
+{
+    "name": "雷霆之怒",
+    "level": 1,
+    "weapons": {
+        "name": "电磁长枪",
+        "element": "雷",
+        "attack": {
+            "type": "single",
+            "value": [0.74, 0.77, 0.79, 0.82, 0.97]
+        },
+        "skill": {
+            "name": "雷电连锁",
+            "type": "attack",
+            "attack": {
+                "type": [
+                    "single",
+                    "diffusion",
+                    "diffusion",
+                    "diffusion",
+                    "diffusion"
+                ],
+                "value": [
+                    0.86,
+                    0.92,
+                    0.98,
+                    1.00,
+                    1.05
+                ]
+            },
+            "effect": []
+        },
+        "gain": {
+            "speed": 0.12
+        }
+    },
+    "relics": {
+        "hand": "雷电护手",
+        "torso": "电浪胸甲",
+        "leg": "雷鸣护腿",
+        "feet": "风暴之靴",
+        "weakness": "风"
+    },
+    "ball": {
+        "name": "暴风宝珠",
+        "gain": {
+            "charging_efficiency": 0.15
+        },
+        "skill": {
+            "name": "雷霆护盾",
+            "effect": [
+                {
+                    "function": "add_shield",
+                    "thickness": {
+                        "base": "health",
+                        "value": [0.1, 0.12, 0.15, 0.18, 0.22]
+                    }
+                }
+            ]
+        }
+    },
+    "kit_effect": {
+        "2": {
+            "gain": {
+                "break_the_special_attack": 0.2
+            }
+        },
+        "4": {
+            "effect": [
+                {
+                    "function": "add_trigger",
+                    "condition": "enemy.hit.our",
+                    "effect": [
+                        {
+                            "function": "verify_probabilities",
+                            "probability": 0.25
+                        },
+                        {
+                            "function": "make_attack",
+                            "name": "雷霆爆炸",
+                            "element": "雷",
+                            "attack": {
+                                "type": "single",
+                                "value": 1.13
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "6": {
+            "effect": [
+                {
+                    "function": "add_trigger",
+                    "condition": "our.used_skill",
+                    "effect": [
+                        {
+                            "function": "restore_energy",
+                            "value": 10
+                        }
+                    ]
+                }
+            ]
+        },
+        "resonance": {
+            "gain": {
+                "attack": 0.2
+            }
+        }
+    }
+
+}

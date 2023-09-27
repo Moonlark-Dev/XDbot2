@@ -9,7 +9,7 @@ def init_debug():
             Monomer("ice_king", {}, "ice_king", 100, "Active_0"),
             # Monomer("ice_king", {}, "ice_king", 100, "Active_1"),
             # Monomer("scrorching_sun_phantom", {}, "scrorching_sun_phantom", 100, "Active_2"),
-            Monomer("leather_case", {}, "leather_case", 100, "Acvive_1"),
+            Monomer("thunder_fury", {}, "leather_case", 100, "Acvive_1"),
         ]
     )
     passive = Contingent(
@@ -19,7 +19,7 @@ def init_debug():
             ),
             # Monomer("scrorching_sun_phantom", {}, "scrorching_sun_phantom", 100, "Passive_1"),
             # Monomer("leather_case", {}, "leather_case", 100, "Passive_2"),
-            Monomer("ice_king", {}, "ice_king", 100, "Passive_1"),
+            Monomer("leather_case", {}, "ice_king", 100, "Passive_1"),
         ]
     )
     active.enemy = passive
