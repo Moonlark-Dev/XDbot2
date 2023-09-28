@@ -3,9 +3,16 @@ from . import _lang
 import json
 import traceback
 from nonebot import on_command
-from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, Message, MessageEvent
+from nonebot.adapters.onebot.v11 import (
+    Bot,
+    GroupMessageEvent,
+    Message,
+    MessageEvent,
+    MessageSegment,
+)
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
+from typing import List
 
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 command_start = "/"
@@ -20,7 +27,7 @@ async def group_handler(
         argv = message.extract_plain_text()
         if argv == "":
             commands = json.load(open("data/help.json", encoding="utf-8"))
-            messages = []
+            messages: List[MessageSegment] = []
             self_id = event.self_id
 
             reply = f"{_lang.text('help.name',[],event.get_user_id())} —— XDbot2\n"
@@ -29,14 +36,7 @@ async def group_handler(
                 reply += f"[{cmd_status}] {key}：{commands[key]['msg']}\n"
             reply += _lang.text("help.command", [], event.get_user_id())
             messages.append(
-                {
-                    "type": "node",
-                    "data": {
-                        "uin": self_id,
-                        "name": "XDbot2 Command Help",
-                        "content": reply,
-                    },
-                }
+                MessageSegment.node_custom(self_id, "XDbot2 Command Help", reply)
             )
             messages.append(
                 {

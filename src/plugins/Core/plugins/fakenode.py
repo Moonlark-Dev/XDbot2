@@ -3,9 +3,10 @@ import traceback
 from . import _error
 from . import _lang
 from nonebot import on_command
-from nonebot.adapters.onebot.v11 import Message
+from nonebot.adapters.onebot.v11 import Message, MessageSegment
 from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot.adapters.onebot.v11.event import GroupMessageEvent
+from typing import List
 
 # from nonebot.adapters.onebot.v11.message import MessageSegment
 from nonebot.exception import FinishedException
@@ -22,20 +23,17 @@ async def fakenodeHandle(
     try:
         argument = str(msg).split("\n")
         group = event.get_session_id().split("_")[1]
-        message = []
+        message: List[MessageSegment] = []
         for argv in argument:
             data = argv.split(":")
             userData = await bot.get_stranger_info(user_id=data[0])
-            message += [
-                {
-                    "type": "node",
-                    "data": {
-                        "name": userData["nickname"],
-                        "uin": data[0].strip(),
-                        "content": data[1].strip(),
-                    },
-                }
-            ]
+            message.append(
+                MessageSegment.node_custom(
+                    user_id=data[0].strip(),
+                    nickname=userData["nickname"],
+                    content=data[1].strip(),
+                )
+            )
         await bot.call_api(
             api="send_group_forward_msg", messages=message, group_id=group
         )
