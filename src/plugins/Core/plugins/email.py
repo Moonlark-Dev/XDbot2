@@ -119,8 +119,7 @@ async def su_mail(event: MessageEvent, message: Message = CommandArg()) -> None:
         if argv[0] in ["mail", "邮箱", "email"]:
             data = json.load(open("data/su.mails.json", encoding="utf-8"))
             if argv[1] in ["create"]:
-                mail_id = hashlib.sha1(
-                    str(time.time()).encode("utf-8")).hexdigest()[:7]
+                mail_id = hashlib.sha1(str(time.time()).encode("utf-8")).hexdigest()[:7]
                 rules = []
                 for arg in argv:
                     if arg.startswith("--"):
@@ -158,8 +157,7 @@ async def su_mail(event: MessageEvent, message: Message = CommandArg()) -> None:
                     await su.finish(f"{argv[2]}::{argv[3]} -> {data[argv[2]][argv[3]]}")
                 elif argv[2] in data.keys():
                     data[argv[2]][argv[3]] = json5.loads(
-                        "\n".join(
-                            message.extract_plain_text().splitlines()[1:])
+                        "\n".join(message.extract_plain_text().splitlines()[1:])
                     )
                     json.dump(
                         data,
@@ -181,8 +179,7 @@ async def su_mail(event: MessageEvent, message: Message = CommandArg()) -> None:
 @sign.handle()
 async def unread_email_reminder(matcher: Matcher, event: MessageEvent):
     try:
-        reminded_data = json.load(
-            open("data/email.reminded.json", encoding="utf-8"))
+        reminded_data = json.load(open("data/email.reminded.json", encoding="utf-8"))
         if data.emails.get(event.get_user_id()):
             email_count = 0
             for email in data.emails[event.get_user_id()]:
@@ -196,8 +193,7 @@ async def unread_email_reminder(matcher: Matcher, event: MessageEvent):
                         event.get_user_id(),
                     )
                 )
-                reminded_data[event.get_user_id(
-                )] = data.emails[event.get_user_id()]
+                reminded_data[event.get_user_id()] = data.emails[event.get_user_id()]
                 json.dump(
                     reminded_data,
                     open("data/email.reminded.json", "w", encoding="utf-8"),
@@ -217,8 +213,7 @@ async def view_emails(matcher: Matcher, bot: Bot, event: MessageEvent):
                     node_messages.append(
                         MessageSegment.node_custom(
                             user_id=event.self_id,
-                            nickname=_lang.text(
-                                "email.id", [email_id], user_id),
+                            nickname=_lang.text("email.id", [email_id], user_id),
                             content=render_email(
                                 json.load(open("data/su.mails.json", encoding="utf-8"))[
                                     email_id
