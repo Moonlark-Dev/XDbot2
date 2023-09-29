@@ -1,5 +1,5 @@
 import re
-from nonebot.adapters.onebot.v11 import Message, GroupMessageEvent
+from nonebot.adapters.onebot.v11 import Message, GroupMessageEvent, MessageSegment
 from nonebot.params import CommandArg
 from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot.exception import FinishedException
@@ -8,6 +8,7 @@ from . import _lang as lang
 from nonebot import on_command
 import traceback
 import httpx
+from typing import List
 
 pacman = on_command("archpackage", aliases={"apkg", "pacman", "Linux搜包", "spkg", "pkg"})
 
@@ -82,32 +83,29 @@ async def search_package(
         packages = parse_packages_data(
             get_packages_list(await send_request(process_input(str(message))))
         )
-        messages = []
+        messages: List[MessageSegment] = []
         qq = str((await bot.get_login_info())["user_id"])
         for package in packages:
             messages.append(
-                {
-                    "type": "node",
-                    "data": {
-                        "uin": qq,
-                        "name": package["name"],
-                        "content": lang.text(
-                            "pacman.pkg_info",
-                            [
-                                package["name"],
-                                package["ver"],
-                                package["arch"],
-                                package["info"],
-                                package["latest_update"],
-                                package["url"],
-                            ],
-                            event.user_id,
-                        ),
-                    },
-                }
+                MessageSegment.node_custom(
+                    qq,
+                    package["name"],
+                    lang.text(
+                        "pacman.pkg_info",
+                        [
+                            package["name"],
+                            package["ver"],
+                            package["arch"],
+                            package["info"],
+                            package["latest_update"],
+                            package["url"],
+                        ],
+                        event.user_id,
+                    ),
+                )
             )
         await bot.call_api(
-            api="send_group_forward_msg",
+            api=f"send_{'group' if event.get_session_id().split('_')[0]  == 'group' else 'private'}_forward_msg",
             messages=messages,
             group_id=str(event.group_id),
         )

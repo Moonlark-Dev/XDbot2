@@ -9,6 +9,7 @@ from nonebot.matcher import Matcher
 from nonebot.adapters.onebot.v11 import MessageEvent
 from nonebot.adapters.onebot.v11 import Bot
 from nonebot.adapters.onebot.v11 import Message
+from nonebot.adapters.onebot.v11 import MessageSegment
 from nonebot.params import CommandArg
 import traceback
 import time
@@ -17,6 +18,7 @@ from . import _error
 import json
 from .account import multiAccoutData
 import hashlib
+from typing import List
 
 try:
     import json5
@@ -205,28 +207,24 @@ async def view_emails(matcher: Matcher, bot: Bot, event: MessageEvent):
     try:
         user_id = event.get_user_id()
         if data.emails.get(user_id):
-            node_messages = []
+            node_messages: List[MessageSegment] = []
             for email_id in data.emails[user_id]:
                 try:
                     node_messages.append(
-                        {
-                            "type": "node",
-                            "data": {
-                                "uin": event.self_id,
-                                "name": _lang.text("email.id", [email_id], user_id),
-                                "content": render_email(
-                                    json.load(
-                                        open("data/su.mails.json", encoding="utf-8")
-                                    )[email_id],
-                                    user_id,
-                                ),
-                            },
-                        }
+                        MessageSegment.node_custom(
+                            user_id=event.self_id,
+                            nickname=_lang.text("email.id", [email_id], user_id),
+                            content=render_email(
+                                json.load(open("data/su.mails.json", encoding="utf-8"))[
+                                    email_id
+                                ]
+                            ),
+                        )
                     )
                 except KeyError:
                     pass
             await bot.call_api(
-                f"send_{'group' if event.get_session_id().split('_')[0]  == 'group' else 'private'}_forward_msg",
+                f"send_{'group' if event.get_session_id().split('_')[0]  == 'group' else 'private'}_forward_msg",  # noqa: E501
                 messages=node_messages,
                 user_id=int(event.get_user_id()),
                 group_id=event.dict().get("group_id"),
@@ -242,7 +240,6 @@ async def view_emails(matcher: Matcher, bot: Bot, event: MessageEvent):
 async def all_read(matcher: Matcher, event: MessageEvent):
     try:
         user_id = event.get_user_id()
-        emails_data = json.load(open("data/su.mails.json", encoding="utf-8"))
         length = 0
         number_of_read_emails = 0
         for email_id in data.emails[user_id]:

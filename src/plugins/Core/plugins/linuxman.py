@@ -1,6 +1,6 @@
 from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot.adapters.onebot.v11.event import GroupMessageEvent
-from nonebot.adapters.onebot.v11 import Message
+from nonebot.adapters.onebot.v11 import Message, MessageSegment
 from nonebot.params import CommandArg
 from nonebot.exception import FinishedException
 from nonebot import on_command
@@ -10,6 +10,7 @@ from . import _error
 from . import _lang
 import traceback
 import httpx
+from typing import List
 
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 linuxman = on_command("linuxman")
@@ -30,20 +31,14 @@ async def linuxmanHandle(
             await linuxman.finish(text)
         except ActionFailed:
             text = text.split("\n\n")
-            msg = []
+            msg: List[MessageSegment] = []
             qq = str((await bot.get_login_info())["user_id"])
             nowLen = 0
             for t in text:
                 msg.append(
-                    {
-                        "type": "node",
-                        "data": {
-                            "uin": qq,
-                            "name": "XDBOT2 LINUX MAN",
-                            "content": t.strip(),
-                        },
-                    }
+                    MessageSegment.node_custom(qq, "XDBOT2 LINUX MAN", t.strip())
                 )
+                nowLen += len(t) + 1
             nowLen = 0
             for _ in range(len(msg) // 99 + 1):
                 nowLen += 99
