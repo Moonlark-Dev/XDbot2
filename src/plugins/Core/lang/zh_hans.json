@@ -305,5 +305,6 @@
   "archfient_dice.info_1_5": "数字是：{}！{}HP",
   "archfient_dice.info_6": "数字是：6！+45HP，获得了 75vim\n物品「恶魔骰子」已损坏",
 
-  "macount.info": "消息含妈量（近 10 分钟）：{}% ({}/{})"
+  "macount.info": "消息含妈量（近 10 分钟）：{}% ({}/{})",
+  "wish.result": "「祈愿结果（总第 {}）」\n[{}]: {} ({})"
 }
