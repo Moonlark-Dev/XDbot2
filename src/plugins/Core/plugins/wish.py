@@ -118,3 +118,9 @@ async def handle_wish_command(bot: Bot, event: MessageEvent, message: Message) -
         False, True
     )
 
+# [HELPSTART] Version: 2
+# Command: wish
+# Msg: 祈愿
+# Info: 进行一次祈愿
+# Usage: wish
+# [HELPEND]
