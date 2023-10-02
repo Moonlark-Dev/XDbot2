@@ -218,7 +218,7 @@ async def view_emails(matcher: Matcher, bot: Bot, event: MessageEvent):
                                 json.load(open("data/su.mails.json", encoding="utf-8"))[
                                     email_id
                                 ],
-                                event.user_id
+                                event.user_id,
                             ),
                         )
                     )
