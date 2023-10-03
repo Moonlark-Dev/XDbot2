@@ -5,6 +5,7 @@ import os
 import os.path
 import random
 
+
 def random_a_level() -> int:
     """
     随机一个出货的等级
@@ -26,6 +27,7 @@ def random_a_level() -> int:
     else:
         return 5
 
+
 def random_type() -> str:
     """
     随机装备类型
@@ -36,6 +38,7 @@ def random_type() -> str:
     if random.random() <= 0.75:
         return "weapons"
     return "ball"
+
 
 def get_kits_by_level(level: int) -> list:
     """
@@ -56,6 +59,7 @@ def get_kits_by_level(level: int) -> list:
                 kit_list.append(data)
     return kit_list
 
+
 def make_wish(user_id: str) -> dict:
     """
     生成祈愿
@@ -72,20 +76,9 @@ def make_wish(user_id: str) -> dict:
         return make_wish(user_id)
     kit = random.choice(kits)
     _type = random_type()
-    bag.add_item(
-        user_id,
-        _type,
-        1,
-        {
-            "kit": kit["id"],
-            "level": 1
-        }
-    )
-    return {
-        "kit": kit,
-        "type": _type
-    }
-    
+    bag.add_item(user_id, _type, 1, {"kit": kit["id"], "level": 1})
+    return {"kit": kit, "type": _type}
+
 
 def get_wish_count(user_id: str) -> int:
     """
@@ -101,6 +94,7 @@ def get_wish_count(user_id: str) -> int:
     data[user_id] = data.get(user_id, 0) + 1
     return data[user_id]
 
+
 @create_command("wish")
 async def handle_wish_command(bot: Bot, event: MessageEvent, message: Message) -> None:
     if not economy.use_vimcoin(event.user_id, 160):
@@ -111,12 +105,14 @@ async def handle_wish_command(bot: Bot, event: MessageEvent, message: Message) -
         [
             get_wish_count(str(event.user_id)),
             "⭐" * (data["kit"]["level"] + 1),
-            data["kit"][data['type']]["name"],
-            lang.text(f"wish.type_{data['type']}", [], event.user_id)
+            data["kit"][data["type"]]["name"],
+            lang.text(f"wish.type_{data['type']}", [], event.user_id),
         ],
         event.user_id,
-        False, True
+        False,
+        True,
     )
+
 
 # [HELPSTART] Version: 2
 # Command: wish
