@@ -1,3 +1,4 @@
+import asyncio
 import json
 import os
 import os.path
@@ -19,6 +20,8 @@ from nonebot.params import CommandArg
 from nonebot.rule import to_me
 
 cave_comment = on_message(rule=to_me())
+cave_confirm_add = on_message(rule=to_me())
+cave_confirm = {}
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 latest_use = time.time()
 cave_messages = []
@@ -256,10 +259,58 @@ async def cave_query_handler(
         await _error.report()
 
 
+import re
+
+
+def replace_text_with_regex(_text: str, regex: str, replace_to: str = "") -> str:
+    """
+    使用正则表达式替换文本
+
+    Args:
+        text (str): 源文本
+        regex (str): 正则表达式
+        replace_to (str): 替换的文本
+
+    Returns:
+        str: 替换后的文本
+    """
+    text = _text
+    while result := re.search(regex, text):
+        text = text.replace(result.group(0), replace_to)
+    return text
+
+
+import difflib
+
+
+def check_text_similarity(text: str) -> tuple[dict, float] | None:
+    """
+    检查文本与回声洞内信息的相似度
+
+    Args:
+        text (str): 文本
+
+    Returns:
+        tuple[dict, float] | None: 可能一致的回声洞，为 None 则为查找失败。第一项为回声洞信息，第二项为相似度
+    """
+    data = json.load(open("data/cave.data.json", encoding="utf-8"))
+    for cave_info in list(data["data"].values()):
+        if (
+            similarity := difflib.SequenceMatcher(
+                None,
+                replace_text_with_regex(cave_info["text"], r"\[\[Img:[\.0-9]\]\]"),
+                replace_text_with_regex(text, r"\[\[Img:[\.0-9]\]\]"),
+            ).ratio()
+        ) >= 0.75:
+            return cave_info, similarity
+    return None
+
+
 @on_command("cave-a").handle()
 async def cave_add_handler(
     cave: Matcher, bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()
 ):
+    global cave_confirm
     try:
         await showEula(event.get_user_id())
 
@@ -278,6 +329,40 @@ async def cave_add_handler(
             await cave.finish(
                 _lang.text("cave.error_to_download_images", [], event.get_user_id())
             )
+        elif similarity_check_status := check_text_similarity(text):
+            cave_data = similarity_check_status[0]
+            if isinstance(cave_data["sender"], dict):
+                if cave_data["sender"]["type"] == "nickname":
+                    senderData = {"nickname": cave_data["sender"]["name"]}
+                else:
+                    senderData = {"nickname": "未知"}
+            else:
+                senderData = await bot.get_stranger_info(user_id=cave_data["sender"])
+            confirm_message_id = (
+                await cave.send(
+                    Message(
+                        _lang.text(
+                            "cave.cave_has_been_here",
+                            [
+                                cave_data["id"],
+                                round(similarity_check_status[1] * 100, 3),
+                                parseCave(cave_data["text"]),
+                                senderData["nickname"],
+                            ],
+                            event.get_user_id(),
+                        )
+                    )
+                )
+            )["message_id"]
+            cave_confirm[confirm_message_id] = {
+                "id": data["count"],
+                "text": text,
+                "sender": event.get_user_id(),
+                "time": time.time(),
+            }
+            await asyncio.sleep(10)
+            del cave_confirm[confirm_message_id]
+            await cave.finish()
 
         data["data"][data["count"]] = {
             "id": data["count"],
@@ -301,6 +386,38 @@ async def cave_add_handler(
         json.dump(data, open("data/cave.data.json", "w", encoding="utf-8"))
         await cave.finish(
             _lang.text("cave.added", [data["count"] - 1], event.get_user_id())
+        )
+    except:
+        await _error.report()
+
+
+@cave_confirm_add.handle()
+async def _(event: GroupMessageEvent, bot: Bot):
+    global cave_confirm
+    try:
+        if not event.reply:
+            await cave_confirm_add.finish()
+        if not event.reply.message_id in cave_confirm:
+            await cave_confirm_add.finish()
+        cave_data = cave_confirm[event.reply.message_id]
+        if (user_id := event.get_user_id()) != cave_data["sender"]:
+            await cave_confirm_add.finish()
+        data = json.load(open("data/cave.data.json", encoding="utf-8"))
+        data["data"][data["count"]] = cave_data
+        data["count"] += 1
+        exp.add_exp(user_id, 5)
+
+        await _error.report(
+            (
+                f"{_lang.text('cave.new', [data['count'] - 1])}"
+                f"{event.get_session_id()}\n \n"
+                f"{cave_data['text']}"
+            )
+        )
+
+        json.dump(data, open("data/cave.data.json", "w", encoding="utf-8"))
+        await cave_confirm_add.finish(
+            _lang.text("cave.added", [data["count"] - 1], user_id)
         )
     except:
         await _error.report()
