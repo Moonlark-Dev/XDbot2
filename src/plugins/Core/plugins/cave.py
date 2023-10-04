@@ -331,7 +331,7 @@ async def cave_add_handler(
                     "cave.cave_has_been_here",
                     [
                         similarity_check_status[0]["id"],
-                        similarity_check_status[1] * 100,
+                        round(similarity_check_status[1] * 100, 3),
                         parseCave(similarity_check_status[0]["text"]),
                     ],
                     event.get_user_id(),
