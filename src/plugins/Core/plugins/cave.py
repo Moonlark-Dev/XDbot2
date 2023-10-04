@@ -338,18 +338,22 @@ async def cave_add_handler(
                     senderData = {"nickname": "未知"}
             else:
                 senderData = await bot.get_stranger_info(user_id=cave_data["sender"])
-            confirm_message_id = (await cave.send(
-                Message(_lang.text(
-                    "cave.cave_has_been_here",
-                    [
-                        cave_data["id"],
-                        round(similarity_check_status[1] * 100, 3),
-                        parseCave(cave_data["text"]),
-                        senderData["nickname"],
-                    ],
-                    event.get_user_id(),
-                ))
-            ))["message_id"]
+            confirm_message_id = (
+                await cave.send(
+                    Message(
+                        _lang.text(
+                            "cave.cave_has_been_here",
+                            [
+                                cave_data["id"],
+                                round(similarity_check_status[1] * 100, 3),
+                                parseCave(cave_data["text"]),
+                                senderData["nickname"],
+                            ],
+                            event.get_user_id(),
+                        )
+                    )
+                )
+            )["message_id"]
             cave_confirm[confirm_message_id] = {
                 "id": data["count"],
                 "text": text,
@@ -386,6 +390,7 @@ async def cave_add_handler(
     except:
         await _error.report()
 
+
 @cave_confirm_add.handle()
 async def _(event: GroupMessageEvent, bot: Bot):
     global cave_confirm
@@ -416,6 +421,7 @@ async def _(event: GroupMessageEvent, bot: Bot):
         )
     except:
         await _error.report()
+
 
 @on_command("cave-s").handle()
 async def cave_status_handler(cave: Matcher, event: GroupMessageEvent):
