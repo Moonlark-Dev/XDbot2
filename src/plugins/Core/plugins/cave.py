@@ -349,7 +349,7 @@ async def cave_add_handler(
                     ],
                     event.get_user_id(),
                 ))
-            ))
+            ))["message_id"]
             cave_confirm[confirm_message_id] = {
                 "id": data["count"],
                 "text": text,
