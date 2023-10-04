@@ -326,13 +326,22 @@ async def cave_add_handler(
                 _lang.text("cave.error_to_download_images", [], event.get_user_id())
             )
         elif similarity_check_status := check_text_similarity(text):
+            cave_data = similarity_check_status[0]
+            if isinstance(cave_data["sender"], dict):
+                if cave_data["sender"]["type"] == "nickname":
+                    senderData = {"nickname": cave_data["sender"]["name"]}
+                else:
+                    senderData = {"nickname": "未知"}
+            else:
+                senderData = await bot.get_stranger_info(user_id=cave_data["sender"])
             await cave.finish(
                 Message(_lang.text(
                     "cave.cave_has_been_here",
                     [
-                        similarity_check_status[0]["id"],
+                        cave_data["id"],
                         round(similarity_check_status[1] * 100, 3),
-                        parseCave(similarity_check_status[0]["text"]),
+                        parseCave(cave_data["text"]),
+                        senderData["nickname"],
                     ],
                     event.get_user_id(),
                 ))
