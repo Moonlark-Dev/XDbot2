@@ -256,6 +256,53 @@ async def cave_query_handler(
         await _error.report()
 
 
+import re
+
+
+def replace_text_with_regex(_text: str, regex: str, replace_to: str = "") -> str:
+    """
+    使用正则表达式替换文本
+
+    Args:
+        text (str): 源文本
+        regex (str): 正则表达式
+        replace_to (str): 替换的文本
+
+    Returns:
+        str: 替换后的文本
+    """
+    text = _text
+    while result := re.search(regex, text):
+        text = text.replace(result.group(0), replace_to)
+    return text
+
+
+import difflib
+
+
+def check_text_similarity(text: str) -> tuple[dict, float] | None:
+    """
+    检查文本与回声洞内信息的相似度
+
+    Args:
+        text (str): 文本
+
+    Returns:
+        tuple[dict, float] | None: 可能一致的回声洞，为 None 则为查找失败。第一项为回声洞信息，第二项为相似度
+    """
+    data = json.load(open("data/cave.data.json", encoding="utf-8"))
+    for cave_info in list(data["data"].values()):
+        if (
+            similarity := difflib.SequenceMatcher(
+                None,
+                replace_text_with_regex(cave_info["text"], r"\[\[Img:[\.0-9]\]\]"),
+                replace_text_with_regex(text, r"\[\[Img:[\.0-9]\]\]"),
+            ).ratio()
+        ) >= 0.75:
+            return cave_info, similarity
+    return None
+
+
 @on_command("cave-a").handle()
 async def cave_add_handler(
     cave: Matcher, bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()
@@ -277,6 +324,18 @@ async def cave_add_handler(
         elif not text:
             await cave.finish(
                 _lang.text("cave.error_to_download_images", [], event.get_user_id())
+            )
+        elif similarity_check_status := check_text_similarity(text):
+            await cave.finish(
+                Message(_lang.text(
+                    "cave.cave_has_been_here",
+                    [
+                        similarity_check_status[0]["id"],
+                        similarity_check_status[1] * 100,
+                        parseCave(similarity_check_status[0]["text"]),
+                    ],
+                    event.get_user_id(),
+                ))
             )
 
         data["data"][data["count"]] = {

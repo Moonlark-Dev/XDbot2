@@ -14,6 +14,7 @@
   "lang.list": "可用语言：\n{} \n",
   "_error.failed": "处理失败了 ",
   "_error.github": "建议前往：{} 提交一个 Issue 或使用 /report 指令反馈该问题",
+  "cave.cave_has_been_here": "回声洞已存在 ({}): \n[相似度: {}%]\n \n{}",
   "cave.name": "回声洞",
   "cave.new": "「回声洞新投稿（{}）」\n",
   "cave.user_cd": "用户冷却中（{}s）",

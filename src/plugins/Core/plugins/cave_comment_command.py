@@ -7,7 +7,6 @@ def check_cave_id(cave_id: str) -> bool:
     data = json.load(open("data/cave.data.json", encoding="utf-8"))
     return cave_id in data["data"]
 
-
 @create_command("cave-c", aliases={"cave-comment"})
 async def handle_cave_comment_command(bot: Bot, event: MessageEvent, message: Message):
     await showEula(event.get_user_id())
