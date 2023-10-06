@@ -293,13 +293,15 @@ def check_text_similarity(text: str) -> tuple[dict, float] | None:
     Returns:
         tuple[dict, float] | None: 可能一致的回声洞，为 None 则为查找失败。第一项为回声洞信息，第二项为相似度
     """
+    if "[[Img:" in text:
+        return None
     data = json.load(open("data/cave.data.json", encoding="utf-8"))
     for cave_info in list(data["data"].values()):
         if (
             similarity := difflib.SequenceMatcher(
                 None,
-                replace_text_with_regex(cave_info["text"], r"\[\[Img:[\.0-9]\]\]"),
-                replace_text_with_regex(text, r"\[\[Img:[\.0-9]\]\]"),
+                replace_text_with_regex(cave_info["text"], r"\[\[Img:[\.0-9]\]\]\]"),
+                replace_text_with_regex(text, r"\[\[Img:[\.0-9]\]\]\]"),
             ).ratio()
         ) >= 0.75:
             return cave_info, similarity
