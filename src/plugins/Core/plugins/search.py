@@ -20,7 +20,7 @@ async def handle_search_command(bot: Bot, event: MessageEvent, message: Message,
         browser = await p.chromium.launch()
         page = await browser.new_page()
         await page.goto(url)
-        await asyncio.sleep(3)  
+        await asyncio.sleep(5)  
         url = page.url
         await page.screenshot(path=f"data/{file_name}.png", full_page=True)
         await browser.close()
