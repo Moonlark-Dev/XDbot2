@@ -41,7 +41,7 @@
   "help.info": "说明：{}",
   "help.usage": "用法（{}）：\n{}",
   "help.unknown": "未知指令：{}",
-  "jrrp.notice": "开始使用「今日人品」功能及代表您已阅读并同意《XDbot2「今日人品」用户协议》（https://github.com/ITCraftDevelopmentTeam/XDbot2/discussions/468）。祝您玩得开心！",
+  "jrrp.notice": "开始使用「今日人品」即代表您已阅读并同意《XDbot2「今日人品」用户协议》（https://github.com/ITCraftDevelopmentTeam/XDbot2/discussions/468）。祝您玩得开心！",
   "jrrp.new_record": "个人最高记录已刷新",
   "jrrp.num.100": "{}！100！！100！！！",
   "jrrp.num.99": "{}，可惜不是100",
