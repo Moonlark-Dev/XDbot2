@@ -20,11 +20,11 @@ async def handle_search_command(bot: Bot, event: MessageEvent, message: Message,
         browser = await p.chromium.launch()
         page = await browser.new_page()
         await page.goto(url)
-        await asyncio.sleep(5)  
+        await asyncio.sleep(3)  
         url = page.url
         await page.screenshot(path=f"data/{file_name}.png", full_page=True)
         await browser.close()
-    await matcher.send(Message(
+    await matcher.finish(Message(
         MessageSegment.image(
             file=f"file://{os.path.abspath(os.path.join('./data', f'{file_name}.png'))}"
         )
