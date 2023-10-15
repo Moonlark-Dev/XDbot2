@@ -12,20 +12,27 @@ import time
 # Usage: search <content>
 # [HELPEND]
 
+
 @create_command("search", aliases={"bing"})
-async def handle_search_command(bot: Bot, event: MessageEvent, message: Message, matcher: Matcher = Matcher()):
-    url = "https://www.bing.com/search?q=" + message.extract_plain_text().replace(" ", "+")
+async def handle_search_command(
+    bot: Bot, event: MessageEvent, message: Message, matcher: Matcher = Matcher()
+):
+    url = "https://www.bing.com/search?q=" + message.extract_plain_text().replace(
+        " ", "+"
+    )
     file_name = f"preview.image_{int(time.time())}.ro"
     async with async_playwright() as p:
         browser = await p.chromium.launch()
         page = await browser.new_page()
         await page.goto(url)
-        await asyncio.sleep(5)  
+        await asyncio.sleep(5)
         url = page.url
         await page.screenshot(path=f"data/{file_name}.png", full_page=True)
         await browser.close()
-    await matcher.finish(Message(
-        MessageSegment.image(
-            file=f"file://{os.path.abspath(os.path.join('./data', f'{file_name}.png'))}"
+    await matcher.finish(
+        Message(
+            MessageSegment.image(
+                file=f"file://{os.path.abspath(os.path.join('./data', f'{file_name}.png'))}"
+            )
         )
-    ))
+    )
