@@ -9,8 +9,10 @@ from nonebot import get_bots
 from . import _lang
 import json
 import time
+import asyncio
 
 update_notice_cache = ""
+cached_message_id = []
 
 
 @on_command("update-notice", aliases={"un", "更新推送"}).handle()
@@ -36,6 +38,7 @@ async def _(matcher: Matcher, event: GroupMessageEvent):
 
 @su.handle()
 async def su_update_notice(message: Message = CommandArg()):
+    global cached_message_id
     try:
         argument = str(message).split(" ")
         if argument[0] in ["update-notice", "un", "updnotice"]:
@@ -52,21 +55,24 @@ async def su_update_notice(message: Message = CommandArg()):
                     groupList = list(multiAccoutData.keys())
                     bots = get_bots()
                     # 开始广播
+                    cached_message_id = []
                     for group in groupList:
                         if group in disabled_update_notice:
                             continue
                         try:
-                            await bots[multiAccoutData[group]].send_group_msg(
+                            cached_message_id.append((await bots[multiAccoutData[group]].send_group_msg(
                                 message=Message(
                                     f"【XDbot2 {time.strftime('%m-%d', time.localtime())} 更新推送】\n{update_notice_cache}"
                                 ),
-                                group_id=group,
-                            )
+                                group_id=group
+                            ))["message_id"])
                         except BaseException:
                             await su.send(
                                 f"在 {group} 推送更新失败：\n{traceback.format_exc()}"
                             )
                     update_notice_cache = ""
+                    await asyncio.sleep(600)
+                    cached_message_id = []
                 else:
                     await su.finish("请先使用 /su un <context> 设定超级广播内容")
             elif text == "drop":
@@ -74,6 +80,9 @@ async def su_update_notice(message: Message = CommandArg()):
                 await su.finish("更新推送广播内容已清除")
             elif text == "get":
                 await su.finish(Message(update_notice_cache))
+            elif text in ["remove", "rm", "delete"]:
+                for msg in cached_message_id:
+                    await bot.delete_msg(msg)
             else:
                 update_notice_cache = text
                 await su.finish("更新推送广播内容已设定")
