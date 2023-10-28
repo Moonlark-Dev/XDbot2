@@ -53,7 +53,7 @@ def has_buff(user_id: str, buff_id: str, levels: list = []) -> bool:
         bool: 用户是否拥有符合条件的效果
     """
     refresh_buff()
-    for buff in data.buff[user_id]:
+    for buff in data.buff.get(user_id, []):
         if buff["buff_id"] == buff_id:
             if levels and buff["level"] not in levels:
                 continue
@@ -74,7 +74,7 @@ def get_remain_times(user_id: str, buff_id: str, levels: list = []) -> int:
     """
     refresh_buff()
     times = 0
-    for buff in data.buff[user_id]:
+    for buff in data.buff.get(user_id, []):
         if buff["buff_id"] == buff_id:
             if levels and buff["level"] not in levels:
                 continue
