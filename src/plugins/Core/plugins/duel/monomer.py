@@ -466,9 +466,13 @@ class Monomer:
                 case "burn":
                     self.attacked(17, "火", None)
                 case _:
-                    self.parse_effect(load_json(f"buff/{buff_name}.json").get("effect", []))
+                    self.parse_effect(
+                        load_json(f"buff/{buff_name}.json").get("effect", [])
+                    )
             if buff_data["cling"] == 0:
-                self.parse_effect(load_json(f"buff/{buff_name}.json").get("end_effect", []))
+                self.parse_effect(
+                    load_json(f"buff/{buff_name}.json").get("end_effect", [])
+                )
                 self.buff.pop(buff_name)
 
     def attacked(self, harm: float, attribute: str, from_monomer):
