@@ -98,7 +98,7 @@
                         {
                             "function": "update_gain",
                             "gain": {
-                                "attack": 0.1
+                                "attack": 10
                             }
                         },
                         {
@@ -108,7 +108,7 @@
                                 {
                                     "function": "update_gain",
                                     "gain": {
-                                        "attack": -0.1
+                                        "attack": -10
                                     }
                                 }
                             ]
