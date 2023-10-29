@@ -1,0 +1,98 @@
+{
+    "name": "旋风舞者",
+    "level": 1,
+    "weapons": {
+        "name": "风刃",
+        "element": "风",
+        "attack": {
+            "type": "diffusion",
+            "value": [0.87, 0.92, 0.97, 1.02, 1.02]
+        },
+        "skill": {
+            "name": "风之迅捷",
+            "attack": {
+                "type": "diffusion",
+                "value": [0.87, 0.93, 1.00, 1.08, 1.16]
+            },
+            "effect": [
+                {
+                    "function": "update_gain",
+                    "gain": {
+                        "speed": 0.05
+                    }
+                }
+            ]
+        },
+        "gain": {
+            "speed": 0.15
+        }
+    },
+    "relics": {
+        "hand": "旋风手套",
+        "torso": "狂风铠甲",
+        "leg": "风舞裤甲",
+        "foot": "疾风之鞋",
+        "weakness": "雷"
+    },
+    "ball": {
+        "name": "风神宝珠",
+        "gain": {
+            "effect_resistance": 0.2
+        },
+        "skill": {
+            "name": "风之优雅",
+            "effect": [
+                {
+                    "function": "add_hp",
+                    "value": [0.20, 0.25, 0.27, 0.31, 0.36]
+                },
+                {
+                    "function": "update_gain",
+                    "gain": {
+                        "speed": 0.05
+                    }
+                },
+                {
+                    "function": "add_buff",
+                    "target": 0,
+                    "range": 1,
+                    "buff": "action_again",
+                    "cling": 1,
+                    "probability": 1,
+                    "data": {}
+                }
+            ]
+        }
+    },
+    "kit_effect": {
+        "2": {
+            "gain": {
+                "speed": 0.15
+            }
+        },
+        "4": {
+            "gain": {
+                "defense": 0.2
+            }
+        },
+        "6": {
+            "effect": [
+                {
+                    "function": "add_trigger",
+                    "condition": "our.hit.enemy",
+                    "effect": [
+                        {
+                            "function": "add_buff",
+                            "target": 1,
+                            "range": 1,
+                            "buff": "reduce_speed_010",
+                            "cling": [2, 2, 3, 3, 3],
+                            "probability": [0.20,0.22,0.23,0.26,0.28],
+                            "data": {}
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

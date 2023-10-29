@@ -1,0 +1,21 @@
+{
+    "name": "速度降低",
+    "information": "速度降低 10%",
+    "negative": true,
+    "start_effect": [
+        {
+            "function": "update_gain",
+            "gain": {
+                "speed": -10
+            }
+        }
+    ],
+    "end_effect": [
+        {
+            "function": "update_gain",
+            "gain": {
+                "speed": 10
+            }
+        }
+    ]
+}

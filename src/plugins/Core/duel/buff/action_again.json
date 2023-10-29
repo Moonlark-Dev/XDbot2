@@ -1,0 +1,21 @@
+{
+    "name": "再次行动",
+    "information": "拥有此Buff的单体可以再行动一次",
+    "negative": true,
+    "start_effect": [
+        {
+            "function": "update_gain",
+            "gain": {
+                "speed": 1145141919810
+            }
+        }
+    ],
+    "end_effect": [
+        {
+            "function": "update_gain",
+            "gain": {
+                "speed": -1145141919810
+            }
+        }
+    ]
+}

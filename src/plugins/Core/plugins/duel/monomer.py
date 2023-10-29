@@ -441,6 +441,7 @@ class Monomer:
                 "data": data,
             }
         self.controller.add_logger(f"[{self.name}]: 被赋予 buff：{buff}\n")
+        self.parse_effect(load_json(f"buff/{buff}.json").get("start_effect", []))
 
     def get_hit_probability(self, basic_probability: float, from_monomer):
         return (
@@ -464,7 +465,14 @@ class Monomer:
                     self.attacked(15 if buff_data["cling"] == 0 else 10, "冰", None)
                 case "burn":
                     self.attacked(17, "火", None)
+                case _:
+                    self.parse_effect(
+                        load_json(f"buff/{buff_name}.json").get("effect", [])
+                    )
             if buff_data["cling"] == 0:
+                self.parse_effect(
+                    load_json(f"buff/{buff_name}.json").get("end_effect", [])
+                )
                 self.buff.pop(buff_name)
 
     def attacked(self, harm: float, attribute: str, from_monomer):
