@@ -21,11 +21,21 @@ builtin_urls = {
     "xtbot": "https://xtbot-status.xxtg666.top/?r=5",
 }
 
+from urllib.parse import urlparse
+
+def check_url_protocol(url):
+    # 使用urlparse解析URL
+    parsed_url = urlparse(url)
+
+    # 检查URL是否包含协议部分
+    return bool(parsed_url.scheme)
+
+
 # [HELPSTART] Version: 2
 # Command: preview
 # Usage: preview <url>
 # Usage: preview {six|ban|setu}
-# Info: 预览XDbot2内置或外部网页（注意：参数需要带上http头）
+# Info: 预览XDbot2内置或外部网页
 # Msg: 预览网页
 # [HELPEND]
 
@@ -57,6 +67,8 @@ async def preview_website(event: MessageEvent, message: Message = CommandArg()):
                     await preview.finish(
                         lang.text("preview.only_group", [], event.get_user_id())
                     )
+        if not check_url_protocol(url):
+            url = "http://" + url
         # 截取网页
         file_name = f"preview.image_{int(time.time())}"
         async with async_playwright() as p:
