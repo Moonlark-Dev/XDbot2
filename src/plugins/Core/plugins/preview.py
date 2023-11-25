@@ -23,6 +23,7 @@ builtin_urls = {
 
 from urllib.parse import urlparse
 
+
 def check_url_protocol(url):
     # 使用urlparse解析URL
     parsed_url = urlparse(url)
