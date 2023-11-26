@@ -121,7 +121,7 @@ async def ask_chatgpt(
     no_token_warn: bool = False,
     model: str = "gpt-3.5-turbo",
 ):
-    if not check_user_tokens(user_id):
+    if not (check_user_tokens(user_id) or multiple <= 0):
         if not no_token_warn:
             raise NoTokenError()
         else:
@@ -143,6 +143,8 @@ def add_message_to_session(session_id: str, role: str, content: str) -> None:
 
 
 def reduce_tokens(user_id: str, token_count: int) -> int:
+    if token_count == 0:
+        return 0
     user_data = Json(f"gpt/users/{user_id}.json")
     if buff.has_buff(user_id, "每日GPT限免"):
         buff.effect_buff(user_id, "每日GPT限免")
