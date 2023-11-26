@@ -108,7 +108,7 @@ def get_hp_to_reduce(winner_id: int, is_active_win: bool) -> float:
     return get_data(winner_id, "health") * 0.85
 
 
-@create_group_command("duel-force")
+@create_group_command("duel-force", {"kill"})
 async def handle_force_duel(bot, event: GroupMessageEvent, message: Message):
     if Json(f"duel/u{event.user_id}.json").get("force_duel_count", 0) < 10:
         passive_user_id = int(str(message).replace("[CQ:at,qq=", "").replace("]", ""))
