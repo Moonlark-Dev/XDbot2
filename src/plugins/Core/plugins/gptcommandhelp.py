@@ -1,7 +1,7 @@
 from nonebot.adapters.onebot.v11.message import MessageSegment
 from nonebot.adapters.onebot.v11.event import MessageEvent
 from nonebot.matcher import Matcher
-from chatgptv2 import ask_chatgpt
+from .chatgptv2 import ask_chatgpt
 import json
 from nonebot import on_command
 import traceback
