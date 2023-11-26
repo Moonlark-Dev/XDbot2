@@ -1,17 +1,12 @@
 from nonebot.adapters.onebot.v11.message import MessageSegment
 from nonebot.adapters.onebot.v11.event import MessageEvent
 from nonebot.matcher import Matcher
-import openai
+from chatgptv2 import ask_chatgpt
 import json
 from nonebot import on_command
 import traceback
 from . import _error as error
 from . import _lang
-
-config = json.load(open("data/gpt.config.json", encoding="utf-8"))
-config = json.load(open("data/chatgpt.config.json", encoding="utf-8"))
-openai.proxy = config["proxy"]
-openai.api_key = config["api_key"]
 
 
 def gen_gch_content(cl1, cl2):
@@ -63,10 +58,11 @@ async def _(matcher: Matcher, event: MessageEvent):
         message = event.get_message()
         messages = gch_messages.copy()
         messages.append({"role": "user", "content": message.extract_plain_text()})
-        session = await openai.ChatCompletion.acreate(
-            model="gpt-3.5-turbo", messages=messages
-        )
-        reply = session["choices"][0]["message"]["content"]
+        # session = await openai.ChatCompletion.acreate(
+        #     model="gpt-3.5-turbo", messages=messages
+        # )
+        # reply = session["choices"][0]["message"]["content"]
+        reply = await ask_chatgpt(messages, event.get_user_id(), 0, True)
         if "NOT_IN_LIST" in reply:
             reply = "你需要的功能 XDbot2 暂时没有喵，主人可以在https://github.com/ITCraftDevelopmentTeam/XDbot2提交一个Issue呢……"
         elif "CAN_NOT_UNDERSTAND" in reply:
