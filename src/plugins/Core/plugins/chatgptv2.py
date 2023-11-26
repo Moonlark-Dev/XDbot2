@@ -1,11 +1,15 @@
+from httpx import AsyncClient
 from .etm import economy
 from .su import su
 from ._utils import *
-import openai
+from openai import AsyncOpenAI
 from .etm import buff
 
-openai.proxy = Json("chatgpt.config.json")["proxy"]
-openai.api_key = Json("chatgpt.config.json")["api_key"]
+
+client = AsyncOpenAI(
+    api_key=Json("chatgpt.config.json")["api_key"],
+    http_client=AsyncClient(proxies=Json("chatgpt.config.json")["proxy"]),
+)
 
 # [HELPSTART] Version: 2
 # Command: gpt
@@ -102,7 +106,7 @@ def get_session_messages(session_id: str) -> list[dict]:
 
 
 async def get_chatgpt_reply(messages: list[dict], model: str = "gpt-3.5-turbo"):
-    return await openai.ChatCompletion.acreate(messages=messages, model=model)
+    return await client.chat.completions.create(messages=messages, model=model)
 
 
 class NoTokenError(Exception):
@@ -117,7 +121,7 @@ async def ask_chatgpt(
     no_token_warn: bool = False,
     model: str = "gpt-3.5-turbo",
 ):
-    if not check_user_tokens(user_id):
+    if not (check_user_tokens(user_id) or multiple <= 0):
         if not no_token_warn:
             raise NoTokenError()
         else:
@@ -125,8 +129,8 @@ async def ask_chatgpt(
 
     reply = await get_chatgpt_reply(messages, model)
     return generate_gpt_reply(
-        reply["choices"][0]["message"]["content"],
-        reduce_tokens(user_id, int(reply["usage"]["total_tokens"] * multiple)),
+        reply.choices[0].message.content,
+        reduce_tokens(user_id, int(reply.usage.total_tokens * multiple)),
         user_id,
     )
 
@@ -139,6 +143,8 @@ def add_message_to_session(session_id: str, role: str, content: str) -> None:
 
 
 def reduce_tokens(user_id: str, token_count: int) -> int:
+    if token_count == 0:
+        return 0
     user_data = Json(f"gpt/users/{user_id}.json")
     if buff.has_buff(user_id, "每日GPT限免"):
         buff.effect_buff(user_id, "每日GPT限免")
@@ -269,13 +275,13 @@ async def handle_gpt_command(
                 session["is_locked"] = False
                 add_message_to_session(
                     session_id,
-                    reply["choices"][0]["message"]["role"],
-                    reply["choices"][0]["message"]["content"],
+                    reply.choices[0].message.role,
+                    reply.choices[0].message.content,
                 )
                 await matcher.finish(
                     generate_gpt_reply(
-                        reply["choices"][0]["message"]["content"],
-                        reduce_tokens(user_id, reply["usage"]["total_tokens"]),
+                        reply.choices[0].message.content,
+                        reduce_tokens(user_id, reply.usage.total_tokens),
                         user_id,
                     ),
                     at_sender=True,
