@@ -104,12 +104,13 @@ async def handle_duel_refuse_command(_bot, event: GroupMessageEvent, _message: M
 # [HELPEND]
 
 
-def get_hp_to_reduce(winner_id: int, is_active_win: bool) -> float:
-    return get_data(winner_id, "health") * 0.85
+def get_hp_to_reduce(loser_id: int, is_active_win: bool) -> float:
+    return get_data(loser_id, "health") * 0.75
 
 
-@create_group_command("duel-force", {"kill"})
+@create_group_command("duel-force", {"kill", "duel-f"})
 async def handle_force_duel(bot, event: GroupMessageEvent, message: Message):
+    # TODO 重写逻辑
     if Json(f"duel/u{event.user_id}.json").get("force_duel_count", 0) < 10:
         passive_user_id = int(str(message).replace("[CQ:at,qq=", "").replace("]", ""))
         # 后续考虑接入体力
@@ -118,12 +119,12 @@ async def handle_force_duel(bot, event: GroupMessageEvent, message: Message):
         tmp = {
             False: [
                 event.user_id,
-                get_hp_to_reduce(passive_user_id, False),
+                get_hp_to_reduce(event.user_id, False),
                 passive_user_id,
             ],
             True: [
                 passive_user_id,
-                get_hp_to_reduce(event.user_id, True),
+                get_hp_to_reduce(passive_user_id, True),
                 event.user_id,
             ],
         }[scheduler.start_fighting()]
@@ -155,7 +156,7 @@ async def handle_duel_accept_command(
         True: [event.user_id, duel_requests[event.user_id]["active"]],
         False: [duel_requests[event.user_id]["active"], event.user_id],
     }[scheduler.start_fighting()]
-    remove_hp(tmp[0], get_data(tmp[0], "health") * 0.85)
+    remove_hp(tmp[0], get_data(tmp[0], "health") * 0.60)
     # await bot.call_api(
     #     "send_group_forward_msg",
     #     group_id=event.group_id,

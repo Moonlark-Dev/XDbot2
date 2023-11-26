@@ -31,7 +31,7 @@ def get_hp(user_id: int) -> int:
 
 def remove_hp(user_id: int, count: int) -> None:
     user_data = get_user_data(user_id)
-    user_data["health"] -= range(count, 3)
+    user_data["health"] -= round(count, 3)
     if user_data["health"] <= 0:
         origin_vimcoin = user_data["vimcoin"]
         user_data["vimcoin"] *= 0.5 if user_data["vimcoin"] > 0 else 1.5
