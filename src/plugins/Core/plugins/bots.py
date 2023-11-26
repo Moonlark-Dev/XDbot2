@@ -14,18 +14,20 @@ async def on_called_api(
 ):
     if not exception:
         return
+    # print(locals())
     if not isinstance(exception, ActionFailed):
         return
-    if data.get("retry"):
+    if not data.get("__retry__", True):
         return
-    for bot in get_bots().values():
+    for b in get_bots().values():
         try:
-            raise MockApiException(await bot.call_api(api, **data, retry=False))
-        except ActionFailed:
+            data["__retry__"] = False
+            raise MockApiException(await b.call_api(api, **data))
+        except ActionFailed as e:
             continue
 
 @get_driver().on_bot_connect
 async def _(bot: Bot):
-    await bot.on_called_api(on_called_api)
+    bot.on_called_api(on_called_api)
         
 

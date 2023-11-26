@@ -1,5 +1,5 @@
-nonebot2==2.0.0rc3
-nb-cli==1.0.3
+nonebot2
+nb-cli
 nonebot-adapter-onebot
 pillow
 psutil
