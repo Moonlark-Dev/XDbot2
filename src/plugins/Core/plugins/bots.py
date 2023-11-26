@@ -6,11 +6,11 @@ from nonebot.exception import ActionFailed, MockApiException
 
 
 async def on_called_api(
-        bot: Bot,
-        exception: Exception | None,
-        api: str,
-        data: dict[str, Any],
-        result: dict[str, Any]
+    bot: Bot,
+    exception: Exception | None,
+    api: str,
+    data: dict[str, Any],
+    result: dict[str, Any],
 ):
     if not exception:
         return
@@ -26,8 +26,7 @@ async def on_called_api(
         except ActionFailed as e:
             continue
 
+
 @get_driver().on_bot_connect
 async def _(bot: Bot):
     bot.on_called_api(on_called_api)
-        
-
