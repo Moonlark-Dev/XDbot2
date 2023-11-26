@@ -23,8 +23,8 @@ async def on_called_api(
         except ActionFailed:
             continue
 
-@get_driver().on_bot_connect()
+@get_driver().on_bot_connect
 async def _(bot: Bot):
-    await bot.on_called_api(on_called_api())
+    await bot.on_called_api(on_called_api)
         
 
