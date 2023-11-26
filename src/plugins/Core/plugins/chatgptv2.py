@@ -273,8 +273,8 @@ async def handle_gpt_command(
                 session["is_locked"] = False
                 add_message_to_session(
                     session_id,
-                    reply["choices"][0]["message"]["role"],
-                    reply["choices"][0]["message"]["content"],
+                    reply.choices[0].message.role,
+                    reply.choices[0].message.content,
                 )
                 await matcher.finish(
                     generate_gpt_reply(
