@@ -105,9 +105,7 @@ async def handle_duel_refuse_command(_bot, event: GroupMessageEvent, _message: M
 
 
 def get_hp_to_reduce(winner_id: int, is_active_win: bool) -> float:
-    return get_data(winner_id, "attack") * (
-        (0.5 if is_active_win else 0.3) + random.random()
-    )
+    return get_data(winner_id, "health") * 0.85
 
 
 @create_group_command("duel-force")
@@ -130,11 +128,11 @@ async def handle_force_duel(bot, event: GroupMessageEvent, message: Message):
             ],
         }[scheduler.start_fighting()]
         remove_hp(tmp[0], int(tmp[1]))
-        await bot.call_api(
-            "send_group_forward_msg",
-            group_id=event.group_id,
-            messages=parse_result_node_messages(bot, scheduler),
-        )
+        # await bot.call_api(
+        #     "send_group_forward_msg",
+        #     group_id=event.group_id,
+        #     messages=parse_result_node_messages(bot, scheduler),
+        # )
         await finish("duel.result", [tmp[2]], event.user_id, False, parse_cq_code=True)
 
 
@@ -157,10 +155,10 @@ async def handle_duel_accept_command(
         True: [event.user_id, duel_requests[event.user_id]["active"]],
         False: [duel_requests[event.user_id]["active"], event.user_id],
     }[scheduler.start_fighting()]
-    remove_hp(tmp[0], int(get_data(tmp[1], "attack") * random.random()))
-    await bot.call_api(
-        "send_group_forward_msg",
-        group_id=event.group_id,
-        messages=parse_result_node_messages(bot, scheduler),
-    )
+    remove_hp(tmp[0], get_data(tmp[0], "health") * 0.85)
+    # await bot.call_api(
+    #     "send_group_forward_msg",
+    #     group_id=event.group_id,
+    #     messages=parse_result_node_messages(bot, scheduler),
+    # )
     await finish("duel.result", [tmp[1]], tmp[1], False, parse_cq_code=True)
