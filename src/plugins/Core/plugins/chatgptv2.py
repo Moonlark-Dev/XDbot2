@@ -130,7 +130,7 @@ async def ask_chatgpt(
     reply = await get_chatgpt_reply(messages, model)
     return generate_gpt_reply(
         reply.choices[0].message.content,
-        reduce_tokens(user_id, int(reply["usage"]["total_tokens"] * multiple)),
+        reduce_tokens(user_id, int(reply.usage.total_tokens * multiple)),
         user_id,
     )
 
@@ -279,7 +279,7 @@ async def handle_gpt_command(
                 await matcher.finish(
                     generate_gpt_reply(
                         reply.choices[0].message.content,
-                        reduce_tokens(user_id, reply["usage"]["total_tokens"]),
+                        reduce_tokens(user_id, reply.usage.total_tokens),
                         user_id,
                     ),
                     at_sender=True,
