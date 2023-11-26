@@ -8,7 +8,7 @@ from .etm import buff
 
 client = AsyncOpenAI(
     api_key=Json("chatgpt.config.json")["api_key"],
-    http_client=AsyncClient(proxies=Json("chatgpt.config.json")["proxy"])
+    http_client=AsyncClient(proxies=Json("chatgpt.config.json")["proxy"]),
 )
 
 # [HELPSTART] Version: 2
