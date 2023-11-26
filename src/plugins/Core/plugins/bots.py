@@ -6,6 +6,7 @@ from nonebot.exception import ActionFailed, MockApiException
 
 
 async def on_called_api(
+        bot: Bot,
         exception: Exception | None,
         api: str,
         data: dict[str, Any],
