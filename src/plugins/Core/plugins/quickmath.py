@@ -75,56 +75,53 @@ def generate_question() -> tuple:
 
 @scheduler.scheduled_job("cron", minute="*/2", id="send_quick_math")
 async def send_quick_math() -> None:
-    try:
-        if not check_group(group := get_group()):
-            return
-        question, answer = generate_question()
-        bot = get_bot(Json("su.multiaccoutdata.ro.json")[str(group)])
-        msg_id = (
-            await bot.send_group_msg(
-                group_id=group, message=MessageSegment.image(render_question(question))
+    if not check_group(group := get_group()):
+        return
+    question, answer = generate_question()
+    bot = get_bot(Json("su.multiaccoutdata.ro.json")[str(group)])
+    msg_id = (
+        await bot.send_group_msg(
+            group_id=group, message=MessageSegment.image(render_question(question))
+        )
+    )["message_id"]
+    matcher = on_fullmatch(tuple(answer))
+    send_time = time.time()
+    answered = False
+
+    @matcher.handle()
+    async def handle_quickmath_answer(event: GroupMessageEvent) -> None:
+        nonlocal answered
+        try:
+            if event.group_id != group:
+                await matcher.finish()
+            await send_text(
+                "quick_math.rightanswer1",
+                [(add_points := int(2 * (20 - time.time() + send_time)))],
+                event.user_id,
+                False,
+                True,
             )
-        )["message_id"]
-        matcher = on_fullmatch(tuple(answer))
-        send_time = time.time()
-        answered = False
-
-        @matcher.handle()
-        async def handle_quickmath_answer(event: GroupMessageEvent) -> None:
-            nonlocal answered
-            try:
-                if event.group_id != group:
-                    await matcher.finish()
-                await send_text(
-                    "quick_math.rightanswer1",
-                    [(add_points := int(2 * (20 - time.time() + send_time)))],
-                    event.user_id,
-                    False,
-                    True,
-                )
-                matcher.destroy()
-                answered = True
-                Json(f"quickmath/u{event.user_id}.json")["points"] = (
-                    Json(f"quickmath/u{event.user_id}.json").get("points", 0)
-                    + add_points
-                )
-                Json("quickmath/group_unanswered.json")[str(event.group_id)] = 0
-                Json(f"quickmath/global.json")["count"] = (
-                    Json(f"quickmath/global.json").get("count", 0) + 1
-                )
-            except:
-                await error.report()
-
-        await asyncio.sleep(20)
-        if not answered:
             matcher.destroy()
-            await bot.delete_msg(message_id=msg_id)
-            Json("quickmath/group_unanswered.json")[str(group)] = (
-                Json("quickmath/group_unanswered.json").get(str(group), 0) + 1
+            answered = True
+            Json(f"quickmath/u{event.user_id}.json")["points"] = (
+                Json(f"quickmath/u{event.user_id}.json").get("points", 0)
+                + add_points
             )
+            Json("quickmath/group_unanswered.json")[str(event.group_id)] = 0
+            Json(f"quickmath/global.json")["count"] = (
+                Json(f"quickmath/global.json").get("count", 0) + 1
+            )
+        except:
+            await error.report()
 
-    except:
-        await error.report()
+    await asyncio.sleep(20)
+    if not answered:
+        matcher.destroy()
+        await bot.delete_msg(message_id=msg_id)
+        Json("quickmath/group_unanswered.json")[str(group)] = (
+            Json("quickmath/group_unanswered.json").get(str(group), 0) + 1
+        )
+
 
 
 @on_command("quick-math", aliases={"qm"}).handle()
