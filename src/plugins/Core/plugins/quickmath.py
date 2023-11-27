@@ -24,9 +24,13 @@ require("nonebot_plugin_apscheduler")
 def render_question(question_string: str) -> bytes:
     title_font = ImageFont.truetype("./src/plugins/Core/font/HYRunYuan-55W.ttf", 17)
     question_font = ImageFont.truetype("./src/plugins/Core/font/HYRunYuan-55W.ttf", 20)
-    width1, height1 = question_font.getsize(question_string)  # type: ignore
-    width2, height2 = title_font.getsize("[QUICK MATH]")  # type: ignore
-    image = Image.new("RGB", (max(width1, width2), 40), color="white")
+    
+    width1 = question_font.getlength(question_string)
+    width2 = question_font.getlength("[QUICK MATH]")
+    height1 = 17
+    height2 = 20
+    
+    image = Image.new("RGB", (int(max(width1, width2)), 40), color="white")
     draw = ImageDraw.Draw(image)
     draw.text((0, 18), question_string, fill="black", font=question_font)
     draw.text((0, 0), "[QUICK MATH]", fill="black", font=title_font)
@@ -44,7 +48,7 @@ def get_group() -> int:
         )
     except BaseException:
         return 0
-
+3
 
 def check_group(group_id: int) -> bool:
     return bool(
