@@ -34,6 +34,7 @@ def check_url_protocol(url):
     # 检查URL是否包含协议部分
     return bool(parsed_url.scheme)
 
+
 async def take_screenshot_of_website(url: str, matcher: Matcher) -> None:
     file_name = f"preview.image_{int(time.time())}"
     async with async_playwright() as p:
@@ -112,6 +113,7 @@ async def preview_website(event: MessageEvent, message: Message = CommandArg()):
     except BaseException:
         await _error.report(traceback.format_exc(), preview)
 
+
 @create_group_command("auto-preview")
 async def _(bot: Bot, event: GroupMessageEvent, message: Message) -> None:
     match message.extract_plain_text().lower():
@@ -122,8 +124,15 @@ async def _(bot: Bot, event: GroupMessageEvent, message: Message) -> None:
             Json("preview.auto_groups.json")[str(event.group_id)] = True
 
         case _:
-            Json("preview.auto_groups.json")[str(event.group_id)] = not Json("preview.auto_groups.json")[str(event.group_id)]
-    await finish("preview.auto", [Json("preview.auto_groups.json")[str(event.group_id)]], event.user_id)
+            Json("preview.auto_groups.json")[str(event.group_id)] = not Json(
+                "preview.auto_groups.json"
+            )[str(event.group_id)]
+    await finish(
+        "preview.auto",
+        [Json("preview.auto_groups.json")[str(event.group_id)]],
+        event.user_id,
+    )
+
 
 @on_regex("(https?|ftp)://[^\s/$.?#].[^\s]*").handle()
 async def _(event: GroupMessageEvent, matcher: Matcher = Matcher()) -> None:
@@ -133,4 +142,3 @@ async def _(event: GroupMessageEvent, matcher: Matcher = Matcher()) -> None:
     if match is None:
         return
     await take_screenshot_of_website(match.group(0), matcher)
-    
