@@ -176,5 +176,11 @@ class Json:
             self.changed_key.add(key)
             return self.get(key, default)
 
+    def add(self, key: str, i: int) -> int:
+        if not isinstance(self.get(key, 0), int):
+            self[key] = 0
+        self[key] += 1
+        return self[key]
+
     def items(self):
         return list(self.data.items())
