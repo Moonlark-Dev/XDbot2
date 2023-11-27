@@ -24,12 +24,12 @@ require("nonebot_plugin_apscheduler")
 def render_question(question_string: str) -> bytes:
     title_font = ImageFont.truetype("./src/plugins/Core/font/HYRunYuan-55W.ttf", 17)
     question_font = ImageFont.truetype("./src/plugins/Core/font/HYRunYuan-55W.ttf", 20)
-    
+
     width1 = question_font.getlength(question_string)
     width2 = question_font.getlength("[QUICK MATH]")
     height1 = 17
     height2 = 20
-    
+
     image = Image.new("RGB", (int(max(width1, width2)), 40), color="white")
     draw = ImageDraw.Draw(image)
     draw.text((0, 18), question_string, fill="black", font=question_font)
@@ -48,7 +48,10 @@ def get_group() -> int:
         )
     except BaseException:
         return 0
+
+
 3
+
 
 def check_group(group_id: int) -> bool:
     return bool(
@@ -104,8 +107,7 @@ async def send_quick_math() -> None:
             matcher.destroy()
             answered = True
             Json(f"quickmath/u{event.user_id}.json")["points"] = (
-                Json(f"quickmath/u{event.user_id}.json").get("points", 0)
-                + add_points
+                Json(f"quickmath/u{event.user_id}.json").get("points", 0) + add_points
             )
             Json("quickmath/group_unanswered.json")[str(event.group_id)] = 0
             Json(f"quickmath/global.json")["count"] = (
@@ -121,7 +123,6 @@ async def send_quick_math() -> None:
         Json("quickmath/group_unanswered.json")[str(group)] = (
             Json("quickmath/group_unanswered.json").get(str(group), 0) + 1
         )
-
 
 
 @on_command("quick-math", aliases={"qm"}).handle()
