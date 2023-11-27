@@ -11,7 +11,6 @@ def calculate_distance(user_id: str | int, target: tuple[int, int]) -> float:
         (user_pos[0] - target[0]) ** 2 + 
         (user_pos[1] - target[1]) ** 2
     )
-    
 
 @scheduler.scheduled_job("corn", minute="*")
 async def add_stamina():
