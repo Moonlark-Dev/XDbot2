@@ -310,5 +310,6 @@
   "wish.result": "「祈愿结果（总第 {}）」\n[{}]: {} ({})",
   "wish.type_ball": "面位球",
   "wish.type_weapons": "武器",
-  "lgs.launch": "原神，启动！"
+  "lgs.launch": "原神，启动！",
+  "preview.auto": "完成！(开启：{})"
 }
