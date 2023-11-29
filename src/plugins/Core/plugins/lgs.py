@@ -7,7 +7,7 @@ async def _(_bot, event: MessageEvent, message: Message):
         await finish(
             "lgs.status",
             [Json("data/lgs.count.json")[event.get_user_id()]],
-            event.user_id
+            event.user_id,
         )
     Json("data/lgs.count.json").add(event.get_user_id(), 1)
     await finish("lgs.launch", [], event.user_id, False, True)
