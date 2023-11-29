@@ -8,10 +8,12 @@ from nonebot.adapters.onebot.v11 import Messagee
 import sys
 import os
 
+
 def _restart() -> None:
     script = sys.argv[0]
     args = sys.argv[1:]
     os.execv(sys.executable, [sys.executable] + [script] + args)
+
 
 @su.handle()
 async def restart(message: Message = CommandArg()):
