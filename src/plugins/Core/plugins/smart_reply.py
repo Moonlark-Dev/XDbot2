@@ -131,7 +131,7 @@ def fork_reply_data(base_data: dict, group_id: int) -> int:
     """
     base_data["id"] = get_reply_id(group_id)
     base_data["group_id"] = group_id
-    Json(f"reply/g{group_id}/{base_data['id']}.json").set_to(base_data)
+    Json(f"reply/g{group_id}/{base_data['id']}.json").update(base_data)
     return base_data["id"]
 
 
@@ -174,7 +174,7 @@ async def create_matcher(
     reply_text: list[str],
 ):
     reply_id = get_reply_id(group_id)
-    Json(f"reply/g{group_id}/{reply_id}.json").set_to(
+    Json(f"reply/g{group_id}/{reply_id}.json").update(
         {
             "id": reply_id,
             "match": {"type": matcher_type, "text": matcher_data},
