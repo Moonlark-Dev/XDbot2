@@ -311,5 +311,6 @@
   "wish.type_ball": "面位球",
   "wish.type_weapons": "武器",
   "lgs.launch": "原神，启动！",
-  "preview.auto": "完成！(开启：{})"
+  "preview.auto": "完成！(开启：{})",
+  "lgs.status": "您一共启动了 {} 次原神"
 }
