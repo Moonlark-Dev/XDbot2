@@ -114,14 +114,14 @@ class Json:
         else:
             self.data = json.load(open(file=self.path, encoding="utf-8"))
 
-    def set_to(self, obj: dict):
+    def update(self, obj: dict):
         self.data.update(obj)
         for key in list(obj.keys()):
             self.changed_key.add(key)
         self.save()
 
     def to_dict(self) -> dict:
-        return self.data
+        return self.data.copy()
 
     def append_to(self, obj: Any, key: str) -> None:
         self.data[key] = self.get(key, []) + [obj]
@@ -180,7 +180,12 @@ class Json:
         if not isinstance(self.get(key, 0), int):
             self[key] = 0
         self[key] += 1
+        self.changed_key.add(key)
+        self.save()
         return self[key]
 
     def items(self):
         return list(self.data.items())
+
+    def keys(self):
+        return list(self.data.keys())
