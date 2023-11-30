@@ -3,7 +3,7 @@ from traceback import format_exc
 from .su import su
 from .etm import data
 from . import _error
-from nonebot.adapters.onebot.v11 import Messagee
+from nonebot.adapters.onebot.v11 import Message
 
 import sys
 import os
