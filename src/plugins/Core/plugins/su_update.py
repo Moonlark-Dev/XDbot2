@@ -5,7 +5,7 @@ from . import _error as error
 import traceback
 import os
 import time
-
+from .su_restart import _restart
 from nonebot.adapters.onebot.v11 import Message
 
 
@@ -37,7 +37,6 @@ async def update(message: Message = CommandArg()):
                     os.popen("git log").read().split("\n")[0].split(" ")[1][:7],
                 )
             )
-            with open("data/reboot.py", "w") as f:
-                f.write(str(time.time()))
+            _restart()
     except BaseException:
         await error.report(traceback.format_exc(), su)
