@@ -55,6 +55,10 @@ def text(key: str, _format: list = [], _user: str | int = "default", params: dic
     if params:
         for i in list(params.keys()):
             value = value.replace("${" + i + "}", params[i])
+    if not (key.endswith("_nb") or key.endswith("__base__")) \
+            and (len(split_key := key.split(".")) >= 2) \
+            and not (based_value := text(split_key[0] + ".__base__", [value], user)).startswith("<本地化键缺失"):
+        return based_value
     return str(value)
 
 
