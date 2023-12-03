@@ -312,5 +312,6 @@
   "wish.type_weapons": "武器",
   "lgs.launch": "原神，启动！",
   "preview.auto": "完成！(开启：{})",
-  "lgs.status": "您一共启动了 {} 次原神"
+  "lgs.status": "您一共启动了 {} 次原神",
+  "fakenode.eula": "开始使用「FakeNode」即代表您已阅读并同意《XDbot2「FakeNode」用户协议》 (https://github.com/ITCraftDevelopmentTeam/XDbot2/discussions/491)。"
 }
