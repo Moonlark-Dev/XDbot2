@@ -313,5 +313,11 @@
   "lgs.launch": "原神，启动！",
   "preview.auto": "完成！(开启：{})",
   "lgs.status": "您一共启动了 {} 次原神",
-  "fakenode.eula": "开始使用「FakeNode」即代表您已阅读并同意《XDbot2「FakeNode」用户协议》 (https://github.com/ITCraftDevelopmentTeam/XDbot2/discussions/491)。"
+  "fakenode.eula": "开始使用「FakeNode」即代表您已阅读并同意《XDbot2「FakeNode」用户协议》 (https://github.com/ITCraftDevelopmentTeam/XDbot2/discussions/491)。",
+
+  "progress.year": "{}年已经过去 {}%",
+  "progress.mon": "{}年{}月已经过去 {}%",
+  "progress.day": "{}年{}月{}日已经过去 {}%"
+  
+  
 }
