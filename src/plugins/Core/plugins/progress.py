@@ -95,3 +95,21 @@ async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
         ],
         event.user_id,
     )
+
+
+@create_command("progress", {"prog"})
+async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
+    await finish(
+        "currency.wrong_argv",
+        ["progress"],
+        event.user_id
+    )
+
+# [HELPSTART] Version: 2
+# Command: progress
+# Info: 查看本年/月/日的进度
+# Msg: 查看本年进度
+# Usage: progress-year：查看本年进度
+# Usage: progress-month：查看本月进度
+# Usage: progress-day：查看本日进度
+# [HELPEND]
