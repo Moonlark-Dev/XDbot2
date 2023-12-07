@@ -99,11 +99,8 @@ async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
 
 @create_command("progress", {"prog"})
 async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
-    await finish(
-        "currency.wrong_argv",
-        ["progress"],
-        event.user_id
-    )
+    await finish("currency.wrong_argv", ["progress"], event.user_id)
+
 
 # [HELPSTART] Version: 2
 # Command: progress
