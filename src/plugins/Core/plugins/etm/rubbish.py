@@ -1,5 +1,5 @@
 from typing import Any
-from items import json2items
+from .items import json2items
 from .bag import add_item
 from .merger import merge_item_list
 from .item import Item
