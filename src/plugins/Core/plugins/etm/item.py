@@ -36,13 +36,12 @@ class Item(ABC):
         maximum_stack: Optional[int] = None,
         useable: Optional[bool] = None,
         can_be_sold: Optional[bool] = None,
-        **params
+        **params,
     ) -> None:
         ...
 
     def setup_basic_data(self, *args, **params) -> None:
         self.basic_data = params
-        
 
     @abstractmethod
     def on_register(self):
