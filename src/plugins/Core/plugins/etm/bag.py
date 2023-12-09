@@ -99,4 +99,5 @@ async def use_item(user_id, item_pos, argv=""):
     user_id = str(user_id)
     return await bags[user_id][item_pos].on_use(argv)
 
+
 rubbish.add_item = add_item
