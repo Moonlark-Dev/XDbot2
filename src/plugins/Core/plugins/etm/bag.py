@@ -5,6 +5,8 @@ from nonebot import require
 from . import economy
 from . import data
 
+from . import rubbish
+
 require("nonebot_plugin_apscheduler")
 
 # items.json2items(json.load(open("data/etm/bags.json", encoding="utf-8")))
@@ -96,3 +98,5 @@ def add_item(user_id, item_id, item_count=1, item_data={}):
 async def use_item(user_id, item_pos, argv=""):
     user_id = str(user_id)
     return await bags[user_id][item_pos].on_use(argv)
+
+rubbish.add_item = add_item

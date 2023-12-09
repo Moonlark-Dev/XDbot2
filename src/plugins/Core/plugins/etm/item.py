@@ -11,6 +11,7 @@ class Item(ABC):
     def __init__(self, count, data, user_id):
         self.count = count
         self.item_id = ""  # dice"
+        self.user_id = user_id
         self.basic_data = {}  # type: ignore
         # 初始化
         self.on_register()
@@ -18,7 +19,6 @@ class Item(ABC):
         self.data = BASIC_DATA.copy()  # type: ignore
         self.data.update(self.basic_data)
         self.data.update(data)
-        self.user_id = user_id
         self._after_register()
 
         for key in list(self.data.keys()):
@@ -47,15 +47,15 @@ class Item(ABC):
     def on_register(self):
         ...
 
-    @abstractmethod
+    # @abstractmethod
     def _after_register(self):
         ...
 
-    @abstractmethod
+    # @abstractmethod
     def use_item(self):
         ...
 
-    @abstractmethod
+    # @abstractmethod
     async def async_use(self, arg):
         raise NotImplementedError
 
