@@ -77,11 +77,11 @@ class MysteryBoxLevel1(Item):
                 {"item_id": "vimcoin", "count": [15, 40]},
                 {"item_id": "mysterious_shard", "count": [10, 35]},
                 {"item_id": "common_rubbish", "count": [5, 10]},
-                {"item_id": "auto_sign_coupon", "count": [1, 5]}
+                {"item_id": "auto_sign_coupon", "count": [1, 5]},
             ],
             "legend": [
                 {"item_id": "mysterybox_lv1", "count": [1, 2]},
-                {"item_id": "talisman", "count": [1, 4]}
+                {"item_id": "talisman", "count": [1, 4]},
             ],
         }
 
