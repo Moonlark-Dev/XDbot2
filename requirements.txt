@@ -1,5 +1,6 @@
 nonebot2
 nb-cli
+nonebot-plugin-cnrail
 nonebot_plugin_follow_withdraw
 nonebot_plugin_sentry
 nonebot-adapter-onebot
