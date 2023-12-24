@@ -1,3 +1,5 @@
+# 已弃用，代码仅供参考
+
 import json
 import traceback
 from . import _error
