@@ -17,17 +17,16 @@ multiAccountData = {}
 account_manager = on_command("accout", aliases={"多帐号", "account"})
 driver = get_driver()
 
+
 def get_accounts_data() -> dict:
     return multiAccountData
+
 
 @event_preprocessor
 async def multiAccoutManager(bot: Bot, event: GroupMessageEvent):
     try:
         if event.group_id in multiAccountData.keys():
-            if (
-                str(bot.self_id)
-                != multiAccountData[event.group_id]
-            ):
+            if str(bot.self_id) != multiAccountData[event.group_id]:
                 raise IgnoredException("多帐号：忽略")
 
     except IgnoredException as e:

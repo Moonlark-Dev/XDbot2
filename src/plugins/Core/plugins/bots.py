@@ -7,7 +7,9 @@ from nonebot.exception import MockApiException
 from .account import get_accounts_data
 
 
-class GroupNotFoundException(Exception): pass
+class GroupNotFoundException(Exception):
+    pass
+
 
 def select_bot_by_group_id(group_id: int) -> Optional[Bot]:
     """
@@ -41,9 +43,10 @@ async def check_group_id(bot: Bot, api: str, data: dict) -> None:
         if group["group_id"] == int(data["group_id"]):
             return
     group_id = int(data["group_id"])
-    if (correct_bot := select_bot_by_group_id(group_id)):
+    if correct_bot := select_bot_by_group_id(group_id):
         raise MockApiException(await correct_bot.call_api(api, **data))
     raise GroupNotFoundException(f"区域外的群号: {group_id}")
+
 
 def check_message_images(original_message: Message) -> Message:
     message = original_message.copy()
@@ -56,19 +59,17 @@ def check_message_images(original_message: Message) -> Message:
         if not file.startswith("file://"):
             continue
         with open(file[7:], "rb") as f:
-            data = base64.b64encode(f.read()).decode('utf-8')
+            data = base64.b64encode(f.read()).decode("utf-8")
         message[length].data["file"] = f"base64://{data}"
     return message
 
-async def on_calling_api(bot: BaseBot, api:  str, data: dict) -> None:
+
+async def on_calling_api(bot: BaseBot, api: str, data: dict) -> None:
     if not isinstance(bot, Bot):
         return
     await check_group_id(bot, api, data)
     if "message" in data.keys() and isinstance(data["message"], Message):
         data["message"] = check_message_images(data["message"])
-    
-
-
 
 
 @get_driver().on_bot_connect
