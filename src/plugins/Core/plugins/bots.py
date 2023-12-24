@@ -63,8 +63,12 @@ def check_message_images(original_message: Message) -> Message:
         message[length].data["file"] = f"base64://{data}"
     return message
 
+
 async def check_forward_node(bot: Bot, api: str, _data: dict) -> None:
-    if api not in ["send_group_forward_msg", "send_private_forward_msg"] or "__info_id__" in _data.keys():
+    if (
+        api not in ["send_group_forward_msg", "send_private_forward_msg"]
+        or "__info_id__" in _data.keys()
+    ):
         return
     data = _data.copy()
     user_id = data.get("user_id", "default")
@@ -76,29 +80,36 @@ async def check_forward_node(bot: Bot, api: str, _data: dict) -> None:
             message = data["messages"][i]["data"].copy()
         if not isinstance(message["content"], Message):
             message["content"] = Message(message["content"])
-        if (user := int(message.get("uin") or message.get("user_id"))) != int(bot.self_id):
-            message["content"].insert(0, MessageSegment.text(
-                lang.text(
-                    "bots.message_from",
-                    [message["nickname"] or (await bot.get_stranger_info(user_id=user))["nickname"]],
-                    user_id
-                )
-            ))
+        if (user := int(message.get("uin") or message.get("user_id"))) != int(
+            bot.self_id
+        ):
+            message["content"].insert(
+                0,
+                MessageSegment.text(
+                    lang.text(
+                        "bots.message_from",
+                        [
+                            message["nickname"]
+                            or (await bot.get_stranger_info(user_id=user))["nickname"]
+                        ],
+                        user_id,
+                    )
+                ),
+            )
         message["content"] = check_message_images(message["content"])
         if isinstance(node, MessageSegment):
             data["messages"][i].data = message
         else:
             data["messages"][i]["data"] = message
-    data["__info_id__"] = (await bot.send_msg(
-        message=lang.text("bots.waiting_node", [], user_id),
-        message_type=api.replace("send_", "").replace("_forward_msg", ""),
-        group_id=data.get("group_id"),
-        user_id=int(user_id) if user_id != "default" else None
-    ))["message_id"]
-    raise MockApiException(
-        await bot.call_api(api, **data)
-    )
-
+    data["__info_id__"] = (
+        await bot.send_msg(
+            message=lang.text("bots.waiting_node", [], user_id),
+            message_type=api.replace("send_", "").replace("_forward_msg", ""),
+            group_id=data.get("group_id"),
+            user_id=int(user_id) if user_id != "default" else None,
+        )
+    )["message_id"]
+    raise MockApiException(await bot.call_api(api, **data))
 
 
 async def on_calling_api(bot: BaseBot, api: str, data: dict) -> None:
@@ -111,6 +122,7 @@ async def on_calling_api(bot: BaseBot, api: str, data: dict) -> None:
         if key.endswith("_id") and isinstance(value, str):
             data[key] = int(value)
     await check_forward_node(bot, api, data)
+
 
 async def on_called_api(
     bot: BaseBot,
@@ -136,11 +148,11 @@ async def on_called_api(
         raise MockApiException(
             {"user_id": data["user_id"], "nickname": f'<U:{data["user_id"]}>'}
         )
-    elif api in ["send_group_forward_msg", "send_private_forward_msg"] and "__info_id__" in data.keys():
+    elif (
+        api in ["send_group_forward_msg", "send_private_forward_msg"]
+        and "__info_id__" in data.keys()
+    ):
         await bot.delete_msg(message_id=data["__info_id__"])
-        
-
-    
 
 
 @get_driver().on_bot_connect
