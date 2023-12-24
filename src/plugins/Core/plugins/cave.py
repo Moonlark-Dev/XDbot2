@@ -461,35 +461,35 @@ async def cave_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent):
             case _:
                 cd_time = 3600
 
-        if time.time() - latest_use.get(f"u{event.user_id}", 0) < 600:
-            await finish(
-                "cave.user_cd",
-                [
-                    round(
-                        600 - (time.time() - latest_use.get(f"u{event.user_id}", 0)), 3
-                    )
-                ],
-                event.user_id,
-                True,
-                False,
-            )
-        if time.time() - (latest_use.get(f"g{event.group_id}") or 0) < cd_time:
-            await cave.finish(
-                _lang.text(
-                    "cave.cd",
-                    [
-                        str(
-                            round(
-                                cd_time
-                                - (time.time() - latest_use[f"g{event.group_id}"]),
-                                3,
-                            )
-                        )
-                    ],
-                    event.get_user_id(),
-                ),
-                at_sender=True,
-            )
+        # if time.time() - latest_use.get(f"u{event.user_id}", 0) < 600:
+        #     await finish(
+        #         "cave.user_cd",
+        #         [
+        #             round(
+        #                 600 - (time.time() - latest_use.get(f"u{event.user_id}", 0)), 3
+        #             )
+        #         ],
+        #         event.user_id,
+        #         True,
+        #         False,
+        #     )
+        # if time.time() - (latest_use.get(f"g{event.group_id}") or 0) < cd_time:
+        #     await cave.finish(
+        #         _lang.text(
+        #             "cave.cd",
+        #             [
+        #                 str(
+        #                     round(
+        #                         cd_time
+        #                         - (time.time() - latest_use[f"g{event.group_id}"]),
+        #                         3,
+        #                     )
+        #                 )
+        #             ],
+        #             event.get_user_id(),
+        #         ),
+        #         at_sender=True,
+        #     )
 
         caveList = data["data"].values()
         random.seed(marshal.loads(b"\xe9" + os.urandom(4)))

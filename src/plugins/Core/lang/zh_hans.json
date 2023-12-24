@@ -31,7 +31,6 @@
   "ct.rank": "发言排名 —— {}\n",
   "ct.usage": "用法：ct [group] ",
   "cave.cd": "冷却中（{}s）",
-  "fakenode.new": "「新建伪转发」\n用户：{}\n \n{}",
   "forward.private": "「私聊信息转发」",
   "forward._user": "用户：",
   "forward.group": "「群消息转发」",
@@ -313,7 +312,6 @@
   "lgs.launch": "原神，启动！",
   "preview.auto": "完成！(开启：{})",
   "lgs.status": "您一共启动了 {} 次原神",
-  "fakenode.eula": "开始使用「FakeNode」即代表您已阅读并同意《XDbot2「FakeNode」用户协议》 (https://github.com/ITCraftDevelopmentTeam/XDbot2/discussions/491)。",
 
   "progress.year": "{}年已经过去 {}%",
   "progress.mon": "{}年{}月已经过去 {}%",
