@@ -47,6 +47,6 @@ class CommonRubbish(Item):
         length = 1
         for item in items:
             add_item(self.user_id, item.item_id, item.count, item.data)
-            message += self.text("use_item", [length, item.item_id, item.count])
+            message += self.text("use_item", [length, item.data["display_name"], item.count])
             length += 1
         return [message]
