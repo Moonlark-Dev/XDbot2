@@ -4,7 +4,7 @@ from .item import Item
 import random
 
 
-def json2items(items, user_id=None):
+def json2items(items, user_id=None) -> list:
     ...
 
 
