@@ -1,15 +1,13 @@
 import base64
 from typing import Optional, cast
-from nonebot import get_driver
+from nonebot import get_bots, get_driver
 from ._utils import *
 from nonebot.adapters import Bot as BaseBot
-from nonebot.exception import MockApiException
+from nonebot.exception import MockApiException, ActionFailed, NetworkError
 from .account import get_accounts_data
 
 
-class GroupNotFoundException(Exception):
-    pass
-
+class GroupNotFoundException(Exception): pass
 
 def select_bot_by_group_id(group_id: int) -> Optional[Bot]:
     """
@@ -43,10 +41,9 @@ async def check_group_id(bot: Bot, api: str, data: dict) -> None:
         if group["group_id"] == int(data["group_id"]):
             return
     group_id = int(data["group_id"])
-    if correct_bot := select_bot_by_group_id(group_id):
+    if (correct_bot := select_bot_by_group_id(group_id)):
         raise MockApiException(await correct_bot.call_api(api, **data))
     raise GroupNotFoundException(f"区域外的群号: {group_id}")
-
 
 def check_message_images(original_message: Message) -> Message:
     message = original_message.copy()
@@ -59,17 +56,48 @@ def check_message_images(original_message: Message) -> Message:
         if not file.startswith("file://"):
             continue
         with open(file[7:], "rb") as f:
-            data = base64.b64encode(f.read()).decode("utf-8")
+            data = base64.b64encode(f.read()).decode('utf-8')
         message[length].data["file"] = f"base64://{data}"
     return message
 
 
-async def on_calling_api(bot: BaseBot, api: str, data: dict) -> None:
+async def on_calling_api(bot: BaseBot, api:  str, data: dict) -> None:
     if not isinstance(bot, Bot):
         return
     await check_group_id(bot, api, data)
     if "message" in data.keys() and isinstance(data["message"], Message):
         data["message"] = check_message_images(data["message"])
+    for key, value in data.items():
+        if key.endswith("_id") and isinstance(value, str):
+            data[key] = int(value)
+
+
+async def on_called_api(
+    bot: BaseBot,
+    exception: Exception | None,
+    api: str,
+    data: dict[str, Any],
+    result: dict[str, Any],
+):
+    if not isinstance(bot, Bot):
+        return
+    if not (isinstance(exception, ActionFailed) and api == "get_stranger_info"):
+        return
+    if "__xdbot_retry__" in data.keys():
+        return
+    for b in get_bots().values():
+        try:
+            raise MockApiException(
+                await b.get_stranger_info(
+                    **data,
+                    __xdbot_retry__=True
+                )
+            )
+        except ActionFailed:
+            continue
+        except NetworkError:
+            continue
+    raise MockApiException({"user_id": data["user_id"], "nickname": f'<User:{data["user_id"]}'})
 
 
 @get_driver().on_bot_connect
@@ -81,3 +109,4 @@ async def _(bot: Bot) -> None:
         bot (Bot): Bot
     """
     bot.on_calling_api(on_calling_api)
+    bot.on_called_api(on_called_api)
