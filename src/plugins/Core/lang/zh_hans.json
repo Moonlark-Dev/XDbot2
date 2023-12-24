@@ -320,5 +320,8 @@
   "common_rubbish.display_name": "普通的垃圾",
   "common_rubbish.display_message": "也许正如它的名字一样，非常普通\n\n可能包哈以下物品: \n1. 压缩毛巾\n2. 毛巾\n3. 神秘碎片\n4. 书与笔\n5. 收纳袋",
   "common_rubbish.use_title": "你打开了 {} 个「普通的垃圾」，获得了以下物品：",
-  "common_rubbish.use_item": "\n{}. {} x{}"
+  "common_rubbish.use_item": "\n{}. {} x{}",
+
+  "bots.message_from": "[来自 {}]:\n",
+  "bots.waiting_node": "正在拉取信息, 请稍候 ..."
 }
