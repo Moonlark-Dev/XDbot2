@@ -65,7 +65,11 @@ def check_message_images(original_message: Message) -> Message:
 
 
 async def check_forward_node(bot: Bot, api: str, _data: dict) -> None:
-    if api not in ["send_group_forward_msg", "send_private_forward_msg"] or "__info_id__" in _data.keys() or len(bot.self_id) > 15:
+    if (
+        api not in ["send_group_forward_msg", "send_private_forward_msg"]
+        or "__info_id__" in _data.keys()
+        or len(bot.self_id) > 15
+    ):
         return
     data = _data.copy()
     user_id = data.get("user_id", "default")
