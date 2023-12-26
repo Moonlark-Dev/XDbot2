@@ -1,0 +1,21 @@
+name: "Auto Merge PR"
+
+on:
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  auto_merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Merge PR
+        run: |
+          gh pr merge $PR_NUMBER --auto -t "[update] Merge from #$PR_NUMBER"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
