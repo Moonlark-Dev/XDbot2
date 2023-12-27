@@ -3,6 +3,7 @@ from ._utils import *
 
 HANDLE_FUNC: TypeAlias = Callable[[Bot, MessageEvent, Message], Awaitable[None]]
 
+
 class HandlerData(TypedDict):
     names: list[str]
     function: HANDLE_FUNC
@@ -12,7 +13,9 @@ su: type[Matcher] = on_command("su", aliases={"超管"}, permission=SUPERUSER)
 handlers: list[HandlerData] = []
 
 
-def create_superuser_command(name: str, aliases: set[str] = set()) -> Callable[..., HANDLE_FUNC]:
+def create_superuser_command(
+    name: str, aliases: set[str] = set()
+) -> Callable[..., HANDLE_FUNC]:
     """
     注册 su 指令
 
@@ -23,7 +26,7 @@ def create_superuser_command(name: str, aliases: set[str] = set()) -> Callable[.
     Returns:
         Callable[..., HANDLE_FUNC]: 触发器
     """
-    
+
     def _(func: HANDLE_FUNC) -> HANDLE_FUNC:
         handlers.append({"names": [name] + list(aliases), "function": func})
         logger.success(f"成功注册超管指令: {name}")
@@ -45,6 +48,8 @@ def get_handler_function(name: str) -> Optional[HANDLE_FUNC]:
     for handler in handlers:
         if name in handler["names"]:
             return handler["function"]
+
+
 logger.debug(type(Message))
 
 
