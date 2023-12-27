@@ -323,5 +323,8 @@
   "common_rubbish.use_item": "\n{}. {} x{}",
 
   "bots.message_from": "[来自 {}]:\n",
-  "bots.waiting_node": "正在拉取信息, 请稍候 ..."
+  "bots.waiting_node": "正在拉取信息, 请稍候 ...",
+
+  "su.need_argv": "错误: 需要参数",
+  "su.not_found": ""
 }
