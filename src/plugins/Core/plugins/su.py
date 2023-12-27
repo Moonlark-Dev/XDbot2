@@ -3,14 +3,19 @@ from nonebot import on_command
 from nonebot.permission import SUPERUSER
 from ._utils import *
 
+
 class HandlerData(TypedDict):
     names: list[str]
     function: Callable[[Bot, MessageEvent, Message], None]
 
+
 su: type[Matcher] = on_command("su", aliases={"超管"}, permission=SUPERUSER)
 handlers: list[HandlerData] = []
 
-def create_superuser_command(name: str, aliases: set[str] = set()) -> Callable[..., Callable[[Bot, MessageEvent, Message], None]]:
+
+def create_superuser_command(
+    name: str, aliases: set[str] = set()
+) -> Callable[..., Callable[[Bot, MessageEvent, Message], None]]:
     """
     注册超管指令
 
@@ -21,16 +26,20 @@ def create_superuser_command(name: str, aliases: set[str] = set()) -> Callable[.
     Returns:
         Callable[..., Callable[[Bot, MessageEvent, Message], None]]: 触发器
     """
-    def _(func: Callable[[Bot, MessageEvent, Message], None]) -> Callable[[Bot, MessageEvent, Message], None]:
-        handlers.append({
-            "names": [name] + list(aliases),
-            "function": func
-        })
+
+    def _(
+        func: Callable[[Bot, MessageEvent, Message], None]
+    ) -> Callable[[Bot, MessageEvent, Message], None]:
+        handlers.append({"names": [name] + list(aliases), "function": func})
         logger.success(f"成功注册超管指令: {name}")
         return func
+
     return _
 
-def get_handler_function(name: str) -> Callable[[Bot, MessageEvent, Message], None] | None:
+
+def get_handler_function(
+    name: str,
+) -> Callable[[Bot, MessageEvent, Message], None] | None:
     """
     通过名称获取处理函数
 
@@ -44,6 +53,7 @@ def get_handler_function(name: str) -> Callable[[Bot, MessageEvent, Message], No
         if name in handler["names"]:
             return handler["function"]
 
+
 @su.handle()
 async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
     if not message or message[0].type != "text":
@@ -52,4 +62,3 @@ async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
     logger.debug(f"[SU] 子命令: {sub_command}")
     if not (func := get_handler_function(sub_command)):
         await finish("")
-    
