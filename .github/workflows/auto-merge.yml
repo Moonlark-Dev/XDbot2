@@ -3,9 +3,8 @@ name: "Auto Merge PR"
 on:
   pull_request:
     types:
-      - opened
-      - review_requested
-      - reopen
+      - open
+      - ready_for_review
 
 jobs:
   auto_merge:
