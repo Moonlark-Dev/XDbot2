@@ -53,7 +53,7 @@ async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
         await finish("su.unknown_user", [message[0]], event.user_id)
     cache_id: str = get_cache_id()
     reset_cache[cache_id] = user_id
-    await finish("su.reset_confirm", [user_id, cache_id], event.user_id)
+    await send_text("su.reset_confirm", [user_id, cache_id], event.user_id)
     await asyncio.sleep(180)
     if reset_cache.pop(cache_id) is not None:
         await finish("su.reset_timeout", [], event.user_id)
