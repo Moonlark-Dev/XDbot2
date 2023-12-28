@@ -4,8 +4,7 @@ on:
   pull_request:
     types:
       - opened
-      - review_requested
-      - reopen
+      - ready_for_review
 
 jobs:
   auto_merge:
