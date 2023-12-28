@@ -8,6 +8,7 @@ from .su import create_superuser_command
 
 reset_cache: dict[str, int | None] = {}
 
+
 def get_user_id(message: MessageSegment) -> Optional[int]:
     """
     获取消息段中的用户ID
@@ -26,10 +27,10 @@ def get_user_id(message: MessageSegment) -> Optional[int]:
         case _:
             return
     try:
-        return int(user_id) # type: ignore
+        return int(user_id)  # type: ignore
     except ValueError:
         return
-        
+
 
 def get_cache_id() -> str:
     """
@@ -43,6 +44,7 @@ def get_cache_id() -> str:
         return get_cache_id()
     return cache_id
 
+
 @create_superuser_command("reset", {"重置", "重置账户"})
 async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
     if not message:
@@ -55,6 +57,7 @@ async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
     await asyncio.sleep(180)
     if reset_cache.pop(cache_id) is not None:
         await finish("su.reset_timeout", [], event.user_id)
+
 
 @create_superuser_command("reset-confirm", {"重置确认"})
 async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
@@ -73,7 +76,7 @@ async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
     await send_email(
         str(user_id),
         lang.text("su.reset_email_subject_nb", [], user_id),
-        lang.text("email.no_data", [], user_id)
+        lang.text("email.no_data", [], user_id),
     )
     reset_cache[cache_id] = None
     await finish("currency.ok", [], event.user_id)

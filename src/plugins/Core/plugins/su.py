@@ -50,8 +50,6 @@ def get_handler_function(name: str) -> Optional[HANDLE_FUNC]:
             return handler["function"]
 
 
-
-
 @su.handle()
 async def _(bot: Bot, event: MessageEvent, message: Message = CommandArg()) -> None:
     if not message or message[0].type != "text":
@@ -60,7 +58,7 @@ async def _(bot: Bot, event: MessageEvent, message: Message = CommandArg()) -> N
     logger.debug(f"[SU] 子命令: {sub_command}")
     if not (func := get_handler_function(sub_command)):
         return
-    message[0].data["text"] = message[0].data["text"][len(sub_command):].strip()
+    message[0].data["text"] = message[0].data["text"][len(sub_command) :].strip()
     if not message[0].data["text"]:
         message.pop(0)
     try:
