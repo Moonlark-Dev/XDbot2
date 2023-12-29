@@ -17,6 +17,7 @@ class Buff(TypedDict):
 
 class Entity(TypedDict):
     entity_id: str
+    is_alive: bool
     pos: tuple[int, int]
     buff: list[Buff]
 
@@ -24,7 +25,7 @@ class Entity(TypedDict):
 class Block(TypedDict):
     block_pos: tuple[int, int]
     items: list[Item]
-    entities: list[Entity]
+    entities: list[str]
     data: dict[str, Any]
 
 
@@ -108,8 +109,8 @@ def clear_loaded_blocks() -> None:
     for block_code, block in loaded_blocks.items():
         if block["data"].get("keep_loading"):
             continue
-        for entity in block["entities"]:
-            if get_entity_type_by_id(entity["entity_id"]) == "user":
+        for entity_id in block["entities"]:
+            if get_entity_type_by_id(entity_id) == "user":
                 break
         else:
             block_code_to_remove.append(block_code)
@@ -226,7 +227,7 @@ async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
             create_item(
                 0,
                 (0, 0),
-                display_name="中心",
+                display_name="原点",
                 need_unlock=False,
                 __protect__={
                     "zone": 64,
@@ -245,7 +246,7 @@ async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
 def init_block(
     block_pos: tuple[int, int],
     items: list[Item] = [],
-    entities: list[Entity] = [],
+    entities: list[str] = [],
     **kwargs,
 ) -> Block:
     """
@@ -254,7 +255,7 @@ def init_block(
     Args:
         block_pos (tuple[int, int]): 区块相对坐标
         items (list[Item], optional): 物品列表. Defaults to [].
-        entities (list[Entity], optional): 实体列表. Defaults to [].
+        entities (list[str], optional): 实体列表. Defaults to [].
 
     Returns:
         Block: 区块数据
@@ -265,6 +266,25 @@ def init_block(
     )
     return cast(Block, block_data)
 
+class EntityNotFoundException(Exception): pass
+
+def get_entity(entity_id: str) -> Entity:
+    """
+    获取实体信息
+
+    Args:
+        entity_id (str): 实体 ID
+
+    Raises:
+        EntityNotFoundException: 实体不存在
+
+    Returns:
+        Entity: 实体信息
+    """
+    entity = Json(f"ad/entities/{entity_id}.json")
+    if entity["entity_id"] != entity_id:
+        raise EntityNotFoundException
+    return cast(Entity, entity)
 
 def _load_block_data(block_code: str) -> Block:
     """
@@ -334,6 +354,69 @@ def get_block_code(block_pos: tuple[int, int]) -> str:
     return f"{block_pos[0]}_{block_pos[1]}"
 
 
+class IllegalEvent(Exception): pass
+
+def remove_entity_from_block(entity_id: str, block_code: str) -> None:
+    """
+    从区块删除实体
+
+    Args:
+        entity_id (str): 实体 ID
+        block_code (str): 区块代码
+    """
+    current_block = get_block_data(block_code)
+    current_block["entities"].pop(current_block["entities"].index(entity_id))
+    current_block["entities"] = current_block["entities"]
+
+def handle_die_event(subject: Optional[Entity]) -> None:
+    if subject == None or not subject["is_alive"]:
+        raise IllegalEvent
+    remove_entity_from_block(
+        subject["entity_id"], 
+        get_block_code(
+            get_block_pos(
+                subject["pos"]
+            )
+        )
+    )
+    subject["is_alive"] = False
+    subject["buff"] = []
+    # TODO 广播
+
+def add_entity_to_block(entity_id: str, block_code: str) -> None:
+    """
+    向区块添加实体
+
+    Args:
+        entity_id (str): 实体 ID
+        block_code (str): 区块代码
+    """
+    current_block = get_block_data(block_code)
+    current_block["entities"].append(entity_id)
+    current_block["entities"] = current_block["entities"]
+
+def handle_teleport_event(data: dict[str, Any], subject: Optional[Entity]) -> None:
+    if subject == None or not subject["is_alive"]:
+        raise IllegalEvent
+    remove_entity_from_block(
+        subject["entity_id"], 
+        get_block_code(
+            get_block_pos(
+                subject["pos"]
+            )
+        )
+    )
+    subject["pos"] = data["to_pos"]
+    add_entity_to_block(
+        subject["entity_id"], 
+        get_block_code(
+            get_block_pos(
+                subject["pos"]
+            )
+        )
+    )
+
+
 def handle_event(event: Event) -> None:
     """
     处理事件
@@ -341,7 +424,15 @@ def handle_event(event: Event) -> None:
     Args:
         event (Event): 事件信息
     """
-
+    if event["subject"]:
+        subject = get_entity(event["subject"])
+    else:
+        subject = None
+    match event["type"]:
+        case "die":
+            handle_die_event(subject)
+        case "teleport":
+            handle_teleport_event(event["data"], subject)
 
 def create_event_data(
     type: Literal["move", "teleport", "die", "rebirth"],

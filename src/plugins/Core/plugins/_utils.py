@@ -1,7 +1,7 @@
 import json
 import os
 import os.path
-from typing import Any
+from typing import Any, Optional
 
 # 快捷访问
 from nonebot import on_message
@@ -102,7 +102,7 @@ def get_list_item(l: list, index: int, default: Any = None) -> Any:
 
 
 class Json:
-    def __init__(self, path: str) -> None:
+    def __init__(self, path: str, template: Optional[dict] = None) -> None:
         self.path = os.path.join("data", path)
         self.changed_key = set()
 
@@ -112,7 +112,7 @@ class Json:
             pass
 
         if not os.path.isfile(self.path):
-            self.data = {}
+            self.data = template  or {}
         else:
             self.data = json.load(open(file=self.path, encoding="utf-8"))
 
