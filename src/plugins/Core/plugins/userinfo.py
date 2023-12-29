@@ -23,6 +23,10 @@ async def show_panel(bot: Bot, event: MessageEvent):
         _data = []
         for u, d in list(basic_data.items()):
             _data.append({"user": u, "vimcoin": d["vimcoin"]})
+        try:
+            _data.index({"user": qq, "vimcoin": data["vimcoin"]})
+        except ValueError:
+            _data.append({"user": qq, "vimcoin": data["vimcoin"]})
         _data = sorted(_data, key=lambda x: x["vimcoin"], reverse=True)
         _rk = _data.index({"user": qq, "vimcoin": data["vimcoin"]})
         # 发送
