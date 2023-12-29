@@ -6,7 +6,7 @@ def get_max_hp(user_id: int) -> int:
     return int(get_data(user_id, "health"))
 
 
-def get_data(user_id: int, key: str) -> any:
+def get_data(user_id: int, key: str) -> Any:
     return int(
         monomer.Monomer(
             (user_data := Json(f"duel/u{user_id}.json")).get("weapons", "leather_case"),

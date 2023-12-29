@@ -78,10 +78,21 @@ class MysteryBoxLevel1(Item):
                 {"item_id": "mysterious_shard", "count": [10, 35]},
                 {"item_id": "common_rubbish", "count": [5, 10]},
                 {"item_id": "auto_sign_coupon", "count": [1, 5]},
+                # {
+                #     "item_id": "weapons",
+                #     "count": [1, 1],
+                #     "data": {"kit": "leather_case"},
+                # },
             ],
             "legend": [
                 {"item_id": "mysterybox_lv1", "count": [1, 2]},
                 {"item_id": "talisman", "count": [1, 4]},
+                # {
+                #     "item_id": "weapons",
+                #     "count": [1, 1],
+                #     "data": {"kit": "scrorching_sun_phantom"},
+                # },
+                # {"item_id": "ball", "count": [1, 1], "data": {"kit": "leather_case"}},
             ],
         }
 
@@ -132,32 +143,32 @@ class MysteryBoxLv3(MysteryBoxLevel1):
                 {"item_id": "mysterious_shard", "count": [10, 35]},
                 {"item_id": "towel.zip", "count": [1, 5]},
                 {"item_id": "auto_sign_coupon", "count": [1, 5]},
-                {
-                    "item_id": "weapons",
-                    "count": [1, 1],
-                    "data": {"kit": "leather_case"},
-                },
-                {"item_id": "ball", "count": [1, 1], "data": {"kit": "leather_case"}},
+                # {
+                #     "item_id": "weapons",
+                #     "count": [1, 1],
+                #     "data": {"kit": "leather_case"},
+                # },
+                # {"item_id": "ball", "count": [1, 1], "data": {"kit": "leather_case"}},
             ],
             "rare": [
                 {"item_id": "mysterybox_lv1", "count": [1, 2]},
                 {"item_id": "talisman", "count": [1, 4]},
                 {"item_id": "vimcoin", "count": [20, 60]},
-                {
-                    "item_id": "weapons",
-                    "count": [1, 1],
-                    "data": {"kit": "scrorching_sun_phantom"},
-                },
+                # {
+                #     "item_id": "weapons",
+                #     "count": [1, 1],
+                #     "data": {"kit": "scrorching_sun_phantom"},
+                # },
             ],
             "legend": [
                 {"item_id": "mysterybox_lv3", "count": [1, 2]},
-                {"item_id": "weapons", "count": [1, 1], "data": {"kit": "ice_king"}},
-                {"item_id": "ball", "count": [1, 1], "data": {"kit": "ice_king"}},
-                {
-                    "item_id": "ball",
-                    "count": [1, 1],
-                    "data": {"kit": "scrorching_sun_phantom"},
-                },
+                # {"item_id": "weapons", "count": [1, 1], "data": {"kit": "ice_king"}},
+                # {"item_id": "ball", "count": [1, 1], "data": {"kit": "ice_king"}},
+                # {
+                #     "item_id": "ball",
+                #     "count": [1, 1],
+                #     "data": {"kit": "scrorching_sun_phantom"},
+                # },
             ],
         }
 
