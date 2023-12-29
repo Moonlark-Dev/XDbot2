@@ -6,6 +6,7 @@ from typing import Any
 # 快捷访问
 from nonebot import on_message
 from nonebot import on_command
+from nonebot.log import logger
 from nonebot.permission import SUPERUSER
 from nonebot.params import CommandArg
 from nonebot.matcher import Matcher
@@ -15,6 +16,7 @@ from nonebot.adapters.onebot.v11 import GroupMessageEvent
 from nonebot.adapters.onebot.v11 import MessageEvent
 from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot.adapters.onebot.v11 import Message
+from nonebot.adapters.onebot.v11 import MessageSegment
 
 # import traceback
 

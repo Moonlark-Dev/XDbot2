@@ -70,15 +70,13 @@ class MysteryBoxLevel1(Item):
                 {"item_id": "dice", "count": [5, 16]},
                 {"item_id": "mysterious_shard", "count": [5, 30]},
                 {"item_id": "pawcoin", "count": [2, 15]},
-                {"item_id": "towel", "count": [1, 16]},
-                {"item_id": "book_and_quill", "count": [1, 1]},
-                {"item_id": "pouch", "count": [1, 1]},
+                {"item_id": "common_rubbish", "count": [1, 10]},
                 {"item_id": "vimcoin", "count": [5, 20]},
             ],
             "rare": [
                 {"item_id": "vimcoin", "count": [15, 40]},
                 {"item_id": "mysterious_shard", "count": [10, 35]},
-                {"item_id": "towel.zip", "count": [1, 5]},
+                {"item_id": "common_rubbish", "count": [5, 10]},
                 {"item_id": "auto_sign_coupon", "count": [1, 5]},
                 # {
                 #     "item_id": "weapons",

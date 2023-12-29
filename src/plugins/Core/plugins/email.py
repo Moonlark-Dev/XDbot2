@@ -16,7 +16,7 @@ import time
 from . import _lang
 from . import _error
 import json
-from .account import multiAccoutData
+from .account import multiAccountData
 import hashlib
 from typing import List
 
@@ -54,7 +54,7 @@ async def submit_email(mail_data):
     for rule in mail_data["rules"]:
         if rule[0] == "group":
             try:
-                bot = get_bot(multiAccoutData[rule[1]])
+                bot = get_bot(multiAccountData[rule[1]])
             except BaseException:
                 bot = list(get_bots().values())[0]
             group_member_list = await bot.get_group_member_list(group_id=rule[1])

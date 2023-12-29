@@ -1,6 +1,7 @@
 from .dice import Dice
 from .auto_sign_coupon import AutoSignCoupon, AutoSignCouponActived
 from .talisman import Talisman
+from .rubbish import CommonRubbish
 from .book_and_quill import BookAndQuill
 from .pawcoin import PawCoin
 from .pouch import Pouch
@@ -17,6 +18,7 @@ ITEMS = {
     "book_and_quill": BookAndQuill,
     "talisman": Talisman,
     "pouch": Pouch,
+    "common_rubbish": CommonRubbish,
     "archfiend_dice": ArchfiendDice,
     "towel.zip": TowelZip,
     "towel": Towel,

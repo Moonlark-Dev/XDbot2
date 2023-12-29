@@ -1,6 +1,9 @@
+# 已弃用，代码仅供参考
+
 import json
 import traceback
 from . import _error
+from ._utils import *
 from . import _lang
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Message, MessageSegment
@@ -21,6 +24,9 @@ async def fakenodeHandle(
     bot: Bot, event: GroupMessageEvent, msg: Message = CommandArg()
 ):
     try:
+        if not Json("fakenode.eula.json").get(event.get_user_id()):
+            await send_text("fakenode.eula", [], event.user_id, True, False)
+            Json("fakenode.eula.json")[event.get_user_id()] = True
         argument = str(msg).split("\n")
         group = event.get_session_id().split("_")[1]
         message: List[MessageSegment] = []
@@ -40,9 +46,6 @@ async def fakenodeHandle(
         await bot.send_group_msg(
             message=_lang.text("fakenode.new", [event.get_user_id(), msg]),
             group_id=ctrlGroup,
-        )
-        await bot.call_api(
-            api="send_group_forward_msg", messages=message, group_id=ctrlGroup
         )
         await fakenode.finish()
 

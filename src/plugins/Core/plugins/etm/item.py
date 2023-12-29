@@ -1,22 +1,24 @@
+from typing import Optional, Type, cast, overload
 from .item_basic_data import BASIC_DATA
+from abc import ABC, abstractmethod
 import traceback
 from .economy import IllegalQuantityException
 from .nbt import NbtDict
 from .._lang import text
 
 
-class Item:
+class Item(ABC):
     def __init__(self, count, data, user_id):
         self.count = count
         self.item_id = ""  # dice"
+        self.user_id = user_id
         self.basic_data = {}  # type: ignore
         # 初始化
         self.on_register()
         # 设置 NBT
-        self.data: NbtDict = BASIC_DATA.copy()  # type: ignore
+        self.data = BASIC_DATA.copy()  # type: ignore
         self.data.update(self.basic_data)
         self.data.update(data)
-        self.user_id = user_id
         self._after_register()
 
         for key in list(self.data.keys()):
@@ -25,14 +27,40 @@ class Item:
             except:
                 pass
 
+    @overload
+    def setup_basic_data(
+        self,
+        display_name: Optional[str] = None,
+        display_message: Optional[str] = None,
+        price: Optional[int] = None,
+        maximum_stack: Optional[int] = None,
+        useable: Optional[bool] = None,
+        can_be_sold: Optional[bool] = None,
+        **params,
+    ) -> None:
+        ...
+
+    def setup_basic_data(self, *args, **params) -> None:
+        self.basic_data = params
+
+    @abstractmethod
     def on_register(self):
         ...
 
+    # @abstractmethod
     def _after_register(self):
         ...
 
+    # @abstractmethod
     def use_item(self):
         ...
+
+    # @abstractmethod
+    async def async_use(self, arg):
+        raise NotImplementedError
+
+    def text(self, key: str, _format: list = []) -> str:
+        return text(f"{self.item_id}.{key}", _format, self.user_id)
 
     async def on_use(self, arg):
         if not self.data["useable"]:
@@ -41,7 +69,7 @@ class Item:
             return (await self.async_use(arg)) or [
                 text("currency.ok", [], self.user_id)
             ]
-        except AttributeError:
+        except NotImplementedError:
             return (self.use(arg)) or [text("currency.ok", [], self.user_id)]
 
     def use(self, args):

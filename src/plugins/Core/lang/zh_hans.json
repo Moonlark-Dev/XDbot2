@@ -31,7 +31,6 @@
   "ct.rank": "发言排名 —— {}\n",
   "ct.usage": "用法：ct [group] ",
   "cave.cd": "冷却中（{}s）",
-  "fakenode.new": "「新建伪转发」\n用户：{}\n \n{}",
   "forward.private": "「私聊信息转发」",
   "forward._user": "用户：",
   "forward.group": "「群消息转发」",
@@ -314,6 +313,26 @@
   "preview.auto": "完成！(开启：{})",
   "lgs.status": "您一共启动了 {} 次原神",
 
+  "progress.year": "{}年已经过去 {}%",
+  "progress.mon": "{}年{}月已经过去 {}%",
+  "progress.day": "{}年{}月{}日已经过去 {}%",
+  
+  "common_rubbish.display_name": "普通的垃圾",
+  "common_rubbish.display_message": "也许正如它的名字一样，非常普通\n\n可能包哈以下物品: \n1. 压缩毛巾\n2. 毛巾\n3. 神秘碎片\n4. 书与笔\n5. 收纳袋",
+  "common_rubbish.use_title": "你打开了 {} 个「普通的垃圾」，获得了以下物品：",
+  "common_rubbish.use_item": "\n{}. {} x{}",
+
+  "bots.message_from": "[来自 {}]:\n",
+  "bots.waiting_node": "正在拉取信息, 请稍候 ...",
+
+  "su.__base__": "[SU] {}",
+  "su.need_argv": "错误: 需要参数",
+  "su.unknown_user": "未知用户: {}",
+  "su.reset_confirm": "重置确认: \n\n确定要重置用户 {} 的数据吗？（此操作不可逆）\n\n/su reset-confirm {}",
+  "su.reset_timeout": "已过期",
+  "su.unknown_argv": "未知参数: {}",
+  "su.reset_email_subject_nb": "您的账户已被重置",
+  "email.no_data": "无内容"
   "adventure.__base__": "[AD] {}",
   "adventure.user_info": "属性：\n位置: {}\n体力: {}/{}\n血量: {}/{}",
   "adventure.no_stamina_to_move": "行动失败: \n体力不足: 需要 {}/{}"
