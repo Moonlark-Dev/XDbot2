@@ -97,6 +97,7 @@ async def send_quick_math() -> None:
         try:
             if event.group_id != group:
                 await matcher.finish()
+            answered = True
             await send_text(
                 "quick_math.rightanswer1",
                 [(add_points := int(2 * (20 - time.time() + send_time)))],
@@ -105,7 +106,6 @@ async def send_quick_math() -> None:
                 True,
             )
             matcher.destroy()
-            answered = True
             Json(f"quickmath/u{event.user_id}.json")["points"] = (
                 Json(f"quickmath/u{event.user_id}.json").get("points", 0) + add_points
             )
@@ -118,7 +118,10 @@ async def send_quick_math() -> None:
 
     await asyncio.sleep(20)
     if not answered:
-        matcher.destroy()
+        try:
+            matcher.destroy()
+        except ValueError:
+            return
         await bot.delete_msg(message_id=msg_id)
         Json("quickmath/group_unanswered.json")[str(group)] = (
             Json("quickmath/group_unanswered.json").get(str(group), 0) + 1
