@@ -9,6 +9,7 @@ import traceback
 sign = on_regex("^(签到|.sign)$")
 sign_rank = on_command("sign-rank")
 
+
 @sign.handle()
 async def sign_handler(event: MessageEvent):
     try:

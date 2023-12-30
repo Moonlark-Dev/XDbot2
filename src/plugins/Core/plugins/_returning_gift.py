@@ -13,11 +13,5 @@ async def create_returning_gift(user_id: str) -> None:
         user_id,
         lang.text("sign.returning_email_subject", [], user_id),
         lang.text("sign.returning_email_message", [], user_id),
-        [
-            {
-                "id": "vimcoin",
-                "count": 500,
-                "data": {}
-            }
-        ]
+        [{"id": "vimcoin", "count": 500, "data": {}}],
     )
