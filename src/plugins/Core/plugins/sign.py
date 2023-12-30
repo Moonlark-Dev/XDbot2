@@ -1,3 +1,4 @@
+import asyncio
 from nonebot import on_command, on_regex
 from . import _error as error
 from nonebot.adapters.onebot.v11.event import MessageEvent
@@ -7,11 +8,32 @@ import traceback
 import random
 import time
 import json
+from .email import send_email
 
 from decimal import Decimal
 
 sign = on_regex("^(签到|.sign)$")
 sign_rank = on_command("sign-rank")
+
+async def create_returning_gift(user_id: str) -> None:
+    """
+    发放回归礼物 (#498)
+
+    Args:
+        user_id (str): 用户 ID
+    """
+    await send_email(
+        user_id,
+        lang.text("sign.returning_email_subject", [], user_id),
+        lang.text("sign.returning_email_message", [], user_id),
+        [
+            {
+                "id": "vimcoin",
+                "count": 500,
+                "data": {}
+            }
+        ]
+    )
 
 
 def _sign(qq) -> str:
@@ -33,6 +55,9 @@ def _sign(qq) -> str:
         add_vi, add_exp = random.randint(0, 20), random.randint(0, 20)
         if data["latest"][qq] == (date - 1):
             data["days"][qq] += 1
+        elif date - data["latest"][qq] >= 30:
+            asyncio.create_task(create_returning_gift(qq))
+            data["days"][qq] = 1
         else:
             data["days"][qq] = 1
         add_vi *= 1 + min(data["days"][qq], 15) / Decimal(20)
