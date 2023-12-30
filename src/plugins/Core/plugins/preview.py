@@ -138,6 +138,8 @@ async def _(bot: Bot, event: GroupMessageEvent, message: Message) -> None:
 async def _(event: GroupMessageEvent, matcher: Matcher = Matcher()) -> None:
     if not Json("preview.auto_groups.json")[str(event.group_id)]:
         return
+    if event.get_plaintext()[1:].startswith("preview"):
+        return
     match = re.search("(https?|ftp)://[^\s/$.?#].[^\s]*", event.get_plaintext())
     if match is None:
         return
