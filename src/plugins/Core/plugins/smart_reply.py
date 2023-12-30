@@ -323,7 +323,7 @@ async def handle_reply(
                 [fork_reply_data(get_rule_data(int(argv[1]), argv[2]), event.group_id)],
                 event.user_id,
             )
-        
+
         elif argv[0] in ["clone", "克隆"]:
             for rule_id in get_rules(group_id := int(argv[1])):
                 rule: dict = get_rule_data(group_id, rule_id)
@@ -332,9 +332,11 @@ async def handle_reply(
                     event.group_id,
                     rule["match"]["type"],
                     rule["match"]["text"],
-                    rule["reply"]
+                    rule["reply"],
                 )
-            await finish("reply.clone_successful", [len(get_rules(int(argv[1])))], event.user_id)
+            await finish(
+                "reply.clone_successful", [len(get_rules(int(argv[1])))], event.user_id
+            )
 
         else:
             await finish("reply.need_argv", [], event.user_id)
