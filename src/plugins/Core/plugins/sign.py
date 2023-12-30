@@ -15,6 +15,7 @@ from decimal import Decimal
 sign = on_regex("^(签到|.sign)$")
 sign_rank = on_command("sign-rank")
 
+
 async def create_returning_gift(user_id: str) -> None:
     """
     发放回归礼物 (#498)
@@ -26,13 +27,7 @@ async def create_returning_gift(user_id: str) -> None:
         user_id,
         lang.text("sign.returning_email_subject", [], user_id),
         lang.text("sign.returning_email_message", [], user_id),
-        [
-            {
-                "id": "vimcoin",
-                "count": 500,
-                "data": {}
-            }
-        ]
+        [{"id": "vimcoin", "count": 500, "data": {}}],
     )
 
 
