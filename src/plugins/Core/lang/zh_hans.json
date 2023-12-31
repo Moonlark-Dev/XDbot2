@@ -333,5 +333,7 @@
   "su.reset_timeout": "已过期",
   "su.unknown_argv": "未知参数: {}",
   "su.reset_email_subject_nb": "您的账户已被重置",
-  "email.no_data": "无内容"
+  "email.no_data": "无内容",
+  "sign.returning_email_subject": "欢迎回归！",
+  "sign.returning_email_message": " 喵喵, 你回来啦! XDbot 在这里等得不耐烦了呢! \n\nXDbot 为主人准备了一个的回归礼包喵, 记得来拿喵! \n\n记得, XDbot 可是一直在这里等着你喵!"
 }

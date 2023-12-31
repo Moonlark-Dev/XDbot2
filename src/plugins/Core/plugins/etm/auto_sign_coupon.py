@@ -2,7 +2,7 @@ from .item import Item
 from . import bag
 from .. import _lang
 from . import data as _data
-from .. import sign
+from .. import _sign
 from .. import email
 import time
 from nonebot import require
@@ -52,7 +52,7 @@ async def auto_sign_coupon():
         for l in range(len(ub)):
             i = ub[l]
             if i.item_id == "auto_sign_coupon_actived":
-                info = sign._sign(u)
+                info = _sign._sign(u)
                 if info != "主人今天已经签到过了喵！":
                     ub[l].used()
                     _info = _lang.text("asc.signed_2", [], u) + "\n" + info
