@@ -48,9 +48,22 @@ jobs:
                   repo: context.repo.repo,
                   name: ["暂缓处理"]
               })
+
               github.rest.issues.removeLabel({
                   issue_number: ${{ needs.check-pull-request.outputs.MENTIONED_ISSUE_NUMBER }},
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  name: ["β", "γ", "α"]
+                  name: ["β"]
+              })
+              github.rest.issues.removeLabel({
+                  issue_number: ${{ needs.check-pull-request.outputs.MENTIONED_ISSUE_NUMBER }},
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: ["γ"]
+              })
+              github.rest.issues.removeLabel({
+                  issue_number: ${{ needs.check-pull-request.outputs.MENTIONED_ISSUE_NUMBER }},
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: ["α"]
               })
