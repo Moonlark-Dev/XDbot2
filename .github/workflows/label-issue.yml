@@ -14,7 +14,7 @@ jobs:
       - name: "Check Pull Request"
         id: check-pr
         run: |
-          ISSUE_NUMBER=$(echo $BODY | grep -oE "#[0-9]+" | grep -oE "[0-9]+")
+          ISSUE_NUMBER=$(echo $BODY | grep -oE "#[0-9]+" | grep -oE "[0-9]+") || true
           echo "ISSUE_NUMBER=${ISSUE_NUMBER}" >> $GITHUB_OUTPUT
         env:
           BODY: ${{ github.event.pull_request.body }}
@@ -26,6 +26,7 @@ jobs:
     needs: check-pull-request
     steps:
       - name: "Label Issue"
+        if: ${{ needs.check-pull-request.outputs.MENTIONED_ISSUE_NUMBER }} != ''
         uses: actions/github-script@v6
         with:
           script: |
