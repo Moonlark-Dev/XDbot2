@@ -116,24 +116,21 @@ async def bank(event: MessageEvent, message: Message = CommandArg()):
     except BaseException:
         await _error.report(traceback.format_exc(), bank_command)
 
+
 @create_superuser_command("bank")
 async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
     argv: list[str] = str(message).split(" ")
     user_id: str = argv[1].replace("[CQ:at,qq=", "").replace("]", "")
     match argv[0]:
         case "add":
-            data.bank_lead_data[user_id].append({"money": int(argv[2]), "time": time.time()})
+            data.bank_lead_data[user_id].append(
+                {"money": int(argv[2]), "time": time.time()}
+            )
         case "give":
-            data.bank_lead_data[user_id].append({"money": int(argv[2]), "time": time.time()})
+            data.bank_lead_data[user_id].append(
+                {"money": int(argv[2]), "time": time.time()}
+            )
             economy.add_vi(user_id, int(argv[2]))
         case _:
-            await finish(
-                "su.unknown_argv",
-                [argv[1]],
-                event.user_id
-            )
-    await finish(
-        "currency.ok",
-        [],
-        event.user_id
-    )
+            await finish("su.unknown_argv", [argv[1]], event.user_id)
+    await finish("currency.ok", [], event.user_id)
