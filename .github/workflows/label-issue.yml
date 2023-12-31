@@ -16,17 +16,23 @@ jobs:
         run: |
           ISSUE_NUMBER=$(echo $BODY | grep -oE "#[0-9]+" | grep -oE "[0-9]+") || true
           echo "ISSUE_NUMBER=${ISSUE_NUMBER}" >> $GITHUB_OUTPUT
+          if [ -n "$ISSUE_NUMBER" ]; then
+            echo "IS_SUCCESSFUL=1" >> $GITHUB_OUTPUT
+          else
+            echo "IS_SUCCESSFUL=0" >> $GITHUB_OUTPUT
+          fi
         env:
           BODY: ${{ github.event.pull_request.body }}
     outputs:
       MENTIONED_ISSUE_NUMBER: ${{ steps.check-pr.outputs.ISSUE_NUMBER }}
+      IS_SUCCESSFUL: ${{ steps.check-pr.outputs.IS_SUCCESSFUL }}
 
   label-issue:
     runs-on: ubuntu-latest
     needs: check-pull-request
     steps:
       - name: "Label Issue"
-        if: ${{ needs.check-pull-request.outputs.MENTIONED_ISSUE_NUMBER != '' }}
+        if: ${{ needs.check-pull-request.outputs.IS_SUCCESSFUL }}
         uses: actions/github-script@v6
         with:
           script: |
