@@ -34,7 +34,7 @@ jobs:
                   issue_number: ${{ needs.check-pull-request.outputs.MENTIONED_ISSUE_NUMBER }},
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  labels: ["处理中"]
+                  labels: ["处理中", "β", "γ", "α", "暂缓处理"]
               })
               github.rest.issues.removeLabel({
                   issue_number: ${{ needs.check-pull-request.outputs.MENTIONED_ISSUE_NUMBER }},
