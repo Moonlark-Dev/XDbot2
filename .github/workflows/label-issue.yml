@@ -14,7 +14,7 @@ jobs:
       - name: "Check Pull Request"
         id: check-pr
         run: |
-          export ISSUE_NUMBER=(echo $BODY | grep -oE "#[0-9]+" | grep -oE "[0-9]+")
+          ISSUE_NUMBER=$(echo $BODY | grep -oE "#[0-9]+" | grep -oE "[0-9]+")
           echo "ISSUE_NUMBER=${ISSUE_NUMBER}" >> $GITHUB_OUTPUT
         env:
           BODY: ${{ github.event.pull_request.body }}
