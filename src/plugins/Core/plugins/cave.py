@@ -308,12 +308,37 @@ def check_text_similarity(text: str) -> tuple[dict, float] | None:
     return None
 
 
+BANNED_CQ_CODE: list[str] = [
+    "[CQ:json",
+    "[CQ:mface",
+    "[CQ:xml",
+    "[CQ:record",
+    "[CQ:video",
+    "[CQ:rps",
+    "[CQ:dice",
+    "[CQ:share",
+    "[CQ:contact",
+    "[CQ:location",
+    "[CQ:forward",
+]
+
+
 @on_command("cave-a").handle()
 async def cave_add_handler(
-    cave: Matcher, bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()
+    cave: Matcher, bot: Bot, event: GroupMessageEvent, argument: Message = CommandArg()
 ):
     global cave_confirm
     try:
+        if (
+            (not argument)
+            and event.reply
+            and all(
+                [keyword not in str(event.reply.message) for keyword in BANNED_CQ_CODE]
+            )
+        ):
+            message = event.reply.message
+        else:
+            message = argument
         await showEula(event.get_user_id())
 
         data = json.load(open("data/cave.data.json", encoding="utf-8"))
