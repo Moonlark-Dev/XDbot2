@@ -36,34 +36,43 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-              github.rest.issues.addLabels({
+              try {
+                github.rest.issues.addLabels({
                   issue_number: ${{ needs.check-pull-request.outputs.MENTIONED_ISSUE_NUMBER }},
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   labels: ["处理中", "β", "γ", "α", "暂缓处理"]
-              })
-              github.rest.issues.removeLabel({
+                })
+              } catch (error) {}
+              try {
+                github.rest.issues.removeLabel({
                   issue_number: ${{ needs.check-pull-request.outputs.MENTIONED_ISSUE_NUMBER }},
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   name: ["暂缓处理"]
-              })
-
-              github.rest.issues.removeLabel({
+                })
+              } catch (error) {}
+              try {
+                github.rest.issues.removeLabel({
                   issue_number: ${{ needs.check-pull-request.outputs.MENTIONED_ISSUE_NUMBER }},
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   name: ["β"]
-              })
-              github.rest.issues.removeLabel({
+                })
+              } catch (error) {}
+              try {
+                github.rest.issues.removeLabel({
                   issue_number: ${{ needs.check-pull-request.outputs.MENTIONED_ISSUE_NUMBER }},
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   name: ["γ"]
-              })
-              github.rest.issues.removeLabel({
+                })
+              } catch (error) {}
+              try {
+                github.rest.issues.removeLabel({
                   issue_number: ${{ needs.check-pull-request.outputs.MENTIONED_ISSUE_NUMBER }},
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   name: ["α"]
-              })
+                })
+              } catch (error) {}
