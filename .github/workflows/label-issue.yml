@@ -1,0 +1,49 @@
+name: Label Issue (Mention by PR)
+
+on:
+  pull_request:
+    types:
+      - opened
+      - ready_for_review
+      - edited
+
+jobs:
+  check-pull-request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Check Pull Request"
+        id: check-pr
+        run: |
+          export ISSUE_NUMBER=(echo $BODY | grep -oE "#[0-9]+" | grep -oE "[0-9]+")
+          echo "ISSUE_NUMBER=${ISSUE_NUMBER}" >> $GITHUB_OUTPUT
+        env:
+          BODY: ${{ github.event.pull_request.body }}
+    outputs:
+      MENTIONED_ISSUE_NUMBER: ${{ steps.check-pr.outputs.ISSUE_NUMBER }}
+
+  label-issue:
+    runs-on: ubuntu-latest
+    needs: check-pull-request
+    steps:
+      - name: "Label Issue"
+        uses: actions/github-script@v6
+        with:
+          script: |
+              github.rest.issues.addLabels({
+                  issue_number: ${{ needs.check-pull-request.outputs.MENTIONED_ISSUE_NUMBER }},
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  labels: ["处理中"]
+              })
+              github.rest.issues.removeLabel({
+                  issue_number: ${{ needs.check-pull-request.outputs.MENTIONED_ISSUE_NUMBER }},
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: ["暂缓处理"]
+              })
+              github.rest.issues.removeLabel({
+                  issue_number: ${{ needs.check-pull-request.outputs.MENTIONED_ISSUE_NUMBER }},
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: ["β", "γ", "α"]
+              })
