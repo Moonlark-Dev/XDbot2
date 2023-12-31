@@ -319,8 +319,9 @@ BANNED_CQ_CODE: list[str] = [
     "[CQ:share",
     "[CQ:contact",
     "[CQ:location",
-    "[CQ:forward"
+    "[CQ:forward",
 ]
+
 
 @on_command("cave-a").handle()
 async def cave_add_handler(
@@ -328,7 +329,13 @@ async def cave_add_handler(
 ):
     global cave_confirm
     try:
-        if (not argument) and event.reply and all([keyword not in str(event.reply.message) for keyword in BANNED_CQ_CODE]):
+        if (
+            (not argument)
+            and event.reply
+            and all(
+                [keyword not in str(event.reply.message) for keyword in BANNED_CQ_CODE]
+            )
+        ):
             message = event.reply.message
         else:
             message = argument
