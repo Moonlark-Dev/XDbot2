@@ -26,7 +26,7 @@ jobs:
     needs: check-pull-request
     steps:
       - name: "Label Issue"
-        if: ${{ needs.check-pull-request.outputs.MENTIONED_ISSUE_NUMBER != null}}
+        if: ${{ needs.check-pull-request.outputs.MENTIONED_ISSUE_NUMBER != '' }}
         uses: actions/github-script@v6
         with:
           script: |
