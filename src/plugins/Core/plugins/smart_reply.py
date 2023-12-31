@@ -40,7 +40,11 @@ sent_messages = []
 
 def get_rules(group_id: int):
     try:
-        return os.listdir(f"data/reply/g{group_id}/")
+        file_list = os.listdir(f"data/reply/g{group_id}/")
+        rule_list = []
+        for file in file_list:
+            rule_list.append(file[:-5])
+        return rule_list
     except OSError:
         return []
 
@@ -90,8 +94,7 @@ def get_rule_reply(rule_id: str, group_id: int):
 async def match_rules(bot: Bot, event: GroupMessageEvent):
     global sent_messages
     message = str(event.get_message())
-    for _rule_id in get_rules(event.group_id):
-        rule_id = _rule_id.replace(".json", "")
+    for rule_id in get_rules(event.group_id):
         if is_matched_rule(rule_id, event.group_id, message):
             sent_messages.append(
                 {
@@ -327,6 +330,7 @@ async def handle_reply(
         elif argv[0] in ["clone", "克隆"]:
             for rule_id in get_rules(group_id := int(argv[1])):
                 rule: dict = get_rule_data(group_id, rule_id)
+                print(rule_id, group_id, rule)
                 await create_matcher(
                     event.get_user_id(),
                     event.group_id,
