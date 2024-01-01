@@ -1,4 +1,4 @@
-from .email import send_email
+from .send_email import send_email
 from nonebot_plugin_apscheduler import scheduler
 import math
 from nonebot import require

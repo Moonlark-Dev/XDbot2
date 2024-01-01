@@ -1,5 +1,5 @@
 from . import _lang as lang
-from .email import send_email
+from .send_email import send_email
 
 
 async def create_returning_gift(user_id: str) -> None:
