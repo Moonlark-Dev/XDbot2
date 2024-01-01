@@ -44,7 +44,6 @@ def render_email(data, user_id):
     return email
 
 
-
 @su.handle()
 async def su_mail(event: MessageEvent, message: Message = CommandArg()) -> None:
     try:
