@@ -3,7 +3,7 @@ from . import bag
 from .. import _lang
 from . import data as _data
 from .. import _sign
-from .. import email
+from .. import send_email
 import time
 from nonebot import require
 from nonebot_plugin_apscheduler import scheduler
@@ -58,6 +58,6 @@ async def auto_sign_coupon():
                     _info = _lang.text("asc.signed_2", [], u) + "\n" + info
                 else:
                     _info = _lang.text("asc.signed_3", [], u)
-                await email.send_email(
+                await send_email.send_email(
                     u, _lang.text("asc.signed_1", [time.strftime("%Y-%m-%d")], u), _info
                 )

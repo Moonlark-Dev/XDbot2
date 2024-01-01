@@ -1,6 +1,6 @@
 import asyncio
 from .etm import data, bag
-from .email import send_email
+from .send_email import send_email
 import random
 from typing import Optional
 from ._utils import *

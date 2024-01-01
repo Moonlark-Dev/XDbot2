@@ -5,7 +5,7 @@ from ._utils import *
 from nonebot.adapters.onebot.v11.bot import Bot
 from .etm import economy
 from .etm import data as etm_data
-from .email import send_email
+from .send_email import send_email
 
 # [HELPSTART] Version: 2
 # Command: mrp

@@ -105,6 +105,7 @@ for plugin in pluginList:
 
         except AttributeError:
             logger.warning(f"在{plugin}中找不到指令文档")
+            # print(traceback.format_exc())
         except Exception as e:
             logger.error(f"加载失败：插件{plugin}加载发生错误：{e}")
             print(traceback.format_exc())
