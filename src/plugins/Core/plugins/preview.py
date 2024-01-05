@@ -34,9 +34,11 @@ builtin_urls = {
     "xtbot": "https://xtbot-status.xxtg666.top/?r=5",
 }
 
+
 @get_app().get("/preview/{image_id}")
 async def _(image_id: str):
     return FileResponse(f"data/{image_id}.png")
+
 
 async def take_screenshot_of_website(url: str, matcher: Matcher) -> Optional[float]:
     timer = time.time()
@@ -52,10 +54,12 @@ async def take_screenshot_of_website(url: str, matcher: Matcher) -> Optional[flo
     # R-18 检查
     async with httpx.AsyncClient() as client:
         response = await client.get(
-            Json("preview.nsfw_config.json").get(
+            Json("preview.nsfw_config.json")
+            .get(
                 "url",
-                "http://localhost:5000?url=http://10.0.0.14:38192/preview/{image_id}"
-            ).replace("{image_id}", file_name)
+                "http://localhost:5000?url=http://10.0.0.14:38192/preview/{image_id}",
+            )
+            .replace("{image_id}", file_name)
         )
     score = response.json()["score"]
     logger.info(f"Score: {score}")
@@ -66,7 +70,12 @@ async def take_screenshot_of_website(url: str, matcher: Matcher) -> Optional[flo
     image = Image.open(f"data/{file_name}.png")
     draw = ImageDraw.Draw(image)
     font = ImageFont.load_default()
-    draw.text((0, 0), f" URL: {url}  |  TIME: {round(time.time() - timer, 2)}s  |  NSFW: {round(score*100, 3)}%", (0, 0, 0), font=font)
+    draw.text(
+        (0, 0),
+        f" URL: {url}  |  TIME: {round(time.time() - timer, 2)}s  |  NSFW: {round(score*100, 3)}%",
+        (0, 0, 0),
+        font=font,
+    )
     image.save(f"data/{file_name}.png")
     # 发送图片
     await matcher.send(
@@ -125,7 +134,9 @@ async def preview_website(event: MessageEvent, message: Message = CommandArg()):
         # 截取网页
         ret = await take_screenshot_of_website(url, preview)
         if ret is not None:
-            await finish("preview.nsfw", [round(ret*100, 3)], event.user_id, False, True)
+            await finish(
+                "preview.nsfw", [round(ret * 100, 3)], event.user_id, False, True
+            )
 
     except FinishedException:
         raise FinishedException()
