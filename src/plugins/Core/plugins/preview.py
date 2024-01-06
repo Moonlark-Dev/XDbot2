@@ -40,7 +40,7 @@ async def _(image_id: str):
     return FileResponse(f"data/{image_id}.png")
 
 
-async def take_screenshot_of_website(url: str, matcher: Matcher) -> Optional[float]:
+async def take_screenshot_of_website(url: str, matcher: Matcher) -> Optional[dict]:
     timer = time.time()
     file_name = f"preview.image_{int(time.time())}"
     async with async_playwright() as p:
@@ -61,18 +61,18 @@ async def take_screenshot_of_website(url: str, matcher: Matcher) -> Optional[flo
             )
             .replace("{image_id}", file_name)
         )
-    score = response.json()["score"]
-    logger.info(f"Score: {score}")
-    if score >= 0.1:
+    auditdata = response.json()
+    logger.info(f"Auditdata: {auditdata}")
+    if auditdata["conclusion"] == "不合规":
         os.remove(os.path.abspath(os.path.join("./data", f"{file_name}.png")))
-        return score
+        return auditdata
     # 处理图片
     image = Image.open(f"data/{file_name}.png")
     draw = ImageDraw.Draw(image)
     font = ImageFont.load_default()
     draw.text(
         (0, 0),
-        f" URL: {url}  |  TIME: {round(time.time() - timer, 2)}s  |  NSFW: {round(score*100, 3)}%",
+        f" URL: {url}  |  TIME: {round(time.time() - timer, 2)}s",
         (0, 0, 0),
         font=font,
     )
@@ -135,7 +135,11 @@ async def preview_website(event: MessageEvent, message: Message = CommandArg()):
         ret = await take_screenshot_of_website(url, preview)
         if ret is not None:
             await finish(
-                "preview.nsfw", [round(ret * 100, 3)], event.user_id, False, True
+                "preview.nsfw",
+                [ret["data"][0]["msg"], round(ret["data"][0]["probability"] * 100, 3)],
+                event.user_id,
+                False,
+                True,
             )
 
     except FinishedException:
