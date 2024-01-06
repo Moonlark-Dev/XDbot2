@@ -63,7 +63,7 @@ async def take_screenshot_of_website(url: str, matcher: Matcher) -> Optional[flo
         )
     score = response.json()["score"]
     logger.info(f"Score: {score}")
-    if score >= 0.015:
+    if score >= 0.1:
         os.remove(os.path.abspath(os.path.join("./data", f"{file_name}.png")))
         return score
     # 处理图片
