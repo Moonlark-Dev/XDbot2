@@ -135,7 +135,11 @@ async def preview_website(event: MessageEvent, message: Message = CommandArg()):
         ret = await take_screenshot_of_website(url, preview)
         if ret is not None:
             await finish(
-                "preview.nsfw", [ret["data"][0]["msg"],round(ret["data"][0]["probability"] * 100, 3)], event.user_id, False, True
+                "preview.nsfw",
+                [ret["data"][0]["msg"], round(ret["data"][0]["probability"] * 100, 3)],
+                event.user_id,
+                False,
+                True,
             )
 
     except FinishedException:
