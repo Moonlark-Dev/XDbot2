@@ -19,7 +19,10 @@ import asyncio
 import os.path
 from urllib.parse import urlparse
 
-class AccessDenied(Exception): pass
+
+class AccessDenied(Exception):
+    pass
+
 
 def check_url_protocol(url):
     parsed_url = urlparse(url)
@@ -148,13 +151,7 @@ async def preview_website(event: MessageEvent, message: Message = CommandArg()):
     except FinishedException:
         raise FinishedException()
     except AccessDenied:
-        await finish(
-            "preview.access_denied",
-            [],
-            event.user_id,
-            False,
-            True
-        )
+        await finish("preview.access_denied", [], event.user_id, False, True)
     except BaseException:
         await _error.report(traceback.format_exc(), preview)
 
