@@ -142,7 +142,7 @@ async def preview_website(event: MessageEvent, message: Message = CommandArg()):
         if ret is not None:
             await finish(
                 "preview.nsfw",
-                [ret["data"][0]["msg"], round(ret["data"][0]["probability"] * 100, 3)],
+                [ret["data"][0]["msg"]],
                 event.user_id,
                 False,
                 True,
