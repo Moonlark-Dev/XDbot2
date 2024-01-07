@@ -1,4 +1,4 @@
-from plugins.Core.plugins.send_email import submit_email
+from .send_email import submit_email
 from ._utils import finish
 from .etm import items, data, bag
 from .su import su
