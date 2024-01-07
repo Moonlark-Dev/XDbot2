@@ -115,28 +115,24 @@ def get_reply_message(event: MessageEvent) -> str:
         return ""
 
 
+async def parse_url(url: str, event: MessageEvent) -> str:
+    if url in builtin_urls.keys():
+        url = builtin_urls[url]
+        if "%group_id%" in url:
+            try:
+                return url.replace("%group_id%", event.get_session_id().split("_")[1])
+            except IndexError:
+                await finish("preview.only_group", [], event.user_id)
+    if not check_url_protocol(url):
+        return "http://" + url
+    return url
+
+
 @preview.handle()
 async def preview_website(event: MessageEvent, message: Message = CommandArg()):
-    global latest_time
     try:
-        if time.time() - latest_time < 3:
-            await preview.finish(f"冷却中（{3 - time.time() + latest_time}s）")
-        latest_time = time.time()
         # 解析参数
-        url = str(message) or get_reply_message(event)
-        if url in builtin_urls.keys():
-            url = builtin_urls[url]
-            if "%group_id%" in url:
-                try:
-                    url = url.replace(
-                        "%group_id%", event.get_session_id().split("_")[1]
-                    )
-                except IndexError:
-                    await preview.finish(
-                        lang.text("preview.only_group", [], event.get_user_id())
-                    )
-        if not check_url_protocol(url):
-            url = "http://" + url
+        url = await parse_url(str(message) or get_reply_message(event), event)
         # 截取网页
         ret = await take_screenshot_of_website(url, preview)
         if ret is not None:
@@ -149,7 +145,7 @@ async def preview_website(event: MessageEvent, message: Message = CommandArg()):
     except AccessDenied:
         await finish("preview.access_denied", [], event.user_id, False, True)
     except BaseException:
-        await _error.report(traceback.format_exc(), preview)
+        await _error.report(traceback.format_exc())
 
 
 @create_group_command("auto-preview")
