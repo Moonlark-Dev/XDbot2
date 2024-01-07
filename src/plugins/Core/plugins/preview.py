@@ -120,33 +120,24 @@ async def parse_url(url: str, event: MessageEvent) -> str:
         url = builtin_urls[url]
         if "%group_id%" in url:
             try:
-                return url.replace(
-                    "%group_id%",
-                    event.get_session_id().split("_")[1]
-                )
+                return url.replace("%group_id%", event.get_session_id().split("_")[1])
             except IndexError:
                 await finish("preview.only_group", [], event.user_id)
     if not check_url_protocol(url):
         return "http://" + url
     return url
 
+
 @preview.handle()
 async def preview_website(event: MessageEvent, message: Message = CommandArg()):
     try:
         # 解析参数
-        url = await parse_url(
-            str(message) or get_reply_message(event),
-            event
-        )
+        url = await parse_url(str(message) or get_reply_message(event), event)
         # 截取网页
         ret = await take_screenshot_of_website(url, preview)
         if ret is not None:
             await finish(
-                "preview.nsfw",
-                [ret["data"][0]["msg"]],
-                event.user_id,
-                False,
-                True,
+                "preview.nsfw", [ret["data"][0]["msg"]], event.user_id, False, True
             )
 
     except FinishedException:
