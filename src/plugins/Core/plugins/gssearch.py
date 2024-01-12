@@ -54,6 +54,6 @@ async def handle_first_receive(
 # [HELPSTART] Version: 2
 # Command: gssearch
 # Info: 查询原神角色攻略(目前只有蒙德)
-# Msg: 西风驿站角色攻略
+# Msg: 原神角色攻略
 # Usage: gssearch <角色名>
 # [HELPEND]

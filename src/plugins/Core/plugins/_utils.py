@@ -191,3 +191,20 @@ class Json:
 
     def keys(self):
         return list(self.data.keys())
+
+
+async def generate_node_message(bot: Bot, messages: list[str | Message]) -> Message:
+    message = Message()
+    nickname = (await bot.get_login_info())["nickname"]
+    for content in messages:
+        message.append(MessageSegment.node_custom(int(bot.self_id), nickname, content))
+    return message
+
+
+async def send_node_message(bot: Bot, messages: Message, event: MessageEvent) -> None:
+    await bot.call_api(
+        f"send_{event.get_session_id().split('_')[0]}_forward_msg",
+        messages=messages,
+        user_id=event.user_id,
+        group_id=event.dict().get("group_id"),
+    )
