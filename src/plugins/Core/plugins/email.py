@@ -192,8 +192,8 @@ async def claim_all(matcher: Matcher, event: MessageEvent):
 # [HELPSTART] Version: 2
 # Command: view-emails
 # Usage: view-emails
-# Info: 查看邮件列表
+# Info: 邮件列表
 # Command: claim-all
 # Usage: claim-all
-# Info: 领取邮箱内物品
+# Info: 领取邮箱物品
 # [HELPEND]

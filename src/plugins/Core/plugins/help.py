@@ -1,151 +1,69 @@
-from . import _error
-from . import _lang
-import json
-import traceback
-from nonebot import on_command
-from nonebot.adapters.onebot.v11 import (
-    Bot,
-    GroupMessageEvent,
-    Message,
-    MessageEvent,
-    MessageSegment,
-)
-from nonebot.exception import FinishedException
-from nonebot.params import CommandArg
-from typing import List
+from typing import Literal, Optional
+from nonebot import get_driver
+from ._utils import *
 
-ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
-command_start = "/"
-help = on_command("help", aliases={"帮助"})
-
-
-@help.handle()
-async def group_handler(
-    bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()
-):
-    try:
-        argv = message.extract_plain_text()
-        if argv == "":
-            commands = json.load(open("data/help.json", encoding="utf-8"))
-            messages: List[MessageSegment] = []
-            self_id = event.self_id
-
-            reply = f"{_lang.text('help.name',[],event.get_user_id())} —— XDbot2\n"
-            for key in list(commands.keys()):
-                cmd_status = {True: "√", False: "X", None: "O"}[commands[key]["status"]]
-                reply += f"[{cmd_status}] {key}：{commands[key]['msg']}\n"
-            reply += _lang.text("help.command", [], event.get_user_id())
-            messages.append(
-                MessageSegment.node_custom(self_id, "XDbot2 Command Help", reply)
-            )
-            messages.append(
-                {
-                    "type": "node",
-                    "data": {
-                        "uin": self_id,
-                        "name": "Tips",
-                        "content": _lang.text(
-                            "help.tips", [command_start], event.get_user_id()
-                        ),
-                    },
-                }
-            )
-
-            for command, data in list(commands.items()):
-                content = (
-                    f"{_lang.text('help.info',[data['info']],event.get_user_id())}\n"
-                )
-                length = 0
-                _usage_content = ""
-                for usage in data["usage"]:
-                    length += 1
-                    _usage_content += f"{length}. {usage}\n"
-                content += f"\n{_lang.text('help.usage',[length, _usage_content[:-1]],event.get_user_id())}"
-                messages.append(
-                    {
-                        "type": "node",
-                        "data": {
-                            "uin": self_id,
-                            "name": f"[XDbot2 Help] {command}",
-                            "content": content,
-                        },
-                    }
-                )
-            await bot.call_api(
-                api="send_group_forward_msg", group_id=event.group_id, messages=messages
-            )
-            await help.finish()
-
-    except BaseException:
-        await _error.report(traceback.format_exc())
-
-
-@help.handle()
-async def helpHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg()):
-    try:
-        argument = message.extract_plain_text()
-        reply = ""
-        commands = json.load(open("data/help.json", encoding="utf-8"))
-        if argument == "":
-            reply = f"{_lang.text('help.name',[],event.get_user_id())} —— XDbot2\n"
-            for key in list(commands.keys()):
-                reply += f"[√] {key}：{commands[key]['msg']}\n"
-            reply += _lang.text("help.command", [], event.get_user_id())
-        elif argument == "list":
-            for key in list(commands.keys()):
-                for u in commands[key]["usage"]:
-                    reply += f"{command_start}{u}\n"
-        else:
-            usage = ""
-            length = 1
-            for u in commands[argument]["usage"]:
-                usage += f"  {length}. {u}\n"
-                length += 1
-            reply = (
-                f"{_lang.text('help.info',[commands[argument]['info']],event.get_user_id())}\n"
-                # f"来源：{commands[argument]['from']}\n"
-                f"{_lang.text('help.usage',[length-1,usage],event.get_user_id())}"
-            )
-        await help.finish(reply)
-    except KeyError as e:
-        await help.finish(_lang.text("help.unknown", [e], event.get_user_id()))
-    except FinishedException:
-        raise FinishedException()
-    except Exception:
-        await _error.report(traceback.format_exc(), help)
-
+command_start = ""
 
 # [HELPSTART] Version: 2
 # Command: help
-# Usage: help：查看指令列表
-# Usage: help list：查看所有指令的所有用法
-# Usage: help <指令名>：查看指定指令的用法
-# Info: 查询指定命令说明，若未指定指令名，则显示全部命令用法
-# Msg: 查看指令帮助
+# Info: 获取帮助
+# Msg: 获取帮助
+# Usage: help：获取指令列表
+# Usage: help <command>：获取指令帮助
 # [HELPEND]
 
-# !Usage 1 help [指令名]
+@get_driver().on_startup
+async def _():
+    global command_start
+    command_start = Json("init.json")["config"]["command_start"][0]
 
-# [HELPEND]
 
-# ########### help的写法 ############
-#
-# 1. # [HELPSTART]
-# `命令帮助开始 (注意空格不能丢,后面也最好别加空格,下同)
-#
-# 2. # !Usage num usage
-# `对命令格式的说明 (可以有多个不同num的 !Usage)
-# num 为在此插件中的命令编号(一个插件可以添加多条命令) 对应下文Info的信息
-# usage 为命令格式 不需要写前缀 参数之间按空格分割 一般为 command <arg1> <arg2> ...
-#
-# 3. # !Info num information
-# `对命令作用的说明 (可以有多个不同num的 !Info)
-# num 为在此插件中的命令编号 对应上文Usage的信息
-# information 为命令作用说明 可以使用\n换行
-#
-# 4. # [HELPEND]
-# `命令帮助结束
-#
-# 警告：Usage一定要写在相同num的Info前面，一个num必须同时有Usage和Info，不然我也不知道会出什么bug
-#
-###################################
+def get_command_status(status: Optional[bool]) -> str:
+    return {True: "√", False: "X", None: "O"}[status]
+
+async def get_help_list(bot: Bot, event: MessageEvent) -> None:
+    data = Json("help.json")
+    node = await generate_node_message(bot, [
+        lang.text("help.list", [
+            "\n".join([
+                lang.text("help.list_item", [
+                    get_command_status((command := data[name])["status"]),
+                    name,
+                    command["msg"]
+                ], event.user_id) for name in data.keys()
+            ]),
+            command_start
+        ], event.user_id),
+        lang.text("help.command_status", [], event.user_id),
+        lang.text("help.eula", [], event.user_id),
+        lang.text("help.copyright", [], event.user_id)
+    ])
+    await send_node_message(bot, node, event)
+
+
+async def get_command_help(command: str, user_id: int) -> None:
+    await finish("help.info", [
+        get_command_status((data := Json("help.json")[command])["status"]),
+        command,
+        data["info"],
+        "\n".join([f"{command_start}{usage}" for usage in data["usage"]])
+    ], user_id, False, True)
+
+@create_command("help")
+async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
+    argv = message.extract_plain_text()
+    if not argv:
+        await get_help_list(bot, event)
+        return
+    try:
+        await get_command_help(
+            argv,
+            event.user_id
+        )
+    except TypeError:
+        await finish(
+            "help.unknown_command",
+            [argv],
+            event.user_id
+        )
+

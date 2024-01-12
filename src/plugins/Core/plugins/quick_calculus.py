@@ -227,5 +227,5 @@ async def quick_math_command(matcher: Matcher, event: GroupMessageEvent):
 # [HELPSTART] Version: 2
 # Command: qc
 # Usage: qc
-# Info: 开启/关闭快速微积分
+# Info: 快速微积分
 # [HELPEND]

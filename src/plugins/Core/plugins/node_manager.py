@@ -73,7 +73,7 @@ async def update_xdbot(matcher: Matcher, event: MessageEvent):
 # [HELPSTART] Version: 2
 # Command: switch
 # Usage: switch {develop|master}
-# Msg: 切换 XDbot2 节点
+# Msg: 切换节点
 # Info: 切换 XDbot2 节点（详见 node(0)）
 # [HELPEND]
 

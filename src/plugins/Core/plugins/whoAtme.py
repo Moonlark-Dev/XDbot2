@@ -21,8 +21,8 @@ ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
 # [HELPSTART] Version: 2
 # Command: whoAtMe
 # Usage: whoAtMe
-# Info: 谁 @ 我了？
-# Msg: 查看谁 @ 了我。
+# Msg: 谁@我了？
+# Info: 查看谁 @ 了我。
 # [HELPEND]
 
 
