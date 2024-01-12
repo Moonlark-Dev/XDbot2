@@ -1,7 +1,7 @@
 import json
 import os
 import os.path
-from typing import Any
+from typing import Any, Callable
 
 # 快捷访问
 from nonebot import on_message
@@ -28,11 +28,12 @@ SKIP: None = None
 def create_command(cmd: str, aliases: set = set(), **kwargs):
     matcher = on_command(cmd, aliases=aliases, **kwargs)
 
-    def deco(func):
+    def deco(func: Callable):
         async def handler(
             bot: Bot, event: MessageEvent, message: Message = CommandArg()
         ):
             try:
+                logger.info(f"事件处理模块: {func.__module__}")
                 await func(bot, event, message)
             except:
                 await error.report()
