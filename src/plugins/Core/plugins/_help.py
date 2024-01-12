@@ -62,13 +62,7 @@ async def group_handler(
                     _usage_content += f"{length}. {usage}\n"
                 content += f"\n{_lang.text('help.usage',[length, _usage_content[:-1]],event.get_user_id())}"
                 messages.append(
-                    {
-                        "type": "node",
-                        "data": {
-                            "uin": self_id,
-                            "content": content,
-                        },
-                    }
+                    {"type": "node", "data": {"uin": self_id, "content": content}}
                 )
             await bot.call_api(
                 api="send_group_forward_msg", group_id=event.group_id, messages=messages
