@@ -220,7 +220,9 @@ async def handle_gpt_command(
                     await matcher.finish(lang.text("chatgpt.reset_error", [], user_id))
 
             case "switch":
-                if argv[1] == "group" and not (group_id := event.dict().get('group_id')):
+                if argv[1] == "group" and not (
+                    group_id := event.dict().get("group_id")
+                ):
                     await finish("chatgpt.need_group", [], event.user_id)
                 try:
                     change_session(
