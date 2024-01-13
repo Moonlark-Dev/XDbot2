@@ -248,6 +248,7 @@
   "chatgpt.used_token": "Token: {} (-{})",
   "chatgpt.free": "限免：{} (-1)",
   "chatgpt.buy_success": "[XDbot2GPT]\n成功购买 {} Tokens",
+  "chatgpt.need_group": "[XDbot2GPT] 错误：\n需要在群聊使用",
   
   "pay.vim_not_enough": "错误：vim余额不足",
   "pay.sucess": "完成",
