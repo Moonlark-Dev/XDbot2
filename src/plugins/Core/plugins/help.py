@@ -52,7 +52,7 @@ async def get_help_list(bot: Bot, event: MessageEvent) -> None:
                 event.user_id,
             ),
             lang.text("help.command_status", [], event.user_id),
-            lang.text("help.command_start", [command_start]*2, event.user_id),
+            lang.text("help.command_start", [command_start] * 2, event.user_id),
             lang.text("help.eula", [], event.user_id),
             lang.text("help.copyright", [], event.user_id),
         ],
