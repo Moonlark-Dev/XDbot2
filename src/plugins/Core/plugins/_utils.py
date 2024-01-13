@@ -33,7 +33,7 @@ def create_command(cmd: str, aliases: set = set(), **kwargs):
             bot: Bot, event: MessageEvent, message: Message = CommandArg()
         ):
             try:
-                logger.info(f"事件处理模块: {func.__module__}")
+                logger.info(f"处理模块: {func.__module__}")
                 await func(bot, event, message)
             except:
                 await error.report()
