@@ -54,9 +54,7 @@ async def getJrrp(qq: str):
 
 
 @jrrp.handle()
-async def jrrpHandle(
-    bot: Bot, event: MessageEvent, message: Message = CommandArg()
-):
+async def jrrpHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg()):
     try:
         argument = str(message).split(" ")
         if argument[0] == "":

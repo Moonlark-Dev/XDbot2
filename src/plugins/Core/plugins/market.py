@@ -40,9 +40,7 @@ def save_data():
 
 
 @market.handle()
-async def item_list(
-    bot: Bot, event: MessageEvent, message: Message = CommandArg()
-):
+async def item_list(bot: Bot, event: MessageEvent, message: Message = CommandArg()):
     try:
         user_id = event.get_user_id()
         argv = str(message).split(" ")
@@ -56,47 +54,49 @@ async def item_list(
                 page = int(argv[1])
             except:
                 page = 1
-            node_messages = Message([MessageSegment.node_custom(
-                event.self_id,
-                "XDBOT2",
-                _lang.text(
-                    "market.list_title",
-                    [page, math.ceil(len(list(data.items())) / 100)],
-                    user_id,
-                )
-            )])
+            node_messages = Message(
+                [
+                    MessageSegment.node_custom(
+                        event.self_id,
+                        "XDBOT2",
+                        _lang.text(
+                            "market.list_title",
+                            [page, math.ceil(len(list(data.items())) / 100)],
+                            user_id,
+                        ),
+                    )
+                ]
+            )
             for item_data in list(data.values())[page * 100 - 100 : page * 100]:
                 item = items.json2items([item_data["item"]])[0]
-                node_messages.append(MessageSegment.node_custom(
-                    event.user_id,
-                    "XDBOT2",
-                    _lang.text(
-                        "market.view",
-                        [
-                            item_data["id"],
-                            item.data["display_name"],
-                            item.item_id,
-                            item_data["price"],
-                            min(
-                                int(
-                                    user.get_user_data(user_id)["vimcoin"]
-                                    / max(1, item_data["price"])
+                node_messages.append(
+                    MessageSegment.node_custom(
+                        event.user_id,
+                        "XDBOT2",
+                        _lang.text(
+                            "market.view",
+                            [
+                                item_data["id"],
+                                item.data["display_name"],
+                                item.item_id,
+                                item_data["price"],
+                                min(
+                                    int(
+                                        user.get_user_data(user_id)["vimcoin"]
+                                        / max(1, item_data["price"])
+                                    ),
+                                    item_data["count"],
                                 ),
                                 item_data["count"],
-                            ),
-                            item_data["count"],
-                            item_data["seller"]["nickname"],
-                            item_data["seller"]["user_id"],
-                            item.data["display_message"],
-                        ],
-                        user_id,
+                                item_data["seller"]["nickname"],
+                                item_data["seller"]["user_id"],
+                                item.data["display_message"],
+                            ],
+                            user_id,
+                        ),
                     )
-                ))
-            await send_node_message(
-                bot,
-                node_messages,
-                event
-            )
+                )
+            await send_node_message(bot, node_messages, event)
             await market.finish()
     except BaseException:
         await _error.report(traceback.format_exc())
@@ -146,58 +146,56 @@ def check_item(item: item.Item, keyword: str):
 
 
 @market.handle()
-async def search_item(
-    bot: Bot, event: MessageEvent, message: Message = CommandArg()
-):
+async def search_item(bot: Bot, event: MessageEvent, message: Message = CommandArg()):
     try:
         user_id = event.get_user_id()
         argv = str(message).split(" ")
         if argv[0] in ["search", "搜索"]:
-            node_messages = Message([MessageSegment.node_custom(
-                event.self_id,
-                "XDBOT2",
-                _lang.text(
-                    "market.search_title", [argv[1]], user_id
-                )
-            )])
+            node_messages = Message(
+                [
+                    MessageSegment.node_custom(
+                        event.self_id,
+                        "XDBOT2",
+                        _lang.text("market.search_title", [argv[1]], user_id),
+                    )
+                ]
+            )
             item_count = 0
             for item_data in list(data.values()):
                 item = items.json2items([item_data["item"]])[0]
                 if not check_item(item, argv[1]):
                     continue
                 item_count += 1
-                node_messages.append(MessageSegment.node_custom(
-                    event.user_id,
-                    "XDBOT2",
-                    _lang.text(
-                        "market.view",
-                        [
-                            item_data["id"],
-                            item.data["display_name"],
-                            item.item_id,
-                            item_data["price"],
-                            min(
-                                int(
-                                    user.get_user_data(user_id)["vimcoin"]
-                                    / max(1, item_data["price"])
+                node_messages.append(
+                    MessageSegment.node_custom(
+                        event.user_id,
+                        "XDBOT2",
+                        _lang.text(
+                            "market.view",
+                            [
+                                item_data["id"],
+                                item.data["display_name"],
+                                item.item_id,
+                                item_data["price"],
+                                min(
+                                    int(
+                                        user.get_user_data(user_id)["vimcoin"]
+                                        / max(1, item_data["price"])
+                                    ),
+                                    item_data["count"],
                                 ),
                                 item_data["count"],
-                            ),
-                            item_data["count"],
-                            item_data["seller"]["nickname"],
-                            item_data["seller"]["user_id"],
-                            item.data["display_message"],
-                        ],
-                        user_id,
+                                item_data["seller"]["nickname"],
+                                item_data["seller"]["user_id"],
+                                item.data["display_message"],
+                            ],
+                            user_id,
+                        ),
                     )
-                ))
+                )
                 if item_count >= 100:
                     break
-            await send_node_message(
-                bot,
-                node_messages,
-                event
-            )
+            await send_node_message(bot, node_messages, event)
             await market.finish()
 
     except:

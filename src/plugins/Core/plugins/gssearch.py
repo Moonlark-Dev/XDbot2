@@ -45,12 +45,14 @@ async def handle_first_receive(
 
     if str(message) not in urls:
         await finish("gssearch.not_found", [message], event.user_id)
-    await finish("gssearch.result", [
-        MessageSegment.image(file=urls[str(message).strip()])
-    ], event.user_id)
+    await finish(
+        "gssearch.result",
+        [MessageSegment.image(file=urls[str(message).strip()])],
+        event.user_id,
+    )
     # Message(
-            # f"[CQ:image,file={urls[str(message).strip()]}]\n攻略制作:猫冬 https://www.miyoushe.com/ys/accountCenter/postList?id=74019947"
-        # )
+    # f"[CQ:image,file={urls[str(message).strip()]}]\n攻略制作:猫冬 https://www.miyoushe.com/ys/accountCenter/postList?id=74019947"
+    # )
 
 
 # [HELPSTART] Version: 2
