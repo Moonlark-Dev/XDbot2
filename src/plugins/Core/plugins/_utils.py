@@ -57,6 +57,7 @@ def create_group_command(cmd: str, aliases: set = set(), **kwargs):
                 await func(bot, event, message)
             except:
                 await error.report()
+
         matcher.append_handler(handler)
         return handler
 
