@@ -167,7 +167,7 @@ async def get_issue(matcher: Matcher, event: MessageEvent):
             f"https://api.github.com/repos/{repo}/issues/{issue_id}"
         )
         labels = ""
-        for label in (issue_data["labels"] or []):
+        for label in issue_data["labels"] or []:
             labels += f"{label['name']}, "
         await matcher.finish(
             _lang.text(
