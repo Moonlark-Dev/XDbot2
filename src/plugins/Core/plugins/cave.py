@@ -13,7 +13,7 @@ from . import _lang, _messenger
 import httpx
 from ._utils import Json, finish
 from nonebot import on_command, get_app, on_message
-from nonebot.adapters.onebot.v11 import Bot, Message, GroupMessageEvent
+from nonebot.adapters.onebot.v11 import Bot, Message, GroupMessageEvent, MessageEvent
 from nonebot.permission import SUPERUSER
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
@@ -325,7 +325,7 @@ BANNED_CQ_CODE: list[str] = [
 
 @on_command("cave-a").handle()
 async def cave_add_handler(
-    cave: Matcher, bot: Bot, event: GroupMessageEvent, argument: Message = CommandArg()
+    cave: Matcher, bot: Bot, event: MessageEvent, argument: Message = CommandArg()
 ):
     global cave_confirm
     try:
@@ -419,7 +419,7 @@ async def cave_add_handler(
 
 
 @cave_confirm_add.handle()
-async def _(event: GroupMessageEvent, bot: Bot):
+async def _(event: MessageEvent, bot: Bot):
     global cave_confirm
     try:
         if not event.reply:
