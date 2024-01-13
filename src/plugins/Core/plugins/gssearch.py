@@ -1,7 +1,8 @@
+from ._utils import *
 from nonebot import on_command
-from nonebot.adapters.onebot.v11 import GroupMessageEvent
+from nonebot.adapters.onebot.v11 import MessageEvent
 from nonebot.adapters.onebot.v11.bot import Bot as bot
-from nonebot.adapters.onebot.v11.message import Message
+from nonebot.adapters.onebot.v11.message import Message, MessageSegment
 from nonebot.params import CommandArg
 
 gssearch = on_command("gssearch", aliases={"原神角色查询", "西风驿站"})
@@ -32,7 +33,7 @@ urls = {
 
 @gssearch.handle()
 async def handle_first_receive(
-    event: GroupMessageEvent, bot: bot, message: Message = CommandArg()
+    event: MessageEvent, bot: bot, message: Message = CommandArg()
 ):
     # 蒙德(done)
 
@@ -43,12 +44,15 @@ async def handle_first_receive(
     # 须弥(to do)
 
     if str(message) not in urls:
-        await gssearch.finish(f"未找到" + message)
-    msg = await gssearch.finish(
-        Message(
-            f"[CQ:image,file={urls[str(message).strip()]}]\n攻略制作:猫冬 https://www.miyoushe.com/ys/accountCenter/postList?id=74019947"
-        )
+        await finish("gssearch.not_found", [message], event.user_id)
+    await finish(
+        "gssearch.result",
+        [MessageSegment.image(file=urls[str(message).strip()])],
+        event.user_id,
     )
+    # Message(
+    # f"[CQ:image,file={urls[str(message).strip()]}]\n攻略制作:猫冬 https://www.miyoushe.com/ys/accountCenter/postList?id=74019947"
+    # )
 
 
 # [HELPSTART] Version: 2

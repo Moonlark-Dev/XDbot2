@@ -192,7 +192,7 @@ async def handle_su_gpt(message: Message = CommandArg()) -> None:
 
 @on_command("gpt").handle()
 async def handle_gpt_command(
-    matcher: Matcher, event: GroupMessageEvent, message: Message = CommandArg()
+    matcher: Matcher, event: MessageEvent, message: Message = CommandArg()
 ) -> None:
     try:
         argv = message.extract_plain_text().split(" ")
@@ -220,12 +220,16 @@ async def handle_gpt_command(
                     await matcher.finish(lang.text("chatgpt.reset_error", [], user_id))
 
             case "switch":
+                if argv[1] == "group" and not (
+                    group_id := event.dict().get("group_id")
+                ):
+                    await finish("chatgpt.need_group", [], event.user_id)
                 try:
                     change_session(
                         user_id,
                         {
                             "global": "global",
-                            "group": f"g{event.group_id}",
+                            "group": f"g{group_id}",
                             "private": f"u{user_id}",
                         }[argv[1]],
                     )

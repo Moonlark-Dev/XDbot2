@@ -1,4 +1,5 @@
 import json
+from ._utils import *
 import random
 import time
 import traceback
@@ -7,24 +8,12 @@ from . import _lang
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.adapters.onebot.v11.bot import Bot
-from nonebot.adapters.onebot.v11.event import GroupMessageEvent
+from nonebot.adapters.onebot.v11.event import MessageEvent
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
 
 jrrp = on_command("jrrp")
 ctrlGroup = json.load(open("data/ctrl.json", encoding="utf-8"))["control"]
-"""
-实验性的，炸了当场reset
-async def getQQID(msgs: GroupMessageEvent):
-    msg = json.loads(msgs.json())
-    atcount = msg.count("at")
-    if atcount == 0:
-        return 0
-    elif atcount == 1:
-        return msg["at"][0].data["qq"]
-    else:
-        return 0
-"""
 
 
 async def getJrrp(qq: str):
@@ -65,9 +54,7 @@ async def getJrrp(qq: str):
 
 
 @jrrp.handle()
-async def jrrpHandle(
-    bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()
-):
+async def jrrpHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg()):
     try:
         argument = str(message).split(" ")
         if argument[0] == "":
@@ -80,9 +67,6 @@ async def jrrpHandle(
                 at_sender=True,
             )
         elif argument[0] == "rank" or argument[0] == "今日排名":
-            # 限时开启
-            if time.localtime().tm_hour < 16:
-                await jrrp.finish(_lang.text("jrrp.rank_time", [], event.get_user_id()))
             # 开始计算
             if argument.__len__() >= 2:
                 count = int(argument[1])
@@ -90,7 +74,7 @@ async def jrrpHandle(
                 count = 10
             # 群成员列表
             userList = await bot.get_group_member_list(
-                group_id=int(event.get_session_id().split("_")[1])
+                group_id=await get_group_id(event)
             )
             # 计算排名
             jrrpRank = []
@@ -162,7 +146,7 @@ async def jrrpHandle(
             _lang.text("jrrp.error", [], event.get_user_id()), at_sender=True
         )
     except Exception:
-        await _error.report(traceback.format_exc(), jrrp)
+        await _error.report(traceback.format_exc())
 
 
 # [HELPSTART] Version: 2

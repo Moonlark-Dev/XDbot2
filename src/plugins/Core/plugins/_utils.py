@@ -49,8 +49,10 @@ def create_group_command(cmd: str, aliases: set = set(), **kwargs):
 
     def deco(func):
         async def handler(
-            bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()
+            bot: Bot, event: MessageEvent, message: Message = CommandArg()
         ):
+            if not isinstance(event, GroupMessageEvent):
+                await finish(get_currency_key("need_group"), [], event.user_id)
             try:
                 await func(bot, event, message)
             except:
@@ -209,3 +211,14 @@ async def send_node_message(bot: Bot, messages: Message, event: MessageEvent) ->
         user_id=event.user_id,
         group_id=event.dict().get("group_id"),
     )
+
+
+def get_currency_key(key: str) -> str:
+    # 写这个函数纯粹是因为记不住 get_currency_key 这个词
+    return f"currency.{key}"
+
+
+async def get_group_id(event: MessageEvent) -> int:
+    if (group_id := event.dict().get("group_id")) is None:
+        await finish(get_currency_key("need_group"), [], event.user_id)
+    return int(group_id)
