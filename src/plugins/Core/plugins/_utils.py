@@ -49,13 +49,14 @@ def create_group_command(cmd: str, aliases: set = set(), **kwargs):
 
     def deco(func):
         async def handler(
-            bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()
+            bot: Bot, event: MessageEvent, message: Message = CommandArg()
         ):
+            if not isinstance(event, GroupMessageEvent):
+                await finish(get_currency_key("need_group"), [], event.user_id)
             try:
                 await func(bot, event, message)
             except:
                 await error.report()
-
         matcher.append_handler(handler)
         return handler
 
