@@ -6,7 +6,6 @@
   "lang.lang_author": "维护者：{}",
   "lang.compatibility": "兼容性：{} / {} {}%",
   "cave.error_to_download_images": "投稿失败：下载图片时发生错误，请稍后重试",
-  "help.tips": "指令前缀：{}\n「<...>」为必要参数\n「[...]」为可选参数\n「{...|....}」为选择参数（需在给出的选项中选择）\n发送「/? <想要执行的操作或命令>」使用 GPTCommandHelp",
   "lang.keylost": "缺失键：{}",
   "lang.empty": "请使用 {} 设置语言",
   "lang.success": "成功设置语言为 {} ",
@@ -35,12 +34,6 @@
   "forward._user": "用户：",
   "forward.group": "「群消息转发」",
   "forward._group": "群聊：",
-  
-  "_help.name": "命令列表",
-  "_help.command": "使用 /help <命令> 获取更多信息",
-  "_help.info": "说明：{}",
-  "_help.usage": "用法（{}）：\n{}",
-  "_help.unknown": "未知指令：{}",
 
   "help.list": "命令列表 —— XDbot2\n{}\n使用 {}help <命令> 获取更多信息",
   "help.list_item": "[{}] {}: {}",
@@ -49,6 +42,7 @@
   "help.copyright": "「版权声明」\nXDbot2 由 IT Craft Development Team (https://itcdt.top) 开发，基于 MIT 许可证开源",
   "help.info": "[{}] {}: {}\n\n用法: \n{}",
   "help.unknown_command": "未知指令: {}",
+  "help.command_start": "「温馨提示」\n所有命令都需要前缀[{}], 例如查询今日人品时, 您需要发送[{}jrrp]而不是仅发送[jrrp]",
 
   "jrrp.notice": "开始使用「今日人品」即代表您已阅读并同意《XDbot2「今日人品」用户协议》（https://github.com/ITCraftDevelopmentTeam/XDbot2/discussions/468）。祝您玩得开心！",
   "jrrp.new_record": "个人最高记录已刷新",
