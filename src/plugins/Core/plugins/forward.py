@@ -37,7 +37,7 @@ async def groupForwardHandle(bot: Bot, event: GroupMessageEvent):
             await _error.report(
                 f"""{_lang.text("forward.group")}
 {_lang.text("forward._group")}{event.get_session_id().split('_')[1]}
-{_lang.text("forward._user")}{(await bot.get_stranger_info(user_id=event.get_user_id()))['nickname']} ({event.get_user_id()})
+{_lang.text("forward._user")}{(await bot.get_stranger_info(user_id=event.user_id))['nickname']} ({event.get_user_id()})
 {event.get_message()}"""
             )
 
