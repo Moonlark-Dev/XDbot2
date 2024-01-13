@@ -305,6 +305,7 @@
   "create_manpage.saved": "Manpage 已保存到 {}",
 
   "currency.no_money": "余额不足！（需要 {} vim）",
+  "currency.need_group": "此指令只支持群聊使用！",
   "currency.ok": "完成！",
   "currency.wrong_argv": "错误：不正确的参数！\n使用「/help {}」获取更多信息",
 

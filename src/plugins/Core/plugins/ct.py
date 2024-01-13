@@ -2,6 +2,7 @@ import json
 import math
 import os.path
 import traceback
+from ._utils import get_group_id
 from . import _error
 from . import _lang
 from nonebot import on_command, on_message
@@ -18,10 +19,9 @@ globalConfig = json.load(open("data/init.json", encoding="utf-8"))["config"]
 
 
 @ct.handle()
-async def ctHandle(bot: Bot, event: GroupMessageEvent, message: Message = CommandArg()):
+async def ctHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg()):
     try:
         argument = message.extract_plain_text().split(" ")
-        groupID = event.get_session_id().split("_")[1]
         if argument[0] == "":
             data = json.load(open("data/ct.globalData.json", encoding="utf-8"))
             users = []
@@ -68,6 +68,7 @@ async def ctHandle(bot: Bot, event: GroupMessageEvent, message: Message = Comman
             # 反馈结果
             await ct.finish(text)
         elif argument[0] == "group" or argument[0] == "本群排名":
+            groupID = await get_group_id(event)
             data = json.load(open(f"data/ct.{groupID}.json", encoding="utf-8"))
             users = []
             for key in data.keys():
