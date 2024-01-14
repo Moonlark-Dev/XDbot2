@@ -36,7 +36,7 @@ async def check_group_id(bot: Bot, api: str, data: dict) -> None:
     Raises:
         MockApiException: 阻止 API 调用
     """
-    if "group_id" not in data.keys():
+    if "group_id" not in data.keys() or not data["group_id"]:
         return
     groups = await bot.get_group_list()
     for group in groups:

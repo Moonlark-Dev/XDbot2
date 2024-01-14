@@ -206,7 +206,7 @@ async def generate_node_message(bot: Bot, messages: list[str | Message]) -> Mess
 
 async def send_node_message(bot: Bot, messages: Message, event: MessageEvent) -> None:
     await bot.call_api(
-        f"send_{event.get_session_id().split('_')[0]}_forward_msg",
+        f"send_{'group' if event.get_session_id().startswith('group') else 'private'}_forward_msg",
         messages=messages,
         user_id=event.user_id,
         group_id=event.dict().get("group_id"),
