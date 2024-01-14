@@ -8,7 +8,7 @@ from . import _lang
 from nonebot import on_command, on_message
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.adapters.onebot.v11.bot import Bot
-from nonebot.adapters.onebot.v11.event import GroupMessageEvent
+from nonebot.adapters.onebot.v11.event import GroupMessageEvent, MessageEvent
 from nonebot.exception import FinishedException
 from nonebot.params import CommandArg
 
