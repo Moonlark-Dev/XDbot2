@@ -23,15 +23,15 @@ try:
 except BaseException:
     json5 = json
 
+
 @scheduler.scheduled_job("cron", day="*", id="remove_emails")
 async def _():
     emails = json.load(open("data/su.mails.json", encoding="utf-8"))
     items = emails.items()
     for email_id, data in items:
-        if time.time() - data["time"] >= 2592000:   # 30d
+        if time.time() - data["time"] >= 2592000:  # 30d
             emails.pop(email_id)
             logger.info(f"已删除邮件 {email_id}")
-
 
 
 def render_email(data, user_id):
@@ -150,9 +150,6 @@ async def view_emails(matcher: Matcher, bot: Bot, event: MessageEvent):
             pass  # TODO 没有可读邮件的提示
     except BaseException:
         await _error.report(traceback.format_exc(), matcher)
-
-
-
 
 
 @on_command("领取全部", aliases={"全部领取", "claim-all", "lqqb", "qblq"}).handle()
