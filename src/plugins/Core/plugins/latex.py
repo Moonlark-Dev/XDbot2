@@ -2,7 +2,7 @@ from ._utils import *
 from io import BytesIO
 import matplotlib.pyplot as plt
 
-plt.rcParams['text.usetex'] = True
+# plt.rcParams['text.usetex'] = True
 
 
 def generate_image(latex_formula: str) -> MessageSegment:
