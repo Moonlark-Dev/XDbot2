@@ -268,6 +268,9 @@ async def handle_gpt_command(
                         lang.text("chatgpt.session_locked", [session_id], user_id)
                     )
                 session["is_locked"] = True
+                # Issue #549
+                if not argv and event.reply:
+                    argv = event.reply.message.extract_plain_text().split(" ")
                 add_message_to_session(session_id, "user", " ".join(argv))
 
                 try:
