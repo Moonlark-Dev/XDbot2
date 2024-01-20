@@ -2,9 +2,9 @@ from nonebot.adapters.onebot.v11 import MessageEvent
 from nonebot.matcher import Matcher
 from nonebot.adapters import Message
 from nonebot.params import CommandArg
-from .su import su
-from . import _smart_reply as smart_reply
-from . import _error
+from ..plugins.su import su
+from ..plugins import _smart_reply as smart_reply
+from ..plugins import _error
 
 
 @su.handle()

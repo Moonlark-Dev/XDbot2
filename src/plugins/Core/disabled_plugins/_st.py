@@ -1,5 +1,5 @@
 from nonebot import on_command
-from . import _error
+from ..plugins import _error
 import nonebot.adapters.onebot.v11.message
 import nonebot.adapters.onebot.v11
 import random

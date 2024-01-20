@@ -2,9 +2,9 @@
 
 import json
 import traceback
-from . import _error
-from ._utils import *
-from . import _lang
+from ..plugins import _error
+from ..plugins._utils import *
+from ..plugins import _lang
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Message, MessageSegment
 from nonebot.adapters.onebot.v11.bot import Bot

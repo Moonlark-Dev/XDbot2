@@ -5,9 +5,9 @@ import asyncio
 import traceback
 from nonebot.adapters.onebot.v11 import GroupMessageEvent, MessageSegment
 from nonebot.matcher import Matcher
-from . import _lang as lang
+from ..plugins import _lang as lang
 from sympy import Symbol, Eq, solve, latex
-from . import _error as error
+from ..plugins import _error as error
 from .etm import achievement, economy, exp
 from nonebot.permission import SUPERUSER
 from nonebot_plugin_apscheduler import scheduler

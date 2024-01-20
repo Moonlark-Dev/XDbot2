@@ -1,6 +1,6 @@
 import json
 from random import randint, random
-from . import _lang
+from ..plugins import _lang
 
 items = {}  # json.load(open("data/etm.items.json", encoding="utf-8"))
 defaultItemData = {

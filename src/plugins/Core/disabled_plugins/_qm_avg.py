@@ -3,7 +3,7 @@ from nonebot import on_command
 import json
 
 from nonebot.adapters.onebot.v11 import MessageEvent
-from . import _error, _lang
+from ..plugins import _error, _lang
 from nonebot.matcher import Matcher
 
 

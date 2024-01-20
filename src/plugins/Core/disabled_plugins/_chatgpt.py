@@ -3,11 +3,11 @@ from traceback import format_exc
 from nonebot import get_driver, on_command
 import json
 from nonebot.adapters.onebot.v11 import GroupMessageEvent, Message, MessageEvent
-from . import _error
+from ..plugins import _error
 import openai
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
-from . import _lang as lang
+from ..plugins import _lang as lang
 from nonebot.adapters.onebot.v11 import MessageSegment
 
 messages = json.load(open("data/chatgpt.messages.json", encoding="utf-8"))

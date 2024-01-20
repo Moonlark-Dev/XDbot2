@@ -1,8 +1,8 @@
 import time
 import random
-from ._utils import *
+from ..plugins._utils import *
 from nonebot import on_message
-from .chatgptv2 import get_chatgpt_reply
+from ..plugins.chatgptv2 import get_chatgpt_reply
 
 base_message = [
     {
