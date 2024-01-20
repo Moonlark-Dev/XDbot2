@@ -2,7 +2,8 @@ from .send_email import submit_email
 from ._utils import finish
 from .etm import items, data, bag
 from .su import su
-from nonebot import on_command
+from nonebot_plugin_apscheduler import scheduler
+from nonebot import logger, on_command
 from nonebot.matcher import Matcher
 from nonebot.adapters.onebot.v11 import MessageEvent
 from nonebot.adapters.onebot.v11 import Bot
@@ -21,6 +22,16 @@ try:
     import json5
 except BaseException:
     json5 = json
+
+
+@scheduler.scheduled_job("cron", day="*", id="remove_emails")
+async def _():
+    emails = json.load(open("data/su.mails.json", encoding="utf-8"))
+    items = emails.items()
+    for email_id, data in items:
+        if time.time() - data["time"] >= 2592000:  # 30d
+            emails.pop(email_id)
+            logger.info(f"已删除邮件 {email_id}")
 
 
 def render_email(data, user_id):
@@ -137,29 +148,6 @@ async def view_emails(matcher: Matcher, bot: Bot, event: MessageEvent):
             )
         else:
             pass  # TODO 没有可读邮件的提示
-    except BaseException:
-        await _error.report(traceback.format_exc(), matcher)
-
-
-# 我并不知道XDbot2是否需要这个东西
-@on_command("全部已读", aliases={"all-read", "qbyd", "已读全部"}).handle()
-async def all_read(matcher: Matcher, event: MessageEvent):
-    try:
-        user_id = event.get_user_id()
-        length = 0
-        number_of_read_emails = 0
-        for email_id in data.emails[user_id]:
-            try:
-                if not data.emails[user_id][email_id]["itmes"]:
-                    data.emails[user_id].pop(length)
-                    number_of_read_emails += 1
-                else:
-                    length += 1
-            except KeyError:
-                length += 1
-        await matcher.finish(
-            _lang.text("email.all_read", [number_of_read_emails], user_id)
-        )
     except BaseException:
         await _error.report(traceback.format_exc(), matcher)
 
