@@ -180,7 +180,7 @@ async def claim_all(matcher: Matcher, event: MessageEvent):
         data.emails[user_id] = []
         item_list = ""
         length = 0
-        
+
         for item in merger.merge_item_list(items.json2items(all_items)):
             length += 1
             item_list += f"\n{length}. {item.data['display_name']} x{item.count}"
