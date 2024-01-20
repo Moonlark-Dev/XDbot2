@@ -141,27 +141,7 @@ async def view_emails(matcher: Matcher, bot: Bot, event: MessageEvent):
         await _error.report(traceback.format_exc(), matcher)
 
 
-# 我并不知道XDbot2是否需要这个东西
-@on_command("全部已读", aliases={"all-read", "qbyd", "已读全部"}).handle()
-async def all_read(matcher: Matcher, event: MessageEvent):
-    try:
-        user_id = event.get_user_id()
-        length = 0
-        number_of_read_emails = 0
-        for email_id in data.emails[user_id]:
-            try:
-                if not data.emails[user_id][email_id]["itmes"]:
-                    data.emails[user_id].pop(length)
-                    number_of_read_emails += 1
-                else:
-                    length += 1
-            except KeyError:
-                length += 1
-        await matcher.finish(
-            _lang.text("email.all_read", [number_of_read_emails], user_id)
-        )
-    except BaseException:
-        await _error.report(traceback.format_exc(), matcher)
+
 
 
 @on_command("领取全部", aliases={"全部领取", "claim-all", "lqqb", "qblq"}).handle()
