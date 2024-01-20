@@ -1,6 +1,6 @@
 from .send_email import submit_email
 from ._utils import finish
-from .etm import items, data, bag
+from .etm import items, data, bag, merger
 from .su import su
 from nonebot import on_command
 from nonebot.matcher import Matcher
@@ -180,7 +180,8 @@ async def claim_all(matcher: Matcher, event: MessageEvent):
         data.emails[user_id] = []
         item_list = ""
         length = 0
-        for item in items.json2items(all_items):
+        
+        for item in merger.merge_item_list(items.json2items(all_items)):
             length += 1
             item_list += f"\n{length}. {item.data['display_name']} x{item.count}"
         await finish("email.get", [item_list], event.user_id)
