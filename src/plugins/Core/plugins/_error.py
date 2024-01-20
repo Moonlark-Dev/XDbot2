@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # 自 2024 年
-# 在重构此文件时浪费的时间: 
+# 在重构此文件时浪费的时间:
 # XiaoDeng3386: 1hr 53mins
 
 import re
