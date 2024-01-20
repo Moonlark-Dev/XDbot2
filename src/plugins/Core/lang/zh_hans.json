@@ -345,5 +345,6 @@
   "preview.nsfw": "失败: 检测到不安全内容\n违规内容: {}",
   "preview.access_denied": "失败：拒绝访问",
   "gssearch.not_found": "未找到{}",
-  "gssearch.result": "{}\n攻略制作:猫冬 https://www.miyoushe.com/ys/accountCenter/postList?id=74019947"
+  "gssearch.result": "{}\n攻略制作:猫冬 https://www.miyoushe.com/ys/accountCenter/postList?id=74019947",
+  "latex.latex": "{}"
 }
