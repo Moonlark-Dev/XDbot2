@@ -2,7 +2,8 @@ from .send_email import submit_email
 from ._utils import finish
 from .etm import items, data, bag
 from .su import su
-from nonebot import on_command
+from nonebot_plugin_apscheduler import scheduler
+from nonebot import logger, on_command
 from nonebot.matcher import Matcher
 from nonebot.adapters.onebot.v11 import MessageEvent
 from nonebot.adapters.onebot.v11 import Bot
@@ -21,6 +22,16 @@ try:
     import json5
 except BaseException:
     json5 = json
+
+@scheduler.scheduled_job("cron", day="*", id="remove_emails")
+async def _():
+    emails = json.load(open("data/su.mails.json", encoding="utf-8"))
+    items = emails.items()
+    for email_id, data in items:
+        if time.time() - data["time"] >= 2592000:   # 30d
+            emails.pop(email_id)
+            logger.info(f"已删除邮件 {email_id}")
+
 
 
 def render_email(data, user_id):

@@ -6,13 +6,15 @@ from . import get_version
 import sys
 import re
 
-from nonebot import get_driver
+from nonebot import get_driver, require
 from nonebot.log import logger
 
 from .config import Config
 
 from . import getHelp
 import traceback
+
+require("nonebot_plugin_apscheduler")
 
 # 清理（Issue #66）
 logger.info("正在清理数据")
