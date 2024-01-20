@@ -1,4 +1,4 @@
-from ..disabled_plugins import _lang as lang
+from . import _lang as lang
 from .send_email import send_email
 
 
