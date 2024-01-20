@@ -23,6 +23,7 @@
   "cave.data_finish": "总数：{}\n有效：{}\n图片：{}",
   "cave.notfound": "回声洞（{}）不存在",
   "cave.commented": "评论成功（#{}）！",
+  "cave.audit_rejected": "失败: 内容审核不通过\n{}",
   "ct.nodata": "暂无数据",
   "mcver.mcver": "最新版本：{}\n最新快照：{}",
   "mcver.enabled": "Minecraft 更新推送 已启用",
