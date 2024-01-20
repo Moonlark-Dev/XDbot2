@@ -11,7 +11,7 @@ from . import _error
 from .etm import exp, economy
 from . import _lang, _messenger
 import httpx
-from ._utils import Json, finish
+from ._utils import Json, finish, context_review
 from nonebot import on_command, get_app, on_message
 from nonebot.adapters.onebot.v11 import Bot, Message, GroupMessageEvent, MessageEvent
 from nonebot.permission import SUPERUSER
@@ -66,8 +66,18 @@ async def cave_comment_writer(event: GroupMessageEvent, bot: Bot):
                 await cave_comment.finish(
                     _lang.text("cave.cannot_comment", [], str(event.user_id))
                 )
+
             # 懒得写了就这样吧
             await showEula(event.get_user_id())
+
+            auditdata = await context_review(reply_message, "text", event.user_id)
+            if auditdata["conclusionType"] == 2:
+                reasons = [i["msg"] for i in auditdata["data"]]
+                await cave_comment.finish(
+                    _lang.text(
+                        "cave.audit_rejected", ["\n".join(reasons)], str(event.user_id)
+                    )
+                )
 
             cave_id = (
                 re.search(r"（[0-9]+）", reply_message)[0]
@@ -120,6 +130,8 @@ async def downloadImages(message: str):
             response = await client.get(url)
         content = response.read()
         if not content:
+            return False
+        if (await context_review(url, "url"))["conclusionType"] == 2:
             return False
         with open(f"data/caveImages/{imageID}.png", "wb") as f:
             f.write(content)
@@ -355,6 +367,15 @@ async def cave_add_handler(
         elif not text:
             await cave.finish(
                 _lang.text("cave.error_to_download_images", [], event.get_user_id())
+            )
+        elif (auditdata := await context_review(text, "text", event.user_id))[
+            "conclusionType"
+        ] == 2:
+            reasons = [i["msg"] for i in auditdata["data"]]
+            await cave.finish(
+                _lang.text(
+                    "cave.audit_rejected", ["\n".join(reasons)], str(event.user_id)
+                )
             )
         elif similarity_check_status := check_text_similarity(text):
             cave_data = similarity_check_status[0]
