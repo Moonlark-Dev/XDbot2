@@ -59,8 +59,7 @@ async def take_screenshot_of_website(url: str, matcher: Matcher) -> Optional[dic
         await browser.close()
     # R-18 检查
     auditdata = await context_review(
-        f"http://10.0.0.14:38192/preview/{file_name}",
-        "url"
+        f"http://10.0.0.14:38192/preview/{file_name}", "url"
     )
     logger.info(f"Auditdata: {auditdata}")
     if auditdata["conclusionType"] == 2:

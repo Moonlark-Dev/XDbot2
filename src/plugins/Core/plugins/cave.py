@@ -70,11 +70,13 @@ async def cave_comment_writer(event: GroupMessageEvent, bot: Bot):
             # 懒得写了就这样吧
             await showEula(event.get_user_id())
 
-            auditdata = await context_review(reply_message,"text",event.user_id)
+            auditdata = await context_review(reply_message, "text", event.user_id)
             if auditdata["conclusionType"] == 2:
                 reasons = [i["msg"] for i in auditdata["data"]]
                 await cave_comment.finish(
-                    _lang.text("cave.audit_rejected",["\n".join(reasons)],str(event.user_id))
+                    _lang.text(
+                        "cave.audit_rejected", ["\n".join(reasons)], str(event.user_id)
+                    )
                 )
 
             cave_id = (
@@ -366,10 +368,14 @@ async def cave_add_handler(
             await cave.finish(
                 _lang.text("cave.error_to_download_images", [], event.get_user_id())
             )
-        elif (auditdata := await context_review(text,"text",event.user_id))["conclusionType"] == 2:
+        elif (auditdata := await context_review(text, "text", event.user_id))[
+            "conclusionType"
+        ] == 2:
             reasons = [i["msg"] for i in auditdata["data"]]
             await cave.finish(
-                _lang.text("cave.audit_rejected", ["\n".join(reasons)], str(event.user_id))
+                _lang.text(
+                    "cave.audit_rejected", ["\n".join(reasons)], str(event.user_id)
+                )
             )
         elif similarity_check_status := check_text_similarity(text):
             cave_data = similarity_check_status[0]

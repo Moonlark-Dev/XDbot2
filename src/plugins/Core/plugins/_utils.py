@@ -224,15 +224,16 @@ async def get_group_id(event: MessageEvent) -> int:
         await finish(get_currency_key("need_group"), [], event.user_id)
     return int(group_id)
 
-async def context_review(context: str, _type: str, user_id: Union[int, str] = "未知") -> dict:
+
+async def context_review(
+    context: str, _type: str, user_id: Union[int, str] = "未知"
+) -> dict:
     # 目前可用 type: url, text
     # type 为 url 时 context 需以 http:// 或 https:// 开头, url 内容是一张图片
     async with httpx.AsyncClient() as client:
-        response = await client.get(
-            f"http://localhost:5000?{_type}={context}"
-        )
+        response = await client.get(f"http://localhost:5000?{_type}={context}")
     result = response.json()
-    if result["conclusionType"] == 2: # 不合规
+    if result["conclusionType"] == 2:  # 不合规
         await error.report(
             f"「内容违规提醒」\n来自用户: {user_id}\n类型: {_type}\nLog ID: {result['log_id']}"
         )
