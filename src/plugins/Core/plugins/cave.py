@@ -468,13 +468,10 @@ async def cave_status_handler(cave: Matcher, event: GroupMessageEvent):
     except:
         await _error.report()
 
+
 def get_cd_time(group_id: int) -> int:
     data = Json("cave.cd_time.json")
-    data.update({
-        "468502962": 2400,
-        "701257458": 2400,
-        "159910125": 1200
-    })
+    data.update({"468502962": 2400, "701257458": 2400, "159910125": 1200})
     return data.get(str(group_id), 3600)
 
 
@@ -486,7 +483,7 @@ async def cave_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent):
         data = json.load(open("data/cave.data.json", encoding="utf-8"))
         latest_use = json.load(open("data/cave.latest_use.json", encoding="utf-8"))
         cd_time = get_cd_time(event.group_id)
-        
+
         if time.time() - latest_use.get(f"u{event.user_id}", 0) < 600:
             await finish(
                 "cave.user_cd",
