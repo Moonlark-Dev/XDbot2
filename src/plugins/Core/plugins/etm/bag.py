@@ -4,6 +4,7 @@ from nonebot_plugin_apscheduler import scheduler
 from nonebot import require
 from . import economy
 from . import data
+from . import exp
 
 from . import rubbish
 
@@ -84,6 +85,12 @@ def _add_item(user_id, item):
 
 def add_item(user_id, item_id, item_count=1, item_data={}):
     user_id = str(user_id)
+    if item_id == "vimcoin":
+        economy.add_vi(user_id, item_count)
+        return
+    elif item_id == "exp":
+        exp.add_exp(user_id, item_count)
+        return
     try:
         for item in bags[user_id]:
             if item.item_id == item_id:
