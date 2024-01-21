@@ -231,7 +231,9 @@ async def context_review(
     # 目前可用 type: url, text
     # type 为 url 时 context 需以 http:// 或 https:// 开头, url 内容是一张图片
     async with httpx.AsyncClient() as client:
-        response = await client.get(f"http://localhost:5000?{_type}={context}")
+        response = await client.post(
+            f"http://localhost:5000/{_type}", json={"context": context}
+        )
     result = response.json()
     if result["conclusionType"] == 2:  # 不合规
         await error.report(
