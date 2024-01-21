@@ -37,9 +37,7 @@ async def show_bag(bot: Bot, event: MessageEvent, message: Message = CommandArg(
             )
         else:
             nickname = event.sender.nickname
-            reply = lang.text(
-                "bag.title", [nickname, len(data), 32], qq
-            )
+            reply = lang.text("bag.title", [nickname, len(data), 32], qq)
             length = 1
             for item in data:
                 reply += f"\n{length}. {item.data['display_name']} x{item.count}"
