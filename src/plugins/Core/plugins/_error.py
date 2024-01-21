@@ -99,7 +99,6 @@ async def report(
         await matcher.finish()
     # 反馈错误
     if err.startswith("Traceback"):
-        # reply = MessageSegment.text("") if not event else MessageSegment.reply(event.message_id)
         if feedback:
             try:
                 error_data = get_error_data(err)

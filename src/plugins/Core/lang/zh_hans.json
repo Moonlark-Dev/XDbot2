@@ -178,6 +178,7 @@
   "bank.view": "「银行账户详细信息」\n当前债务：{}vim\n===================={}",
   "pouch.help": "用法：\n --put <ID> [数量]：置入物品\n --get <ID> [数量]：取出物品\n --upgrade [数量]：拓展收纳袋（要钱）",
   "currency.unknown_argv": "未知参数：{}",
+  "currency.time": "%Y-%m-%d %H:%M:%S",
   "github.open_url": "请在浏览器打开 https://github.com/login/oauth/authorize?client_id={}&scope=repo",
   "github.login_successful": "已成功登陆到 {}",
   "towel_zip.used": "你获得了：毛巾 x16",
@@ -346,5 +347,8 @@
   "preview.access_denied": "失败：拒绝访问",
   "gssearch.not_found": "未找到{}",
   "gssearch.result": "{}\n攻略制作:猫冬 https://www.miyoushe.com/ys/accountCenter/postList?id=74019947",
-  "latex.latex": "{}"
+  "latex.latex": "{}",
+  "bag_overflow.not_found": "未找到物品: {}",
+  "currency.empty": "{}",
+  "bag_overflow.item": "「{} ({})」\n数量: {}\n剩余时间: {}\n\n{}"
 }

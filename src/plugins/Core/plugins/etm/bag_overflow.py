@@ -19,6 +19,7 @@ def add_overflow(user_id: str, item_id: str, item_count: int, item_data: dict) -
     data.changed_key.add(user_id)
 
 def get_overflow(user_id: str):
+    check_user_overflow(user_id)
     return Json("etm.overflow.json").get(user_id, {})
 
 def pop_item(user_id: str, _id: str) -> dict:
