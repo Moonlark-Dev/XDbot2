@@ -1,7 +1,7 @@
 from nonebot.adapters import Bot
 from nonebot.params import CommandArg
 from nonebot.adapters.onebot.v11 import Message
-from .su import su
+from .su import create_superuser_command, su
 from .cave import parseCave
 from ._error import report
 import traceback
@@ -112,3 +112,12 @@ async def cave(bot: Bot, message: Message = CommandArg()):
                 )
     except BaseException:
         await report(traceback.format_exc(), su)
+
+
+from ._utils import *
+
+
+@create_superuser_command("cave-cd")
+async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
+    group_id = await get_group_id(event)
+    Json("cave.cd_time.json")[str(group_id)] = int(message.extract_plain_text())

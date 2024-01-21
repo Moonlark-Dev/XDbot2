@@ -1,5 +1,7 @@
-from .. import _messenger
-from . import economy
+import asyncio
+from . import bag
+from .. import _lang as lang
+from ..send_email import send_email
 from . import exp
 import json
 import time
@@ -29,18 +31,13 @@ def unlock(name, user_id):
     user_achievement = get_user_achievement(user_id)
     if name in ACHIEVEMENTS.keys() and name not in user_achievement:
         user_achievement.append(name)
-        economy.add_vi(user_id, ACHIEVEMENTS[name]["award"]["vi"])
-        exp.add_exp(user_id, ACHIEVEMENTS[name]["award"]["exp"])
-        change_user_achievement(user_id, user_achievement)
-        _messenger.send_message(
-            (
-                f"成就已解锁：{ACHIEVEMENTS[name]['name']}\n"
-                f"时间：{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}"
-                f"\n{ACHIEVEMENTS[name]['info']}"
-                if "info" in ACHIEVEMENTS[name].keys()
-                else ""
-            ),
-            receive=user_id,
+        asyncio.create_task(
+            send_email(
+                str(user_id),
+                lang.text("achievement.email_title", [name], user_id),
+                ACHIEVEMENTS[name]["condition"],
+                ACHIEVEMENTS[name]["award"],
+            )
         )
 
 

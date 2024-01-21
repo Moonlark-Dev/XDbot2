@@ -109,7 +109,6 @@ class Item(ABC):
             return count
         elif self.count < self.data["maximum_stack"]:
             count -= self.data["maximum_stack"] - self.count
-            self.add(count)
             return count
         else:
             return 0

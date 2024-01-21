@@ -350,5 +350,6 @@
   "latex.latex": "{}",
   "bag_overflow.not_found": "未找到物品: {}",
   "currency.empty": "{}",
-  "bag_overflow.item": "「{} ({})」\n数量: {}\n剩余时间: {}\n\n{}"
+  "bag_overflow.item": "「{} ({})」\n数量: {}\n剩余时间: {}\n\n{}",
+  "achievement.email_title": "成就已解锁: {}"
 }
