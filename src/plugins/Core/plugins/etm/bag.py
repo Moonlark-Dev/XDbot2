@@ -1,3 +1,4 @@
+# from plugins.Core.plugins.etm.item import Item
 from . import items
 from .item_basic_data import BASIC_DATA
 from nonebot_plugin_apscheduler import scheduler
@@ -5,7 +6,7 @@ from nonebot import require
 from . import economy
 from . import data
 from . import exp
-
+from .bag_overflow import add_overflow
 from . import rubbish
 
 require("nonebot_plugin_apscheduler")
@@ -74,6 +75,9 @@ def get_user_bag(user_id):
 
 def _add_item(user_id, item):
     try:
+        if len(bags[str(user_id)]) >= 32:
+            add_overflow(user_id, item.item_id, item.count, item.data)
+            return
         bags[str(user_id)].append(item)
     except KeyError:
         bags[str(user_id)] = [item]
