@@ -4,6 +4,7 @@ from . import bag
 from . import economy
 from .item_basic_data import BASIC_DATA
 from .._lang import text
+import time
 
 
 class Pouch(Item):
@@ -13,7 +14,7 @@ class Pouch(Item):
             "display_message": "收纳物品\n \x00",
             "items": [],
             "price": 10,
-            "maximum_stack": 1,
+            "maximum_stack": 16,
             "max_item_count": 16,
         }
         self.item_id = "pouch"
@@ -110,6 +111,14 @@ class Pouch(Item):
         self.data["items"].append({"id": item_id, "count": int(args[2]), "data": nbt})
         self.update_info()
         _item = items.json2items([self.data["items"][-1]])[0]
+
+        bag.add_item(self.user_id, self.item_id, 1, self.data)
+        self.count -= 1
         return [
             text("pouch.put", [_item.data["display_name"], int(args[2])], self.user_id)
         ]
+
+    def add(self, count, _data=...):
+        if self.data["items"]:
+            return 0
+        return super().add(count, _data)
