@@ -9,6 +9,7 @@ async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
     bag.bags[user_id] = merger.merge_item_list(bag.bags[user_id])
     await finish(get_currency_key("ok"), [], user_id)
 
+
 # [HELPSTART] Version: 2
 # Command: bag-tidy
 # Msg: 整理背包
