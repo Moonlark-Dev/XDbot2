@@ -29,7 +29,7 @@ def pop_item(user_id: str, _id: str) -> dict:
 
 def check_overflow_item(user_id: str, _id: str) -> None:
     if time.time() - Json("etm.overflow.json")[user_id][_id]["time"] >= 1800:
-        item = pop_item(user_id, _id):
+        item = pop_item(user_id, _id)
         add_crr(
             item["id"],
             item["count"],
