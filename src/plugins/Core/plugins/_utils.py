@@ -36,7 +36,11 @@ def create_command(cmd: str, aliases: set = set(), **kwargs):
             try:
                 logger.info(f"处理模块: {func.__module__}")
                 await func(bot, event, message)
-            except:
+            except IndexError as e:
+                if "arg" in str(e):
+                    await finish(get_currency_key("wrong_argv"), [cmd], event.user_id)
+                await error.report()
+            except Exception:
                 await error.report()
 
         matcher.append_handler(handler)
