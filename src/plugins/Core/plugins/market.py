@@ -254,29 +254,29 @@ async def sell_item(event: MessageEvent, bot: Bot, message: Message = CommandArg
             price = max(0, float(get_list_item(argv, 2, get_average(item.item_id))))
             if item.data["can_be_sold"]:
                 if count <= item.count:
-                    if (
-                        price
-                        <= min(get_average(item.item_id) * 2, item.data["price"] * 7)
-                        or item.item_id == "pouch"
-                    ):
-                        id = 1
-                        while True:
-                            if str(id) not in data.keys():
-                                break
-                            else:
-                                id += 1
-                        data[str(id)] = {
-                            "id": str(id),
-                            "count": count,
-                            "item": {"id": item.item_id, "count": 1, "data": item.data},
-                            "seller": await bot.get_stranger_info(user_id=user_id),
-                            "price": price,
-                        }
-                        save_data()
-                        item.count -= count
-                        await market.finish(f"已出售（#{id}）")
-                    else:
-                        await market.finish("失败：价格过高")
+                    # if (
+                    #     price
+                    #     <= min(get_average(item.item_id) * 2, item.data["price"] * 7)
+                    #     or item.item_id == "pouch"
+                    # ):
+                    id = 1
+                    while True:
+                        if str(id) not in data.keys():
+                            break
+                        else:
+                            id += 1
+                    data[str(id)] = {
+                        "id": str(id),
+                        "count": count,
+                        "item": {"id": item.item_id, "count": 1, "data": item.data},
+                        "seller": await bot.get_stranger_info(user_id=user_id),
+                        "price": price,
+                    }
+                    save_data()
+                    item.count -= count
+                    await market.finish(f"已出售（#{id}）")
+                    # else:
+                    #     await market.finish("失败：价格过高")
                 else:
                     await market.finish("失败：数量不足")
             else:
