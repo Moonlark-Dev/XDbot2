@@ -250,8 +250,8 @@ async def sell_item(event: MessageEvent, bot: Bot, message: Message = CommandArg
         argv = str(message).split(" ")
         if argv[0] == "sell":
             item = bag.get_user_bag(user_id)[int(argv[1]) - 1]
-            count = max(1, int(argv[2]))
-            price = max(0, float(argv[3]))
+            count = max(1, int(get_list_item(argv, 1, item.count)))
+            price = max(0, float(get_list_item(argv, 2, get_average(item.item_id))))
             if item.data["can_be_sold"]:
                 if count <= item.count:
                     if (
