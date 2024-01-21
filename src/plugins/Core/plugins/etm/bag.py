@@ -31,14 +31,12 @@ def get_items_count_in_bag(user_id):
     return count
 
 
-@scheduler.scheduled_job("cron", second="*/5", id="save_bags")
+@scheduler.scheduled_job("cron", second="*/3", id="save_bags")
 def save_bags():
     bag_data = {}
     for user_id, bag in list(bags.items()):
         bag_data[user_id] = []
         for item in bag:
-            if item.item_id == "pouch" and item.count >= 1:
-                item.count = 1
             if item.count > 0:
                 # 处理nbt
                 nbt = item.data.copy()
@@ -50,10 +48,8 @@ def save_bags():
                         pass
                 for key in list(item.basic_data.keys()):
                     try:
-                        # print(key, nbt[key], item.basic_data[key])
                         if nbt[key] == item.basic_data[key]:
                             nbt.pop(key)
-
                     except BaseException:
                         pass
                 bag_data[user_id].append(
@@ -62,10 +58,10 @@ def save_bags():
     data.bags = bag_data
     get_bags()
     # 超出容量处理
-    for user in list(bags.keys()):
-        count = get_items_count_in_bag(user)
-        if count > 128:
-            economy._add_vimcoin(user, -0.001 * (count - 128))
+    # for user in list(bags.keys()):
+    #     count = get_items_count_in_bag(user)
+    #     if count > 128:
+    #         economy._add_vimcoin(user, -0.001 * (count - 128))
 
 
 def get_user_bag(user_id):
