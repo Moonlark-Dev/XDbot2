@@ -31,12 +31,15 @@ def unlock(name, user_id):
     user_achievement = get_user_achievement(user_id)
     if name in ACHIEVEMENTS.keys() and name not in user_achievement:
         user_achievement.append(name)
-        asyncio.create_task(send_email(
-            str(user_id),
-            lang.text("achievement.email_title", [name], user_id),
-            ACHIEVEMENTS[name]["condition"],
-            ACHIEVEMENTS[name]["award"]
-        ))
+        asyncio.create_task(
+            send_email(
+                str(user_id),
+                lang.text("achievement.email_title", [name], user_id),
+                ACHIEVEMENTS[name]["condition"],
+                ACHIEVEMENTS[name]["award"],
+            )
+        )
+
 
 def get_unlck_progress(name, user_id):
     user_data = data.achi_unlock_progress
