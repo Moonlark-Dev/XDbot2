@@ -243,24 +243,25 @@ async def context_review(
         if result["conclusionType"] == 2:  # 不合规
             reasons = [i["msg"] for i in result["data"]]
             await error.report(
-                f"「内容违规提醒」\n来自用户: {user_id}\n类型: {_type}\nLog ID: {result['log_id']}\n违规原因:\n"+"\n".join(reasons)
+                f"「内容违规提醒」\n来自用户: {user_id}\n类型: {_type}\nLog ID: {result['log_id']}\n违规原因:\n"
+                + "\n".join(reasons)
             )
     except KeyError:
         await error.report(
             f"「审核失败提醒」\n来自用户: {user_id}\n类型: {_type}\nLog ID: {result['log_id']}\nError Code: {result['error_code']}\nError Msg: {result['error_msg']}"
         )
         return {
-            "log_id": result['log_id'],
-            "conclusion":"不合规",
-            "conclusionType":2,
-            "data":[
+            "log_id": result["log_id"],
+            "conclusion": "不合规",
+            "conclusionType": 2,
+            "data": [
                 {
-                    "type":0,
-                    "subType":0,
-                    "conclusion":"不合规",
-                    "conclusionType":2,
-                    "msg":"审核失败默认不通过"
+                    "type": 0,
+                    "subType": 0,
+                    "conclusion": "不合规",
+                    "conclusionType": 2,
+                    "msg": "审核失败默认不通过",
                 }
-            ]
+            ],
         }
     return result
