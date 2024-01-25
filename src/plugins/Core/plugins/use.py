@@ -5,8 +5,6 @@ from nonebot.adapters.onebot.v11.event import MessageEvent
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.params import CommandArg
 from .etm import bag
-
-# from . import _lang as lang
 from . import _error as error
 import traceback
 
@@ -24,4 +22,4 @@ async def use_item(event: MessageEvent, message: Message = CommandArg()):
     except ValueError:
         pass
     except BaseException:
-        await error.report(traceback.format_exc(), use_cmd)
+        await error.report(traceback.format_exc())

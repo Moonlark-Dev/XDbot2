@@ -1,6 +1,7 @@
+from .etm import bag
 from .send_email import submit_email
 from ._utils import finish
-from .etm import items, data, bag, merger
+from .etm import data, json2items, merger
 from .su import su
 from nonebot_plugin_apscheduler import scheduler
 from nonebot import logger, on_command
@@ -19,8 +20,8 @@ import hashlib
 from typing import List
 
 try:
-    import json5
-except BaseException:
+    json5 = __import__("json5")
+except Exception:
     json5 = json
 
 
@@ -49,7 +50,7 @@ def render_email(data, user_id):
     if data["items"]:
         email += _lang.text("email.items", [], user_id)
         length = 0
-        for item in items.json2items(data["items"]):
+        for item in json2items.json2items(data["items"]):
             length += 1
             email += f'\n{length}. {item.data["display_name"]} x{item.count}'
     return email
@@ -115,7 +116,7 @@ async def su_mail(event: MessageEvent, message: Message = CommandArg()) -> None:
                 await submit_email(data[argv[2]])
                 await su.finish("完成！")
     except BaseException:
-        await _error.report(traceback.format_exc(), su)
+        await _error.report(traceback.format_exc())
 
 
 @on_command("查看邮件", aliases={"view-emails", "ve", "ckyj"}).handle()
@@ -169,7 +170,7 @@ async def claim_all(matcher: Matcher, event: MessageEvent):
         item_list = ""
         length = 0
 
-        for item in merger.merge_item_list(items.json2items(all_items)):
+        for item in merger.merge_item_list(json2items.json2items(all_items)):
             length += 1
             item_list += f"\n{length}. {item.data['display_name']} x{item.count}"
         await finish("email.get", [item_list], event.user_id)

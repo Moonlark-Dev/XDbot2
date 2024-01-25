@@ -1,9 +1,9 @@
-from . import economy
+from .. import economy
 import random
-from .item import Item
-from .. import _lang
-from . import achievement, buff
-from .economy import IllegalQuantityException
+from ..item import Item
+from ... import _lang
+from .. import achievement, buff
+from ..economy import IllegalQuantityException
 
 
 class Dice(Item):
@@ -16,7 +16,7 @@ class Dice(Item):
             "int": None,
         }
 
-    def result(self, c, is_data=False):
+    def result(self, c: int, is_data=False):
         if is_data:
             return c
         if 193 <= c <= 200:  # 20
@@ -31,6 +31,7 @@ class Dice(Item):
             return random.randint(2, 9)
         elif c <= 15:  # 1
             return 1
+        return 0
 
     def use(self, args):
         if not self.data["useable"]:

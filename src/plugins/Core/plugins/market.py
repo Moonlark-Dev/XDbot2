@@ -4,8 +4,10 @@ from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Bot, Message, MessageEvent, GroupMessageEvent
 from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot.params import CommandArg
+
+from .etm import bag
 from ._utils import *
-from .etm import items, user, economy, bag, item
+from .etm import json2items, user, economy, item
 from . import _error, _lang
 import traceback
 
@@ -29,7 +31,7 @@ def get_average(item_id):
     try:
         return average_price[item_id]
     except BaseException:
-        return items.json2items([{"id": item_id, "count": 1, "data": {}}])[0].data[
+        return json2items.json2items([{"id": item_id, "count": 1, "data": {}}])[0].data[
             "price"
         ]
 
@@ -68,7 +70,7 @@ async def item_list(bot: Bot, event: MessageEvent, message: Message = CommandArg
                 ]
             )
             for item_data in list(data.values())[page * 100 - 100 : page * 100]:
-                item = items.json2items([item_data["item"]])[0]
+                item = json2items.json2items([item_data["item"]])[0]
                 node_messages.append(
                     MessageSegment.node_custom(
                         event.user_id,
@@ -109,7 +111,7 @@ async def view_item(event: MessageEvent, message: Message = CommandArg()):
         argv = str(message).split(" ")
         if argv[0] == "view":
             item_data = data[argv[1]]
-            item = items.json2items([item_data["item"]])[0]
+            item = json2items.json2items([item_data["item"]])[0]
             await market.finish(
                 _lang.text(
                     "market.view",
@@ -134,7 +136,7 @@ async def view_item(event: MessageEvent, message: Message = CommandArg()):
                 )
             )
     except BaseException:
-        await _error.report(traceback.format_exc(), market)
+        await _error.report(traceback.format_exc())
 
 
 def check_item(item: item.Item, keyword: str):
@@ -162,7 +164,7 @@ async def search_item(bot: Bot, event: MessageEvent, message: Message = CommandA
             )
             item_count = 0
             for item_data in list(data.values()):
-                item = items.json2items([item_data["item"]])[0]
+                item = json2items.json2items([item_data["item"]])[0]
                 if not check_item(item, argv[1]):
                     continue
                 item_count += 1
@@ -240,7 +242,7 @@ async def buy_item(event: MessageEvent, message: Message = CommandArg()):
             else:
                 await market.finish("错误：库存不足")
     except BaseException:
-        await _error.report(traceback.format_exc(), market)
+        await _error.report(traceback.format_exc())
 
 
 @market.handle()
@@ -250,15 +252,10 @@ async def sell_item(event: MessageEvent, bot: Bot, message: Message = CommandArg
         argv = str(message).split(" ")
         if argv[0] == "sell":
             item = bag.get_user_bag(user_id)[int(argv[1]) - 1]
-            count = max(1, int(get_list_item(argv, 1, item.count)))
-            price = max(0, float(get_list_item(argv, 2, get_average(item.item_id))))
+            count = max(1, int(get_list_item(argv, 2, item.count)))
+            price = max(0, float(get_list_item(argv, 3, get_average(item.item_id))))
             if item.data["can_be_sold"]:
                 if count <= item.count:
-                    # if (
-                    #     price
-                    #     <= min(get_average(item.item_id) * 2, item.data["price"] * 7)
-                    #     or item.item_id == "pouch"
-                    # ):
                     id = 1
                     while True:
                         if str(id) not in data.keys():
@@ -269,18 +266,16 @@ async def sell_item(event: MessageEvent, bot: Bot, message: Message = CommandArg
                         "id": str(id),
                         "count": count,
                         "item": {"id": item.item_id, "count": 1, "data": item.data},
-                        "seller": await bot.get_stranger_info(user_id=user_id),
+                        "seller": await bot.get_stranger_info(user_id=int(user_id)),
                         "price": price,
                     }
                     save_data()
                     item.count -= count
                     await market.finish(f"已出售（#{id}）")
-                    # else:
-                    #     await market.finish("失败：价格过高")
                 else:
                     await market.finish("失败：数量不足")
             else:
                 await market.finish("失败：物品不可出售")
 
     except BaseException:
-        await _error.report(traceback.format_exc(), market)
+        await _error.report(traceback.format_exc())

@@ -1,12 +1,13 @@
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import Message, MessageEvent
-from .etm import exp, economy, bag, items, user
+from .etm import bag
+from .etm import exp, economy, json2items, user
 from nonebot.params import CommandArg
 from . import _lang as lang
 from . import _error as error
 import json
 import traceback
-from .etm import mystery_box
+# from .etm.json2items import mystery_box
 
 shop = on_command("shop", aliases={"系统商店", "systemshop", "ss"})
 SHOP_ITEMS = {
@@ -21,7 +22,7 @@ SHOP_ITEMS = {
     "6": {"id": "archfiend_dice", "count": 1, "data": {}},
     # "7": {"id": "talisman", "count": 1, "data": {}}
 }
-mystery_box.SHOP_ITEMS = SHOP_ITEMS
+# mystery_box.SHOP_ITEMS = SHOP_ITEMS
 
 
 @shop.handle()
@@ -32,11 +33,11 @@ async def shop_handler(event: MessageEvent, message: Message = CommandArg()):
         if arguments[0] == "":
             reply = f"「系统商店」\n——————————————"
             for item_id, item_dict in list(SHOP_ITEMS.items()):
-                item = items.json2items([item_dict])[0]
+                item = json2items.json2items([item_dict])[0]
                 reply += f"\n{item_id}. {item.data['display_name']} {economy.vi2vim(item.data['price'])}vim"
             await shop.finish(reply)
         elif arguments[0] == "view":
-            item = items.json2items([SHOP_ITEMS[arguments[1]]])[0]
+            item = json2items.json2items([SHOP_ITEMS[arguments[1]]])[0]
             await shop.finish(
                 (
                     f"「商品信息（#{arguments[1]}）」\n"
@@ -47,7 +48,7 @@ async def shop_handler(event: MessageEvent, message: Message = CommandArg()):
                 )
             )
         elif arguments[0] == "buy":
-            item = items.json2items([SHOP_ITEMS[arguments[1]]])[0]
+            item = json2items.json2items([SHOP_ITEMS[arguments[1]]])[0]
             if len(arguments) >= 3:
                 count = min(int(arguments[2]), int(item.data["maximum_stack"]))
             else:
@@ -60,4 +61,4 @@ async def shop_handler(event: MessageEvent, message: Message = CommandArg()):
                 await shop.finish("失败：余额不足！", at_sender=True)
 
     except BaseException:
-        await error.report(traceback.format_exc(), shop)
+        await error.report(traceback.format_exc())
