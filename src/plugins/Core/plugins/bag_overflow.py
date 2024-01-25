@@ -52,6 +52,8 @@ async def _(bot: Bot, event: MessageEvent, message: Message):
             )
 
         case _:
+            if not overflow.get_overflow(user_id=user_id):
+                await finish("bag_overflow.empty", [], user_id)
             await send_node_message(
                 bot,
                 await generate_node_message(

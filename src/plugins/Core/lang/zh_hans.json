@@ -35,7 +35,6 @@
   "forward._user": "用户：",
   "forward.group": "「群消息转发」",
   "forward._group": "群聊：",
-
   "help.list": "命令列表 —— XDbot2\n{}\n使用 {}help <命令> 获取更多信息",
   "help.list_item": "[{}] {}: {}",
   "help.command_status": "「状态说明」\n[√]: 正常工作\n[X]: 无法使用\n[O]: 受限",
@@ -44,7 +43,6 @@
   "help.info": "[{}] {}: {}\n\n用法: \n{}",
   "help.unknown_command": "未知指令: {}",
   "help.command_start": "「温馨提示」\n所有命令都需要前缀[{}], 例如查询今日人品时, 您需要发送[{}jrrp]而不是仅发送[jrrp]",
-
   "jrrp.notice": "开始使用「今日人品」即代表您已阅读并同意《XDbot2「今日人品」用户协议》（https://github.com/ITCraftDevelopmentTeam/XDbot2/discussions/468）。祝您玩得开心！",
   "jrrp.new_record": "个人最高记录已刷新",
   "jrrp.num.100": "{}！100！！100！！！",
@@ -226,7 +224,6 @@
   "github.repo_archived": "(只读)",
   "version.version": "当前版本：{}\n{}",
   "mystery_box.get": "你获得了：",
-
   "chatgpt.user_info": "[XDbot2GPT] 用户信息：\n剩余：{}\n限免（次）：{}",
   "chatgpt.session_changed": "[XDbot2GPT]\n已切换到会话：{}",
   "chatgpt.chatgpt": "[XDbot2GPT]\n{}\n{}",
@@ -244,32 +241,27 @@
   "chatgpt.free": "限免：{} (-1)",
   "chatgpt.buy_success": "[XDbot2GPT]\n成功购买 {} Tokens",
   "chatgpt.need_group": "[XDbot2GPT] 错误：\n需要在群聊使用",
-  
   "pay.vim_not_enough": "错误：vim余额不足",
   "pay.sucess": "完成",
   "pay.failed": "失败：非法参数",
   "pacman.need_pkg_name": "错误：需要附上包名进行搜索",
   "pacman.pkg_info": "包名：{}\n版本：{}\n架构：{}\n简介：{}\n最后更新：{}\n{}",
   "pacman.wait": "Pacman 正在搜索（这需要一些时间），请稍候 ...",
-
   "cm.blocked": "[CM] 命令 {} （及别名）已在此群禁用",
   "cm.block_failed": "[CM] 禁用命令 {} 失败：\n命令无效或已被禁用",
   "cm.unblocked": "[CM] 命令 {} 已在此群启用",
   "cm.unblock_failed": "[CM] 启用命令 {} 失败：\n命令无效或未被禁用",
   "cm.blocked_command_list": "[CM] 已禁用的命令：\n{}",
-
   "redpacket.info": "[RP] [CQ:at,qq={}] 发了一个拼手气红包，回复本消息并发送「抢」领取",
   "redpacket.open": "你打开了 [CQ:at,qq={}] 的红包，获得了：{}vi",
   "redpacket.finish": "[RP] [CQ:at,qq={}] 的红包已被抢完",
   "redpacket.repay_subject": "红包退还通知",
   "redpacket.repay_message": "您发送的红包中剩余 {}vi 未被领取，已退还到您的帐户",
-
   "synthesis.list_title": "「合成配方列表」\n正在预览：{}/{}页\n每次合成需消耗「猫爪币 x1」",
   "synthesis.list_item": "「合成配方（#{}）」\n合成结果：\n{}\n所需材料：\n{}",
   "synthesis.item_not_found": "合成失败：无效的配方",
   "synthesis.done": "合成成功！\n消耗物品：\n{}\n获得物品：\n{}",
   "synthesis.item_not_enough": "合成失败：所需材料不足",
-
   "reply.add_reply_text": "[SR] 请发送回复文本（发送「cancel」取消）",
   "reply.add_match_text": "[SR] 请发送匹配文本（发送「cancel」取消）",
   "reply.canceled": "操作已取消！",
@@ -282,12 +274,10 @@
   "reply.list_title": "「调教数据列表」\n当前页面：{}/{}\n使用 /reply list <页> 查看更多",
   "reply.not_found": "错误：数据不存在！",
   "reply.show_data": "「调教数据（#{}）」\n投稿者：{}\n触发器类型：{}\n触发文本：{}\n回复文本：{}",
-
   "duel_equip.show_euqip": "「当前装备（{}）」\n武器：{} (Lv: {})\n遗器：<未解锁>\n面位球：{} (Lv: {})\n弱点：{}",
   "duel.duel_request": "[CQ:at,qq={}] [DL] [CQ:at,qq={}] 向你发送了一个决斗申请。\n \n使用「/duel-accept」接受\n使用「/duel-refuse」拒绝\n \n请求将在三分钟后过期",
   "duel.no_request": "[DL] 错误：没有可用决斗申请",
   "duel.result": "[DL] 战斗结束，胜者为 [CQ:at,qq={}]！",
-
   "quickmath_points.ranking_title": "「速算积分榜（剩余{}）」\n",
   "quickmath_points.ranking_item": "{}. {}: {}-{}\n",
   "quickmath_points.email_title": "速算积分结算通知",
@@ -295,23 +285,18 @@
   "quickmath_points.qus_count": "\n今日答题总数：{}\n",
   "quickmath_points.level_rewards_title": "\n结算后奖励：",
   "quickmath_points.level_rewards": "\n{}: {}vi {}exp",
-
   "create_manpage.404": "未找到命令",
   "create_manpage.saved": "Manpage 已保存到 {}",
-
   "currency.no_money": "余额不足！（需要 {} vim）",
   "currency.need_group": "此指令只支持群聊使用！",
   "currency.ok": "完成！",
   "currency.wrong_argv": "错误：不正确的参数！\n使用「/help {}」获取更多信息",
-
   "whoami.text": "用户 ID: {}\n用户呢称: {}",
   "whoami.text.detail": "用户 ID: {}\n用户呢称: {}\n用户性别: {}\n用户年龄: {}\n用户等级: {}\n用户权限: {}\n用户名片: {}",
   "whoami.findhelp": "错误：不正确的参数！",
-
   "etm_user.died": "You died and lost {} vimcoin(s)!",
   "archfient_dice.info_1_5": "数字是：{}！{}HP",
   "archfient_dice.info_6": "数字是：6！+45HP，获得了 75vim\n物品「恶魔骰子」已损坏",
-
   "macount.info": "消息含妈量（近 10 分钟）：{}% ({}/{})",
   "wish.result": "「祈愿结果（总第 {}）」\n[{}]: {} ({})",
   "wish.type_ball": "面位球",
@@ -319,20 +304,16 @@
   "lgs.launch": "原神，启动！",
   "preview.auto": "完成！(开启：{})",
   "lgs.status": "您一共启动了 {} 次原神",
-
   "progress.year": "{}年已经过去 {}%",
   "progress.mon": "{}年{}月已经过去 {}%",
   "progress.day": "{}年{}月{}日已经过去 {}%",
-  
   "common_rubbish.display_name": "普通的垃圾",
   "common_rubbish.display_message": "也许正如它的名字一样，非常普通\n\n可能包哈以下物品: \n1. 压缩毛巾\n2. 毛巾\n3. 神秘碎片\n4. 书与笔\n5. 收纳袋",
   "common_rubbish.use_title": "你打开了 {} 个「普通的垃圾」，获得了以下物品：",
   "common_rubbish.use_item": "\n{}. {} x{}",
-
   "bots.message_from": "[来自 {}]:\n",
   "bots.waiting_node": "正在拉取信息, 请稍候 ...",
   "reply.clone_successful": "[SR] 已成功克隆 {} 条数据",
-
   "su.__base__": "[SU] {}",
   "su.need_argv": "错误: 需要参数",
   "su.unknown_user": "未知用户: {}",
@@ -351,5 +332,6 @@
   "bag_overflow.not_found": "未找到物品: {}",
   "currency.empty": "{}",
   "bag_overflow.item": "「{} ({})」\n数量: {}\n剩余时间: {}\n\n{}",
-  "achievement.email_title": "成就已解锁: {}"
+  "achievement.email_title": "成就已解锁: {}",
+  "bag_overflow.empty": "当前没有溢出的物品！"
 }
