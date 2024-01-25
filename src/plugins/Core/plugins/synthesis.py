@@ -1,5 +1,6 @@
+from .etm import bag
 from ._utils import *
-from .etm import bag, exp, items
+from .etm import exp, json2items
 from .etm.item import Item
 import os
 import math
@@ -43,8 +44,8 @@ def list_items(page: int, self_id: int, user_id: int) -> list[dict]:
     ]
 
     for item_data in item_list[100 * (page - 1) : 100 * page]:
-        result_items = items.json2items(item_data["result"])
-        required_items = items.json2items(item_data["required"])
+        result_items = json2items.json2items(item_data["result"])
+        required_items = json2items.json2items(item_data["required"])
         node_messages.append(
             {
                 "type": "node",
@@ -114,8 +115,8 @@ async def send_crafting_result(item_data: dict, count: int, user_id: str):
     await finish(
         "synthesis.done",
         [
-            items2text(items.json2items(reduced_items)),
-            items2text(items.json2items(item_data["result"])),
+            items2text(json2items.json2items(reduced_items)),
+            items2text(json2items.json2items(item_data["result"])),
         ],
         user_id,
     )

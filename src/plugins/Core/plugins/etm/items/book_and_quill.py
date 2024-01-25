@@ -1,7 +1,7 @@
-from .item import Item
-from .._lang import text
+from ..item import Item
+from ..._lang import text
 import nonebot
-from . import exp
+from .. import exp
 
 
 class BookAndQuill(Item):

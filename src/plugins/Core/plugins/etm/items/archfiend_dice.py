@@ -1,8 +1,8 @@
-from .item import Item
-from . import economy
-from .user import remove_hp
+from ..item import Item
+from .. import economy
+from ..user import remove_hp
 import random
-from .._utils import lang
+from ..._utils import lang
 
 
 class ArchfiendDice(Item):
