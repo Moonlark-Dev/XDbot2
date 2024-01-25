@@ -1,9 +1,9 @@
 from nonebot import on_command
 from nonebot.adapters.onebot.v11 import GroupMessageEvent, Bot
-from . import _lang
+from ..plugins import _lang
 import os.path
 import traceback
-from . import _error
+from ..plugins import _error
 
 upload_log = on_command("upload-log", aliases={"上传日志"})
 
