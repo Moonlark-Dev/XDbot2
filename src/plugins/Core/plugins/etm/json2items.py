@@ -1,4 +1,4 @@
-from .json2items import mystery_box
+from .items import mystery_box
 from .item import Item
 from .item_list import ITEMS
 from .items import rubbish
