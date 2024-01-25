@@ -129,8 +129,9 @@ async def preview_website(event: MessageEvent, message: Message = CommandArg()):
         # 截取网页
         ret = await take_screenshot_of_website(url, preview)
         if ret is not None:
+            reasons = [i["msg"] for i in ret["data"]]
             await finish(
-                "preview.nsfw", [ret["data"][0]["msg"]], event.user_id, False, True
+                "preview.nsfw", ["\n".join(reasons)], event.user_id, False, True
             )
 
     except FinishedException:
