@@ -1,6 +1,6 @@
-from ._utils import *
+from ..plugins._utils import *
 from .etm import economy, bag
-from .duel.monomer import load_json
+from ..plugins.duel.monomer import load_json
 import os
 import os.path
 import random
