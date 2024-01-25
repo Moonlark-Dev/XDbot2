@@ -7,6 +7,7 @@ from . import _lang as lang
 from . import _error as error
 import json
 import traceback
+
 # from .etm.json2items import mystery_box
 
 shop = on_command("shop", aliases={"系统商店", "systemshop", "ss"})

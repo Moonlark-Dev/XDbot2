@@ -11,7 +11,6 @@ def json2items(items, user_id=None):
     ...
 
 
-
 class MysteryBoxLevel1(Item):
     def on_register(self):
         self.basic_data = {
@@ -76,9 +75,7 @@ class MysteryBoxLevel1(Item):
                 {"item_id": "auto_sign_coupon", "count": [1, 5]},
                 {"item_id": "talisman", "count": [1, 2]},
             ],
-            "legend": [
-                {"item_id": "mysterybox_lv1", "count": [1, 2]},
-            ],
+            "legend": [{"item_id": "mysterybox_lv1", "count": [1, 2]}],
         }
 
     def use(self, args):

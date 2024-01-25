@@ -96,7 +96,9 @@ def add_item(user_id, item_id, item_count=1, item_data={}):
             if item.item_id == item_id:
                 item_count -= item.add(item_count, item_data)
         if item_count > 0:
-            _add_item(user_id, json2items.ITEMS[item_id](item_count, item_data, user_id))
+            _add_item(
+                user_id, json2items.ITEMS[item_id](item_count, item_data, user_id)
+            )
     except KeyError:
         bags[user_id] = []
         add_item(user_id, item_id, item_count, item_data)
