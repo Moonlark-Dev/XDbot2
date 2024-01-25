@@ -1,7 +1,7 @@
 from .json2items import mystery_box
 from .item import Item
 from .item_list import ITEMS
-from .json2items import rubbish
+from .items import rubbish
 
 
 def json2items(items, user_id=None) -> list[Item]:
