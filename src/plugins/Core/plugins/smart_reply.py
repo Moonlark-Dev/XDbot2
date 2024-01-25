@@ -23,7 +23,7 @@ def get_rules(group_id: int):
         return []
 
 
-def get_rule_data(group_id: int, rule_id: str): 
+def get_rule_data(group_id: int, rule_id: str):
     return Json(f"reply/g{group_id}/{rule_id}.json").to_dict()
 
 
@@ -66,7 +66,11 @@ def get_rule_reply(rule_id: str, group_id: int):
 async def match_rules(bot: Bot, event: GroupMessageEvent):
     global sent_messages
     message = str(event.get_message())
-    if random.random() > Json("reply/config/group_probability.json").get("group_id", 1) or random.random() > Json("reply/config/probability.json").get(event.get_user_id(), 1):
+    if random.random() > Json("reply/config/group_probability.json").get(
+        "group_id", 1
+    ) or random.random() > Json("reply/config/probability.json").get(
+        event.get_user_id(), 1
+    ):
         return
     for rule_id in get_rules(event.group_id):
         if is_matched_rule(rule_id, event.group_id, message):
