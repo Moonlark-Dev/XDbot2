@@ -1,6 +1,6 @@
-from ..item import Item
+from ..plugins.etm.item import Item
 from ...duel.monomer import load_json
-from ..._utils import Json, lang
+from ..plugins._utils import Json, lang
 
 
 class Weapons(Item):

@@ -7,7 +7,10 @@ from .items import rubbish
 def json2items(items, user_id=None) -> list[Item]:
     item_list = []
     for item in items:
-        item_list.append((ITEMS[item["id"]](item["count"], item["data"], user_id)))
+        try:
+            item_list.append((ITEMS[item["id"]](item["count"], item["data"], user_id)))
+        except KeyError:
+            pass
     return item_list
 
 
