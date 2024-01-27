@@ -1,4 +1,6 @@
 import random
+from ...._utils import *
+from ...bag import add_item
 from typing import TYPE_CHECKING, Literal
 from ..item import DuelItem
 if TYPE_CHECKING:
@@ -26,3 +28,17 @@ class DuelWeapons(DuelItem):
         if random.random() <= self.entity.critical_strike[0]:
             harm *= self.entity.critical_strike[1]
         return harm
+
+    def use_item(self):
+        data = Json(f"duel2/users/{self.user_id}.json")
+        original_weapons: dict | None = data.get("weapons")
+        data["weapons"] = {
+            "id": self.item_id,
+            "count": 1,
+            "data": self.data
+        }
+        if original_weapons:
+            add_item(self.user_id, original_weapons["id"], 1, original_weapons["data"])
+        self.count -= 1
+        return lang.text("weapons.used", [self.data["display_name"]], self.user_id)
+

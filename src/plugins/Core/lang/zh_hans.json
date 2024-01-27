@@ -336,5 +336,6 @@
   "stick.display_name": "木棍",
   "stick.display_message": "既是合成材料，也可以作为武器",
   "hand.display_name": "手",
-  "hand.display_message": "你的右手"
+  "hand.display_message": "你的右手",
+  "weapons.used": "已装备：{}"
 }
