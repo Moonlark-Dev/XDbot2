@@ -8,6 +8,7 @@ import json
 # from nonebot.log import logger
 from .data import vimcoin
 
+
 # @scheduler.scheduled_job("cron", hour="*/1", id="additem")
 async def add_item():
     vimcoin["item_count"] += 175
