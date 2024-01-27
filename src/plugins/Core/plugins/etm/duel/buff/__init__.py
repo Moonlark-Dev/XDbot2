@@ -13,3 +13,6 @@ class Buff:
 
     def on_action(self) -> None:
         pass
+
+    def on_attack(self, harm: float) -> float:
+        return harm
