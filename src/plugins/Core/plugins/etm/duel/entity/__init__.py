@@ -7,6 +7,7 @@ from ..item.weapons import DuelWeapons
 from ..item.hand import Hand
 from ..item.passive import DuelPassiveItem
 
+
 class Items(TypedDict):
     weapons: DuelWeapons
     passive: list[DuelPassiveItem]
@@ -15,11 +16,7 @@ class Items(TypedDict):
 
 class Entity:
     def __init__(self) -> None:
-        self.items: Items = {
-            "weapons": Hand(1, {}, None),
-            "other": [],
-            "passive": []
-        }
+        self.items: Items = {"weapons": Hand(1, {}, None), "other": [], "passive": []}
         self.buff: list[Buff] = []
         self.max_hp: int = 100
         self.hp = 0
@@ -34,7 +31,11 @@ class Entity:
         self.dodge: float = 0
 
     def attacked(self, harm: float, entity: Self, dodgeable: bool = True) -> float:
-        if random.random() >= math.sqrt(max((entity.focus-self.dodge)**2, (1-self.dodge)**2)) and dodgeable:
+        if (
+            random.random()
+            >= math.sqrt(max((entity.focus - self.dodge) ** 2, (1 - self.dodge) ** 2))
+            and dodgeable
+        ):
             return 0
         if self.shield > harm:
             self.shield -= harm
@@ -47,7 +48,7 @@ class Entity:
 
     def get_action_value(self):
         return 10000 / self.speed - self.reduced_action_value
-    
+
     def reduce_action_value(self, c: float) -> None:
         self.reduced_action_value += c
         if self.get_action_value() <= 0:
@@ -62,4 +63,3 @@ class Entity:
             items.append(self.items["weapons"])
         for item in items:
             item.init_duel(self)
-

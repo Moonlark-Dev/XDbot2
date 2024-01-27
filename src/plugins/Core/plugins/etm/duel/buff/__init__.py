@@ -4,7 +4,7 @@ class Buff:
         self.description: str = "无描述"
         self.adhesion: int = 0
         self.entity = None
-    
+
     def on_init(self) -> None:
         pass
 

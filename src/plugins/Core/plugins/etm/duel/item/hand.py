@@ -1,15 +1,16 @@
 from typing import TYPE_CHECKING
 from .weapons import DuelWeapons
+
 if TYPE_CHECKING:
     from ..entity import Entity
 
-class Hand(DuelWeapons):
 
+class Hand(DuelWeapons):
     def on_register(self) -> None:
         self.item_id = "hand"
         self.basic_data = {
             "display_name": self.text("display_name"),
-            "display_message": self.text("display_message")
+            "display_message": self.text("display_message"),
         }
         # self.ATTACK_TYPE = "single"
 

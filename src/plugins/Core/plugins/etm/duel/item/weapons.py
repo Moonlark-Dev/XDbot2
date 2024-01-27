@@ -1,8 +1,10 @@
 import random
 from typing import TYPE_CHECKING, Literal
 from ..item import DuelItem
+
 if TYPE_CHECKING:
     from ..entity import Entity
+
 
 class DuelWeapons(DuelItem):
     # ATTACK_TYPE: Literal["single", "diffusion", "random"]
