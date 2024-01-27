@@ -38,7 +38,8 @@ async def _(
 
 @scheduler.scheduled_job("cron", hour="0", minute="0", second="0", id="scale_sessions")
 async def scale_sessions() -> None:
-    for session_id in os.listdir("data/gpt/sessions"):
+    for session_file in os.listdir("data/gpt/sessions"):
+        session_id = session_file[:-5]
         if len(get_session_messages(session_id)) < 5:
             continue
         await scale_session(session_id)
