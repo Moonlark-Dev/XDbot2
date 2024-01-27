@@ -1,13 +1,15 @@
 import random
 from ...._utils import *
-from ...bag import add_item
+# from ...bag import add_item
 from typing import TYPE_CHECKING, Literal
 from ..item import DuelItem
 if TYPE_CHECKING:
     from ..entity import Entity
 else:
     Entity = None
+from typing import Callable
 
+add_item: Callable[[str, str, int, dict], None]
 
 class DuelWeapons(DuelItem):
     # ATTACK_TYPE: Literal["single", "diffusion", "random"]
