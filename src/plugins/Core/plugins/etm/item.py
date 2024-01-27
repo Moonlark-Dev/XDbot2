@@ -2,7 +2,7 @@ from typing import Optional, Type, cast, overload
 from .item_basic_data import BASIC_DATA
 from abc import ABC, abstractmethod
 import traceback
-from .economy import IllegalQuantityException
+from .illegal_quantity import IllegalQuantityException
 from .nbt import NbtDict
 from .._lang import text
 
@@ -109,7 +109,6 @@ class Item(ABC):
             return count
         elif self.count < self.data["maximum_stack"]:
             count -= self.data["maximum_stack"] - self.count
-            self.add(count)
             return count
         else:
             return 0

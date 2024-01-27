@@ -11,7 +11,7 @@ from . import _error
 from .etm import exp, economy
 from . import _lang, _messenger
 import httpx
-from ._utils import Json, finish
+from ._utils import Json, finish, context_review
 from nonebot import on_command, get_app, on_message
 from nonebot.adapters.onebot.v11 import Bot, Message, GroupMessageEvent, MessageEvent
 from nonebot.permission import SUPERUSER
@@ -66,8 +66,18 @@ async def cave_comment_writer(event: GroupMessageEvent, bot: Bot):
                 await cave_comment.finish(
                     _lang.text("cave.cannot_comment", [], str(event.user_id))
                 )
+
             # 懒得写了就这样吧
             await showEula(event.get_user_id())
+
+            auditdata = await context_review(reply_message, "text", event.user_id)
+            if auditdata["conclusionType"] == 2:
+                reasons = [i["msg"] for i in auditdata["data"]]
+                await cave_comment.finish(
+                    _lang.text(
+                        "cave.audit_rejected", ["\n".join(reasons)], str(event.user_id)
+                    )
+                )
 
             cave_id = (
                 re.search(r"（[0-9]+）", reply_message)[0]
@@ -120,6 +130,8 @@ async def downloadImages(message: str):
             response = await client.get(url)
         content = response.read()
         if not content:
+            return False
+        if (await context_review(url, "url"))["conclusionType"] == 2:
             return False
         with open(f"data/caveImages/{imageID}.png", "wb") as f:
             f.write(content)
@@ -356,6 +368,15 @@ async def cave_add_handler(
             await cave.finish(
                 _lang.text("cave.error_to_download_images", [], event.get_user_id())
             )
+        elif (auditdata := await context_review(text, "text", event.user_id))[
+            "conclusionType"
+        ] == 2:
+            reasons = [i["msg"] for i in auditdata["data"]]
+            await cave.finish(
+                _lang.text(
+                    "cave.audit_rejected", ["\n".join(reasons)], str(event.user_id)
+                )
+            )
         elif similarity_check_status := check_text_similarity(text):
             cave_data = similarity_check_status[0]
             if isinstance(cave_data["sender"], dict):
@@ -469,6 +490,12 @@ async def cave_status_handler(cave: Matcher, event: GroupMessageEvent):
         await _error.report()
 
 
+def get_cd_time(group_id: int) -> int:
+    data = Json("cave.cd_time.json")
+    data.update({"468502962": 2400, "701257458": 2400, "159910125": 1200})
+    return data.get(str(group_id), 3600)
+
+
 @on_command("cave").handle()
 async def cave_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent):
     try:
@@ -476,15 +503,7 @@ async def cave_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent):
 
         data = json.load(open("data/cave.data.json", encoding="utf-8"))
         latest_use = json.load(open("data/cave.latest_use.json", encoding="utf-8"))
-        match event.group_id:
-            case 468502962:
-                cd_time = 2400
-            case 701257458:
-                cd_time = 2400
-            case 159910125:
-                cd_time = 1200
-            case _:
-                cd_time = 3600
+        cd_time = get_cd_time(event.group_id)
 
         if time.time() - latest_use.get(f"u{event.user_id}", 0) < 600:
             await finish(

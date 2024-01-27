@@ -1,5 +1,5 @@
-from .item import Item
-from . import buff
+from ..item import Item
+from .. import buff
 
 
 class Talisman(Item):

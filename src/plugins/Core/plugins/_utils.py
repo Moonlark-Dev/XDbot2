@@ -1,7 +1,8 @@
 import json
 import os
 import os.path
-from typing import Any, Callable
+from typing import Any, Callable, Union
+import httpx
 
 # 快捷访问
 from nonebot import on_message
@@ -35,7 +36,11 @@ def create_command(cmd: str, aliases: set = set(), **kwargs):
             try:
                 logger.info(f"处理模块: {func.__module__}")
                 await func(bot, event, message)
-            except:
+            except IndexError as e:
+                if "arg" in str(e):
+                    await finish(get_currency_key("wrong_argv"), [cmd], event.user_id)
+                await error.report()
+            except Exception:
                 await error.report()
 
         matcher.append_handler(handler)
@@ -222,3 +227,41 @@ async def get_group_id(event: MessageEvent) -> int:
     if (group_id := event.dict().get("group_id")) is None:
         await finish(get_currency_key("need_group"), [], event.user_id)
     return int(group_id)
+
+
+async def context_review(
+    context: str, _type: str, user_id: Union[int, str] = "未知"
+) -> dict:
+    # 目前可用 type: url, text
+    # type 为 url 时 context 需以 http:// 或 https:// 开头, url 内容是一张图片
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            f"http://localhost:5000/{_type}", json={"context": context}
+        )
+    result = response.json()
+    try:
+        if result["conclusionType"] == 2:  # 不合规
+            reasons = [i["msg"] for i in result["data"]]
+            await error.report(
+                f"「内容违规提醒」\n来自用户: {user_id}\n类型: {_type}\nLog ID: {result['log_id']}\n违规原因:\n"
+                + "\n".join(reasons)
+            )
+    except KeyError:
+        await error.report(
+            f"「审核失败提醒」\n来自用户: {user_id}\n类型: {_type}\nLog ID: {result['log_id']}\nError Code: {result['error_code']}\nError Msg: {result['error_msg']}"
+        )
+        return {
+            "log_id": result["log_id"],
+            "conclusion": "不合规",
+            "conclusionType": 2,
+            "data": [
+                {
+                    "type": 0,
+                    "subType": 0,
+                    "conclusion": "不合规",
+                    "conclusionType": 2,
+                    "msg": "审核失败默认不通过",
+                }
+            ],
+        }
+    return result

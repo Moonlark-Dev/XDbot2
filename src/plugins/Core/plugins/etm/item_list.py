@@ -1,16 +1,15 @@
-from .dice import Dice
-from .auto_sign_coupon import AutoSignCoupon, AutoSignCouponActived
-from .talisman import Talisman
-from .rubbish import CommonRubbish
-from .book_and_quill import BookAndQuill
-from .pawcoin import PawCoin
-from .pouch import Pouch
-from .archfiend_dice import ArchfiendDice
-from .mystery_box import MysteryBoxLevel1, MysteriousShard, MysteryBoxLv3
-from .vimcoin import VimCoin
-from .duel_things import Weapons, Ball
-from .experience import Experience
-from .towel_zip import TowelZip, Towel
+from .items.dice import Dice
+from .items.auto_sign_coupon import AutoSignCoupon, AutoSignCouponActived
+from .items.talisman import Talisman
+from .items.rubbish import CommonRubbish
+from .items.book_and_quill import BookAndQuill
+from .items.pawcoin import PawCoin
+from .items.pouch import Pouch
+from .items.archfiend_dice import ArchfiendDice
+from .items.mystery_box import MysteryBoxLevel1, MysteriousShard, MysteryBoxLv3
+from .items.vimcoin import VimCoin
+from .items.experience import Experience
+from .items.towel_zip import TowelZip, Towel
 
 ITEMS = {
     "dice": Dice,
@@ -28,7 +27,5 @@ ITEMS = {
     "mysterious_shard": MysteriousShard,
     "auto_sign_coupon": AutoSignCoupon,
     "auto_sign_coupon_actived": AutoSignCouponActived,
-    "weapons": Weapons,
-    "ball": Ball,
     "mysterybox_lv3": MysteryBoxLv3,
 }

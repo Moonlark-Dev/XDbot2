@@ -1,8 +1,10 @@
+from .etm import bag
 from .send_email import submit_email
 from ._utils import finish
-from .etm import items, data, bag
+from .etm import data, json2items, merger
 from .su import su
-from nonebot import on_command
+from nonebot_plugin_apscheduler import scheduler
+from nonebot import logger, on_command
 from nonebot.matcher import Matcher
 from nonebot.adapters.onebot.v11 import MessageEvent
 from nonebot.adapters.onebot.v11 import Bot
@@ -18,9 +20,19 @@ import hashlib
 from typing import List
 
 try:
-    import json5
-except BaseException:
+    json5 = __import__("json5")
+except Exception:
     json5 = json
+
+
+@scheduler.scheduled_job("cron", day="*", id="remove_emails")
+async def _():
+    emails = json.load(open("data/su.mails.json", encoding="utf-8"))
+    items = emails.items()
+    for email_id, data in items:
+        if time.time() - data["time"] >= 2592000:  # 30d
+            emails.pop(email_id)
+            logger.info(f"已删除邮件 {email_id}")
 
 
 def render_email(data, user_id):
@@ -38,7 +50,7 @@ def render_email(data, user_id):
     if data["items"]:
         email += _lang.text("email.items", [], user_id)
         length = 0
-        for item in items.json2items(data["items"]):
+        for item in json2items.json2items(data["items"]):
             length += 1
             email += f'\n{length}. {item.data["display_name"]} x{item.count}'
     return email
@@ -104,7 +116,7 @@ async def su_mail(event: MessageEvent, message: Message = CommandArg()) -> None:
                 await submit_email(data[argv[2]])
                 await su.finish("完成！")
     except BaseException:
-        await _error.report(traceback.format_exc(), su)
+        await _error.report(traceback.format_exc())
 
 
 @on_command("查看邮件", aliases={"view-emails", "ve", "ckyj"}).handle()
@@ -141,29 +153,6 @@ async def view_emails(matcher: Matcher, bot: Bot, event: MessageEvent):
         await _error.report(traceback.format_exc(), matcher)
 
 
-# 我并不知道XDbot2是否需要这个东西
-@on_command("全部已读", aliases={"all-read", "qbyd", "已读全部"}).handle()
-async def all_read(matcher: Matcher, event: MessageEvent):
-    try:
-        user_id = event.get_user_id()
-        length = 0
-        number_of_read_emails = 0
-        for email_id in data.emails[user_id]:
-            try:
-                if not data.emails[user_id][email_id]["itmes"]:
-                    data.emails[user_id].pop(length)
-                    number_of_read_emails += 1
-                else:
-                    length += 1
-            except KeyError:
-                length += 1
-        await matcher.finish(
-            _lang.text("email.all_read", [number_of_read_emails], user_id)
-        )
-    except BaseException:
-        await _error.report(traceback.format_exc(), matcher)
-
-
 @on_command("领取全部", aliases={"全部领取", "claim-all", "lqqb", "qblq"}).handle()
 async def claim_all(matcher: Matcher, event: MessageEvent):
     try:
@@ -180,7 +169,8 @@ async def claim_all(matcher: Matcher, event: MessageEvent):
         data.emails[user_id] = []
         item_list = ""
         length = 0
-        for item in items.json2items(all_items):
+
+        for item in merger.merge_item_list(json2items.json2items(all_items)):
             length += 1
             item_list += f"\n{length}. {item.data['display_name']} x{item.count}"
         await finish("email.get", [item_list], event.user_id)

@@ -58,18 +58,11 @@ async def take_screenshot_of_website(url: str, matcher: Matcher) -> Optional[dic
         await page.screenshot(path=f"data/{file_name}.png", full_page=True)
         await browser.close()
     # R-18 检查
-    async with httpx.AsyncClient() as client:
-        response = await client.get(
-            Json("preview.nsfw_config.json")
-            .get(
-                "url",
-                "http://localhost:5000?url=http://10.0.0.14:38192/preview/{image_id}",
-            )
-            .replace("{image_id}", file_name)
-        )
-    auditdata = response.json()
+    auditdata = await context_review(
+        f"http://10.0.0.14:38192/preview/{file_name}", "url"
+    )
     logger.info(f"Auditdata: {auditdata}")
-    if auditdata["conclusion"] == "不合规":
+    if auditdata["conclusionType"] == 2:
         os.remove(os.path.abspath(os.path.join("./data", f"{file_name}.png")))
         return auditdata
     # 处理图片
@@ -136,8 +129,9 @@ async def preview_website(event: MessageEvent, message: Message = CommandArg()):
         # 截取网页
         ret = await take_screenshot_of_website(url, preview)
         if ret is not None:
+            reasons = [i["msg"] for i in ret["data"]]
             await finish(
-                "preview.nsfw", [ret["data"][0]["msg"]], event.user_id, False, True
+                "preview.nsfw", ["\n".join(reasons)], event.user_id, False, True
             )
 
     except FinishedException:

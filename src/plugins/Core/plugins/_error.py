@@ -1,14 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# 自 2024 年
+# 在重构此文件时浪费的时间:
+# XiaoDeng3386: 1hr 53mins
+
 import re
 import time
 from nonebot.adapters.onebot.v11 import Message
 import json
 from nonebot import get_bots
 import traceback
-
-# from nonebot.exception import FinishedException
 from nonebot.log import logger
 
 # from nonebot.adapters.onebot.v11 import GroupMessageEvent, MessageEvent, MessageSegment
@@ -97,7 +99,6 @@ async def report(
         await matcher.finish()
     # 反馈错误
     if err.startswith("Traceback"):
-        # reply = MessageSegment.text("") if not event else MessageSegment.reply(event.message_id)
         if feedback:
             try:
                 error_data = get_error_data(err)

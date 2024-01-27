@@ -39,7 +39,7 @@ async def manHandle(bot: Bot, event: MessageEvent, message: Message = CommandArg
             if page and not isinstance(page, str):
                 page = page.group(0)
             # 读取文件
-            with open(f"docs/{command}/{page}.md", encoding="utf-8") as f:
+            with open(f"man/{command}/{page}.md", encoding="utf-8") as f:
                 text = f.read()
             # 去末尾换行
             while True:

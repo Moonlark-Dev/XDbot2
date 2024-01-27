@@ -1,6 +1,7 @@
 from nonebot import on_command
 from nonebot.adapters.onebot.v11.event import MessageEvent
-from nonebot.adapters.onebot.v11.bot import Bot, Message
+from nonebot.adapters.onebot.v11.bot import Bot
+from nonebot.adapters.onebot.v11 import Message
 from nonebot.params import CommandArg
 from .etm import bag
 from . import _lang as lang
@@ -36,10 +37,8 @@ async def show_bag(bot: Bot, event: MessageEvent, message: Message = CommandArg(
                 )
             )
         else:
-            nickname = (await bot.get_stranger_info(user_id=int(qq)))["nickname"]
-            reply = lang.text(
-                "bag.title", [nickname, bag.get_items_count_in_bag(qq), 128], qq
-            )
+            nickname = event.sender.nickname
+            reply = lang.text("bag.title", [nickname, len(data), 32], qq)
             length = 1
             for item in data:
                 reply += f"\n{length}. {item.data['display_name']} x{item.count}"
@@ -47,4 +46,4 @@ async def show_bag(bot: Bot, event: MessageEvent, message: Message = CommandArg(
             await bag_cmd.finish(reply)
 
     except BaseException:
-        await error.report(traceback.format_exc(), bag_cmd)
+        await error.report()

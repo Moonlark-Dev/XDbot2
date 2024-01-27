@@ -1,5 +1,5 @@
-from .item import Item
-from . import economy
+from ..item import Item
+from .. import economy
 
 
 class VimCoin(Item):

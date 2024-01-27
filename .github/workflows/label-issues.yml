@@ -1,28 +1,29 @@
 name: Label Issue (closed)
 on:
-    issues:
-        types:
-            - closed
+  issues:
+    types:
+      - closed
 
 jobs:
-    label_issues:
-        runs-on: ubuntu-latest
-        permissions:
-            issues: write
-        steps:
-            - name: Label Issues
-              uses: actions/github-script@v6
-              with:
-                script: |
-                    github.rest.issues.addLabels({
-                        issue_number: context.issue.number,
-                        owner: context.repo.owner,
-                        repo: context.repo.repo,
-                        labels: ["完成"]
-                    })
-                    github.rest.issues.removeLabel({
-                        issue_number: context.issue.number,
-                        owner: context.repo.owner,
-                        repo: context.repo.repo,
-                        name: ["处理中"]
-                    })
+  label_issues:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Label Issues
+        if: ${{ github.event.issue.state_reason == 'completed'}}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.addLabels({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                labels: ["完成"]
+            })
+            github.rest.issues.removeLabel({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: ["处理中"]
+            })
