@@ -1,0 +1,2 @@
+class IllegalQuantityException(Exception):
+    pass

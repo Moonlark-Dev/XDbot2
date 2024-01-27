@@ -1,9 +1,10 @@
 import random
 from typing import TYPE_CHECKING, Literal
 from ..item import DuelItem
-
 if TYPE_CHECKING:
     from ..entity import Entity
+else:
+    Entity = None
 
 
 class DuelWeapons(DuelItem):

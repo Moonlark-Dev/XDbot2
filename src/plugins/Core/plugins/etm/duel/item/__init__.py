@@ -3,6 +3,8 @@ from ...item import Item
 
 if TYPE_CHECKING:
     from ..entity import Entity
+else:
+    Entity = None
 
 
 class DuelItem(Item):

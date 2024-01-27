@@ -1,11 +1,17 @@
 import math
-from typing import Optional, Self, TypedDict
-from ..item import DuelItem
+from typing import TYPE_CHECKING, Self, TypedDict
 from ..buff import Buff
 import random
-from ..item.weapons import DuelWeapons
 from ..item.hand import Hand
-from ..item.passive import DuelPassiveItem
+
+if TYPE_CHECKING:
+    from ..item import DuelItem
+    from ..item.weapons import DuelWeapons
+    from ..item.passive import DuelPassiveItem
+else:
+    DuelItem = None
+    DuelWeapons = None
+    DuelPassiveItem = None
 
 
 class Items(TypedDict):

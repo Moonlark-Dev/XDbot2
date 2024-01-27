@@ -3,6 +3,8 @@ from .weapons import DuelWeapons
 
 if TYPE_CHECKING:
     from ..entity import Entity
+else:
+    Entity = None
 
 
 class Hand(DuelWeapons):
