@@ -1,13 +1,13 @@
-<<<<<<< HEAD
+#<<<<<<< HEAD
 from ..plugins._utils import *
 from .etm import economy, bag
 from ..plugins.duel.monomer import load_json
-=======
+#=======
 from .etm import bag
 from ..plugins._utils import *
 from .etm import economy
 from .duel.monomer import load_json
->>>>>>> master
+#>>>>>>> master
 import os
 import os.path
 import random
