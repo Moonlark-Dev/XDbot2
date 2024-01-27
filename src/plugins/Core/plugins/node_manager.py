@@ -24,7 +24,7 @@ from . import _error
 from .etm import bag
 
 try:
-    import json5 as json
+    json = __import__("json5")
 except:
     import json
 

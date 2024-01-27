@@ -7,35 +7,9 @@ import difflib
 import os.path
 from nonebot import on_message
 from ._utils import *
-
-# from .su import su
 import math
 
-# from .etm import economy
-
-# from . import _smart_reply
-
 sent_messages = []
-
-
-# @on_message().handle()
-# async def handle_basic_reply_rule(bot: Bot, event: GroupMessageEvent):
-#     global sent_messages
-#     for key, item in list(_smart_reply.get_list().items()):
-#         if item["group_id"] == event.group_id:
-#             if re.match(item["matcher"], event.get_plaintext()):
-#                 sent_messages.append(
-#                     {
-#                         "message_id": (
-#                             await bot.send_group_msg(
-#                                 message=Message(random.choice(item["text"])),
-#                                 group_id=event.group_id,
-#                             )
-#                         )["message_id"],
-#                         "from_id": f"old/{key}",
-#                     }
-#                 )
-#                 sent_messages = sent_messages[-20:]
 
 
 def get_rules(group_id: int):
@@ -49,9 +23,7 @@ def get_rules(group_id: int):
         return []
 
 
-def get_rule_data(group_id: int, rule_id: str):  # -> dict:
-    # if rule_id.startswith("old/"):
-    #     return _smart_reply.get_list()[rule_id.replace("old/", "")]
+def get_rule_data(group_id: int, rule_id: str):
     return Json(f"reply/g{group_id}/{rule_id}.json").to_dict()
 
 
@@ -94,6 +66,12 @@ def get_rule_reply(rule_id: str, group_id: int):
 async def match_rules(bot: Bot, event: GroupMessageEvent):
     global sent_messages
     message = str(event.get_message())
+    if random.random() > Json("reply/config/group_probability.json").get(
+        "group_id", 1
+    ) or random.random() > Json("reply/config/probability.json").get(
+        event.get_user_id(), 1
+    ):
+        return
     for rule_id in get_rules(event.group_id):
         if is_matched_rule(rule_id, event.group_id, message):
             sent_messages.append(

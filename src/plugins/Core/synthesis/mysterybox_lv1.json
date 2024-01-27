@@ -10,7 +10,7 @@
     "required": [
         {
             "id": "mysterious_shard",
-            "count": 25,
+            "count": 32,
             "data": {}
         }
     ]

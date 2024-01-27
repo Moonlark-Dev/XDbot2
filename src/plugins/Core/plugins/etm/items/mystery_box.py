@@ -1,25 +1,22 @@
 import traceback
-from .economy import IllegalQuantityException
-from . import bag
+from ..illegal_quantity import IllegalQuantityException
+from .. import bag
 from src.plugins.Core.plugins import _lang
 import random
-from .item import Item
-from .nbt import NbtDict
+from ..item import Item
+from ..nbt import NbtDict
 
 
 def json2items(items, user_id=None):
     ...
 
 
-SHOP_ITEMS = {}
-
-
 class MysteryBoxLevel1(Item):
     def on_register(self):
-        self.basic_data: NbtDict = {
+        self.basic_data = {
             "display_name": "Mystery Box (⭐️)",
             "display_message": ("并不普通的的盒子，散发着少许神秘的气息。\n \n「盒子里好像……发光了？」"),
-            "price": 35,
+            "price": 50,
         }
         self.item_id = "mysterybox_lv1"
 
@@ -67,22 +64,18 @@ class MysteryBoxLevel1(Item):
     def get_items(self):
         return {
             "ordinary": [
-                {"item_id": "dice", "count": [5, 16]},
-                {"item_id": "mysterious_shard", "count": [5, 30]},
-                {"item_id": "pawcoin", "count": [2, 15]},
+                {"item_id": "dice", "count": [1, 16]},
+                {"item_id": "mysterious_shard", "count": [1, 30]},
+                {"item_id": "pawcoin", "count": [1, 15]},
                 {"item_id": "common_rubbish", "count": [1, 10]},
-                {"item_id": "vimcoin", "count": [5, 20]},
             ],
             "rare": [
-                {"item_id": "vimcoin", "count": [15, 40]},
-                {"item_id": "mysterious_shard", "count": [10, 35]},
-                {"item_id": "common_rubbish", "count": [5, 10]},
+                {"item_id": "vimcoin", "count": [1, 40]},
+                {"item_id": "mysterious_shard", "count": [1, 48]},
                 {"item_id": "auto_sign_coupon", "count": [1, 5]},
+                {"item_id": "talisman", "count": [1, 2]},
             ],
-            "legend": [
-                {"item_id": "mysterybox_lv1", "count": [1, 2]},
-                {"item_id": "talisman", "count": [1, 4]},
-            ],
+            "legend": [{"item_id": "mysterybox_lv1", "count": [1, 2]}],
         }
 
     def use(self, args):
@@ -168,6 +161,6 @@ class MysteriousShard(Item):
         self.basic_data: NbtDict = {
             "display_name": "神秘碎片",
             "display_message": "………………\n \n「……」",
-            "price": 2,
+            "price": 1,
             "useable": False,
         }

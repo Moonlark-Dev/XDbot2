@@ -1,13 +1,14 @@
 # from plugins.Core.plugins.etm.item import Item
-from . import items
-from .item_basic_data import BASIC_DATA
+from .. import json2items
+from ..item_basic_data import BASIC_DATA
 from nonebot_plugin_apscheduler import scheduler
 from nonebot import require
-from . import economy
-from . import data
-from . import exp
-from .bag_overflow import add_overflow
-from . import rubbish
+from .. import economy
+from .. import data
+from .. import exp
+from .overflow import add_overflow
+from ..duel.item import weapons
+from ..items import rubbish
 
 require("nonebot_plugin_apscheduler")
 
@@ -17,7 +18,7 @@ bags = {}
 
 def get_bags():
     for user, bag in list(data.bags.items()):
-        bags[user] = items.json2items(bag, user)
+        bags[user] = json2items.json2items(bag, user)
 
 
 get_bags()
@@ -96,7 +97,9 @@ def add_item(user_id, item_id, item_count=1, item_data={}):
             if item.item_id == item_id:
                 item_count -= item.add(item_count, item_data)
         if item_count > 0:
-            _add_item(user_id, items.ITEMS[item_id](item_count, item_data, user_id))
+            _add_item(
+                user_id, json2items.ITEMS[item_id](item_count, item_data, user_id)
+            )
     except KeyError:
         bags[user_id] = []
         add_item(user_id, item_id, item_count, item_data)
@@ -108,3 +111,4 @@ async def use_item(user_id, item_pos, argv=""):
 
 
 rubbish.add_item = add_item
+weapons.add_item = add_item

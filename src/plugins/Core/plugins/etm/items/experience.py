@@ -1,5 +1,5 @@
-from .item import Item
-from . import exp
+from ..item import Item
+from .. import exp
 
 
 class Experience(Item):

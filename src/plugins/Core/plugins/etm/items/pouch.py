@@ -1,9 +1,10 @@
-from .item import Item
-from . import items
-from . import bag
-from . import economy
-from .item_basic_data import BASIC_DATA
-from .._lang import text
+from ..illegal_quantity import IllegalQuantityException
+from ..item import Item
+from .. import json2items
+from .. import bag
+from .. import economy
+from ..item_basic_data import BASIC_DATA
+from ..._lang import text
 import time
 
 
@@ -23,7 +24,7 @@ class Pouch(Item):
         self.update_info()
 
     def update_info(self):
-        item_list = items.json2items(self.data["items"])
+        item_list = json2items.json2items(self.data["items"])
         display_info = (
             self.data["display_message"].split("\x00")[0]
             + f"\x00\n物品列表（\x01used/{self.data['max_item_count']}）："
@@ -58,13 +59,13 @@ class Pouch(Item):
 
     def get_item(self, args):
         item = self.data["items"][int(args[1]) - 1]
-        _item = items.json2items(self.data["items"])[int(args[1]) - 1]
+        _item = json2items.json2items(self.data["items"])[int(args[1]) - 1]
         if len(args) < 3:
             count = item["count"]
         else:
             count = int(args[2])
             if count > item["count"] or count < 0:
-                raise economy.IllegalQuantityException(count)
+                raise IllegalQuantityException(count)
 
         bag.add_item(self.user_id, item["id"], item["count"], item["data"])
         if count == item["count"]:
@@ -88,7 +89,7 @@ class Pouch(Item):
         if len(args) < 3:
             args.append(str(count))
         if count < int(args[2]) or int(args[2]) < 0:
-            raise economy.IllegalQuantityException(args[2])
+            raise plugins.Core.plugins.etm.IllegalQuantityException.IllegalQuantityException(args[2])
         if int(args[2]) > self.get_free_count():
             return [text("pouch.not_enough_space", [], self.user_id)]
 
@@ -110,7 +111,7 @@ class Pouch(Item):
         item.count -= int(args[2])
         self.data["items"].append({"id": item_id, "count": int(args[2]), "data": nbt})
         self.update_info()
-        _item = items.json2items([self.data["items"][-1]])[0]
+        _item = json2items.json2items([self.data["items"][-1]])[0]
 
         bag.add_item(self.user_id, self.item_id, 1, self.data)
         self.count -= 1

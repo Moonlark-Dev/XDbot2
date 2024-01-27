@@ -1,3 +1,4 @@
+from .illegal_quantity import IllegalQuantityException
 from . import user
 
 # from nonebot_plugin_apscheduler import scheduler
@@ -6,18 +7,6 @@ import json
 
 # from nonebot.log import logger
 from .data import vimcoin
-
-# {
-#    "in": 0,
-#    "out": 0,
-#    "exchange_rate": 1
-# }
-# require("nonebot_plugin_apscheduler")
-
-
-class IllegalQuantityException(Exception):
-    pass
-
 
 # @scheduler.scheduled_job("cron", hour="*/1", id="additem")
 async def add_item():
