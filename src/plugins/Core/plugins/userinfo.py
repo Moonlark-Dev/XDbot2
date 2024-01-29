@@ -7,7 +7,9 @@ from . import _lang as lang
 from . import _error as error
 import traceback
 
-panel = on_command("panel", aliases={"mypanel", "我的面板", "我的数据", "我的信息", "userInfo"})
+panel = on_command(
+    "panel", aliases={"mypanel", "我的面板", "我的数据", "我的信息", "userInfo"}
+)
 
 
 @panel.handle()

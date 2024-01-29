@@ -7,15 +7,16 @@ from ..item import Item
 from ..nbt import NbtDict
 
 
-def json2items(items, user_id=None):
-    ...
+def json2items(items, user_id=None): ...
 
 
 class MysteryBoxLevel1(Item):
     def on_register(self):
         self.basic_data = {
             "display_name": "Mystery Box (⭐️)",
-            "display_message": ("并不普通的的盒子，散发着少许神秘的气息。\n \n「盒子里好像……发光了？」"),
+            "display_message": (
+                "并不普通的的盒子，散发着少许神秘的气息。\n \n「盒子里好像……发光了？」"
+            ),
             "price": 50,
         }
         self.item_id = "mysterybox_lv1"
@@ -109,7 +110,9 @@ class MysteryBoxLv3(MysteryBoxLevel1):
         super().on_register()
         self.item_id = "mysterybox_lv3"
         self.basic_data["price"] = 64
-        self.basic_data["display_message"] = "并不普通的的盒子，散发着一些神秘的气息。\n \n「盒子里好像……发光了？」"
+        self.basic_data["display_message"] = (
+            "并不普通的的盒子，散发着一些神秘的气息。\n \n「盒子里好像……发光了？」"
+        )
         self.basic_data["display_name"] = "Mystery Box (⭐️⭐️⭐️)"
 
     def get_items(self):

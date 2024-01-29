@@ -45,7 +45,10 @@ async def messengerHandle(
                 data, open("data/messenger.messageList.json", "w", encoding="utf-8")
             )
             await bot.send_group_msg(
-                message=("[信鸽] 收到新任务：\n" f"收件：{qq}\n发件：{sender['user_id']}\n内容：{text}"),
+                message=(
+                    "[信鸽] 收到新任务：\n"
+                    f"收件：{qq}\n发件：{sender['user_id']}\n内容：{text}"
+                ),
                 group_id=ctrlGroup,
             )
             await messenger.finish(

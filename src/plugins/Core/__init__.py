@@ -117,7 +117,9 @@ for plugin in pluginList:
             json.dump(data, open("data/_error.count.json", "w", encoding="utf-8"))
     else:
         logger.warning(f"未知或已禁用插件：{plugin}")
-logger.info(f"已成功加载 {loadedPlugins.__len__()} 个插件，{len(helpData.keys())}个指令帮助")
+logger.info(
+    f"已成功加载 {loadedPlugins.__len__()} 个插件，{len(helpData.keys())}个指令帮助"
+)
 # logger.debug(loadedPlugins)
 
 # 写入加载数据文件

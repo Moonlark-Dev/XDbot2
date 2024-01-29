@@ -13,7 +13,11 @@ su_notice_cache = ""
 async def su_primary_notice(message: Message = CommandArg()):
     try:
         argument = str(message).split(" ")
-        if argument[0] == "notice" or argument[0] == "超级广播" or argument[0] == "广播":
+        if (
+            argument[0] == "notice"
+            or argument[0] == "超级广播"
+            or argument[0] == "广播"
+        ):
             global su_notice_cache
             text = str(message)[argument[0].__len__() + 1 :]
             if text == "submit":
