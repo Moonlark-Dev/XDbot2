@@ -23,7 +23,9 @@ def writeConfig(cfg):
 
 
 configCommand = on_command("essencemsg", aliases={"essmsg"}, permission=SUPERUSER)
-essencemsgCommand = on_endswith("精华", permission=GROUP_ADMIN | GROUP_OWNER | SUPERUSER)
+essencemsgCommand = on_endswith(
+    "精华", permission=GROUP_ADMIN | GROUP_OWNER | SUPERUSER
+)
 
 
 @configCommand.handle()

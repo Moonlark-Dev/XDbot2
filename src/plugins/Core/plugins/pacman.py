@@ -10,7 +10,9 @@ import traceback
 import httpx
 from typing import List
 
-pacman = on_command("archpackage", aliases={"apkg", "pacman", "Linux搜包", "spkg", "pkg"})
+pacman = on_command(
+    "archpackage", aliases={"apkg", "pacman", "Linux搜包", "spkg", "pkg"}
+)
 
 
 # [HELPSTART] Version: 2

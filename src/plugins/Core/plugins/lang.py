@@ -83,7 +83,7 @@ async def lang_handle(event: MessageEvent, message: Message = CommandArg()):
                                         round(found_key / key_length * 100),
                                     ],
                                     event.get_user_id(),
-                                )
+                                ),
                                 #                     不是很能理解，很没必要，先注释了——XiaoDeng3386
                                 #                     f"{_lang.text(lang_name, 'lang.text.intro')}",
                                 #                     f"{_lang._load_key(lang_name, 'lang.text.name')}{lang_name}",

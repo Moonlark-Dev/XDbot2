@@ -37,23 +37,19 @@ class Item(ABC):
         useable: Optional[bool] = None,
         can_be_sold: Optional[bool] = None,
         **params,
-    ) -> None:
-        ...
+    ) -> None: ...
 
     def setup_basic_data(self, *args, **params) -> None:
         self.basic_data = params
 
     @abstractmethod
-    def on_register(self):
-        ...
+    def on_register(self): ...
 
     # @abstractmethod
-    def _after_register(self):
-        ...
+    def _after_register(self): ...
 
     # @abstractmethod
-    def use_item(self):
-        ...
+    def use_item(self): ...
 
     # @abstractmethod
     async def async_use(self, arg):

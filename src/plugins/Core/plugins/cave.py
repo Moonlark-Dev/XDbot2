@@ -108,7 +108,9 @@ async def cave_comment_writer(event: GroupMessageEvent, bot: Bot):
                     ),
                     cave_data["data"][cave_id]["sender"],
                 )
-            await cave_comment.finish(f"评论成功：{cave_id}#{data[cave_id]['count'] - 1}")
+            await cave_comment.finish(
+                f"评论成功：{cave_id}#{data[cave_id]['count'] - 1}"
+            )
     except BaseException:
         await _error.report(traceback.format_exc(), cave_comment)
 

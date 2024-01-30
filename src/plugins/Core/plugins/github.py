@@ -62,9 +62,11 @@ async def get_repo_info(matcher: Matcher, event: MessageEvent):
             [
                 repo_data["html_url"],
                 repo_data["full_name"],
-                _lang.text("github.repo_archived", [], event.get_user_id())
-                if repo_data["archived"]
-                else "",
+                (
+                    _lang.text("github.repo_archived", [], event.get_user_id())
+                    if repo_data["archived"]
+                    else ""
+                ),
                 repo_data["owner"]["login"],
                 repo_data["stargazers_count"],
                 repo_data["open_issues"],
