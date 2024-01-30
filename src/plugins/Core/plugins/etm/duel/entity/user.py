@@ -26,7 +26,7 @@ class User(Entity):
         self.hp = get_hp(int(user_id))
 
     def get_items(self) -> None:
-        items: dict = Json(f"duel2/users/{self.user_id}.json").get("items", [])
+        items: dict = Json(f"duel2/users/{self.user_id}.json").get("items", {})
         if weapons := items.get("weapons"):
             self.items["weapons"] = cast(
                 DuelWeapons, json2items([weapons], self.user_id)[0]
