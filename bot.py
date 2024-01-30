@@ -10,7 +10,7 @@ try:
     os.mkdir("data")
 except Exception:
     pass
-os.system("git submodule update")
+os.system("git pull")
 
 logger.add(
     "./data/error.log",
