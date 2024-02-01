@@ -2,6 +2,7 @@ from . import data as _data
 from .._utils import *
 from .._messenger import send_message
 from .health import get_max_hp
+
 # from .duel.entity import user
 
 RAW_DATA = {"user_id": None, "exp": 0, "health": 100, "vimcoin": 0}
