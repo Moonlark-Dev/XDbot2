@@ -8,6 +8,7 @@ class VimCoin(Item):
         self.basic_data = {
             "display_name": "VimCoin",
             "display_message": "XDbot2 通用货币",
+            "maximum_stack": 4096,
         }
 
     def _after_register(self):
