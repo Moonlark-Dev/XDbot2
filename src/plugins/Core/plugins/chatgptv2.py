@@ -36,7 +36,15 @@ def get_user_info(user_id: str) -> str:
         [
             user_data["token"] or 0,
             (user_data["free"] or 0) + buff.get_remain_times(user_id, "每日GPT限免"),
-            int(((buff.get_buff(user_id, "GptPlus++") or {}).get("end_time", time.time()) - time.time()) / 86400)
+            int(
+                (
+                    (buff.get_buff(user_id, "GptPlus++") or {}).get(
+                        "end_time", time.time()
+                    )
+                    - time.time()
+                )
+                / 86400
+            ),
         ],
         user_id,
     )
@@ -178,14 +186,10 @@ def generate_gpt_reply(gpt_reply: str, used_token: int, user_id: str) -> str:
             user_id,
         )
     elif used_token == -1:
-        remain = (buff.get_buff(user_id, "GptPlus++") or {}).get("end_time", -1) - time.time()
-        token_usage_msg = lang.text(
-            "chatgpt.use_plus",
-            [
-                int(remain / 86400)
-            ],
-            user_id,
-        )
+        remain = (buff.get_buff(user_id, "GptPlus++") or {}).get(
+            "end_time", -1
+        ) - time.time()
+        token_usage_msg = lang.text("chatgpt.use_plus", [int(remain / 86400)], user_id)
     return lang.text("chatgpt.reply", [token_usage_msg, gpt_reply], user_id)
 
 

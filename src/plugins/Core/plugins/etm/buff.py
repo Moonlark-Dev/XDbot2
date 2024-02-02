@@ -103,6 +103,7 @@ def add_buff(
 
     data.save_data()
 
+
 def get_buff(user_id: str, buff_id: str, levels: list = []) -> Optional[dict]:
     refresh_buff()
     for buff in data.buff.get(user_id, []):

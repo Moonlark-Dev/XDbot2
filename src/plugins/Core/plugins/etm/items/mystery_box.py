@@ -74,11 +74,11 @@ class MysteryBoxLevel1(Item):
                 {"item_id": "vimcoin", "count": [1, 40]},
                 {"item_id": "auto_sign_coupon", "count": [1, 5]},
                 {"item_id": "talisman", "count": [1, 2]},
-                {"item_id": "archfiend_dice", "count": [1, 1]}
+                {"item_id": "archfiend_dice", "count": [1, 1]},
             ],
             "legend": [
                 {"item_id": "mysterybox_lv1", "count": [1, 1]},
-                {"item_id": "gpt_monthly_pass", "count": [1, 1]}
+                {"item_id": "gpt_monthly_pass", "count": [1, 1]},
             ],
         }
 
