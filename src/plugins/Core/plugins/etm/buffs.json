@@ -10,5 +10,11 @@
     "max_effect": 5,
     "duration": null,
     "duel_buff": false
+  },
+  "GptPlus++": {
+    "is_gain": true,
+    "max_effect": 1,
+    "duration": 2592000,
+    "duel_buff": false
   }
 }

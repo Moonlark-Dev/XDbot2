@@ -9,6 +9,7 @@ from .items.archfiend_dice import ArchfiendDice
 from .items.mystery_box import MysteryBoxLevel1, MysteriousShard, MysteryBoxLv3
 from .items.vimcoin import VimCoin
 from .items.experience import Experience
+from .items.gpt_monthly_pass import GptMonthlyPass
 from .items.towel_zip import TowelZip, Towel
 
 ITEMS = {
@@ -23,6 +24,7 @@ ITEMS = {
     "towel": Towel,
     "vimcoin": VimCoin,
     "pawcoin": PawCoin,
+    "gpt_monthly_pass": GptMonthlyPass,
     "exp": Experience,
     "mysterious_shard": MysteriousShard,
     "auto_sign_coupon": AutoSignCoupon,

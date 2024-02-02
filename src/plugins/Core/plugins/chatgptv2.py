@@ -1,3 +1,4 @@
+import time
 from httpx import AsyncClient
 from .etm import economy
 from .su import su
@@ -35,6 +36,15 @@ def get_user_info(user_id: str) -> str:
         [
             user_data["token"] or 0,
             (user_data["free"] or 0) + buff.get_remain_times(user_id, "每日GPT限免"),
+            int(
+                (
+                    (buff.get_buff(user_id, "GptPlus++") or {}).get(
+                        "end_time", time.time()
+                    )
+                    - time.time()
+                )
+                / 86400
+            ),
         ],
         user_id,
     )
@@ -149,6 +159,8 @@ def reduce_tokens(user_id: str, token_count: int) -> int:
     if buff.has_buff(user_id, "每日GPT限免"):
         buff.effect_buff(user_id, "每日GPT限免")
         return 0
+    elif buff.has_buff(user_id, "GptPlus++"):
+        return -1
     elif user_data.get("free", 0) > 0:
         user_data["free"] -= 1
         return 0
@@ -164,7 +176,7 @@ def generate_gpt_reply(gpt_reply: str, used_token: int, user_id: str) -> str:
             [Json(f"gpt/users/{user_id}.json")["token"], used_token],
             user_id,
         )
-    else:
+    elif used_token == 0:
         token_usage_msg = lang.text(
             "chatgpt.free",
             [
@@ -173,6 +185,11 @@ def generate_gpt_reply(gpt_reply: str, used_token: int, user_id: str) -> str:
             ],
             user_id,
         )
+    elif used_token == -1:
+        remain = (buff.get_buff(user_id, "GptPlus++") or {}).get(
+            "end_time", -1
+        ) - time.time()
+        token_usage_msg = lang.text("chatgpt.use_plus", [int(remain / 86400)], user_id)
     return lang.text("chatgpt.reply", [token_usage_msg, gpt_reply], user_id)
 
 
