@@ -13,14 +13,15 @@ import traceback
 shop = on_command("shop", aliases={"系统商店", "systemshop", "ss"})
 SHOP_ITEMS = {
     "1": {"id": "dice", "count": 1, "data": {}},
-    # "2": {"id": "book_and_quill", "count": 1, "data": {}},
-    "2": {"id": "talisman", "count": 1, "data": {}},
+    "2": {"id": "book_and_quill", "count": 1, "data": {}},
+    # "2": {"id": "talisman", "count": 1, "data": {}},
     # "4": {"id": "pouch", "count": 1, "data": {}},
     "3": {"id": "mysterious_shard", "count": 1, "data": {}},
     # "3": {"id": "towel.zip", "count": 1, "data": {}},
     "4": {"id": "mysterybox_lv1", "count": 1, "data": {}},
     "5": {"id": "pawcoin", "count": 1, "data": {}},
     "6": {"id": "archfiend_dice", "count": 1, "data": {}},
+    "7": {"id": "gpt_monthly_pass", "count": 1, "data": {}},
     # "7": {"id": "talisman", "count": 1, "data": {}}
 }
 # mystery_box.SHOP_ITEMS = SHOP_ITEMS

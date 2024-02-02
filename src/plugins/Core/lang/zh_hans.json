@@ -166,7 +166,6 @@
   "bank.view": "「银行账户详细信息」\n当前债务：{}vim\n===================={}",
   "pouch.help": "用法：\n --put <ID> [数量]：置入物品\n --get <ID> [数量]：取出物品\n --upgrade [数量]：拓展收纳袋（要钱）",
   "currency.unknown_argv": "未知参数：{}",
-  "currency.time": "%Y-%m-%d %H:%M:%S",
   "github.open_url": "请在浏览器打开 https://github.com/login/oauth/authorize?client_id={}&scope=repo",
   "github.login_successful": "已成功登陆到 {}",
   "towel_zip.used": "你获得了：毛巾 x16",
@@ -212,7 +211,7 @@
   "github.repo_archived": "(只读)",
   "version.version": "当前版本：{}\n{}",
   "mystery_box.get": "你获得了：",
-  "chatgpt.user_info": "[XDbot2GPT] 用户信息：\n剩余：{}\n限免（次）：{}",
+  "chatgpt.user_info": "[XDbot2GPT] 用户信息：\n剩余：{}\n限免（次）：{}\nPLUS剩余（天）:{}",
   "chatgpt.session_changed": "[XDbot2GPT]\n已切换到会话：{}",
   "chatgpt.chatgpt": "[XDbot2GPT]\n{}\n{}",
   "chatgpt.gpt_token_used": "Tokens: {} (-{})",
@@ -226,6 +225,7 @@
   "chatgpt.session_locked": "[XDbot2GPT]\n错误：无法解开会话锁（有请求正在进行中）",
   "chatgpt.reply": "[XDbot2GPT]\n{}\n \n{}",
   "chatgpt.used_token": "Token: {} (-{})",
+  "chatgpt.use_plus": "PLUS 剩余: {} 天",
   "chatgpt.free": "限免：{} (-1)",
   "chatgpt.buy_success": "[XDbot2GPT]\n成功购买 {} Tokens",
   "chatgpt.need_group": "[XDbot2GPT] 错误：\n需要在群聊使用",
@@ -325,5 +325,8 @@
   "stick.display_message": "既是合成材料，也可以作为武器",
   "hand.display_name": "手",
   "hand.display_message": "你的右手",
-  "weapons.used": "已装备：{}"
+  "weapons.used": "已装备：{}",
+  "gpt_monthly_pass.display_name": "XDbot GPT Plus++ (30d)",
+  "gpt_monthly_pass.display_message": "XDbot GPT Plus++是XDbot提供的高级ChatGPT服务。购买此服务，您将在接下来的30天内享有无限次使用XDbot GPT的特权。XDbot GPT Plus++旨在为用户提供更灵活、便捷的文本生成和对话交流体验。无论是用于工作中的自动化任务、学习中的知识获取，还是简单的日常对话，XDbot GPT Plus++都将成为您在这个月里不可或缺的智能助手。通过购买此月卡，您将获得一流的ChatGPT服务，助您在30天内更高效地完成各种任务，满足您对文本生成的各种需求。",
+  "gpt_monthly_pass.used": "XDbot GPT Plus++ 已激活\n有效期至 {}"
 }
