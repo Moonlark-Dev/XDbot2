@@ -3,6 +3,7 @@ nb-cli
 nonebot-plugin-cnrail
 nonebot_plugin_follow_withdraw
 nonebot_plugin_sentry
+nonebot-plugin-bilichat
 nonebot-adapter-onebot
 pillow
 psutil
