@@ -39,7 +39,7 @@
   "help.list_item": "[{}] {}: {}",
   "help.command_status": "「状态说明」\n[√]: 正常工作\n[X]: 无法使用\n[O]: 受限",
   "help.eula": "「许可协议」\n开始使用 XDbot2 即代表您已阅读并同意《XDbot2 最终许可协议》\nhttps://github.com/ITCraftDevelopmentTeam/XDbot2/discussions/501",
-  "help.copyright": "「版权声明」\nXDbot2 由 IT Craft Development Team (https://itcdt.top) 开发，基于 MIT 许可证开源",
+  "help.copyright": "「版权声明」\nXDbot2 由 IT Craft Development Team (https://itcdt.top) 开发，基于 GNU GENERAL PUBLIC LICENSE (Version 3) 开源",
   "help.info": "[{}] {}: {}\n\n用法: \n{}",
   "help.unknown_command": "未知指令: {}",
   "help.command_start": "「温馨提示」\n所有命令都需要前缀[{}], 例如查询今日人品时, 您需要发送[{}jrrp]而不是仅发送[jrrp]",
