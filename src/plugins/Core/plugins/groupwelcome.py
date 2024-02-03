@@ -158,6 +158,6 @@ async def _(bot: Bot, event: GroupIncreaseNoticeEvent, matcher: Matcher):
                 await GroupIncrease.finish(
                     config["application_notfound_message"], at_sender=True
                 )
-        GroupIncrease.finish()
+        await GroupIncrease.finish()
     except BaseException:
         await error.report(traceback.format_exc(), matcher, event)
