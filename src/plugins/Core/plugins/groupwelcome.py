@@ -142,6 +142,8 @@ GroupIncrease = on_notice()
 @GroupIncrease.handle()
 async def _(bot: Bot, event: GroupIncreaseNoticeEvent, matcher: Matcher):
     try:
+        if event.user_id == -1:
+            return
         if (
             event.group_id in config["welcome_enabled_group"]
             or config["welcome_global_enabled"]
