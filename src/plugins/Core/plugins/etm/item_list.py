@@ -1,3 +1,4 @@
+from typing import TYPE_CHECKING, Type
 from .items.dice import Dice
 from .items.auto_sign_coupon import AutoSignCoupon, AutoSignCouponActived
 from .items.talisman import Talisman
@@ -11,6 +12,9 @@ from .items.vimcoin import VimCoin
 from .items.experience import Experience
 from .items.gpt_monthly_pass import GptMonthlyPass
 from .items.towel_zip import TowelZip, Towel
+
+if TYPE_CHECKING:
+    from .item import Item
 
 ITEMS = {
     "dice": Dice,
@@ -31,3 +35,6 @@ ITEMS = {
     "auto_sign_coupon_actived": AutoSignCouponActived,
     "mysterybox_lv3": MysteryBoxLv3,
 }
+
+def register_item(item: 'Type[Item]') -> None:
+    ITEMS[item(1, {}, None).item_id] = item
