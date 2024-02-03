@@ -1,7 +1,8 @@
 import json
 import os
 import os.path
-from typing import Any, Callable, Union
+import traceback
+from typing import Any, Callable, Optional, Union
 import httpx
 
 # 快捷访问
@@ -37,7 +38,7 @@ def create_command(cmd: str, aliases: set = set(), **kwargs):
                 logger.info(f"处理模块: {func.__module__}")
                 await func(bot, event, message)
             except IndexError as e:
-                if "arg" in str(e):
+                if "arg" in traceback.format_exc():
                     await finish(get_currency_key("wrong_argv"), [cmd], event.user_id)
                 await error.report()
             except Exception:
@@ -267,3 +268,18 @@ async def context_review(
             ],
         }
     return result
+
+
+def get_bool(string: str, default: bool) -> Optional[bool]:
+    match string.lower():
+        case "on" | "开启" | "true" | "enable" | "启用":
+            return True
+        case "off" | "关闭" | "false" | "disable" | "禁用":
+            return False
+        case _:
+            return not default
+
+
+async def set_switch(file: str, key: str, input_: str, user_id: str | int) -> None:
+    Json(file)[key] = get_bool(input_, Json(file)[key])
+    await finish("_utils.switch", [key, Json(file)[key]], user_id)
