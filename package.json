@@ -1,0 +1,18 @@
+{
+  "name": "XDbot2",
+  "version": "1.0.0",
+  "description": "多功能 ChatBot，不止于 QQ",
+  "main": "index.js",
+  "repository": "https://github.com/ITCraftDevelopmentTeam/XDbot2.git",
+  "author": "This is XiaoDeng <1744793737@qq.com>",
+  "license": "GPL-3.0",
+  "private": false,
+  "devDependencies": {
+    "vitepress": "^1.0.0-rc.41"
+  },
+  "scripts": {
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:serve": "vitepress serve docs"
+  }
+}
