@@ -14,7 +14,13 @@ from . import _lang, _messenger
 import httpx
 from ._utils import Json, finish, context_review
 from nonebot import on_command, get_app, on_message
-from nonebot.adapters.onebot.v11 import Bot, Message, GroupMessageEvent, MessageEvent, MessageSegment
+from nonebot.adapters.onebot.v11 import (
+    Bot,
+    Message,
+    GroupMessageEvent,
+    MessageEvent,
+    MessageSegment,
+)
 from nonebot.permission import SUPERUSER
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
@@ -334,8 +340,9 @@ BANNED_CQ_CODE: list[str] = [
     "[CQ:share",
     "[CQ:contact",
     "[CQ:location",
-    "[CQ:forward"
+    "[CQ:forward",
 ]
+
 
 class ForwardMessageParser:
 
@@ -356,7 +363,9 @@ class ForwardMessageParser:
             raise ValueError
         elif message_length == 1:
             self.content = self.messages[0][1]
-        elif message_length > 1 and all(message[0] == self.messages[0][0] for message in self.messages):
+        elif message_length > 1 and all(
+            message[0] == self.messages[0][0] for message in self.messages
+        ):
             self.merge_messages()
         else:
             raise ValueError
@@ -366,7 +375,9 @@ class ForwardMessageParser:
             self.content += message
 
     async def get_forward(self, segment: MessageSegment) -> list[tuple[int, Message]]:
-        response = cast(dict[str, dict], await self.bot.get_forward_msg(id=segment.data["id"]))
+        response = cast(
+            dict[str, dict], await self.bot.get_forward_msg(id=segment.data["id"])
+        )
         messages = []
         for message_data in response["messages"]:
             message = Message([MessageSegment(**s) for s in message_data["message"]])
@@ -386,7 +397,10 @@ async def cave_add_handler(
             (not argument)
             and event.reply
             and all(
-                [keyword not in str(event.reply.message) for keyword in BANNED_CQ_CODE[:-1]]
+                [
+                    keyword not in str(event.reply.message)
+                    for keyword in BANNED_CQ_CODE[:-1]
+                ]
             )
         ):
             message = event.reply.message
