@@ -8,6 +8,7 @@ from ._utils import *
 # Info: XDbot2 GPT 设置
 # [HELPEND]
 
+
 @create_command("gpt-config")
 async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
     argv = message.extract_plain_text().split(" ")
@@ -15,17 +16,14 @@ async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
     match argv[0]:
         case "16k":
             await set_switch(
-                f"gpt/users/{user_id}.json",
-                "16k",
-                get_list_item(argv, 1, ""),
-                user_id
+                f"gpt/users/{user_id}.json", "16k", get_list_item(argv, 1, ""), user_id
             )
         case "auto-pay":
             await set_switch(
                 f"gpt/users/{user_id}.json",
                 "automatic_payment",
                 get_list_item(argv, 1, ""),
-                user_id
+                user_id,
             )
         case _:
             await finish(get_currency_key("wrong_argv"), ["gpt-config"], event.user_id)
