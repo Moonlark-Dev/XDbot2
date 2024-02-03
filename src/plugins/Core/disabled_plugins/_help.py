@@ -1,5 +1,5 @@
-from . import _error
-from . import _lang
+from ..plugins import _error
+from ..plugins import _lang
 import json
 import traceback
 from nonebot import on_command
