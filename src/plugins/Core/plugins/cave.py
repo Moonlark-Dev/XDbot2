@@ -7,13 +7,14 @@ import time
 import traceback
 import marshal
 import re
+from typing import cast
 from . import _error
 from .etm import exp, economy
 from . import _lang, _messenger
 import httpx
 from ._utils import Json, finish, context_review
 from nonebot import on_command, get_app, on_message
-from nonebot.adapters.onebot.v11 import Bot, Message, GroupMessageEvent, MessageEvent
+from nonebot.adapters.onebot.v11 import Bot, Message, GroupMessageEvent, MessageEvent, MessageSegment
 from nonebot.permission import SUPERUSER
 from nonebot.matcher import Matcher
 from nonebot.params import CommandArg
@@ -333,8 +334,46 @@ BANNED_CQ_CODE: list[str] = [
     "[CQ:share",
     "[CQ:contact",
     "[CQ:location",
-    "[CQ:forward",
+    "[CQ:forward"
 ]
+
+class ForwardMessageParser:
+
+    def __init__(self, bot: Bot, segment: MessageSegment) -> None:
+        if segment.type != "forward":
+            raise TypeError
+        self.content = Message()
+        self.bot = bot
+        self.segment = segment
+
+    async def parse(self) -> None:
+        self.messages = await self.get_forward(self.segment)
+        self.parse_message()
+
+    def parse_message(self) -> None:
+        message_length = len(self.messages)
+        if message_length <= 0:
+            raise ValueError
+        elif message_length == 1:
+            self.content = self.messages[0][1]
+        elif message_length > 1 and all(message[0] == self.messages[0][0] for message in self.messages):
+            self.merge_messages()
+        else:
+            raise ValueError
+
+    def merge_messages(self) -> None:
+        for _, message in self.messages:
+            self.content += message
+
+    async def get_forward(self, segment: MessageSegment) -> list[tuple[int, Message]]:
+        response = cast(dict[str, dict], await self.bot.get_forward_msg(id=segment.data["id"]))
+        messages = []
+        for message_data in response["messages"]:
+            message = Message([MessageSegment(**s) for s in message_data["message"]])
+            if any(keyword in str(message) for keyword in BANNED_CQ_CODE):
+                raise ValueError
+            messages.append((message_data["sender"]["user_id"], message))
+        return messages
 
 
 @on_command("cave-a").handle()
@@ -347,10 +386,19 @@ async def cave_add_handler(
             (not argument)
             and event.reply
             and all(
-                [keyword not in str(event.reply.message) for keyword in BANNED_CQ_CODE]
+                [keyword not in str(event.reply.message) for keyword in BANNED_CQ_CODE[:-1]]
             )
         ):
             message = event.reply.message
+            if str(message).startswith("[CQ:forward"):
+                parser = ForwardMessageParser(bot, message[0])
+                try:
+                    await parser.parse()
+                except ValueError:
+                    message = argument
+                else:
+                    message = parser.content
+
         else:
             message = argument
         await showEula(event.get_user_id())

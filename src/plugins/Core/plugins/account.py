@@ -29,6 +29,8 @@ async def multiAccoutManager(bot: Bot, event: Event):
         group_id = int(event.get_session_id().split("_")[1])
     except IndexError:
         return
+    except ValueError:
+        return
     if group_id in multiAccountData.keys() and str(bot.self_id) != multiAccountData[group_id]:
         raise IgnoredException("多帐号：忽略")
 
