@@ -159,10 +159,9 @@ async def quick_math_command(
 
 @on_message().handle()
 async def reset_group_unanswered(event: GroupMessageEvent) -> None:
-    if (
-        Json("quickmath/group_unanswered.json").get(f"{event.group_id}", 0) >= 3
-        and event.user_id not in [2920571540, 1552257261]
-    ):
+    if Json("quickmath/group_unanswered.json").get(
+        f"{event.group_id}", 0
+    ) >= 3 and event.user_id not in [2920571540, 1552257261]:
         Json("quickmath/group_unanswered.json")[f"{event.group_id}"] = int(
             random.choice("011222")
         )
