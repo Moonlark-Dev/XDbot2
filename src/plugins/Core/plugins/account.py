@@ -1,7 +1,6 @@
 import json
 from nonebot import on_command, get_driver, get_bots
 from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, Message
-from nonebot.adapters import Event
 from nonebot.exception import IgnoredException
 from nonebot.message import event_preprocessor
 from nonebot.params import CommandArg
@@ -24,14 +23,10 @@ def get_accounts_data() -> dict:
 
 
 @event_preprocessor
-async def multiAccoutManager(bot: Bot, event: Event):
+async def multiAccoutManager(bot: Bot, event: GroupMessageEvent):
     try:
-        session_id = event.get_session_id()
-        if not session_id.startswith("group"):
-            return
-        group_id = session_id.split("_")[-1]
-        if group_id in multiAccountData.keys():
-            if str(bot.self_id) != multiAccountData[group_id]:
+        if event.group_id in multiAccountData.keys():
+            if str(bot.self_id) != multiAccountData[event.group_id]:
                 raise IgnoredException("多帐号：忽略")
 
     except IgnoredException as e:
