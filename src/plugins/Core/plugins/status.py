@@ -24,7 +24,7 @@ async def get_status_from_web():
 
 
 def cpu_percent():
-    return psutil.cpu_percent()
+    return psutil.cpu_percent(2)
 
 
 def cpu_freq():

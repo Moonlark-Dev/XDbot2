@@ -4,12 +4,10 @@ from ..item import Item
 import random
 
 
-def json2items(items, user_id=None) -> list:
-    ...
+def json2items(items, user_id=None) -> list: ...
 
 
-def add_item(user_id, item_id, item_count=1, item_data={}):
-    ...
+def add_item(user_id, item_id, item_count=1, item_data={}): ...
 
 
 class CommonRubbish(Item):

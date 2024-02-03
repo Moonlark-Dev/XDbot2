@@ -27,12 +27,19 @@ IT Craft XDBot2（下简称`XDbot2`）是一个简单的QQ功能型机器人，�
 
 ### 现有节点
 
-| 节点名称         | 平台    | 账号       | 类型    | 管理者                      | 备注                             |
-|------------------|---------|------------|---------|-----------------------------|----------------------------------|
-| XDbot 0x01       | QQ      | 3407603681 | 混合    | XiaoDeng3386 (1744793737)   |                                  |
-| XDbot 0x02       | QQ      | 3457602590 | master  | XiaoDeng3386 (1744793737)   | 暂停服务                         |
-| XDbot 0x03 (Dev) | QQ      | 1552257261 | develop | XiaoDeng3386 (1744793737)   | 暂停服务                         |
-| XDbot 0x04       | Discord |            | 混合    | xiaodeng3386                |                                  |
+| 节点名称         | 平台    | 账号       | 类型 | 管理者                      | 备注                             |
+|------------------|---------|------------|------|-----------------------------|----------------------------------|
+| XDbot 0x01       | QQ      | 3407603681 | M+D  | XiaoDeng3386 (1744793737)   |                                  |
+| XDbot 0x02       | QQ      | 3457602590 | U    | XiaoDeng3386 (1744793737)   | 暂停服务                         |
+| XDbot 0x03       | QQ      | 1552257261 | M    | XiaoDeng3386 (1744793737)   | 集成 [XTBot][1]                  |
+| XDbot 0x04       | Discord |            | M+D  | xiaodeng3386                |                                  |
+
+> [!TIP]
+> 节点类型意义如下：
+> - `M`: 主分支（即 `master` 分支）
+> - `D`: 非主分支（测试分支）
+> - `M+D`: 混合，可选择是否启用测试分支
+> - `U`: 暂停服务
 
 ## 贡献
 
@@ -55,3 +62,5 @@ IT Craft XDBot2（下简称`XDbot2`）是一个简单的QQ功能型机器人，�
 <a href="https://pay.thisisxd.top/"><img src="https://img.shields.io/badge/Sponsor%20-%20This%20is%20XiaoDeng-green?logo=wechat&amp;logoColor=white&amp;style=flat" alt="Sponsor This is XiaoDeng"></a>
 <a href="https://sponsor.xxtg666.top/"><img src="https://img.shields.io/badge/Sponsor%20-%20xxtg666-blue?logo=alipay&amp;logoColor=white&amp;style=flat" alt="Sponsor xxtg666"></a>
 
+
+[1]: https://github.com/xxtg666/XTBot-Core

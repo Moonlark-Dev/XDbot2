@@ -108,7 +108,7 @@ class Config(BaseSettings):
             ),
         },
         {"path": "data/setu.count.json", "text": "{}"},
-        {"path": "data/cave.data.restore.json", "text": "{}"}
+        {"path": "data/cave.data.restore.json", "text": "{}"},
         # ,
         # {
         #    "path": "data/rule.rules.json",

@@ -1,4 +1,5 @@
 from time import time
+from typing import Optional
 from . import data
 import json
 
@@ -101,3 +102,12 @@ def add_buff(
     data.buff[user_id].append(buff_data)
 
     data.save_data()
+
+
+def get_buff(user_id: str, buff_id: str, levels: list = []) -> Optional[dict]:
+    refresh_buff()
+    for buff in data.buff.get(user_id, []):
+        if buff["buff_id"] == buff_id:
+            if levels and buff["level"] not in levels:
+                continue
+            return buff

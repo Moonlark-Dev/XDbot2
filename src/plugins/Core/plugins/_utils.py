@@ -94,9 +94,11 @@ async def finish(
     parse_cq_code: bool = False,
 ) -> None:
     await matcher.finish(
-        Message(lang.text(key, _format, user_id))
-        if parse_cq_code
-        else lang.text(key, _format, user_id),
+        (
+            Message(lang.text(key, _format, user_id))
+            if parse_cq_code
+            else lang.text(key, _format, user_id)
+        ),
         at_sender=at_sender,
         reply_message=reply_message,
     )

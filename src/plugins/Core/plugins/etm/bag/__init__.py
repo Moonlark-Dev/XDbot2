@@ -7,6 +7,7 @@ from .. import economy
 from .. import data
 from .. import exp
 from .overflow import add_overflow
+from ..duel.item import weapons
 from ..items import rubbish
 
 require("nonebot_plugin_apscheduler")
@@ -110,3 +111,4 @@ async def use_item(user_id, item_pos, argv=""):
 
 
 rubbish.add_item = add_item
+weapons.add_item = add_item

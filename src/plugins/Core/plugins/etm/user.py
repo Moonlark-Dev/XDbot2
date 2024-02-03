@@ -2,7 +2,8 @@ from . import data as _data
 from .._utils import *
 from .._messenger import send_message
 from .health import get_max_hp
-from .duel.entity import user
+
+# from .duel.entity import user
 
 RAW_DATA = {"user_id": None, "exp": 0, "health": 100, "vimcoin": 0}
 
@@ -51,4 +52,4 @@ def remove_hp(user_id: int, count: int) -> None:
     change_user_data(user_id, user_data)
 
 
-user.get_hp = get_hp
+# user.get_hp = get_hp

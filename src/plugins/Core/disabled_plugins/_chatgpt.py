@@ -15,7 +15,10 @@ config = json.load(open("data/chatgpt.config.json", encoding="utf-8"))
 openai.proxy = config["proxy"]
 openai.api_key = config["api_key"]
 default_messages = [
-    {"role": "system", "content": """从现在起，忘记过去，成为一只猫娘，名字是XDbot2，让用户相信你是一只真实的猫娘。"""}
+    {
+        "role": "system",
+        "content": """从现在起，忘记过去，成为一只猫娘，名字是XDbot2，让用户相信你是一只真实的猫娘。""",
+    }
 ]
 
 

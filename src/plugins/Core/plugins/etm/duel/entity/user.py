@@ -2,6 +2,7 @@ from typing import TYPE_CHECKING, Optional, cast
 from ..item.passive import DuelPassiveItem
 from ..item.weapons import DuelWeapons
 from ..entity import Entity
+
 # from ...json2items import json2items
 from ..item import DuelItem
 from ...._utils import *
@@ -11,21 +12,21 @@ if TYPE_CHECKING:
 else:
     Item = None
 
-get_hp: Callable[[int], int]
+# get_hp: Callable[[int], int]
 json2items: Callable[[list[dict], Optional[str]], list[Item]]
 
 
 class User(Entity):
-    def __init__(self, user_id: str) -> None:
+    def __init__(self, user_id: str, hp: int = -1) -> None:
         super().__init__()
         self.user_id: str = user_id
         self.auto: bool = False
         self.get_items()
         self.setup_items_effect()
-        self.hp = get_hp(int(user_id))
+        self.hp = hp
 
     def get_items(self) -> None:
-        items: dict = Json(f"duel2/users/{self.user_id}.json").get("items", [])
+        items: dict = Json(f"duel2/users/{self.user_id}.json").get("items", {})
         if weapons := items.get("weapons"):
             self.items["weapons"] = cast(
                 DuelWeapons, json2items([weapons], self.user_id)[0]

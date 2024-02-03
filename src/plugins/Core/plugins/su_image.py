@@ -33,7 +33,9 @@ async def img_review(message: Message = CommandArg()):
                         tempID = len(data[group])
                         image = data["review"].pop(argument[3])
                         data[group].append(image)
-                        await su.send(Message(f"「图片已添加」\n临时ID：{group}{tempID}"))
+                        await su.send(
+                            Message(f"「图片已添加」\n临时ID：{group}{tempID}")
+                        )
                 elif argument[2] in ["remove", "删除", "rm"]:
                     if argument[3] in ["all", "所有", "*"]:
                         data["review"] = dict()
@@ -48,7 +50,11 @@ async def img_review(message: Message = CommandArg()):
 async def image(message: Message = CommandArg()):
     argument = str(message).split(" ")
     try:
-        if argument[0] in ["img", "图库"] and argument[1] not in ["review", "re", "审核库"]:
+        if argument[0] in ["img", "图库"] and argument[1] not in [
+            "review",
+            "re",
+            "审核库",
+        ]:
             data = json.load(open("data/reply.images.json", encoding="utf-8"))
             if argument[1] in ["添加", "add"]:
                 data[argument[2]].append(argument[3].split("url=")[-1].replace("]", ""))
