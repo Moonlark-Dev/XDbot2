@@ -32,5 +32,5 @@ ITEMS = {
     "auto_sign_coupon": AutoSignCoupon,
     "auto_sign_coupon_actived": AutoSignCouponActived,
     "mysterybox_lv3": MysteryBoxLv3,
-    "stick": Stick
+    "stick": Stick,
 }
