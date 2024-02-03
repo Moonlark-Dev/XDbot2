@@ -34,4 +34,3 @@ ITEMS = {
     "mysterybox_lv3": MysteryBoxLv3,
     "stick": Stick,
 }
-
