@@ -22,6 +22,7 @@ SHOP_ITEMS = {
     "5": {"id": "pawcoin", "count": 1, "data": {}},
     "6": {"id": "archfiend_dice", "count": 1, "data": {}},
     "7": {"id": "gpt_monthly_pass", "count": 1, "data": {}},
+    "8": {"id": "stick", "count": 1, "data": {}},
     # "7": {"id": "talisman", "count": 1, "data": {}}
 }
 # mystery_box.SHOP_ITEMS = SHOP_ITEMS

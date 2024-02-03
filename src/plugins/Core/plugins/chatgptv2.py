@@ -98,12 +98,19 @@ def change_session(user_id: str, session: str) -> None:
     Json(f"gpt/users/{user_id}.json")["session"] = session
 
 
+from .etm.user import get_user_data
+
+
 def check_user_tokens(user_id: str) -> bool:
     user_data = Json(f"gpt/users/{user_id}.json")
     return (
         user_data.get("token", 0) > 0
         or user_data.get("free", 0) > 0
         or buff.has_buff(user_id, "每日GPT限免")
+        or (
+            Json(f"gpt/users/{user_id}.json")["automatic_payment"]
+            and get_user_data(user_id)["vimcoin"] > 0
+        )
     )
 
 
@@ -164,6 +171,11 @@ def reduce_tokens(user_id: str, token_count: int) -> int:
     elif user_data.get("free", 0) > 0:
         user_data["free"] -= 1
         return 0
+    elif user_data["token"] < token_count:
+        # 强制扣费
+        economy._add_vi(user_id, -0.04 * token_count - user_data["token"])
+        user_data["token"] = 0
+        return token_count
     else:
         user_data["token"] -= token_count
         return token_count
@@ -291,7 +303,14 @@ async def handle_gpt_command(
                 add_message_to_session(session_id, "user", " ".join(argv))
 
                 try:
-                    reply = await get_chatgpt_reply(get_session_messages(session_id))
+                    reply = await get_chatgpt_reply(
+                        get_session_messages(session_id),
+                        (
+                            "gpt-3.5-turbo-16k"
+                            if Json(f"gpt/users/{user_id}.json")["16k"]
+                            else "gpt-3.5-turbo-16k"
+                        ),
+                    )
                 except:
                     session["is_locked"] = False
                     await error.report()
