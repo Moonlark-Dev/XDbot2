@@ -12,9 +12,7 @@ from .items.vimcoin import VimCoin
 from .items.experience import Experience
 from .items.gpt_monthly_pass import GptMonthlyPass
 from .items.towel_zip import TowelZip, Towel
-
-if TYPE_CHECKING:
-    from .item import Item
+from .items.stick import Stick
 
 ITEMS = {
     "dice": Dice,
@@ -34,8 +32,6 @@ ITEMS = {
     "auto_sign_coupon": AutoSignCoupon,
     "auto_sign_coupon_actived": AutoSignCouponActived,
     "mysterybox_lv3": MysteryBoxLv3,
+    "stick": Stick,
 }
 
-
-def register_item(item: "Type[Item]") -> None:
-    ITEMS[item(1, {}, None).item_id] = item
