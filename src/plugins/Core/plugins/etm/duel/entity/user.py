@@ -12,7 +12,11 @@ if TYPE_CHECKING:
 else:
     Item = None
 
-class UserDataLocked(Exception): pass
+
+class UserDataLocked(Exception):
+    pass
+
+
 json2items: Callable[[list[dict], Optional[str]], list[Item]]
 
 

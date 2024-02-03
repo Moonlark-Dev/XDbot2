@@ -23,7 +23,7 @@ file_list = [
     r"etm\.items\.json",
     r"preview(.*).png",
     r"setu\.(.*)\.(jpg|png)",
-    r"(.*)\.ro\.(.*)"
+    r"(.*)\.ro\.(.*)",
 ]
 try:
     for file in files:
