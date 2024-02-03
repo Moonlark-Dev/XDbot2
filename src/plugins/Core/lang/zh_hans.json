@@ -332,5 +332,6 @@
   "duel_items.type_active": "主动",
   "duel_items.type_other": "其他",
   "duel_items.list": "「装备列表」{}",
-  "duel_items.list_item": "\n[{}] {}. {} x{}"
+  "duel_items.list_item": "\n[{}] {}. {} x{}",
+  "_utils.switch": "配置 {} 已设置为 {}
 }

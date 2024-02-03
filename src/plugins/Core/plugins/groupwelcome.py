@@ -142,6 +142,8 @@ GroupIncrease = on_notice()
 @GroupIncrease.handle()
 async def _(bot: Bot, event: GroupIncreaseNoticeEvent, matcher: Matcher):
     try:
+        if event.user_id == -1:
+            return
         if (
             event.group_id in config["welcome_enabled_group"]
             or config["welcome_global_enabled"]
@@ -156,6 +158,6 @@ async def _(bot: Bot, event: GroupIncreaseNoticeEvent, matcher: Matcher):
                 await GroupIncrease.finish(
                     config["application_notfound_message"], at_sender=True
                 )
-        GroupIncrease.finish()
+        await GroupIncrease.finish()
     except BaseException:
         await error.report(traceback.format_exc(), matcher, event)
