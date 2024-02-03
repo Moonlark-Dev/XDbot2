@@ -23,7 +23,7 @@ file_list = [
     r"etm\.items\.json",
     r"preview(.*).png",
     r"setu\.(.*)\.(jpg|png)",
-    r"(.*)\.ro\.(.*)",
+    r"(.*)\.ro\.(.*)"
 ]
 try:
     for file in files:
@@ -32,6 +32,10 @@ try:
             logger.info(f"已清理 {file}")
 except Exception:
     logger.error(f"清理失败：{traceback.format_exc()}")
+try:
+    os.remove("duel2/lock.json")
+except Exception:
+    pass
 
 # 获取配置
 global_config = get_driver().config
