@@ -36,5 +36,6 @@ ITEMS = {
     "mysterybox_lv3": MysteryBoxLv3,
 }
 
-def register_item(item: 'Type[Item]') -> None:
+
+def register_item(item: "Type[Item]") -> None:
     ITEMS[item(1, {}, None).item_id] = item
