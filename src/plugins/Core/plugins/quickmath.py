@@ -98,7 +98,10 @@ async def send_quick_math() -> None:
                 False,
                 True,
             )
-            matcher.destroy()
+            try:
+                matcher.destroy()
+            except ValueError:
+                pass
             Json(f"quickmath/u{event.user_id}.json")["points"] = (
                 Json(f"quickmath/u{event.user_id}.json").get("points", 0) + add_points
             )

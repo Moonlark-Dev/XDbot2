@@ -1,3 +1,4 @@
+from typing import TYPE_CHECKING, Type
 from .items.dice import Dice
 from .items.auto_sign_coupon import AutoSignCoupon, AutoSignCouponActived
 from .items.talisman import Talisman
@@ -11,6 +12,7 @@ from .items.vimcoin import VimCoin
 from .items.experience import Experience
 from .items.gpt_monthly_pass import GptMonthlyPass
 from .items.towel_zip import TowelZip, Towel
+from .items.stick import Stick
 
 ITEMS = {
     "dice": Dice,
@@ -30,4 +32,5 @@ ITEMS = {
     "auto_sign_coupon": AutoSignCoupon,
     "auto_sign_coupon_actived": AutoSignCouponActived,
     "mysterybox_lv3": MysteryBoxLv3,
+    "stick": Stick,
 }

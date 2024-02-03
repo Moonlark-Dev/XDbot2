@@ -1,3 +1,4 @@
+from types import NoneType
 from typing import Optional, Type, cast, overload
 from .item_basic_data import BASIC_DATA
 from abc import ABC, abstractmethod
@@ -7,7 +8,7 @@ from .nbt import NbtDict
 from .._lang import text
 
 
-class Item(ABC):
+class Item:
     def __init__(self, count, data, user_id):
         self.count = count
         self.item_id = ""  # dice"
@@ -39,11 +40,14 @@ class Item(ABC):
         **params,
     ) -> None: ...
 
+    @overload
     def setup_basic_data(self, *args, **params) -> None:
         self.basic_data = params
 
-    @abstractmethod
-    def on_register(self): ...
+    def setup_basic_data(self, *args, **params) -> None:
+        self.basic_data = params
+
+    def on_register(self) -> NoneType: ...
 
     # @abstractmethod
     def _after_register(self): ...
