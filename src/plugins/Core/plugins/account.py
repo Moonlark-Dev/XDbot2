@@ -1,7 +1,7 @@
 import json
 from nonebot import on_command, get_driver, get_bots
 from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, Message
-from nonebot.adapters.onebot.v11 import Event
+from nonebot.adapters.onebot.v11.event import Event
 from nonebot.exception import IgnoredException
 from nonebot.message import event_preprocessor
 from nonebot.params import CommandArg
