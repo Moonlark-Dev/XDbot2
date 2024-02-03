@@ -325,5 +325,13 @@
   "weapons.used": "已装备：{}",
   "gpt_monthly_pass.display_name": "XDbot GPT Plus++ (30d)",
   "gpt_monthly_pass.display_message": "XDbot GPT Plus++是XDbot提供的高级ChatGPT服务。购买此服务，您将在接下来的30天内享有无限次使用XDbot GPT的特权。XDbot GPT Plus++旨在为用户提供更灵活、便捷的文本生成和对话交流体验。无论是用于工作中的自动化任务、学习中的知识获取，还是简单的日常对话，XDbot GPT Plus++都将成为您在这个月里不可或缺的智能助手。通过购买此月卡，您将获得一流的ChatGPT服务，助您在30天内更高效地完成各种任务，满足您对文本生成的各种需求。",
-  "gpt_monthly_pass.used": "XDbot GPT Plus++ 已激活\n有效期至 {}"
+  "gpt_monthly_pass.used": "XDbot GPT Plus++ 已激活\n有效期至 {}",
+  "duel_items.type_weapons": "武器",
+  "duel_items.type_consumables": "消耗",
+  "duel_items.type_passive": "被动",
+  "duel_items.type_active": "主动",
+  "duel_items.type_other": "其他",
+  "duel_items.list": "「装备列表」{}",
+  "duel_items.list_item": "\n[{}] {}. {} x{}",
+  "_utils.switch": "配置 {} 已设置为 {}
 }

@@ -29,6 +29,7 @@ async def multiAccoutManager(bot: Bot, event: Event):
         group_id = int(event.get_session_id().split("_")[1])
     except IndexError:
         return
+
     except ValueError:
         return
     if (
