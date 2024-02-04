@@ -33,9 +33,9 @@ try:
 except Exception:
     logger.error(f"清理失败：{traceback.format_exc()}")
 # try:
-    #     os.remove("data/duel2/lock.json")
+#     os.remove("data/duel2/lock.json")
 # except Exception:
-    #     pass
+#     pass
 
 # 获取配置
 global_config = get_driver().config
