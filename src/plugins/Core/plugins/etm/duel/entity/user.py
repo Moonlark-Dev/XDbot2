@@ -24,12 +24,13 @@ class User(Entity):
     def __init__(self, user_id: str, hp: int = -1) -> None:
         super().__init__()
         self.user_id: str = user_id
-        self.check_lock()
+        # self.check_lock()
         self.auto: bool = False
         self.get_items()
         self.setup_items_effect()
         self.hp = hp
 
+    """
     def check_lock(self) -> None:
         if Json(f"duel2/lock.json")[self.user_id]:
             raise UserDataLocked
@@ -37,6 +38,7 @@ class User(Entity):
 
     def __del__(self) -> None:
         Json(f"duel2/lock.json")[self.user_id] = True
+    """
 
     def get_items(self) -> None:
         items: dict = Json(f"duel2/users/{self.user_id}.json").get("items", {})
