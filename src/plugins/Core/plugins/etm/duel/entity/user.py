@@ -35,6 +35,9 @@ class User(Entity):
             raise UserDataLocked
         Json(f"duel2/lock.json")[self.user_id] = True
 
+    def __del__(self) -> None:
+        Json(f"duel2/lock.json")[self.user_id] = True
+
     def get_items(self) -> None:
         items: dict = Json(f"duel2/users/{self.user_id}.json").get("items", {})
         if weapons := items.get("weapons"):
