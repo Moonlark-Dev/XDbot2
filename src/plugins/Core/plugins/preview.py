@@ -162,6 +162,11 @@ async def _(bot: Bot, event: GroupMessageEvent, message: Message) -> None:
     )
 
 
+def get_host(url: str) -> str:
+    parsed_url = urlparse(url)
+    return parsed_url.hostname or ""
+
+
 @on_regex("(https?|ftp)://[^\s/$.?#].[^\s]*").handle()
 async def _(event: GroupMessageEvent, matcher: Matcher = Matcher()) -> None:
     if not Json("preview.auto_groups.json")[str(event.group_id)]:
@@ -171,4 +176,8 @@ async def _(event: GroupMessageEvent, matcher: Matcher = Matcher()) -> None:
     match = re.search("(https?|ftp)://[^\s/$.?#].[^\s]*", event.get_plaintext())
     if match is None:
         return
-    await take_screenshot_of_website(match.group(0), matcher)
+    url = match.group(0)
+    host = get_host(url)
+    if host in ["", "b23.tv", "bilibili.com"]:
+        return
+    await take_screenshot_of_website(url, matcher)
