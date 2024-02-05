@@ -43,7 +43,7 @@ def get_item_list(user_id: int) -> str:
 
 @create_command("duel-items", {"duel-item", "duel-i"})
 async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
-    argv = message.extract_plain_text().split(" ")
+    # argv = message.extract_plain_text().split(" ")
     await finish(
         "duel_items.list", [get_item_list(event.user_id)], event.user_id, False, True
     )
