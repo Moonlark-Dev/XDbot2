@@ -12,13 +12,6 @@ import asyncio
 
 
 require("nonebot_plugin_apscheduler")
-# eggs = {
-#     "0/0=?": "regex>([nN][aA][nN])|(0)",
-#     "1/0=?": "regex>[iI][nN][fF]",
-#     "creeper?": "regex>[aA][wW]+.*?[mM][aA][N](.*?)",
-#     "undefined+undefined=?": "regex>[nN][aA][nN]|[uU][nN][dD][fF][iI][nN][eE][dD]",
-#     "114+514=?": "regex>哼+啊+|114|514|114514|1919|810|1919810",
-# }
 
 
 def render_question(question_string: str) -> bytes:
@@ -169,10 +162,9 @@ async def quick_math_command(
 
 @on_message().handle()
 async def reset_group_unanswered(event: GroupMessageEvent) -> None:
-    if (
-        Json("quickmath/group_unanswered.json").get(f"{event.group_id}", 0) >= 3
-        and event.user_id != 2920571540
-    ):
+    if Json("quickmath/group_unanswered.json").get(
+        f"{event.group_id}", 0
+    ) >= 3 and event.user_id not in [2920571540, 1552257261]:
         Json("quickmath/group_unanswered.json")[f"{event.group_id}"] = int(
             random.choice("011222")
         )
