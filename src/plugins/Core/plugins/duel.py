@@ -9,6 +9,7 @@ from nonebot.rule import to_me
 
 async def start_duel(): ...
 
+
 @create_command("duel")
 async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
     if message[-1].type != "at":
@@ -23,20 +24,20 @@ async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
         bot,
         event,
         "duel.request",
-        [
-            MessageSegment.at(rival_id),
-            MessageSegment.at(user_id),
-        ]
+        [MessageSegment.at(rival_id), MessageSegment.at(user_id)],
     )
     matcher = on_message(to_me())
     disposed = False
+
     @matcher.handle()
     async def _(event: MessageEvent) -> None:
         nonlocal disposed
-        if (event.reply is None
-                or event.reply.message_id != message_id
-                or not event.message.extract_plain_text()
-                or event.get_user_id() != rival_id):
+        if (
+            event.reply is None
+            or event.reply.message_id != message_id
+            or not event.message.extract_plain_text()
+            or event.get_user_id() != rival_id
+        ):
             await matcher.finish()
         match event.message.extract_plain_text().lower()[0]:
             case "y" | "a":
@@ -45,6 +46,7 @@ async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
                 disposed = True
             case _:
                 await matcher.finish()
+
     await asyncio.sleep(90)
     if not disposed:
         await bot.delete_msg(message_id=message_id)

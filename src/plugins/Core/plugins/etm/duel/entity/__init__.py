@@ -37,7 +37,7 @@ class Entity:
         self.focus: float = 0.5
         self.dodge: float = 0
 
-    def set_logger(self, logger: 'Logger') -> None:
+    def set_logger(self, logger: "Logger") -> None:
         self.logger = logger
 
     def attacked(self, harm: float, entity: Self, dodgeable: bool = True) -> float:

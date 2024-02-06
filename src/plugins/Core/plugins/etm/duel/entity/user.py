@@ -42,24 +42,20 @@ class User(Entity):
             self.bot,
             self.event,
             "query",
-            [
-                lang.text("sign.hr", [], self.user_id).join(self.logger.logs)
-            ]
+            [lang.text("sign.hr", [], self.user_id).join(self.logger.logs)],
         )
         self.logger.clear()
         self._matcher = on_message(to_me())
         self._matcher.handle()(self.get_action_choice)
 
     async def get_action_choice(self, event: MessageEvent, matcher: Matcher) -> None:
-        if (event.reply is None 
-                or event.reply.message_id != self._message_id):
+        if event.reply is None or event.reply.message_id != self._message_id:
             await matcher.finish()
         try:
             self.action_choice = int(event.message.extract_plain_text().strip())
             matcher.destroy()
         except ValueError:
             await matcher.finish()
-        
 
     async def action(self, entities: list[Entity]) -> None:
         await super().action(entities)  # type: ignore
@@ -75,7 +71,6 @@ class User(Entity):
                 self.action_choice = 3
         else:
             self.action_choice = 3
-        
 
     def check_lock(self) -> None:
         if Json(f"duel2/lock.json")[self.user_id]:
