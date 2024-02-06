@@ -18,6 +18,8 @@ async def _():
     global command_start
     command_start = Json("init.json")["config"]["command_start"][0]
 
+def get_command_start() -> str:
+    return command_start
 
 def get_command_status(status: Optional[bool]) -> str:
     return {True: "√", False: "X", None: "O"}[status]

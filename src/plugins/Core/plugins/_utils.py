@@ -76,6 +76,19 @@ def create_group_command(cmd: str, aliases: set = set(), **kwargs):
     return deco
 
 
+async def send_message(
+        bot: Bot,
+        event: MessageEvent,
+        key: str,
+        _format: list = []
+) -> int:
+    return (await bot.send_msg(
+        message_type=event.message_type,
+        user_id=event.user_id,
+        group_id=event.dict().get("group_id"),
+        message=Message(lang.text(key, _format, event.user_id))
+    ))["message_id"]
+
 async def send_text(
     key: str,
     _format: list = [],
