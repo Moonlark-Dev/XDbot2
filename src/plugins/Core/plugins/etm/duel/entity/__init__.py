@@ -8,6 +8,7 @@ if TYPE_CHECKING:
     from ..item import DuelItem
     from ..item.weapons import DuelWeapons
     from ..item.passive import DuelPassiveItem
+    from ..logger import Logger
 else:
     DuelItem = None
     DuelWeapons = None
@@ -36,6 +37,9 @@ class Entity:
         self.focus: float = 0.5
         self.dodge: float = 0
 
+    def set_logger(self, logger: 'Logger') -> None:
+        self.logger = logger
+
     def attacked(self, harm: float, entity: Self, dodgeable: bool = True) -> float:
         if (
             random.random()
@@ -60,7 +64,7 @@ class Entity:
         if self.get_action_value() <= 0:
             self.reduced_action_value = 0
 
-    def action(self, entities: list[Self]) -> None:
+    async def action(self, entities: list[Self]) -> None:
         pass
 
     def setup_items_effect(self) -> None:
