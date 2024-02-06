@@ -4,6 +4,7 @@ import os.path
 import traceback
 from typing import Any, Callable, Optional, Union
 import httpx
+from .etm.exception import *
 
 # 快捷访问
 from nonebot import on_message
@@ -40,7 +41,12 @@ def create_command(cmd: str, aliases: set = set(), **kwargs):
             except IndexError as e:
                 if "arg" in traceback.format_exc():
                     await finish(get_currency_key("wrong_argv"), [cmd], event.user_id)
-                await error.report()
+            except IllegalQuantityException as e:
+                await finish(
+                    "_utils.IllegalQuantityException", [e.args[0]], event.user_id
+                )
+            except UserDataLocked as e:
+                await finish("_utils.UserDataLocked", [], event.user_id)
             except Exception:
                 await error.report()
 

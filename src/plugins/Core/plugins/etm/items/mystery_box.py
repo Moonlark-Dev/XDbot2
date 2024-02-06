@@ -1,5 +1,5 @@
 import traceback
-from ..illegal_quantity import IllegalQuantityException
+from ..exception import IllegalQuantityException
 from .. import bag
 from src.plugins.Core.plugins import _lang
 import random

@@ -3,7 +3,7 @@ import random
 from ..item import Item
 from ... import _lang
 from .. import achievement, buff
-from ..illegal_quantity import IllegalQuantityException
+from ..exception import IllegalQuantityException
 
 
 class Dice(Item):
