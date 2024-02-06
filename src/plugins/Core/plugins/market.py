@@ -52,8 +52,7 @@ def get_item_view(item_data: dict, user_id: str) -> str:
             item_data["price"],
             min(
                 int(
-                    user.get_user_data(user_id)["vimcoin"]
-                    / max(1, item_data["price"])
+                    user.get_user_data(user_id)["vimcoin"] / max(1, item_data["price"])
                 ),
                 item_data["count"],
             ),
@@ -64,6 +63,7 @@ def get_item_view(item_data: dict, user_id: str) -> str:
         ],
         user_id,
     )
+
 
 @market.handle()
 async def item_list(bot: Bot, event: MessageEvent, message: Message = CommandArg()):
@@ -79,10 +79,11 @@ async def item_list(bot: Bot, event: MessageEvent, message: Message = CommandArg
                 _lang.text(
                     "market.list_title",
                     [page, math.ceil(len(list(data.items())) / 50)],
-                    user_id
+                    user_id,
                 )
             ] + [
-                get_item_view(item_data, user_id) for item_data in list(data.values())[page * 50 - 50 : page * 50]
+                get_item_view(item_data, user_id)
+                for item_data in list(data.values())[page * 50 - 50 : page * 50]
             ]
             node_messages = await generate_node_message(bot, messages)
             await send_node_message(bot, node_messages, event)
