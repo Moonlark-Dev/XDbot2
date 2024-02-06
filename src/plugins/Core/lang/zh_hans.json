@@ -339,5 +339,15 @@
     "操作失败: 您的数据已经锁定",
     "数据已锁定: 您正在战斗中",
     "错误: 不能在战斗中使用"
-  ]
+  ],
+  "duel.__base__": "[DUEL] {}",
+  "duel.request": "{}\n\n{} 向你发送了一个决斗请求\n\n回复本消息[y]接受\n回复本消息[x]拒绝\n\n请求将在 90s 后过期",
+  "duel_logger.action_queue_title": "行动队列: {}{}\n",
+  "duel_logger.action_queue_array": "->",
+  "duel_logger.long_entity_name": "[{}<{}>]",
+  "duel_logger.entity_hp": "血量: {}/{} ({}%)\n\n",
+  "duel_logger.action_title": "{}的回合: \n",
+  "duel_logger.finished": "战斗结束",
+  "duel_user.query": "{}\n\n请回复本消息并选择序号:\n[1]> 攻击\n[2]> 物品\n[3]> 跳过\n\n将在 30s 后自动结束"
+  
 }

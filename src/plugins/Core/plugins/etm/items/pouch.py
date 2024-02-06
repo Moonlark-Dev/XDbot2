@@ -1,4 +1,4 @@
-from ..illegal_quantity import IllegalQuantityException
+from ..exception import IllegalQuantityException
 from ..item import Item
 from .. import json2items
 from .. import bag
@@ -89,9 +89,7 @@ class Pouch(Item):
         if len(args) < 3:
             args.append(str(count))
         if count < int(args[2]) or int(args[2]) < 0:
-            raise plugins.Core.plugins.etm.IllegalQuantityException.IllegalQuantityException(
-                args[2]
-            )
+            raise IllegalQuantityException(args[2])
         if int(args[2]) > self.get_free_count():
             return [text("pouch.not_enough_space", [], self.user_id)]
 
