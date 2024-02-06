@@ -42,7 +42,9 @@ def create_command(cmd: str, aliases: set = set(), **kwargs):
                 if "arg" in traceback.format_exc():
                     await finish(get_currency_key("wrong_argv"), [cmd], event.user_id)
             except IllegalQuantityException as e:
-                await finish("_utils.IllegalQuantityException", [e.args[0]], event.user_id)
+                await finish(
+                    "_utils.IllegalQuantityException", [e.args[0]], event.user_id
+                )
             except UserDataLocked as e:
                 await finish("_utils.UserDataLocked", [], event.user_id)
             except Exception:
