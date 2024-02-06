@@ -99,9 +99,7 @@ async def view_item(event: MessageEvent, message: Message = CommandArg()):
         argv = str(message).split(" ")
         if argv[0] == "view":
             item_data = data[argv[1]]
-            await market.finish(
-                get_item_view(item_data, user_id)
-            )
+            await market.finish(get_item_view(item_data, user_id))
     except BaseException:
         await _error.report(traceback.format_exc())
 
@@ -120,11 +118,10 @@ async def search_item(bot: Bot, event: MessageEvent, message: Message = CommandA
         user_id = event.get_user_id()
         argv = str(message).split(" ")
         if argv[0] in ["search", "搜索"]:
-            messages = [
-                _lang.text("market.search_title", [argv[1]], user_id),
-            ] + [
+            messages = [_lang.text("market.search_title", [argv[1]], user_id)] + [
                 get_item_view(item_data, user_id)
-                for item_data in list(data.values()) if check_item(json2items.json2items([item_data["item"]])[0], argv[1])
+                for item_data in list(data.values())
+                if check_item(json2items.json2items([item_data["item"]])[0], argv[1])
             ]
             node_messages = await generate_node_message(bot, messages[:52])
             await send_node_message(bot, node_messages, event)
