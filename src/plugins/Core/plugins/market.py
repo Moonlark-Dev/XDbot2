@@ -41,63 +41,51 @@ def save_data():
     json.dump(average_price, open("data/market.average.json", "w", encoding="utf-8"))
 
 
+def get_item_view(item_data: dict, user_id: str) -> str:
+    item = json2items.json2items([item_data["item"]], user_id)[0]
+    return _lang.text(
+        "market.view",
+        [
+            item_data["id"],
+            item.data["display_name"],
+            item.item_id,
+            item_data["price"],
+            min(
+                int(
+                    user.get_user_data(user_id)["vimcoin"] / max(1, item_data["price"])
+                ),
+                item_data["count"],
+            ),
+            item_data["count"],
+            item_data["seller"]["nickname"],
+            item_data["seller"]["user_id"],
+            item.data["display_message"],
+        ],
+        user_id,
+    )
+
+
 @market.handle()
 async def item_list(bot: Bot, event: MessageEvent, message: Message = CommandArg()):
     try:
         user_id = event.get_user_id()
         argv = str(message).split(" ")
         if argv[0] in ["", "list"]:
-            # for id, item_json in list(data.items()):
-            # item = items.json2items([item_json["item"]])[0]
-            # reply += _lang.text("market.list_item", [
-            # id, item.data["display_name"], item_json["price"]], user_id)
-            # await market.finish(reply)
             try:
                 page = int(argv[1])
             except:
                 page = 1
-            node_messages = Message(
-                [
-                    MessageSegment.node_custom(
-                        event.self_id,
-                        "XDBOT2",
-                        _lang.text(
-                            "market.list_title",
-                            [page, math.ceil(len(list(data.items())) / 100)],
-                            user_id,
-                        ),
-                    )
-                ]
-            )
-            for item_data in list(data.values())[page * 100 - 100 : page * 100]:
-                item = json2items.json2items([item_data["item"]])[0]
-                node_messages.append(
-                    MessageSegment.node_custom(
-                        event.user_id,
-                        "XDBOT2",
-                        _lang.text(
-                            "market.view",
-                            [
-                                item_data["id"],
-                                item.data["display_name"],
-                                item.item_id,
-                                item_data["price"],
-                                min(
-                                    int(
-                                        user.get_user_data(user_id)["vimcoin"]
-                                        / max(1, item_data["price"])
-                                    ),
-                                    item_data["count"],
-                                ),
-                                item_data["count"],
-                                item_data["seller"]["nickname"],
-                                item_data["seller"]["user_id"],
-                                item.data["display_message"],
-                            ],
-                            user_id,
-                        ),
-                    )
+            messages = [
+                _lang.text(
+                    "market.list_title",
+                    [page, math.ceil(len(list(data.items())) / 50)],
+                    user_id,
                 )
+            ] + [
+                get_item_view(item_data, user_id)
+                for item_data in list(data.values())[page * 50 - 50 : page * 50]
+            ]
+            node_messages = await generate_node_message(bot, messages)
             await send_node_message(bot, node_messages, event)
             await market.finish()
     except BaseException:
