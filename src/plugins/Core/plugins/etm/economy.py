@@ -1,4 +1,4 @@
-from .illegal_quantity import IllegalQuantityException
+from .exception import IllegalQuantityException
 from . import user
 
 # from nonebot_plugin_apscheduler import scheduler

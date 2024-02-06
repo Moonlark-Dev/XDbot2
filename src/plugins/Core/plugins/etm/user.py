@@ -2,6 +2,8 @@ from . import data as _data
 from .._utils import *
 from .._messenger import send_message
 from .health import get_max_hp
+from .._utils import Json
+from .exception import UserDataLocked
 
 # from .duel.entity import user
 
@@ -31,7 +33,9 @@ def get_hp(user_id: int) -> int:
     return user_data["health"]
 
 
-def remove_hp(user_id: int, count: int) -> None:
+def remove_hp(user_id: int, count: float) -> None:
+    if Json(f"duel2/lock.json")[str(user_id)]:
+        raise UserDataLocked
     user_data = get_user_data(user_id)
     user_data["health"] -= count
     if user_data["health"] <= 0:

@@ -333,5 +333,11 @@
   "duel_items.type_other": "其他",
   "duel_items.list": "「装备列表」{}",
   "duel_items.list_item": "\n[{}] {}. {} x{}",
-  "_utils.switch": "配置 {} 已设置为 {}"
+  "_utils.switch": "配置 {} 已设置为 {}",
+  "_utils.IllegalQuantityException": "非法数据: {}",
+  "_utils.UserDataLocked": [
+    "操作失败: 您的数据已经锁定",
+    "数据已锁定: 您正在战斗中",
+    "错误: 不能在战斗中使用"
+  ]
 }
