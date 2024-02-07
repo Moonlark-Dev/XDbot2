@@ -18,7 +18,7 @@ class MysteryBoxLevel1(Item):
                 "并不普通的的盒子，散发着少许神秘的气息。\n \n「盒子里好像……发光了？」"
             ),
             "price": 35,
-            "maximum_stack": 32
+            "maximum_stack": 32,
         }
         self.item_id = "mysterybox_lv1"
 
@@ -171,5 +171,5 @@ class MysteriousShard(Item):
             "display_message": "………………\n \n「……」",
             "price": 1,
             "useable": False,
-            "maximum_stack": 96
+            "maximum_stack": 96,
         }
