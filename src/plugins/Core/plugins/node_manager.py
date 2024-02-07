@@ -35,7 +35,6 @@ give = on_command("give")
 async def _(event: GroupMessageEvent, message: Message = CommandArg()):
     try:
         args = str(message).strip().split(" ")
-        args.insert(0, str(event.user_id))
         args.insert(0, "give")
 
         if args[0] in ["give", "给"]:
@@ -54,17 +53,8 @@ async def _(event: GroupMessageEvent, message: Message = CommandArg()):
 async def update_xdbot(matcher: Matcher, event: MessageEvent):
     try:
         await matcher.send(lang.text("update.checking", [], event.get_user_id()))
-        old_commit = os.popen("git log").read().split("\n")[0].split(" ")[1][:7]
-        os.system("python3 update.py")
         await matcher.finish(
-            lang.text(
-                "update.finish",
-                [
-                    old_commit,
-                    os.popen("git log").read().split("\n")[0].split(" ")[1][:7],
-                ],
-                event.get_user_id(),
-            )
+            os.popen("git pull").read()
         )
     except BaseException:
         await error.report()
