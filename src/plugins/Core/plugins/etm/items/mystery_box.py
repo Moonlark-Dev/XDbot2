@@ -18,7 +18,7 @@ class MysteryBoxLevel1(Item):
                 "并不普通的的盒子，散发着少许神秘的气息。\n \n「盒子里好像……发光了？」"
             ),
             "price": 35,
-            "maximum_stack": 16
+            "maximum_stack": 32
         }
         self.item_id = "mysterybox_lv1"
 
@@ -118,6 +118,7 @@ class MysteryBoxLv3(MysteryBoxLevel1):
             "并不普通的的盒子，散发着一些神秘的气息。\n \n「盒子里好像……发光了？」"
         )
         self.basic_data["display_name"] = "Mystery Box (⭐️⭐️⭐️)"
+        self.basic_data["maximum_stack"] = 16
 
     def get_items(self):
         return {
@@ -170,4 +171,5 @@ class MysteriousShard(Item):
             "display_message": "………………\n \n「……」",
             "price": 1,
             "useable": False,
+            "maximum_stack": 96
         }
