@@ -18,6 +18,7 @@ class MysteryBoxLevel1(Item):
                 "并不普通的的盒子，散发着少许神秘的气息。\n \n「盒子里好像……发光了？」"
             ),
             "price": 35,
+            "maximum_stack": 16
         }
         self.item_id = "mysterybox_lv1"
 
