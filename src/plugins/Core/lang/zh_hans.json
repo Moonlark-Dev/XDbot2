@@ -333,6 +333,8 @@
   "duel_items.type_other": "其他",
   "duel_items.list": "「装备列表」{}",
   "duel_items.list_item": "\n[{}] {}. {} x{}",
+  "dice.display_name": "二十面骰子",
+  "dice.display_message": "某位不知名玩家为了纪念 Ltw3 留下的物品\n\n打开后随机获得: -50 ~ 50vi\n\n「这是一场豪赌, 朋友」",
   "_utils.switch": "配置 {} 已设置为 {}",
   "_utils.IllegalQuantityException": "非法数据: {}",
   "_utils.UserDataLocked": [

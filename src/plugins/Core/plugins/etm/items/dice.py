@@ -10,9 +10,8 @@ class Dice(Item):
     def on_register(self):
         self.item_id = "dice"
         self.basic_data = {
-            "display_name": "二十面骰子",
-            "display_message": "打开后随机获得：-50 ~ 50vi\n \n「搏一搏单车变摩托，赌一赌路虎变五菱（雾」",
-            "maximum_stack": 32,
+            "display_name": self.text("display_name"),
+            "display_message": self.text("display_message"),
             "int": None,
         }
 
