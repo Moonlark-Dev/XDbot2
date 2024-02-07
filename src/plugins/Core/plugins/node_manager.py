@@ -53,9 +53,7 @@ async def _(event: GroupMessageEvent, message: Message = CommandArg()):
 async def update_xdbot(matcher: Matcher, event: MessageEvent):
     try:
         await matcher.send(lang.text("update.checking", [], event.get_user_id()))
-        await matcher.finish(
-            os.popen("git pull").read()
-        )
+        await matcher.finish(os.popen("git pull").read())
     except BaseException:
         await error.report()
 
