@@ -178,6 +178,6 @@ async def _(event: GroupMessageEvent, matcher: Matcher = Matcher()) -> None:
         return
     url = match.group(0)
     host = get_host(url)
-    if host in ["", "b23.tv", "bilibili.com"]:
+    if host in ["", "b23.tv", "bilibili.com", "www.bilibili.com"]:
         return
     await take_screenshot_of_website(url, matcher)
