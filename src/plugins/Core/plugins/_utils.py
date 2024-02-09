@@ -195,7 +195,7 @@ class Json:
                 local_data[key] = self.data[key]
             except KeyError:
                 local_data.pop(key)
-        json.dump(local_data, open(self.path, "w", encoding="utf-8"))
+        json.dump(local_data, open(self.path, "w", encoding="utf-8"), indent=4)
         self.changed_key = set()
 
     def get(self, key: str, default: Any = None) -> Any:
