@@ -40,6 +40,7 @@ async def _():
         indent=4,
     )
 
+
 def render_email(data, user_id):
     email = _lang.text(
         "email.email",
