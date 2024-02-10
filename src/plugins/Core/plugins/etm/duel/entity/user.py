@@ -28,49 +28,102 @@ class User(Entity):
         self.get_items()
         self.setup_items_effect()
         self.hp = hp
-        self.action_choice: int = 0
+        # self.action_choice: int = 0
 
     def set_output(self, bot: Bot, event: MessageEvent) -> None:
         self.bot = bot
         self.event = event
         self.auto = False
 
-    async def send_action_menu(self):
-        # TODO 独立此类函数
-        self.logger.create_block()
-        self._message_id = await send_message(
+    async def send(self, key: str, _format: list[Any] = []):
+        # self.logger.create_block()
+        return await send_message(
             self.bot,
             self.event,
-            "query",
-            [lang.text("sign.hr", [], self.user_id).join(self.logger.logs)],
+            key,
+            _format,
         )
-        self.logger.clear()
-        self._matcher = on_message(to_me())
-        self._matcher.handle()(self.get_action_choice)
+        # self.logger.clear()
+        # lang.text("sign.hr", [], self.user_id).join(self.logger.logs)
+        # self._matcher = on_message(to_me())
+        # self._matcher.handle()(self.get_action_choice)
 
-    async def get_action_choice(self, event: MessageEvent, matcher: Matcher) -> None:
-        if event.reply is None or event.reply.message_id != self._message_id:
-            await matcher.finish()
-        try:
-            self.action_choice = int(event.message.extract_plain_text().strip())
+    async def receive_reply(self, timeout: int = 30, choices: Optional[list[str]] = None, default: Optional[str] = None) -> Optional[str]:
+        matcher = on_message()
+        choice = None
+        async def handler(event: MessageEvent) -> None:
+            nonlocal choice
+            if event.get_user_id() != self.user_id:
+                await matcher.finish()
+            message = event.get_plaintext()
+            if choices and message not in choices:
+                await finish("duel_user.unknown_choice", [message, choices], event.user_id)
+            choice = message
             matcher.destroy()
-        except ValueError:
-            await matcher.finish()
+        matcher.append_handler(handler)
+        for _ in range(timeout):
+            await asyncio.sleep(1)
+            if choice is not None:
+                return choice
+        return default
+
 
     async def action(self, entities: list[Entity]) -> None:
         await super().action(entities)  # type: ignore
         if not self.auto:
-            self.logger.add_action_queue(entities)
-            await self.send_action_menu()
-            for _ in range(30):
-                await asyncio.sleep(1)
-                if self.action_choice != 0:
-                    break
-            else:
-                self._matcher.destroy()
-                self.action_choice = 3
+            self.logger.add_action_queue()
+            self.logger.create_block()
+            await self.send(
+                "duel_user.query",
+                [
+                    lang.text("sign.hr", [], self.user_id).join(self.logger.logs)
+                ]
+            )
+            self.logger.clear()
+            action_choice = int(await self.receive_reply(
+                choices=["1", "3"],
+                default="3"
+            ) or "3")
         else:
-            self.action_choice = 3
+            action_choice = 3
+        match action_choice:
+            case 3:
+                self.logger.log("skipped", [])
+            case 2:
+                pass
+            case 1:
+                await self.attack_action(entities)
+    
+    async def attack_action(self, _entities: list[Entity]) -> None:
+        entities = [e for e in _entities if e.team_id != self.team_id]
+        if not entities:
+            self.logger.log("no_entity", [])
+            return await self.action(_entities)
+        if self.items["weapons"].ATTACK_TYPE == "all":
+            return self.items["weapons"].on_attack(self, entities)
+        text = ""
+        length = 0
+        for entity in entities:
+            length += 1
+            text += lang.text("duel_user.attack_menu_item", [
+                length, entity.name, entity.team_id
+            ], self.user_id)
+        await self.send(
+            "duel_user.attack_menu",
+            [
+                text,
+                length + 1
+            ]
+        )
+        choice = await self.receive_reply(
+            choices=[str(i) for i in range(1, length + 2)],
+            default=str(length + 1)
+        )
+        if (choice or str(length + 1)) == str(length + 1):
+            return await self.action(_entities)
+        entity = entities[int(choice) - 1]      # type: ignore
+        self.items["weapons"].on_attack(entity, entities)
+
 
     def check_lock(self) -> None:
         if Json(f"duel2/lock.json")[self.user_id]:
@@ -78,7 +131,7 @@ class User(Entity):
         Json(f"duel2/lock.json")[self.user_id] = True
 
     def __del__(self) -> None:
-        Json(f"duel2/lock.json")[self.user_id] = True
+        Json(f"duel2/lock.json")[self.user_id] = False
 
     def get_items(self) -> None:
         items: dict = Json(f"duel2/users/{self.user_id}.json").get("items", {})

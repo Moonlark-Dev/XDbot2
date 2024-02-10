@@ -347,8 +347,12 @@
   "duel_logger.action_queue_array": "->",
   "duel_logger.long_entity_name": "[{}<{}>]",
   "duel_logger.entity_hp": "血量: {}/{} ({}%)\n\n",
-  "duel_logger.action_title": "{}的回合: \n",
-  "duel_logger.finished": "战斗结束",
-  "duel_user.query": "{}\n\n请回复本消息并选择序号:\n[1]> 攻击\n[2]> 物品\n[3]> 跳过\n\n将在 30s 后自动结束"
-  
+  "duel_logger.action_title": "\n{}的回合: \n",
+  "duel_logger.finished": "\n战斗结束",
+  "duel_user.query": "{}\n\n请选择:\n[1]> 攻击\n[3]> 跳过\n\n将在 30s 后自动结束",
+  "duel_user.unknown_choice": "无效的选项: {}\n可用的选项: {}",
+  "duel_logger.skipped": "[已跳过本回合]\n",
+  "duel_logger.no_entity": "[没有可攻击对象]\n",
+  "duel_user.attack_menu": "当前可攻击对象:{}\n[{}]: 返回菜单\n将在 30s 后返回",
+  "duel_user.attack_menu_item": "\n[{}]: {}<{}>"
 }
