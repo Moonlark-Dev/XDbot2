@@ -37,36 +37,39 @@ class User(Entity):
 
     async def send(self, key: str, _format: list[Any] = []):
         # self.logger.create_block()
-        return await send_message(
-            self.bot,
-            self.event,
-            key,
-            _format,
-        )
+        return await send_message(self.bot, self.event, key, _format)
         # self.logger.clear()
         # lang.text("sign.hr", [], self.user_id).join(self.logger.logs)
         # self._matcher = on_message(to_me())
         # self._matcher.handle()(self.get_action_choice)
 
-    async def receive_reply(self, timeout: int = 30, choices: Optional[list[str]] = None, default: Optional[str] = None) -> Optional[str]:
+    async def receive_reply(
+        self,
+        timeout: int = 30,
+        choices: Optional[list[str]] = None,
+        default: Optional[str] = None,
+    ) -> Optional[str]:
         matcher = on_message()
         choice = None
+
         async def handler(event: MessageEvent) -> None:
             nonlocal choice
             if event.get_user_id() != self.user_id:
                 await matcher.finish()
             message = event.get_plaintext()
             if choices and message not in choices:
-                await finish("duel_user.unknown_choice", [message, choices], event.user_id)
+                await finish(
+                    "duel_user.unknown_choice", [message, choices], event.user_id
+                )
             choice = message
             matcher.destroy()
+
         matcher.append_handler(handler)
         for _ in range(timeout):
             await asyncio.sleep(1)
             if choice is not None:
                 return choice
         return default
-
 
     async def action(self, entities: list[Entity]) -> None:
         await super().action(entities)  # type: ignore
@@ -75,15 +78,12 @@ class User(Entity):
             self.logger.create_block()
             await self.send(
                 "duel_user.query",
-                [
-                    lang.text("sign.hr", [], self.user_id).join(self.logger.logs)
-                ]
+                [lang.text("sign.hr", [], self.user_id).join(self.logger.logs)],
             )
             self.logger.clear()
-            action_choice = int(await self.receive_reply(
-                choices=["1", "3"],
-                default="3"
-            ) or "3")
+            action_choice = int(
+                await self.receive_reply(choices=["1", "3"], default="3") or "3"
+            )
         else:
             action_choice = 3
         match action_choice:
@@ -93,7 +93,7 @@ class User(Entity):
                 pass
             case 1:
                 await self.attack_action(entities)
-    
+
     async def attack_action(self, _entities: list[Entity]) -> None:
         entities = [e for e in _entities if e.team_id != self.team_id]
         if not entities:
@@ -105,25 +105,19 @@ class User(Entity):
         length = 0
         for entity in entities:
             length += 1
-            text += lang.text("duel_user.attack_menu_item", [
-                length, entity.name, entity.team_id
-            ], self.user_id)
-        await self.send(
-            "duel_user.attack_menu",
-            [
-                text,
-                length + 1
-            ]
-        )
+            text += lang.text(
+                "duel_user.attack_menu_item",
+                [length, entity.name, entity.team_id],
+                self.user_id,
+            )
+        await self.send("duel_user.attack_menu", [text, length + 1])
         choice = await self.receive_reply(
-            choices=[str(i) for i in range(1, length + 2)],
-            default=str(length + 1)
+            choices=[str(i) for i in range(1, length + 2)], default=str(length + 1)
         )
         if (choice or str(length + 1)) == str(length + 1):
             return await self.action(_entities)
-        entity = entities[int(choice) - 1]      # type: ignore
+        entity = entities[int(choice) - 1]  # type: ignore
         self.items["weapons"].on_attack(entity, entities)
-
 
     def check_lock(self) -> None:
         if Json(f"duel2/lock.json")[self.user_id]:

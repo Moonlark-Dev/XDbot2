@@ -28,7 +28,7 @@ class Entity:
         self.max_hp: int = 100
         self.hp = 0
         self.critical_strike: tuple[float, float] = 0.05, 1.5
-        self.speed: int = 95  
+        self.speed: int = 95
         self.reduced_action_value: float = 0
         self.name: str = ""
         self.shield: float = 0

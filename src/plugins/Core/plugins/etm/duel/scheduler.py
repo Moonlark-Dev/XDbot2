@@ -24,7 +24,9 @@ class Scheduler:
         self.logger.log("finished")
 
     def sort_entities(self) -> None:
-        self.entities = sorted(self.original_entities, key=lambda e: e.get_action_value())
+        self.entities = sorted(
+            self.original_entities, key=lambda e: e.get_action_value()
+        )
 
     def get_entity(self) -> Optional[Entity]:
         self.sort_entities()

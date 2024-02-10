@@ -17,7 +17,6 @@ add_item: Callable[[str, str, int, dict], None]
 class DuelWeapons(DuelItem):
     ATTACK_TYPE: Literal["single", "all"]
 
-
     def __init__(self, count, data, user_id):
         super().__init__(count, data, user_id)
         self.DUEL_ITEM_TYPE = "weapons"

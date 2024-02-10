@@ -9,14 +9,24 @@ from .etm.duel.scheduler import Scheduler
 
 
 async def start_duel(user: User, rival: User):
-    scheduler = Scheduler(
-        [user, rival],
-        user.user_id
-    )
+    scheduler = Scheduler([user, rival], user.user_id)
     await scheduler.start()
-    await finish(get_currency_key("empty"), [
-        "\n-\n".join(scheduler.logger.logs + [scheduler.logger.current, str(user.hp), str(rival.hp),str(user.max_hp), str(scheduler.is_finished())])
-    ], user.user_id)
+    await finish(
+        get_currency_key("empty"),
+        [
+            "\n-\n".join(
+                scheduler.logger.logs
+                + [
+                    scheduler.logger.current,
+                    str(user.hp),
+                    str(rival.hp),
+                    str(user.max_hp),
+                    str(scheduler.is_finished()),
+                ]
+            )
+        ],
+        user.user_id,
+    )
 
 
 @create_command("duel")
@@ -40,7 +50,6 @@ async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
     )
     matcher = on_message(to_me())
     disposed = False
-    
 
     @matcher.handle()
     async def _(event: MessageEvent) -> None:
@@ -55,7 +64,9 @@ async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
         match event.message.extract_plain_text().lower()[0]:
             case "y" | "a":
                 disposed = True
-                rival.name = event.sender.card or event.sender.nickname or str(event.user_id)
+                rival.name = (
+                    event.sender.card or event.sender.nickname or str(event.user_id)
+                )
                 matcher.destroy()
                 await start_duel(user, rival)
             case "n" | "r":

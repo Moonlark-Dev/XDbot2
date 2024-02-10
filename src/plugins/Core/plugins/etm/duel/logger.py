@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 class Logger:
 
-    def __init__(self, user_id: str, scheduler: 'Scheduler') -> None:
+    def __init__(self, user_id: str, scheduler: "Scheduler") -> None:
         self.logs = []
         self.current = ""
         self.user_id = user_id
@@ -30,14 +30,16 @@ class Logger:
     def clear(self) -> None:
         self.logs = []
 
-    def add_action_queue(
-        self, entity_count: int = 8
-    ) -> None:
-        entities = sorted(self.scheduler.original_entities.copy(), key=lambda e: e.get_action_value())
+    def add_action_queue(self, entity_count: int = 8) -> None:
+        entities = sorted(
+            self.scheduler.original_entities.copy(), key=lambda e: e.get_action_value()
+        )
         self.log(
             "action_queue_title",
             [
-                self.text("long_entity_name", [entities[-1].name, entities[-1].team_id]),
+                self.text(
+                    "long_entity_name", [entities[-1].name, entities[-1].team_id]
+                ),
                 self.text("action_queue_array", []),
             ],
         )
