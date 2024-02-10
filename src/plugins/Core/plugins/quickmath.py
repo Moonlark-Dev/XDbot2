@@ -77,7 +77,7 @@ async def send_quick_math() -> None:
     bot = get_bot(Json("su.multiaccoutdata.ro.json")[str(group)])
     msg_id = (
         await bot.send_group_msg(
-            group_id=group, message=MessageSegment.image(render_question(question))
+            group_id=group, message=[MessageSegment.image(render_question(question))]
         )
     )["message_id"]
     matcher = on_fullmatch(tuple(answer))

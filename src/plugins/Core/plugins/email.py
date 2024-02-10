@@ -33,6 +33,12 @@ async def _():
         if time.time() - data["time"] >= 2592000:  # 30d
             emails.pop(email_id)
             logger.info(f"已删除邮件 {email_id}")
+    json.dump(
+        data,
+        open("data/su.mails.json", "w", encoding="utf-8"),
+        ensure_ascii=False,
+        indent=4,
+    )
 
 
 def render_email(data, user_id):
