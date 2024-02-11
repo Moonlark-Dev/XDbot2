@@ -11,13 +11,12 @@ class Stick(DuelWeapons):
             "price": 3,
             "maximum_stack": 16,
         }
-    
+
     def init_duel(self, entity: Entity) -> None:
         super().init_duel(entity)
         self.entity.critical_strike = (0.25, 1.35)
 
     def on_attack(self, entity: Entity, entities: list[Entity]) -> None:
         self.entity.logger.add_attack_log(
-            entity,
-            entity.attacked(self.get_harm(7), self.entity)
+            entity, entity.attacked(self.get_harm(7), self.entity)
         )

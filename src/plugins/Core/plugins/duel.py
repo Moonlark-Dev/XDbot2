@@ -13,16 +13,13 @@ from .etm.duel.scheduler import Scheduler
 # Usage: duel <@用户>
 # [HELPEND]
 
+
 async def start_duel(user: User, rival: User):
     scheduler = Scheduler([user, rival], user.user_id)
     await scheduler.start()
     await finish(
         get_currency_key("empty"),
-        [
-            lang.text("sign.hr", [], user.user_id).join(
-                scheduler.logger.logs
-            )
-        ],
+        [lang.text("sign.hr", [], user.user_id).join(scheduler.logger.logs)],
         user.user_id,
     )
 

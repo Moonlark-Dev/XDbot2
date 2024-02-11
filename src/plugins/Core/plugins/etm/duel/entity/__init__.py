@@ -20,12 +20,12 @@ class Items(TypedDict):
     passive: list[DuelPassiveItem]
     other: list[DuelItem]
 
+
 class AttackResult(TypedDict):
     miss: bool
     original_hp: float
     original_shield: float
     harm: float
-
 
 
 class Entity:
@@ -47,12 +47,14 @@ class Entity:
     def set_logger(self, logger: "Logger") -> None:
         self.logger = logger
 
-    def attacked(self, harm: float, entity: Self, dodgeable: bool = True) -> AttackResult:
+    def attacked(
+        self, harm: float, entity: Self, dodgeable: bool = True
+    ) -> AttackResult:
         result: AttackResult = {
             "miss": False,
             "original_hp": self.hp,
             "original_shield": self.shield,
-            "harm": 0
+            "harm": 0,
         }
         if (
             random.random()

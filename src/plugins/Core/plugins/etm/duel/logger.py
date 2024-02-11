@@ -66,15 +66,17 @@ class Logger:
             [self.text("long_entity_name", [entity.name, entity.team_id])],
         )
 
-    def add_attack_log(self, entity: "Entity", result: 'AttackResult') -> None:
+    def add_attack_log(self, entity: "Entity", result: "AttackResult") -> None:
         self.log(
             "attack_entity",
             [
                 self.text("entity_name", [entity.name, entity.team_id]),
-                self.text("attack_missed", []) if result["miss"] else self.text(
-                    "attack_hit", [
-                        result["original_hp"], entity.hp, result["harm"]
-                    ]
-                )
-            ]
+                (
+                    self.text("attack_missed", [])
+                    if result["miss"]
+                    else self.text(
+                        "attack_hit", [result["original_hp"], entity.hp, result["harm"]]
+                    )
+                ),
+            ],
         )
