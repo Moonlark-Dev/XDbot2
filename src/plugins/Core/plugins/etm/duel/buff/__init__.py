@@ -1,13 +1,15 @@
 from typing import TYPE_CHECKING
 from ...._utils import *
+
 if TYPE_CHECKING:
     from ..entity import Entity
 
+
 class Buff:
-    def __init__(self, entity: 'Entity') -> None:
+    def __init__(self, entity: "Entity") -> None:
         self.buff_id: str = ""
-        self.name: str = "" # TODO
-        self.description: str = "无描述"    # TODO
+        self.name: str = ""  # TODO
+        self.description: str = "无描述"  # TODO
         self.adhesion: int = 0
         self.entity = entity
         if hasattr(self.entity, "user_id"):
@@ -30,12 +32,11 @@ class Buff:
     def on_start(self) -> None:
         pass
 
-    def on_action(self, entities: 'list[Entity]') -> None:
+    def on_action(self, entities: "list[Entity]") -> None:
         pass
 
     def on_attack(self, harm: float) -> float:
         return harm
 
-
-    def on_attacked(self, harm: float, entity: 'Entity') -> float:
+    def on_attacked(self, harm: float, entity: "Entity") -> float:
         return harm

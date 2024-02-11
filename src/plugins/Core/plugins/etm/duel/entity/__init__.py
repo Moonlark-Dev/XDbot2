@@ -56,7 +56,7 @@ class Entity:
             "original_hp": self.hp,
             "original_shield": self.shield,
             "harm": 0,
-            "type": entity.items["weapons"].ATTACK_TYPE
+            "type": entity.items["weapons"].ATTACK_TYPE,
         }
         for item in self.items["passive"]:
             harm = item.on_attacked(harm, entity) or harm
