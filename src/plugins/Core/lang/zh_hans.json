@@ -357,6 +357,11 @@
   "duel_logger.attack_missed": "未命中 (-0)",
   "duel_logger.attack_hit": "{} -> {} (-{})",
   "duel_logger.no_entity": "[没有可攻击对象]\n",
+  "duel_logger.critical_strike_chance_increased": "[效果] 暴击率提高: {}%\n",
   "duel_user.attack_menu": "当前可攻击对象:{}\n[{}]: 返回菜单\n将在 30s 后返回",
-  "duel_user.attack_menu_item": "\n[{}]: {}<{}>"
+  "duel_user.attack_menu_item": "\n[{}]: {}<{}>",
+  "magic_cat_head.display_name": "猫耳（头部）",
+  "magic_cat_head.display_message": "[被动]: 在受到非物理伤害时，下一次攻击暴击率提高 5%，持续 1 回合",
+  "critical_strike_chance_increased.name": "暴击率提高",
+  "critical_strike_chance_increased.description": "暴击率提高 {}%"
 }

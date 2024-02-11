@@ -20,6 +20,8 @@ class Scheduler:
             for e in self.entities:
                 e.reduce_action_value(reduce_value)
             await entity.action(self.entities)
+            for buff in entity.buff:
+                buff.after_action()
             self.logger.create_block()
         self.logger.create_block()
         self.logger.log("finished")
