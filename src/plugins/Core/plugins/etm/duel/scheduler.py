@@ -10,6 +10,7 @@ class Scheduler:
         self.logger = Logger(user_id, self)
         for i in range(len(self.entities)):
             self.entities[i].set_logger(self.logger)
+        self.logger.create_block()
 
     async def start(self) -> None:
         while (entity := self.get_entity()) and not self.is_finished():
@@ -22,6 +23,7 @@ class Scheduler:
             self.logger.create_block()
         self.logger.create_block()
         self.logger.log("finished")
+        self.logger.create_block()
 
     def sort_entities(self) -> None:
         self.entities = sorted(

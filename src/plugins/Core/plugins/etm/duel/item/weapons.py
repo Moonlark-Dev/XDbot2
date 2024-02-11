@@ -36,6 +36,7 @@ class DuelWeapons(DuelItem):
         return harm
 
     def use_item(self):
+        super().use_item()
         data = Json(f"duel2/users/{self.user_id}.json")
         if not data["items"]:
             data["items"] = {}

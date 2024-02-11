@@ -1,4 +1,6 @@
 from typing import TYPE_CHECKING
+
+# from plugins.Core.plugins.etm.duel.entity import Entity
 from .weapons import DuelWeapons
 
 if TYPE_CHECKING:
@@ -14,7 +16,12 @@ class Hand(DuelWeapons):
             "display_name": self.text("display_name"),
             "display_message": self.text("display_message"),
         }
-        # self.ATTACK_TYPE = "single"
+
+    def init_duel(self, entity: Entity) -> None:
+        super().init_duel(entity)
+        entity.critical_strike = 0.25, 1.3
 
     def on_attack(self, entity: Entity, entities: list[Entity]) -> None:
-        entity.attacked(self.get_harm(5), self.entity)
+        self.entity.logger.add_attack_log(
+            entity, entity.attacked(self.get_harm(3), self.entity)
+        )
