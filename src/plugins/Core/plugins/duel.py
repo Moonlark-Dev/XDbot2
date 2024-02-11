@@ -1,12 +1,17 @@
 import asyncio
 from ._utils import *
-from .etm.user import get_hp, remove_hp
 from .etm.health import get_max_hp
 from .etm.duel.entity.user import User
-from .help import get_command_start
 from nonebot.rule import to_me
 from .etm.duel.scheduler import Scheduler
 
+
+# [HELPSTART] Version: 2
+# Command: duel
+# Info: 发起决斗
+# Msg: 发起决斗
+# Usage: duel <@用户>
+# [HELPEND]
 
 async def start_duel(user: User, rival: User):
     scheduler = Scheduler([user, rival], user.user_id)
@@ -14,15 +19,8 @@ async def start_duel(user: User, rival: User):
     await finish(
         get_currency_key("empty"),
         [
-            "\n-\n".join(
+            lang.text("sign.hr", [], user.user_id).join(
                 scheduler.logger.logs
-                + [
-                    scheduler.logger.current,
-                    str(user.hp),
-                    str(rival.hp),
-                    str(user.max_hp),
-                    str(scheduler.is_finished()),
-                ]
             )
         ],
         user.user_id,
@@ -31,6 +29,7 @@ async def start_duel(user: User, rival: User):
 
 @create_command("duel")
 async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
+    # NOTE 这玩意是一个模拟竞技场，所以除了物品什么的和实际数值不挂钩
     if message[0].type != "at":
         await finish(get_currency_key("unknown_argv"), [message], event.user_id)
     user_id = event.get_user_id()
