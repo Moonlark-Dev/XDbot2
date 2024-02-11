@@ -20,6 +20,13 @@ class Items(TypedDict):
     passive: list[DuelPassiveItem]
     other: list[DuelItem]
 
+class AttackResult(TypedDict):
+    miss: bool
+    original_hp: float
+    original_shield: float
+    harm: float
+
+
 
 class Entity:
     def __init__(self) -> None:
@@ -40,21 +47,32 @@ class Entity:
     def set_logger(self, logger: "Logger") -> None:
         self.logger = logger
 
-    def attacked(self, harm: float, entity: Self, dodgeable: bool = True) -> float:
+    def attacked(self, harm: float, entity: Self, dodgeable: bool = True) -> AttackResult:
+        result: AttackResult = {
+            "miss": False,
+            "original_hp": self.hp,
+            "original_shield": self.shield,
+            "harm": 0
+        }
         if (
             random.random()
             >= math.sqrt(max((entity.focus - self.dodge) ** 2, (1 - self.dodge) ** 2))
             and dodgeable
         ):
-            return 0
+            result["miss"] = True
+            return result
+        harm = round(harm, 1)
         if self.shield > harm:
             self.shield -= harm
-            return harm
+            result["harm"] = harm
+            return result
         elif self.shield > 0:
             harm -= self.shield
             self.shield = 0
-        self.hp -= (h := harm / (1 + self.defense / 100))
-        return h
+        self.hp -= (h := round(harm / (1 + self.defense / 100), 1))
+        self.hp = round(self.hp, 1)
+        result["harm"] = result["original_shield"] + h
+        return result
 
     def get_action_value(self):
         return 10000 / self.speed - self.reduced_action_value

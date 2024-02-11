@@ -4,6 +4,7 @@ from ..._utils import *
 if TYPE_CHECKING:
     from .entity import Entity
     from .scheduler import Scheduler
+    from .entity import AttackResult
 
 
 class Logger:
@@ -51,7 +52,7 @@ class Logger:
                 self.log("action_queue_array")
             entity = entities[i]
             self.log("long_entity_name", [entity.name, entity.team_id])
-        self.log_string("\n\n\n")
+        self.log_string("\n\n")
 
     def add_entity_hp(self, entity: "Entity") -> None:
         self.log(
@@ -63,4 +64,17 @@ class Logger:
         self.log(
             "action_title",
             [self.text("long_entity_name", [entity.name, entity.team_id])],
+        )
+
+    def add_attack_log(self, entity: "Entity", result: 'AttackResult') -> None:
+        self.log(
+            "attack_entity",
+            [
+                self.text("entity_name", [entity.name, entity.team_id]),
+                self.text("attack_missed", []) if result["miss"] else self.text(
+                    "attack_hit", [
+                        result["original_hp"], entity.hp, result["harm"]
+                    ]
+                )
+            ]
         )
