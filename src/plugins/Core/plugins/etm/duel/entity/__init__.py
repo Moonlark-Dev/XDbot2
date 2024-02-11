@@ -28,7 +28,7 @@ class Entity:
         self.max_hp: int = 100
         self.hp = 0
         self.critical_strike: tuple[float, float] = 0.05, 1.5
-        self.speed: int = 100
+        self.speed: int = 95
         self.reduced_action_value: float = 0
         self.name: str = ""
         self.shield: float = 0
@@ -61,11 +61,9 @@ class Entity:
 
     def reduce_action_value(self, c: float) -> None:
         self.reduced_action_value += c
-        if self.get_action_value() <= 0:
-            self.reduced_action_value = 0
 
     async def action(self, entities: list[Self]) -> None:
-        pass
+        self.reduced_action_value = 0
 
     def setup_items_effect(self) -> None:
         items = self.items["passive"] + self.items["other"]
