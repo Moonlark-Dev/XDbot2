@@ -1,5 +1,7 @@
 from typing import TYPE_CHECKING, Literal
 from ...item import Item
+from ...exception import UserDataLocked
+from ...._utils import *
 
 if TYPE_CHECKING:
     from ..entity import Entity
@@ -15,3 +17,7 @@ class DuelItem(Item):
 
     def duel_use(self) -> None:
         pass
+
+    def use_item(self) -> None:
+        if Json(f"duel2/lock.json")[self.user_id]:
+            raise UserDataLocked
