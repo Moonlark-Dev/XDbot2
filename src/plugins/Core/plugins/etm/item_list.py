@@ -13,6 +13,7 @@ from .items.experience import Experience
 from .items.gpt_monthly_pass import GptMonthlyPass
 from .items.towel_zip import TowelZip, Towel
 from .items.stick import Stick
+from .items.duel.passive.magic_cat import MagicCatHead
 
 ITEMS = {
     "dice": Dice,
@@ -23,6 +24,7 @@ ITEMS = {
     "common_rubbish": CommonRubbish,
     "archfiend_dice": ArchfiendDice,
     "towel.zip": TowelZip,
+    "magic_cat_head": MagicCatHead,
     "towel": Towel,
     "vimcoin": VimCoin,
     "pawcoin": PawCoin,

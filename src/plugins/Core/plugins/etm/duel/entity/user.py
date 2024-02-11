@@ -99,7 +99,7 @@ class User(Entity):
         if not entities:
             self.logger.log("no_entity", [])
             return await self.action(_entities)
-        if self.items["weapons"].ATTACK_TYPE == "all":
+        if self.items["weapons"].ATTACK_RANGE == "all":
             return self.items["weapons"].on_attack(self, entities)
         text = ""
         length = 0

@@ -1,5 +1,5 @@
 import math
-from typing import TYPE_CHECKING, Self, TypedDict
+from typing import TYPE_CHECKING, Literal, Self, TypedDict
 from ..buff import Buff
 import random
 from ..item.hand import Hand
@@ -23,6 +23,7 @@ class Items(TypedDict):
 
 class AttackResult(TypedDict):
     miss: bool
+    type: Literal["physical", "magic"]
     original_hp: float
     original_shield: float
     harm: float
@@ -55,7 +56,12 @@ class Entity:
             "original_hp": self.hp,
             "original_shield": self.shield,
             "harm": 0,
+            "type": entity.items["weapons"].ATTACK_TYPE,
         }
+        for item in self.items["passive"]:
+            harm = item.on_attacked(harm, entity) or harm
+        for buff in self.buff:
+            harm = buff.on_attacked(harm, entity) or harm
         if (
             random.random()
             >= math.sqrt(max((entity.focus - self.dodge) ** 2, (1 - self.dodge) ** 2))

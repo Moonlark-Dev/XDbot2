@@ -15,12 +15,14 @@ add_item: Callable[[str, str, int, dict], None]
 
 
 class DuelWeapons(DuelItem):
-    ATTACK_TYPE: Literal["single", "all"]
+    ATTACK_RANGE: Literal["single", "all"]
+    ATTACK_TYPE: Literal["physical", "magic"]
 
     def __init__(self, count, data, user_id):
         super().__init__(count, data, user_id)
         self.DUEL_ITEM_TYPE = "weapons"
-        self.ATTACK_TYPE = "single"
+        self.ATTACK_RANGE = "single"
+        self.ATTACK_TYPE = "physical"
 
     def on_attack(self, entity: Entity, entities: list[Entity]) -> None:
         pass
