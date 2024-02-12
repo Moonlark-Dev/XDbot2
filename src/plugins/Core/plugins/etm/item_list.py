@@ -20,41 +20,46 @@ from .items.duel.passive.magic_cat import (
     MagicCatFoot,
     MagicCatBody,
     MagicCatRope,
-    MagicStick
+    MagicStick,
 )
 
 ITEMS = {}
 
+
 def register_item(item: Type[Item]) -> None:
     ITEMS[item(1, {}, None).item_id] = item
+
 
 def register_items(items: list[Type[Item]]) -> None:
     for item in items:
         register_item(item)
 
-register_items([
-    Dice,
-    MysteryBoxLevel1,
-    BookAndQuill,
-    Talisman,
-    Pouch,
-    CommonRubbish,
-    ArchfiendDice,
-    TowelZip,
-    MagicCatHead,
-    Towel,
-    VimCoin,
-    PawCoin,
-    GptMonthlyPass,
-    Experience,
-    MysteriousShard,
-    AutoSignCoupon,
-    AutoSignCouponActived,
-    MysteryBoxLv3,
-    Stick,
-    MagicCatBall,
-    MagicCatFoot,
-    MagicCatBody,
-    MagicCatRope,
-    MagicStick
-])
+
+register_items(
+    [
+        Dice,
+        MysteryBoxLevel1,
+        BookAndQuill,
+        Talisman,
+        Pouch,
+        CommonRubbish,
+        ArchfiendDice,
+        TowelZip,
+        MagicCatHead,
+        Towel,
+        VimCoin,
+        PawCoin,
+        GptMonthlyPass,
+        Experience,
+        MysteriousShard,
+        AutoSignCoupon,
+        AutoSignCouponActived,
+        MysteryBoxLv3,
+        Stick,
+        MagicCatBall,
+        MagicCatFoot,
+        MagicCatBody,
+        MagicCatRope,
+        MagicStick,
+    ]
+)

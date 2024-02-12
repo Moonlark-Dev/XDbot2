@@ -21,8 +21,6 @@ class MagicCatRelic(DuelRelic):
         return super().effect_two_piece_set()
 
 
-
-
 class MagicCatHead(MagicCatRelic):
 
     def __init__(self, count, data, user_id):
@@ -32,8 +30,7 @@ class MagicCatHead(MagicCatRelic):
     def on_register(self) -> None:
         self.item_id = "magic_cat_head"
         self.setup_basic_data(
-            display_name=self.text("display_name", []),
-            maximum_stack=1,
+            display_name=self.text("display_name", []), maximum_stack=1
         )
 
     def on_attacked(self, harm: float, entity: "Entity") -> float:
@@ -42,7 +39,7 @@ class MagicCatHead(MagicCatRelic):
             buff.adhesion = 1
             self.entity.buff.append(buff)
         return super().on_attacked(harm, entity)
-    
+
     def effect_four_piece_set(self) -> NoneType:
         self.entity.max_hp += 20
         return super().effect_four_piece_set()
@@ -53,16 +50,16 @@ class MagicCatBody(MagicCatRelic):
     def __init__(self, count, data, user_id):
         super().__init__(count, data, user_id)
         self.RELIC_TYPE = "body"
-    
+
     def on_register(self) -> None:
         self.item_id = "magic_cat_body"
-        self.setup_basic_data(
-            display_name=self.text("display_name"),
-            maximum_stack=1
-        )
+        self.setup_basic_data(display_name=self.text("display_name"), maximum_stack=1)
 
     def on_attacked(self, harm: float, entity: "Entity") -> float:
-        if entity.items["weapons"].ATTACK_TYPE != "physical" and random.random() <= 0.05:
+        if (
+            entity.items["weapons"].ATTACK_TYPE != "physical"
+            and random.random() <= 0.05
+        ):
             harm = 0
             entity.logger.log("immune_to_attack")
         return harm
@@ -73,13 +70,10 @@ class MagicCatHand(MagicCatRelic):
     def __init__(self, count, data, user_id):
         super().__init__(count, data, user_id)
         self.RELIC_TYPE = "hand"
-    
+
     def on_register(self) -> None:
         self.item_id = "magic_cat_hand"
-        self.setup_basic_data(
-            display_name=self.text("display_name"),
-            maximum_stack=1
-        )
+        self.setup_basic_data(display_name=self.text("display_name"), maximum_stack=1)
 
     def on_attacked(self, harm: float, entity: "Entity") -> float:
         if random.random() <= 0.25:
@@ -89,18 +83,16 @@ class MagicCatHand(MagicCatRelic):
             entity.buff.append(buff)
         return super().on_attacked(harm, entity)
 
+
 class MagicCatFoot(MagicCatRelic):
 
     def __init__(self, count, data, user_id):
         super().__init__(count, data, user_id)
         self.RELIC_TYPE = "foot"
-    
+
     def on_register(self) -> None:
         self.item_id = "magic_cat_foot"
-        self.setup_basic_data(
-            display_name=self.text("display_name"),
-            maximum_stack=1
-        )
+        self.setup_basic_data(display_name=self.text("display_name"), maximum_stack=1)
 
     def on_attacked(self, harm: float, entity: "Entity") -> float:
         if random.random() <= 0.01:
@@ -114,13 +106,10 @@ class MagicCatBall(MagicCatRelic):
     def __init__(self, count, data, user_id):
         super().__init__(count, data, user_id)
         self.RELIC_TYPE = "ball"
-    
+
     def on_register(self) -> None:
         self.item_id = "magic_cat_ball"
-        self.setup_basic_data(
-            display_name=self.text("display_name"),
-            maximum_stack=1
-        )
+        self.setup_basic_data(display_name=self.text("display_name"), maximum_stack=1)
 
     def on_attacked(self, harm: float, entity: "Entity") -> float:
         if entity.items["weapons"].ATTACK_TYPE == "physical":
@@ -130,20 +119,20 @@ class MagicCatBall(MagicCatRelic):
             buff.apply()
         return super().on_attacked(harm, entity)
 
+
 class MagicCatRope(MagicCatRelic):
 
     def __init__(self, count, data, user_id):
         super().__init__(count, data, user_id)
         self.RELIC_TYPE = "rope"
-    
+
     def on_register(self) -> None:
         self.item_id = "magic_cat_rope"
-        self.setup_basic_data(
-            display_name=self.text("display_name"),
-            maximum_stack=1
-        )
+        self.setup_basic_data(display_name=self.text("display_name"), maximum_stack=1)
+
 
 from ....duel.item.weapons import DuelWeapons
+
 
 class MagicStick(DuelWeapons):
 
@@ -157,14 +146,14 @@ class MagicStick(DuelWeapons):
         self.setup_basic_data(
             display_name=self.text("display_name"),
             display_message=self.text("display_message"),
-            maximum_stack=1
+            maximum_stack=1,
         )
 
-    def on_attack(self, entity: 'Entity', entities: 'list[Entity]') -> NoneType:
+    def on_attack(self, entity: "Entity", entities: "list[Entity]") -> NoneType:
         entity.attacked(self.get_harm(12), entity)
         if random.random() <= 0.02:
             self.entity.critical_strike = (
                 self.entity.critical_strike[0],
-                self.entity.critical_strike[1] + 30
+                self.entity.critical_strike[1] + 30,
             )
             self.entity.logger.log("magic_cat_critical_strike_harm_increased")
