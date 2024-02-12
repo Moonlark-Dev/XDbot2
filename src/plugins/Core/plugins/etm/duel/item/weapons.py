@@ -16,6 +16,7 @@ add_item: Callable[[str, str, int, dict], None]
 
 class DuelWeapons(DuelItem):
     ATTACK_RANGE: Literal["single", "all"]
+    SET_NAME: Optional[str]
     ATTACK_TYPE: Literal["physical", "magic"]
 
     def __init__(self, count, data, user_id):

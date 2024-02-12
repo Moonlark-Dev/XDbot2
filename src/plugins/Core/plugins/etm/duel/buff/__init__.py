@@ -17,17 +17,21 @@ class Buff:
         else:
             self.user_id = "default"
 
+    def apply(self) -> None:
+        self.entity.buff.append(self)
+
     def text(self, key: str, format_: list[Any] = []) -> str:
         return lang.text(f"{self.buff_id}.{key}", format_, self.user_id)
-
-    def on_init(self) -> None:
-        pass
 
     def after_action(self) -> None:
         self.adhesion -= 1
         if self.adhesion <= 0:
+            self.on_effect_end()
             self.entity.buff.remove(self)
         del self
+
+    def on_effect_end(self) -> None:
+        pass
 
     def on_start(self) -> None:
         pass

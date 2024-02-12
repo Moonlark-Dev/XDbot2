@@ -1,4 +1,5 @@
 from typing import TYPE_CHECKING, Type
+from .item import Item
 from .items.dice import Dice
 from .items.auto_sign_coupon import AutoSignCoupon, AutoSignCouponActived
 from .items.talisman import Talisman
@@ -13,26 +14,52 @@ from .items.experience import Experience
 from .items.gpt_monthly_pass import GptMonthlyPass
 from .items.towel_zip import TowelZip, Towel
 from .items.stick import Stick
-from .items.duel.passive.magic_cat import MagicCatHead
+from .items.duel.passive.magic_cat import (
+    MagicCatHead,
+    MagicCatBall,
+    MagicCatFoot,
+    MagicCatBody,
+    MagicCatRope,
+    MagicStick,
+)
 
-ITEMS = {
-    "dice": Dice,
-    "mysterybox_lv1": MysteryBoxLevel1,
-    "book_and_quill": BookAndQuill,
-    "talisman": Talisman,
-    "pouch": Pouch,
-    "common_rubbish": CommonRubbish,
-    "archfiend_dice": ArchfiendDice,
-    "towel.zip": TowelZip,
-    "magic_cat_head": MagicCatHead,
-    "towel": Towel,
-    "vimcoin": VimCoin,
-    "pawcoin": PawCoin,
-    "gpt_monthly_pass": GptMonthlyPass,
-    "exp": Experience,
-    "mysterious_shard": MysteriousShard,
-    "auto_sign_coupon": AutoSignCoupon,
-    "auto_sign_coupon_actived": AutoSignCouponActived,
-    "mysterybox_lv3": MysteryBoxLv3,
-    "stick": Stick,
-}
+ITEMS = {}
+
+
+def register_item(item: Type[Item]) -> None:
+    ITEMS[item(1, {}, None).item_id] = item
+
+
+def register_items(items: list[Type[Item]]) -> None:
+    for item in items:
+        register_item(item)
+
+
+register_items(
+    [
+        Dice,
+        MysteryBoxLevel1,
+        BookAndQuill,
+        Talisman,
+        Pouch,
+        CommonRubbish,
+        ArchfiendDice,
+        TowelZip,
+        MagicCatHead,
+        Towel,
+        VimCoin,
+        PawCoin,
+        GptMonthlyPass,
+        Experience,
+        MysteriousShard,
+        AutoSignCoupon,
+        AutoSignCouponActived,
+        MysteryBoxLv3,
+        Stick,
+        MagicCatBall,
+        MagicCatFoot,
+        MagicCatBody,
+        MagicCatRope,
+        MagicStick,
+    ]
+)

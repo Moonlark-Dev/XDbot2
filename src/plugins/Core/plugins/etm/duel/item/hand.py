@@ -23,5 +23,5 @@ class Hand(DuelWeapons):
 
     def on_attack(self, entity: Entity, entities: list[Entity]) -> None:
         self.entity.logger.add_attack_log(
-            entity, entity.attacked(self.get_harm(3), self.entity)
+            entity, entity.attacked(self.get_harm(2), self.entity)
         )

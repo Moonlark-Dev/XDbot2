@@ -62,9 +62,10 @@ class Entity:
             harm = item.on_attacked(harm, entity) or harm
         for buff in self.buff:
             harm = buff.on_attacked(harm, entity) or harm
+        dodge = self.dodge * (self.focus / 2)
         if (
             random.random()
-            >= math.sqrt(max((entity.focus - self.dodge) ** 2, (1 - self.dodge) ** 2))
+            >= math.sqrt(max((entity.focus - dodge) ** 2, (1 - dodge) ** 2))
             and dodgeable
         ):
             result["miss"] = True
