@@ -1,11 +1,12 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 from ..._utils import *
 
 if TYPE_CHECKING:
     from .entity import Entity
     from .scheduler import Scheduler
     from .entity import AttackResult
-
+else:
+    Entity = None
 
 class Logger:
 
@@ -66,7 +67,8 @@ class Logger:
             [self.text("long_entity_name", [entity.name, entity.team_id])],
         )
 
-    def add_attack_log(self, entity: "Entity", result: "AttackResult") -> None:
+    def add_attack_log(self, result: "AttackResult") -> None:
+        entity = cast(Entity, result["entity"])
         self.log(
             "attack_entity",
             [

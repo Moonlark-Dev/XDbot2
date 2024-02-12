@@ -22,6 +22,7 @@ from .items.duel.passive.magic_cat import (
     MagicCatRope,
     MagicStick,
 )
+from .items.duel.consumables.firecracker import Firecracker
 
 ITEMS = {}
 
@@ -61,5 +62,6 @@ register_items(
         MagicCatBody,
         MagicCatRope,
         MagicStick,
+        Firecracker
     ]
 )

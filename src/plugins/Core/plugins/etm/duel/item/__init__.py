@@ -8,6 +8,8 @@ if TYPE_CHECKING:
 else:
     Entity = None
 
+class CannotUse(Exception): pass
+class Returned(Exception): pass
 
 class DuelItem(Item):
     DUEL_ITEM_TYPE: Literal["weapons", "consumables", "passive", "active", "other"]
@@ -15,8 +17,8 @@ class DuelItem(Item):
     def init_duel(self, entity: Entity) -> None:
         self.entity: Entity = entity
 
-    def duel_use(self) -> None:
-        pass
+    async def duel_use(self) -> None:
+        raise CannotUse
 
     def use_item(self) -> None:
         if Json(f"duel2/lock.json")[self.user_id]:

@@ -1,5 +1,5 @@
 import math
-from typing import TYPE_CHECKING, Literal, Self, TypedDict
+from typing import TYPE_CHECKING, Literal, Optional, Self, TypedDict
 from ..buff import Buff
 import random
 from ..item.hand import Hand
@@ -27,6 +27,7 @@ class AttackResult(TypedDict):
     original_hp: float
     original_shield: float
     harm: float
+    entity: Self
 
 
 class Entity:
@@ -49,14 +50,15 @@ class Entity:
         self.logger = logger
 
     def attacked(
-        self, harm: float, entity: Self, dodgeable: bool = True
+        self, harm: float, entity: Self, dodgeable: bool = True, attack_type: Literal['physical', 'magic', None] = None
     ) -> AttackResult:
         result: AttackResult = {
             "miss": False,
             "original_hp": self.hp,
             "original_shield": self.shield,
             "harm": 0,
-            "type": entity.items["weapons"].ATTACK_TYPE,
+            "type": attack_type or entity.items["weapons"].ATTACK_TYPE,
+            "entity": self
         }
         for item in self.items["passive"]:
             harm = item.on_attacked(harm, entity) or harm
