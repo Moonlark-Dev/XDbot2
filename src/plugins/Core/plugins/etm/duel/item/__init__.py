@@ -8,8 +8,14 @@ if TYPE_CHECKING:
 else:
     Entity = None
 
-class CannotUse(Exception): pass
-class Returned(Exception): pass
+
+class CannotUse(Exception):
+    pass
+
+
+class Returned(Exception):
+    pass
+
 
 class DuelItem(Item):
     DUEL_ITEM_TYPE: Literal["weapons", "consumables", "passive", "active", "other"]

@@ -62,6 +62,6 @@ register_items(
         MagicCatBody,
         MagicCatRope,
         MagicStick,
-        Firecracker
+        Firecracker,
     ]
 )

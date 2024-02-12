@@ -18,15 +18,19 @@ class Firecracker(DuelConsumables):
         self.setup_basic_data(
             display_name=self.text("display_name"),
             display_message=self.text("display_message"),
-            maximum_stack=16
+            maximum_stack=16,
         )
-    
+
     async def duel_use(self) -> NoneType:
         await super().duel_use()
         if not isinstance(self.entity, User):
             self.entity.logger.log("unsupported_not_user")
             raise CannotUse
-        entities = [entity for entity in self.entity.logger.scheduler.entities if entity.hp > 0 and entity.team_id != self.entity.team_id]
+        entities = [
+            entity
+            for entity in self.entity.logger.scheduler.entities
+            if entity.hp > 0 and entity.team_id != self.entity.team_id
+        ]
         if not entities:
             self.entity.logger.log("no_entity", [])
             raise CannotUse
@@ -46,22 +50,13 @@ class Firecracker(DuelConsumables):
         if choice is None or choice == str(length + 1):
             raise Returned
         self.entity.logger.add_attack_log(
-            entities[int(choice) - 1].attacked(
-                20,
-                self.entity,
-                attack_type="physical"
-            )
+            entities[int(choice) - 1].attacked(20, self.entity, attack_type="physical")
         )
         self.entity.logger.add_attack_log(
-            self.entity.attacked(
-                3,
-                self.entity,
-                attack_type="physical"
-            )
+            self.entity.attacked(3, self.entity, attack_type="physical")
         )
         if random.random() <= 0.03:
             buff = CriticalStrikeHarmIncreased(self.entity, 3)
             buff.adhesion = 7
             buff.apply()
         self.used()
-        

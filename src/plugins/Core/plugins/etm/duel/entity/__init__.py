@@ -50,7 +50,11 @@ class Entity:
         self.logger = logger
 
     def attacked(
-        self, harm: float, entity: Self, dodgeable: bool = True, attack_type: Literal['physical', 'magic', None] = None
+        self,
+        harm: float,
+        entity: Self,
+        dodgeable: bool = True,
+        attack_type: Literal["physical", "magic", None] = None,
     ) -> AttackResult:
         result: AttackResult = {
             "miss": False,
@@ -58,7 +62,7 @@ class Entity:
             "original_shield": self.shield,
             "harm": 0,
             "type": attack_type or entity.items["weapons"].ATTACK_TYPE,
-            "entity": self
+            "entity": self,
         }
         for item in self.items["passive"]:
             harm = item.on_attacked(harm, entity) or harm

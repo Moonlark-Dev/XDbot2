@@ -129,22 +129,16 @@ class User(Entity):
             "weapons": {
                 "id": self.items["weapons"].item_id,
                 "count": self.items["weapons"].count,
-                "data": self.items["weapons"].data
+                "data": self.items["weapons"].data,
             },
             "passive": [
-                {
-                    "id": item.item_id,
-                    "count": item.count,
-                    "data": item.data
-                } for item in self.items["passive"]
+                {"id": item.item_id, "count": item.count, "data": item.data}
+                for item in self.items["passive"]
             ],
             "other": [
-                {
-                    "id": item.item_id,
-                    "count": item.count,
-                    "data": item.data
-                } for item in self.items["other"]
-            ]
+                {"id": item.item_id, "count": item.count, "data": item.data}
+                for item in self.items["other"]
+            ],
         }
         Json(f"duel2/lock.json")[self.user_id] = False
 

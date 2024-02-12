@@ -150,9 +150,7 @@ class MagicStick(DuelWeapons):
         )
 
     def on_attack(self, entity: "Entity", entities: "list[Entity]") -> NoneType:
-        self.entity.logger.add_attack_log(
-            entity.attacked(self.get_harm(12), entity)
-        )
+        self.entity.logger.add_attack_log(entity.attacked(self.get_harm(12), entity))
         if random.random() <= 0.02:
             self.entity.critical_strike = (
                 self.entity.critical_strike[0],

@@ -8,6 +8,7 @@ if TYPE_CHECKING:
 else:
     Entity = None
 
+
 class Logger:
 
     def __init__(self, user_id: str, scheduler: "Scheduler") -> None:
