@@ -57,7 +57,6 @@ class DuelRelic(DuelPassiveItem):
         self.data["display_message"] = (
             self.text("display_message", [self.get_gain_string()]),
         )
-        
 
     def effect_gain(self) -> None:
         for gain in self.data["gain"]:

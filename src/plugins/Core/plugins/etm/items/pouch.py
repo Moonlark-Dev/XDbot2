@@ -7,6 +7,7 @@ from ..item_basic_data import BASIC_DATA
 from ..._lang import text
 from ..json2items import json2items
 
+
 class Pouch(Item):
     def on_register(self):
         self.basic_data = {

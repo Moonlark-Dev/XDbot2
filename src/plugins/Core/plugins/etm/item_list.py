@@ -68,7 +68,7 @@ register_items(
         MagicCatBody,
         MagicCatRope,
         MagicStick,
-        UnknownItem
+        UnknownItem,
     ]
 )
 
