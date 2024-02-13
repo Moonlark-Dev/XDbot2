@@ -1,11 +1,11 @@
+from typing import Optional
 from ..exception import IllegalQuantityException
 from ..item import Item
-from .. import json2items
 from .. import bag
 from .. import economy
 from ..item_basic_data import BASIC_DATA
 from ..._lang import text
-import time
+from ..json2items import json2items
 
 
 class Pouch(Item):
@@ -24,7 +24,7 @@ class Pouch(Item):
         self.update_info()
 
     def update_info(self):
-        item_list = json2items.json2items(self.data["items"])
+        item_list = json2items(self.data["items"])
         display_info = (
             self.data["display_message"].split("\x00")[0]
             + f"\x00\n物品列表（\x01used/{self.data['max_item_count']}）："
