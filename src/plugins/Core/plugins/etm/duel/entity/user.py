@@ -14,8 +14,7 @@ if TYPE_CHECKING:
 else:
     Item = None
 
-
-json2items: Callable[[list[dict], Optional[str]], list[Item]]
+from ...json2items import json2items
 
 
 class User(Entity):
@@ -129,7 +128,8 @@ class User(Entity):
 
     def get_items(self) -> None:
         items: dict = Json(f"duel2/users/{self.user_id}.json").get("items", {})
-        if weapons := items.get("weapons"):
+        weapons = items.get("weapons")
+        if weapons and weapons["id"] != "hand":
             self.items["weapons"] = cast(
                 DuelWeapons, json2items([weapons], self.user_id)[0]
             )

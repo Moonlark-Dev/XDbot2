@@ -1,4 +1,7 @@
-from typing import TYPE_CHECKING, Type
+from typing import Type
+
+from .items.unknown_item import UnknownItem
+from . import json2items
 from .item import Item
 from .items.dice import Dice
 from .items.auto_sign_coupon import AutoSignCoupon, AutoSignCouponActived
@@ -27,7 +30,11 @@ ITEMS = {}
 
 
 def register_item(item: Type[Item]) -> None:
-    ITEMS[item(1, {}, None).item_id] = item
+    try:
+        i = item(1, {}, None)
+    except:
+        pass
+    ITEMS[i.item_id] = item
 
 
 def register_items(items: list[Type[Item]]) -> None:
@@ -61,5 +68,8 @@ register_items(
         MagicCatBody,
         MagicCatRope,
         MagicStick,
+        UnknownItem
     ]
 )
+
+json2items.setup_items(ITEMS)
