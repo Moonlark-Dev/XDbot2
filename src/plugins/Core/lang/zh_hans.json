@@ -363,7 +363,8 @@
   "duel_logger.attack_hit": "{} -> {} (-{})",
   "duel_logger.no_entity": "[没有可攻击对象]\n",
   "duel_logger.immune_to_attack": "[敌方] 本次攻击被免疫！",
-  "duel_logger.critical_strike_chance_increased": "[效果] 本次攻击暴击率提高: {}%\n",
+  "duel_logger.critical_strike_chance_increased": "[效果] 暴击率提高: {}%\n",
+  "duel_logger.critical_strike_chance_harm_increased": "[效果] 暴击伤害提高: {}%\n",
   "duel_user.attack_menu": "当前可攻击对象:{}\n[{}]: 返回菜单\n将在 30s 后返回",
   "duel_user.attack_menu_item": "\n[{}]: {}<{}>",
   "magic_cat_head.display_name": "猫耳（头部）",
@@ -395,6 +396,9 @@
   "magic_cat_ball.display_name": "羽毛球（面位球）",
   "magic_cat_ball.display_message": "[被动]: 受到物理攻击时伤害提升 150%，下次攻击时攻击力增加 10\n\n效果: \n{}",
   "magic_cat_rope.display_name": "毛线（连结绳）",
-  "magic_cat_rope.display_message": "效果: \n{}"
+  "magic_cat_rope.display_message": "效果: \n{}",
+  "duel_logger.unsupported_not_user": "[暂不支持非用户使用]\n",
+  "firecracker.display_name": "爆竹",
+  "firecracker.display_message": "[消耗品·对敌] 造成 20 点物理伤害，并使使用者受到 3 点物理伤害，同时有 2% 概率提升暴击伤害 300%，持续 7 回合"
 
 }

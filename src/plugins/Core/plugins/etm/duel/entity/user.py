@@ -124,6 +124,24 @@ class User(Entity):
         Json(f"duel2/lock.json")[self.user_id] = True
 
     def __del__(self) -> None:
+        items = {
+            "weapons": {
+                "id": self.items["weapons"].item_id,
+                "count": self.items["weapons"].count,
+                "data": self.items["weapons"].data,
+            },
+            "passive": [
+                {"id": item.item_id, "count": item.count, "data": item.data}
+                for item in self.items["passive"]
+            ],
+            "other": [
+                {"id": item.item_id, "count": item.count, "data": item.data}
+                for item in self.items["other"]
+            ],
+        }
+        if items["weapons"]["id"] == "hand":
+            items.pop("weapons")
+        Json(f"duel2/users/{self.user_id}.json")["items"] = items
         Json(f"duel2/lock.json")[self.user_id] = False
 
     def get_items(self) -> None:
