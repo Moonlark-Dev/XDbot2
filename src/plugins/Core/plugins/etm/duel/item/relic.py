@@ -50,6 +50,10 @@ class DuelRelic(DuelPassiveItem):
 
     def _after_register(self):
         super()._after_register()
+        if "gain" not in self.data:
+            self.data["gain"] = []
+        if "level" not in self.data:
+            self.data["level"] = 0
         self.data["display_message"] = (
             self.text("display_message", [self.get_gain_string()]),
         )

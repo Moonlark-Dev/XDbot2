@@ -5,9 +5,7 @@ from src.plugins.Core.plugins import _lang
 import random
 from ..item import Item
 from ..nbt import NbtDict
-
-
-def json2items(items, user_id=None): ...
+from ..json2items import json2items
 
 
 class MysteryBoxLevel1(Item):

@@ -106,12 +106,12 @@ for plugin in pluginList:
             )
             logger.info(f"成功加载插件{plugin}")
             loadedPlugins += [plugin]
-            # 读取帮助
-            helpData.update(getHelp.get_plugin_help(plugin[:-3], pluginsModule[plugin]))
-
-        except AttributeError:
-            logger.warning(f"在{plugin}中找不到指令文档")
-            # print(traceback.format_exc())
+            try:
+                helpData.update(
+                    getHelp.get_plugin_help(plugin[:-3], pluginsModule[plugin])
+                )
+            except AttributeError:
+                logger.warning(f"在{plugin}中找不到指令文档")
         except Exception as e:
             logger.error(f"加载失败：插件{plugin}加载发生错误：{e}")
             print(traceback.format_exc())
