@@ -1,0 +1,10 @@
+NULL = 0
+WALL = 1
+SPECIAL = 2
+TERMINAL = 3
+START = 4
+
+UP = 1
+DOWN = 2
+LEFT = 3
+RIGHT = 4

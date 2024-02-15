@@ -2,7 +2,7 @@ import json
 import os
 import os.path
 import traceback
-from typing import Any, Callable, Optional, Union
+from typing import Any, Callable, Optional, Type, Union
 import httpx
 from .etm.exception import *
 
@@ -26,7 +26,6 @@ from nonebot.adapters.onebot.v11 import MessageSegment
 SUCCESS: bool = True
 FAILED: bool = False
 SKIP: None = None
-
 
 def create_command(cmd: str, aliases: set = set(), **kwargs):
     matcher = on_command(cmd, aliases=aliases, **kwargs)

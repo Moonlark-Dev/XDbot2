@@ -12,6 +12,7 @@ import json
 from nonebot import get_bots
 import traceback
 from nonebot.log import logger
+from nonebot.exception import RejectedException
 
 # from nonebot.adapters.onebot.v11 import GroupMessageEvent, MessageEvent, MessageSegment
 from nonebot.matcher import Matcher
@@ -97,6 +98,8 @@ async def report(
         and matcher is not None
     ):
         await matcher.finish()
+    elif ("rejectedexception" in error.lower()):
+        raise RejectedException
     # 反馈错误
     if err.startswith("Traceback"):
         if feedback:
