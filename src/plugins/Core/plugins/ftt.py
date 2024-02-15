@@ -113,6 +113,8 @@ async def _(state: T_State, event: MessageEvent, steps: str = ArgPlainText("step
             else:
                 state["_steps"] = []
                 await ftt.reject(lang.text("ftt.fail", [], event.user_id))
+        else:
+            await ftt.reject(lang.text("ftt.step_done", [], event.user_id))
     except Exception:
         await error.report()
 
