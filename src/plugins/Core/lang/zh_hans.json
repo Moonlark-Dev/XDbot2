@@ -399,6 +399,19 @@
   "magic_cat_rope.display_message": "效果: \n{}",
   "duel_logger.unsupported_not_user": "[暂不支持非用户使用]\n",
   "firecracker.display_name": "爆竹",
-  "firecracker.display_message": "[消耗品·对敌] 造成 20 点物理伤害，并使使用者受到 3 点物理伤害，同时有 2% 概率提升暴击伤害 300%，持续 7 回合"
+  "firecracker.display_message": "[消耗品·对敌] 造成 20 点物理伤害，并使使用者受到 3 点物理伤害，同时有 2% 概率提升暴击伤害 300%，持续 7 回合",
+  "ftt.__base__": "[FTT] {}",
+  "ftt.generating_map": "正在生成地图，请稍候...",
+  "ftt.map": "{}\n步数: {}/{}\n[w]: 上 | [a]: 左 | [s]: 下\n[d]: 右 | [q]: 退出 | [c]: 清除",
+  "ftt.step_nb": "第 {} 步: {}\n",
+  "ftt.step_up_nb": "上",
+  "ftt.step_down_nb": "下",
+  "ftt.step_left_nb": "左",
+  "ftt.step_right_nb": "右",
+  "ftt.step_clear_nb": "收到指令: 清除\n",
+  "ftt.step_done": "指令输入完成，发送[clear]清除，发送[ok]开始执行",
+  "ftt.quit": "已停止",
+  "ftt.success": "恭喜您，挑战成功！",
+  "ftt.fail": "很遗憾，挑战失败，请检查您的指令输入！\n请继续输入指令或输入[q]退出"
 
 }

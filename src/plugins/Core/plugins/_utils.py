@@ -2,7 +2,7 @@ import json
 import os
 import os.path
 import traceback
-from typing import Any, Callable, Optional, Union
+from typing import Any, Callable, Optional, Type, Union
 import httpx
 from .etm.exception import *
 
