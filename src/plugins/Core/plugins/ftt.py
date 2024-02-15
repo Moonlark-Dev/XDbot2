@@ -71,7 +71,7 @@ async def handle_steps(state: T_State, steps: str, user_id: int) -> Optional[str
             await finish("ftt.quit", [], user_id)
         case "c":
             state["_steps"] = []
-            return lang.text("ftt.step_clear", [], user_id)
+            return lang.text("ftt.step_clear_nb", [], user_id)
 
 
 async def handle_steps_input(state: T_State, event: MessageEvent, steps: str) -> None:
