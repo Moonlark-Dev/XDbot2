@@ -36,6 +36,7 @@ def register_item(item: Type[Item]) -> None:
     except:
         pass
     ITEMS[i.item_id] = item
+    json2items.item_helper.items[i.item_id] = item
 
 
 def register_items(items: list[Type[Item]]) -> None:
@@ -74,4 +75,6 @@ register_items(
     ]
 )
 
-json2items.setup_items(ITEMS)
+# json2items.setup_items(ITEMS)
+
+# print("Loaded", ITEMS, json2items.ITEMS)

@@ -12,19 +12,19 @@ from .item import Item
 #     pouch
 # )
 
-ITEMS = {}
+class ItemsHelper:
+    def __init__(self) -> None:
+        self.items = {}
+        # print("1"*30)
 
-
-def setup_items(item_list: dict[str, Type[Item]]) -> None:
-    global ITEMS
-    ITEMS = item_list
-
+item_helper = ItemsHelper()
 
 def json2items(items: list[dict], user_id=None) -> list[Item]:
+    # print(item_helper.items)
     item_list = []
     for item in items:
         try:
-            item_list.append((ITEMS[item["id"]](item["count"], item["data"], user_id)))
+            item_list.append((item_helper.items[item["id"]](item["count"], item["data"], user_id)))
         except KeyError:
             item_list.append(UnknownItem(item["count"], item["data"], user_id))
     return item_list

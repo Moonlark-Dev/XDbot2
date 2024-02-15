@@ -1,4 +1,5 @@
 # from plugins.Core.plugins.etm.item import Item
+from .. import item_list
 from .. import json2items
 from ..item_basic_data import BASIC_DATA
 from nonebot_plugin_apscheduler import scheduler
