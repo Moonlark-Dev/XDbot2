@@ -53,6 +53,8 @@ try:
 except:
     is_develop = False
 
+from .plugins.etm import item_list
+
 # 初始化
 # XDbot2 版本 1.0.0
 logger.info("欢迎使用 XDbot2 （版本：1.0.0）")
