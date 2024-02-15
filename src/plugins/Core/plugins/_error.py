@@ -98,7 +98,7 @@ async def report(
         and matcher is not None
     ):
         await matcher.finish()
-    elif ("rejectedexception" in error.lower()):
+    elif "rejectedexception" in error.lower():
         raise RejectedException
     # 反馈错误
     if err.startswith("Traceback"):

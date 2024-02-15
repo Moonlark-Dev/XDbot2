@@ -27,6 +27,7 @@ SUCCESS: bool = True
 FAILED: bool = False
 SKIP: None = None
 
+
 def create_command(cmd: str, aliases: set = set(), **kwargs):
     matcher = on_command(cmd, aliases=aliases, **kwargs)
 
