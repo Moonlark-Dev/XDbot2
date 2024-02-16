@@ -3,6 +3,7 @@ from src.plugins.Core.lib.FindingTheTrail import search, const, image, map, argv
 from nonebot.params import ArgPlainText
 from nonebot.typing import T_State
 import copy
+import asyncio
 
 ftt = on_command("ftt", aliases={"FindingTheTrail"})
 
@@ -26,7 +27,8 @@ async def _(
     try:
         difficulty = message.extract_plain_text().strip() or "easy"
         message_id = await send_message(bot, event, "ftt.generating_map")
-        state["map"], state["answer"] = generate_map(difficulty)
+        loop = asyncio.get_running_loop()
+        state["map"], state["answer"] = await loop.run_in_executor(None, lambda: generate_map(difficulty))
         await bot.delete_msg(message_id=message_id)
         await send_text(
             "ftt.map",
