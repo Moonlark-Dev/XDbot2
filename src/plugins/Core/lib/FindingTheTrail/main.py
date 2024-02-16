@@ -1,8 +1,10 @@
-from map import generate
-from search import search
-from argv import ARGUMENTS
+from .map import generate
+from .search import search
+from .argv import ARGUMENTS
 
-game_map = generate(**ARGUMENTS["normal"]["map"])
+difficulty = "normal"
+
+game_map = generate(**ARGUMENTS[difficulty]["map"])
 print("Map:")
 print("\n".join(str(row) for row in game_map))
 
@@ -33,11 +35,13 @@ print("\n".join(str(row) for row in game_map))
 # [1, 1, 1, 1, 1, 1, 1, 1]
 # ]
 
+
+from .image import generate
+
+generate(game_map)
+
 import copy
 
 print("\nSteps (MIN):")
-print(search(copy.deepcopy(game_map)))
+print(search(copy.deepcopy(game_map), **ARGUMENTS[difficulty]["search"]))
 
-from image import generate
-
-generate(game_map)

@@ -1,13 +1,16 @@
+import asyncio
 from ._utils import *
 from src.plugins.Core.lib.FindingTheTrail import search, const, image, map, argv
 from nonebot.params import ArgPlainText
 from nonebot.typing import T_State
 import copy
+# import multiprocessing
 
 ftt = on_command("ftt", aliases={"FindingTheTrail"})
 
 
 def generate_map(difficulty: str) -> tuple[list[list[int]], list[int]]:
+    print("start")
     while True:
         game_map = map.generate(**argv.ARGUMENTS[difficulty]["map"])
         answer = search.search(
@@ -16,8 +19,10 @@ def generate_map(difficulty: str) -> tuple[list[list[int]], list[int]]:
         if len(answer) < argv.ARGUMENTS[difficulty]["min_step"]:
             continue
         break
+    print("end")
     return game_map, answer
 
+# import multiprocessing.context
 
 @ftt.handle()
 async def _(
@@ -26,6 +31,17 @@ async def _(
     try:
         difficulty = message.extract_plain_text().strip() or "easy"
         message_id = await send_message(bot, event, "ftt.generating_map")
+        # pool = multiprocessing.Pool(1)
+        # while not state.get("answer"):
+        #     p = pool.apply_async(
+        #         generate_map, 
+        #         (difficulty,)
+        #     )
+        #     try:
+        #         state["map"], state["answer"] = p.get(5)
+        #     except multiprocessing.context.TimeoutError:
+        #         pass
+        # pool.close()
         state["map"], state["answer"] = generate_map(difficulty)
         await bot.delete_msg(message_id=message_id)
         await send_text(
@@ -95,7 +111,7 @@ async def handle_steps_input(state: T_State, event: MessageEvent, steps: str) ->
 def execute(steps: list[int], game_map: list[list[int]]) -> bool:
     game_map, pos = search.get_start_pos(game_map)
     for step in steps:
-        game_map = search.parse_broken_sand(game_map)
+        game_map = search.parse_sand(game_map, pos)
         game_map, pos = search.move(game_map, pos, step)
     return search.get_item_by_pos(pos, game_map) == const.TERMINAL
 
@@ -111,6 +127,11 @@ async def _(state: T_State, event: MessageEvent, steps: str = ArgPlainText("step
             await handle_steps_input(state, event, parse_steps_input(steps))
         elif steps == "clear":
             state["_steps"] = []
+            await ftt.reject(
+                lang.text(
+                    "ftt.map", [lang.text("ftt.step_clear_nb", [], event.user_id), len(state["_steps"]), len(state["answer"])], event.user_id
+                )
+            )
         elif steps == "quit":
             await finish("ftt.quit", [], event.user_id)
         elif steps == "ok":
@@ -119,8 +140,7 @@ async def _(state: T_State, event: MessageEvent, steps: str = ArgPlainText("step
             else:
                 state["_steps"] = []
                 await ftt.reject(lang.text("ftt.fail", [], event.user_id))
-        else:
-            await ftt.reject(lang.text("ftt.step_done", [], event.user_id))
+        await ftt.reject(lang.text("ftt.step_done", [], event.user_id))
     except Exception:
         await error.report()
 

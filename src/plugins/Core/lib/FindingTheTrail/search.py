@@ -25,7 +25,7 @@ def get_moved_pos(original_pos: tuple[int, int], direction: int) -> tuple[int, i
 
 
 def is_item_moveable(item: int) -> bool:
-    return item in [NULL, TERMINAL, PISTON]
+    return item in [NULL, TERMINAL, PISTON, COBWEB]
 
 
 def get_moveable_direction(
@@ -41,6 +41,15 @@ def get_moveable_direction(
 def get_back_direction(direction: int) -> int:
     return {LEFT: RIGHT, RIGHT: LEFT, UP: DOWN, DOWN: UP}[direction]
 
+def parse_sand(game_map: list[list[int]], pos: tuple[int, int]) -> list[list[int]]:
+    for d in [UP, DOWN, RIGHT, LEFT]:
+        p = get_moved_pos(pos, d)
+        i = get_item_by_pos(p, game_map)
+        if i == SAND:
+            game_map[p[0]][p[1]] = NULL
+    return game_map
+
+
 
 def move(
     game_map: list[list[int]], pos: tuple[int, int], direction: int
@@ -49,10 +58,10 @@ def move(
         pos = get_moved_pos(pos, direction)
         item = get_item_by_pos(pos, game_map)
         if not is_item_moveable(item):
-            if item == SAND:
-                game_map[pos[0]][pos[1]] = BROKEN_SAND
             return game_map, get_moved_pos(pos, get_back_direction(direction))
         elif item == TERMINAL:
+            return game_map, pos
+        elif item == COBWEB:
             return game_map, pos
         elif item == PISTON:
             game_map[pos[0]][pos[1]] = WALL
@@ -80,14 +89,6 @@ class QueueItem(TypedDict):
     path: list[int]
 
 
-def parse_broken_sand(game_map: list[list[int]]) -> list[list[int]]:
-    for row in range(len(game_map)):
-        for column in range(len(game_map[row])):
-            if game_map[row][column] == BROKEN_SAND:
-                game_map[row][column] = NULL
-    return game_map
-
-
 def search(game_map: list[list[int]], max_step: int = 12) -> list[int]:
     game_map, start_pos = get_start_pos(game_map)
     queue: list[QueueItem] = [
@@ -106,7 +107,7 @@ def search(game_map: list[list[int]], max_step: int = 12) -> list[int]:
             return []
         if get_item_by_pos(item["original_pos"], item["game_map"]) == TERMINAL:
             return item["path"][:-1]
-        item["game_map"] = parse_broken_sand(item["game_map"])
+        item["game_map"] = parse_sand(item["game_map"], item["original_pos"])
         game_map, pos = move(item["game_map"], item["original_pos"], item["direction"])
         queue.extend(
             [
