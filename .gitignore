@@ -9,3 +9,5 @@ node_modules/
 cache/
 *.lock
 1.png
+test
+src/plugins/Core/test_ftt.py
