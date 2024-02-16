@@ -1,5 +1,5 @@
 from ._utils import *
-from src.plugins.Core.lib.FindingTheTrail import search, const, image, map
+from src.plugins.Core.lib.FindingTheTrail import search, const, image, map, argv
 from nonebot.params import ArgPlainText
 from nonebot.typing import T_State
 import copy
@@ -7,21 +7,22 @@ import copy
 ftt = on_command("ftt", aliases={"FindingTheTrail"})
 
 
-def generate_map(**params) -> tuple[list[list[int]], list[int]]:
+def generate_map(difficulty: str) -> tuple[list[list[int]], list[int]]:
     while True:
-        game_map = map.generate(**params)
-        answer = search.search(copy.deepcopy(game_map))
-        if len(answer) < 3:
+        game_map = map.generate(**argv.ARGUMENTS[difficulty]["map"])
+        answer = search.search(copy.deepcopy(game_map), **argv.ARGUMENTS[difficulty]["search"])
+        if len(answer) < argv.ARGUMENTS[difficulty]["min_steps"]:
             continue
         break
     return game_map, answer
 
 
 @ftt.handle()
-async def _(state: T_State, bot: Bot, event: MessageEvent) -> None:
+async def _(state: T_State, bot: Bot, event: MessageEvent, message: Message = CommandArg()) -> None:
     try:
+        difficulty = message.extract_plain_text().strip() or "easy"
         message_id = await send_message(bot, event, "ftt.generating_map")
-        state["map"], state["answer"] = generate_map()
+        state["map"], state["answer"] = generate_map(difficulty)
         await bot.delete_msg(message_id=message_id)
         await send_text(
             "ftt.map",
@@ -90,6 +91,7 @@ async def handle_steps_input(state: T_State, event: MessageEvent, steps: str) ->
 def execute(steps: list[int], game_map: list[list[int]]) -> bool:
     game_map, pos = search.get_start_pos(game_map)
     for step in steps:
+        game_map = search.parse_broken_sand(game_map)
         game_map, pos = search.move(game_map, pos, step)
     return search.get_item_by_pos(pos, game_map) == const.TERMINAL
 
@@ -123,5 +125,5 @@ async def _(state: T_State, event: MessageEvent, steps: str = ArgPlainText("step
 # Command: ftt
 # Msg: 寻径指津
 # Info: 开始「寻径指津」小游戏（玩法说明见 https://xdbot2.itcdt.top/games/ftt）
-# Usage: ftt
+# Usage: ftt [{easy|normal}]
 # [HELPEND]

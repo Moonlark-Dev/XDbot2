@@ -25,7 +25,7 @@ def get_moved_pos(original_pos: tuple[int, int], direction: int) -> tuple[int, i
 
 
 def is_item_moveable(item: int) -> bool:
-    return item in [NULL, TERMINAL, SPECIAL]
+    return item in [NULL, TERMINAL, PISTON]
 
 
 def get_moveable_direction(
@@ -49,11 +49,14 @@ def move(
         pos = get_moved_pos(pos, direction)
         item = get_item_by_pos(pos, game_map)
         if not is_item_moveable(item):
+            if item == SAND:
+                game_map[pos[0]][pos[1]] = BROKEN_SAND
             return game_map, get_moved_pos(pos, get_back_direction(direction))
         elif item == TERMINAL:
             return game_map, pos
-        elif item == SPECIAL:
+        elif item == PISTON:
             game_map[pos[0]][pos[1]] = WALL
+        
 
 
 # map = [
@@ -78,6 +81,14 @@ class QueueItem(TypedDict):
     path: list[int]
 
 
+def parse_broken_sand(game_map: list[list[int]]) -> list[list[int]]:
+    for row in range(len(game_map)):
+        for column in range(len(game_map[row])):
+            if game_map[row][column] == BROKEN_SAND:
+                game_map[row][column] = NULL
+    return game_map
+    
+
 def search(game_map: list[list[int]], max_step: int = 12) -> list[int]:
     game_map, start_pos = get_start_pos(game_map)
     queue: list[QueueItem] = [
@@ -95,8 +106,8 @@ def search(game_map: list[list[int]], max_step: int = 12) -> list[int]:
         except IndexError:
             return []
         if get_item_by_pos(item["original_pos"], item["game_map"]) == TERMINAL:
-            # print("\n".join(str(row) for row in game_map))
             return item["path"][:-1]
+        item["game_map"] = parse_broken_sand(item["game_map"])
         game_map, pos = move(item["game_map"], item["original_pos"], item["direction"])
         queue.extend(
             [

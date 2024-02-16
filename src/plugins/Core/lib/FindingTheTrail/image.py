@@ -10,7 +10,8 @@ BLOCKS = {
     WALL: Image.open(base_path.joinpath("bricks.png")),
     START: Image.open(base_path.joinpath("iron_block.png")),
     TERMINAL: Image.open(base_path.joinpath("diamond_block.png")),
-    SPECIAL: Image.open(base_path.joinpath("piston_top.png")),
+    PISTON: Image.open(base_path.joinpath("piston_top.png")),
+    SAND: Image.open(base_path.joinpath("sand.png")),
 }
 
 
@@ -27,3 +28,4 @@ def generate(game_map: list[list[int]]) -> bytes:
     buffer = io.BytesIO()
     image.save(buffer, format="PNG")
     return buffer.getvalue()
+    # image.save("1.png")
