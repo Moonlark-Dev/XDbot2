@@ -10,7 +10,9 @@ ftt = on_command("ftt", aliases={"FindingTheTrail"})
 def generate_map(difficulty: str) -> tuple[list[list[int]], list[int]]:
     while True:
         game_map = map.generate(**argv.ARGUMENTS[difficulty]["map"])
-        answer = search.search(copy.deepcopy(game_map), **argv.ARGUMENTS[difficulty]["search"])
+        answer = search.search(
+            copy.deepcopy(game_map), **argv.ARGUMENTS[difficulty]["search"]
+        )
         if len(answer) < argv.ARGUMENTS[difficulty]["min_step"]:
             continue
         break
