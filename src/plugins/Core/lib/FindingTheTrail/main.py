@@ -1,7 +1,8 @@
 from map import generate
 from search import search
+from argv import ARGUMENTS
 
-game_map = generate()
+game_map = generate(**ARGUMENTS["normal"]["map"])
 print("Map:")
 print("\n".join(str(row) for row in game_map))
 
