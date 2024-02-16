@@ -4,6 +4,7 @@ from src.plugins.Core.lib.FindingTheTrail import search, const, image, map, argv
 from nonebot.params import ArgPlainText
 from nonebot.typing import T_State
 import copy
+import asyncio
 
 # import multiprocessing
 
@@ -34,18 +35,10 @@ async def _(
     try:
         difficulty = message.extract_plain_text().strip() or "easy"
         message_id = await send_message(bot, event, "ftt.generating_map")
-        # pool = multiprocessing.Pool(1)
-        # while not state.get("answer"):
-        #     p = pool.apply_async(
-        #         generate_map,
-        #         (difficulty,)
-        #     )
-        #     try:
-        #         state["map"], state["answer"] = p.get(5)
-        #     except multiprocessing.context.TimeoutError:
-        #         pass
-        # pool.close()
-        state["map"], state["answer"] = generate_map(difficulty)
+        loop = asyncio.get_running_loop()
+        state["map"], state["answer"] = await loop.run_in_executor(
+            None, lambda: generate_map(difficulty)
+        )
         await bot.delete_msg(message_id=message_id)
         await send_text(
             "ftt.map",
