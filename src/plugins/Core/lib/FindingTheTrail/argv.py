@@ -10,9 +10,9 @@ ARGUMENTS = {
         "map": {
             "row": 9,
             "column": 12,
-            "blocks": [(WALL, 0.1), (PISTON, 0.1), (SAND, 0.1)],
+            "blocks": [(WALL, 0.1), (PISTON, 0.1), (SAND, 0.1), (COBWEB, 0.1)],
         },
-        "search": {"max_step": 15},
+        "search": {"max_step": 13},
         "min_step": 4,
     },
 }
