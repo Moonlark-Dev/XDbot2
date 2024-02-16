@@ -1,8 +1,16 @@
 from ..lib.FindingTheTrail.argv import ARGUMENTS
 from ..lib.FindingTheTrail.map import generate
-from ..lib.FindingTheTrail.search import QueueItem, get_start_pos, get_moveable_direction, get_item_by_pos, move, parse_sand
+from ..lib.FindingTheTrail.search import (
+    QueueItem,
+    get_start_pos,
+    get_moveable_direction,
+    get_item_by_pos,
+    move,
+    parse_sand,
+)
 import copy
 import multiprocessing
+
 
 class Generator:
 
@@ -29,7 +37,9 @@ class Generator:
             if get_item_by_pos(item["original_pos"], item["game_map"]) == TERMINAL:
                 return item["path"][:-1]
             item["game_map"] = parse_sand(item["game_map"], item["original_pos"])
-            game_map, pos = move(item["game_map"], item["original_pos"], item["direction"])
+            game_map, pos = move(
+                item["game_map"], item["original_pos"], item["direction"]
+            )
             queue.extend(
                 [
                     {
@@ -43,8 +53,9 @@ class Generator:
             )
             if len(item["path"]) >= max_step:
                 return []
-            elif len(item["path"]) >= 12 and len(multiprocessing.active_children()) <= 8:
+            elif (
+                len(item["path"]) >= 12 and len(multiprocessing.active_children()) <= 8
+            ):
                 self.pool.apply_async(self.generate)
-    
-    def generate(self) -> tuple[list[list[int]], list[int]]:
-        ...
+
+    def generate(self) -> tuple[list[list[int]], list[int]]: ...

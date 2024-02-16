@@ -12,7 +12,7 @@ BLOCKS = {
     TERMINAL: Image.open(base_path.joinpath("diamond_block.png")),
     PISTON: Image.open(base_path.joinpath("piston_top.png")),
     SAND: Image.open(base_path.joinpath("sand.png")),
-    COBWEB: Image.open(base_path.joinpath("cobweb.png"))
+    COBWEB: Image.open(base_path.joinpath("cobweb.png")),
 }
 
 
@@ -30,4 +30,3 @@ def generate(game_map: list[list[int]]) -> bytes:
     image.save(buffer, format="PNG")
     image.save("1.png")
     return buffer.getvalue()
-    

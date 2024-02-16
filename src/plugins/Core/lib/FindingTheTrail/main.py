@@ -44,4 +44,3 @@ import copy
 
 print("\nSteps (MIN):")
 print(search(copy.deepcopy(game_map), **ARGUMENTS[difficulty]["search"]))
-

@@ -41,6 +41,7 @@ def get_moveable_direction(
 def get_back_direction(direction: int) -> int:
     return {LEFT: RIGHT, RIGHT: LEFT, UP: DOWN, DOWN: UP}[direction]
 
+
 def parse_sand(game_map: list[list[int]], pos: tuple[int, int]) -> list[list[int]]:
     for d in [UP, DOWN, RIGHT, LEFT]:
         p = get_moved_pos(pos, d)
@@ -48,7 +49,6 @@ def parse_sand(game_map: list[list[int]], pos: tuple[int, int]) -> list[list[int
         if i == SAND:
             game_map[p[0]][p[1]] = NULL
     return game_map
-
 
 
 def move(

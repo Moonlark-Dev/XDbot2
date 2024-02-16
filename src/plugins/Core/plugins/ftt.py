@@ -4,6 +4,7 @@ from src.plugins.Core.lib.FindingTheTrail import search, const, image, map, argv
 from nonebot.params import ArgPlainText
 from nonebot.typing import T_State
 import copy
+
 # import multiprocessing
 
 ftt = on_command("ftt", aliases={"FindingTheTrail"})
@@ -22,7 +23,9 @@ def generate_map(difficulty: str) -> tuple[list[list[int]], list[int]]:
     print("end")
     return game_map, answer
 
+
 # import multiprocessing.context
+
 
 @ftt.handle()
 async def _(
@@ -34,7 +37,7 @@ async def _(
         # pool = multiprocessing.Pool(1)
         # while not state.get("answer"):
         #     p = pool.apply_async(
-        #         generate_map, 
+        #         generate_map,
         #         (difficulty,)
         #     )
         #     try:
@@ -129,7 +132,13 @@ async def _(state: T_State, event: MessageEvent, steps: str = ArgPlainText("step
             state["_steps"] = []
             await ftt.reject(
                 lang.text(
-                    "ftt.map", [lang.text("ftt.step_clear_nb", [], event.user_id), len(state["_steps"]), len(state["answer"])], event.user_id
+                    "ftt.map",
+                    [
+                        lang.text("ftt.step_clear_nb", [], event.user_id),
+                        len(state["_steps"]),
+                        len(state["answer"]),
+                    ],
+                    event.user_id,
                 )
             )
         elif steps == "quit":
