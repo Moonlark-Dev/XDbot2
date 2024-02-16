@@ -56,7 +56,6 @@ def move(
             return game_map, pos
         elif item == PISTON:
             game_map[pos[0]][pos[1]] = WALL
-        
 
 
 # map = [
@@ -87,7 +86,7 @@ def parse_broken_sand(game_map: list[list[int]]) -> list[list[int]]:
             if game_map[row][column] == BROKEN_SAND:
                 game_map[row][column] = NULL
     return game_map
-    
+
 
 def search(game_map: list[list[int]], max_step: int = 12) -> list[int]:
     game_map, start_pos = get_start_pos(game_map)

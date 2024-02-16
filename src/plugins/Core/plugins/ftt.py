@@ -10,7 +10,9 @@ ftt = on_command("ftt", aliases={"FindingTheTrail"})
 def generate_map(difficulty: str) -> tuple[list[list[int]], list[int]]:
     while True:
         game_map = map.generate(**argv.ARGUMENTS[difficulty]["map"])
-        answer = search.search(copy.deepcopy(game_map), **argv.ARGUMENTS[difficulty]["search"])
+        answer = search.search(
+            copy.deepcopy(game_map), **argv.ARGUMENTS[difficulty]["search"]
+        )
         if len(answer) < argv.ARGUMENTS[difficulty]["min_steps"]:
             continue
         break
@@ -18,7 +20,9 @@ def generate_map(difficulty: str) -> tuple[list[list[int]], list[int]]:
 
 
 @ftt.handle()
-async def _(state: T_State, bot: Bot, event: MessageEvent, message: Message = CommandArg()) -> None:
+async def _(
+    state: T_State, bot: Bot, event: MessageEvent, message: Message = CommandArg()
+) -> None:
     try:
         difficulty = message.extract_plain_text().strip() or "easy"
         message_id = await send_message(bot, event, "ftt.generating_map")
