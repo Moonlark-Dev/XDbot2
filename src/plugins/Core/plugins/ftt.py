@@ -28,7 +28,9 @@ async def _(
         difficulty = message.extract_plain_text().strip() or "easy"
         message_id = await send_message(bot, event, "ftt.generating_map")
         loop = asyncio.get_running_loop()
-        state["map"], state["answer"] = await loop.run_in_executor(None, lambda: generate_map(difficulty))
+        state["map"], state["answer"] = await loop.run_in_executor(
+            None, lambda: generate_map(difficulty)
+        )
         await bot.delete_msg(message_id=message_id)
         await send_text(
             "ftt.map",
