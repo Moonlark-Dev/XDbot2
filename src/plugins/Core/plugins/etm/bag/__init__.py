@@ -60,11 +60,6 @@ def save_bags():
                 )
     data.bags = bag_data
     get_bags()
-    # 超出容量处理
-    # for user in list(bags.keys()):
-    #     count = get_items_count_in_bag(user)
-    #     if count > 128:
-    #         economy._add_vimcoin(user, -0.001 * (count - 128))
 
 
 def get_user_bag(user_id):
@@ -99,7 +94,14 @@ def add_item(user_id, item_id, item_count=1, item_data={}):
                 item_count -= item.add(item_count, item_data)
         if item_count > 0:
             _add_item(
-                user_id, json2items.ITEMS[item_id](item_count, item_data, user_id)
+                user_id, json2items.json2items(
+                    [{
+                        "id": item_id,
+                        "count": item_count,
+                        "data": item_data
+                    }],
+                    user_id
+                )
             )
     except KeyError:
         bags[user_id] = []
