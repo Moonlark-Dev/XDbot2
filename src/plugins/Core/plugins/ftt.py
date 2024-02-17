@@ -6,13 +6,12 @@ from nonebot.typing import T_State
 import copy
 import asyncio
 
-# import multiprocessing
+import multiprocessing
 
 ftt = on_command("ftt", aliases={"FindingTheTrail"})
 
 
 def generate_map(difficulty: str) -> tuple[list[list[int]], list[int]]:
-    print("start")
     while True:
         game_map = map.generate(**argv.ARGUMENTS[difficulty]["map"])
         answer = search.search(
@@ -21,24 +20,43 @@ def generate_map(difficulty: str) -> tuple[list[list[int]], list[int]]:
         if len(answer) < argv.ARGUMENTS[difficulty]["min_step"]:
             continue
         break
-    print("end")
     return game_map, answer
 
 
-# import multiprocessing.context
+def createMapCache() -> None:
+    cache = Json(f"ftt.cache.json")
+    for d in argv.ARGUMENTS.keys():
+        for _ in range(5 - len(cache.get(d, []))):
+            gameMap, answer = generate_map(d)
+            cache.append_to({"map": gameMap, "answer": answer}, d)
+    logger.info("Done")
+
+
+cacheCreateProcess = multiprocessing.Process(target=createMapCache)
+cacheCreateProcess.start()
+
+
+async def getGameMap(difficulty: str) -> tuple[list[list[int]], list[int]]:
+    cache = Json(f"ftt.cache.json")
+    if cache[difficulty]:
+        data = cache[difficulty].pop(0)
+        cache.changed_key.add(difficulty)
+        logger.info("[FTT] 使用缓存 ...")
+        return data["map"], data["answer"]
+    else:
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(None, generate_map, difficulty)
 
 
 @ftt.handle()
 async def _(
     state: T_State, bot: Bot, event: MessageEvent, message: Message = CommandArg()
 ) -> None:
+    global cacheCreateProcess
     try:
         difficulty = message.extract_plain_text().strip() or "easy"
         message_id = await send_message(bot, event, "ftt.generating_map")
-        loop = asyncio.get_running_loop()
-        state["map"], state["answer"] = await loop.run_in_executor(
-            None, lambda: generate_map(difficulty)
-        )
+        state["map"], state["answer"] = await getGameMap(difficulty)
         await bot.delete_msg(message_id=message_id)
         await send_text(
             "ftt.map",
@@ -50,6 +68,9 @@ async def _(
             event.user_id,
         )
         state["_steps"] = []
+        if not cacheCreateProcess.is_alive():
+            cacheCreateProcess = multiprocessing.Process(target=createMapCache)
+            cacheCreateProcess.start()
     except Exception:
         await error.report()
 
