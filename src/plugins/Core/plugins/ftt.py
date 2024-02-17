@@ -22,6 +22,7 @@ def generate_map(difficulty: str) -> tuple[list[list[int]], list[int]]:
         break
     return game_map, answer
 
+
 def createMapCache() -> None:
     cache = Json(f"ftt.cache.json")
     for d in argv.ARGUMENTS.keys():
@@ -30,8 +31,10 @@ def createMapCache() -> None:
             cache.append_to({"map": gameMap, "answer": answer}, d)
     logger.info("Done")
 
+
 cacheCreateProcess = multiprocessing.Process(target=createMapCache)
 cacheCreateProcess.start()
+
 
 async def getGameMap(difficulty: str) -> tuple[list[list[int]], list[int]]:
     cache = Json(f"ftt.cache.json")
@@ -43,6 +46,7 @@ async def getGameMap(difficulty: str) -> tuple[list[list[int]], list[int]]:
     else:
         loop = asyncio.get_running_loop()
         return await loop.run_in_executor(None, generate_map, difficulty)
+
 
 @ftt.handle()
 async def _(
