@@ -83,12 +83,7 @@ class QueueItem(TypedDict):
 def search(game_map: list[list[int]], max_step: int = 12) -> list[int]:
     game_map, start_pos = get_start_pos(game_map)
     queue: list[QueueItem] = [
-        {
-            "direction": d,
-            "game_map": game_map,
-            "original_pos": start_pos,
-            "path": [d],
-        }
+        {"direction": d, "game_map": game_map, "original_pos": start_pos, "path": [d]}
         for d in get_moveable_direction(game_map, start_pos)
     ]
     while True:
