@@ -43,10 +43,13 @@ def get_back_direction(direction: int) -> int:
 
 
 def parse_sand(game_map: list[list[int]], pos: tuple[int, int]) -> list[list[int]]:
+    _id = id(game_map)
     for d in [UP, DOWN, RIGHT, LEFT]:
         p = get_moved_pos(pos, d)
         i = get_item_by_pos(p, game_map)
         if i == SAND:
+            if id(game_map) == _id:
+                game_map = copy.deepcopy(game_map)
             game_map[p[0]][p[1]] = NULL
     return game_map
 
@@ -54,6 +57,7 @@ def parse_sand(game_map: list[list[int]], pos: tuple[int, int]) -> list[list[int
 def move(
     game_map: list[list[int]], pos: tuple[int, int], direction: int
 ) -> tuple[list[list[int]], tuple[int, int]]:
+    _id = id(game_map)
     while True:
         pos = get_moved_pos(pos, direction)
         item = get_item_by_pos(pos, game_map)
@@ -64,22 +68,9 @@ def move(
         elif item == COBWEB:
             return game_map, pos
         elif item == PISTON:
+            if id(game_map) == _id:
+                game_map = copy.deepcopy(game_map)
             game_map[pos[0]][pos[1]] = WALL
-
-
-# map = [
-# [1, 1, 1, 3, 1, 1, 1, 1],
-# [1, 0, 2, 0, 0, 0, 0, 1],
-# [1, 0, 0, 0, 0, 0, 0, 1],
-# [1, 1, 0, 0, 0, 0, 0, 1],
-# [1, 0, 0, 0, 0, 0, 1, 1],
-# [1, 1, 1, 1, 1, 1, 1, 1]
-# ]
-# pos = (1,6)
-# for s in [4, 3, 1]:
-#     map, pos = move(map, pos, s)
-#     print(pos, s)
-#     print("\n".join(str(row) for row in map))
 
 
 class QueueItem(TypedDict):
@@ -92,12 +83,7 @@ class QueueItem(TypedDict):
 def search(game_map: list[list[int]], max_step: int = 12) -> list[int]:
     game_map, start_pos = get_start_pos(game_map)
     queue: list[QueueItem] = [
-        {
-            "direction": d,
-            "game_map": copy.deepcopy(game_map),
-            "original_pos": start_pos,
-            "path": [d],
-        }
+        {"direction": d, "game_map": game_map, "original_pos": start_pos, "path": [d]}
         for d in get_moveable_direction(game_map, start_pos)
     ]
     while True:
@@ -114,7 +100,7 @@ def search(game_map: list[list[int]], max_step: int = 12) -> list[int]:
                 {
                     "direction": d,
                     "original_pos": pos,
-                    "game_map": copy.deepcopy(game_map),
+                    "game_map": game_map,
                     "path": item["path"] + [d],
                 }
                 for d in get_moveable_direction(game_map, pos)
