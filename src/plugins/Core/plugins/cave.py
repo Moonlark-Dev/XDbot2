@@ -62,7 +62,7 @@ async def showEula(user_id, matcher=Matcher()):
 @cave_comment.handle()
 async def cave_comment_writer(event: GroupMessageEvent, bot: Bot):
     try:
-        if not event.reply:
+        if (not event.reply) or (not event.get_plaintext()):
             await cave_comment.finish()
         reply_message = event.reply.message.extract_plain_text()
         if event.reply.message_id in cave_messages:
@@ -77,7 +77,7 @@ async def cave_comment_writer(event: GroupMessageEvent, bot: Bot):
             # 懒得写了就这样吧
             await showEula(event.get_user_id())
 
-            auditdata = await context_review(reply_message, "text", event.user_id)
+            auditdata = await context_review(event.get_plaintext(), "text", event.user_id)
             if auditdata["conclusionType"] == 2:
                 reasons = [i["msg"] for i in auditdata["data"]]
                 await cave_comment.finish(
@@ -96,7 +96,7 @@ async def cave_comment_writer(event: GroupMessageEvent, bot: Bot):
                 data[cave_id] = {"count": 1, "data": {}}
             data[cave_id]["data"][str(data[cave_id]["count"])] = {
                 "id": data[cave_id]["count"],
-                "text": str(event.get_message()),
+                "text": str(event.get_plaintext()),
                 "sender": event.get_user_id(),
             }
             data[cave_id]["count"] += 1
