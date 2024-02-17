@@ -434,9 +434,13 @@ async def cave_add_handler(
             await cave.finish(
                 _lang.text("cave.error_to_download_images", [], event.get_user_id())
             )
-        elif (auditdata := await context_review(text, "text", event.user_id))[
-            "conclusionType"
-        ] == 2:
+        elif (
+            re.fullmatch(r"(\[\[Img:\d+\.\d+\]\]\])+", text) is None
+            and (auditdata := await context_review(text, "text", event.user_id))[
+                "conclusionType"
+            ]
+            == 2
+        ):
             reasons = [i["msg"] for i in auditdata["data"]]
             await cave.finish(
                 _lang.text(
