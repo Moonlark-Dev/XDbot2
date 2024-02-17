@@ -77,7 +77,9 @@ async def cave_comment_writer(event: GroupMessageEvent, bot: Bot):
             # 懒得写了就这样吧
             await showEula(event.get_user_id())
 
-            auditdata = await context_review(event.get_plaintext(), "text", event.user_id)
+            auditdata = await context_review(
+                event.get_plaintext(), "text", event.user_id
+            )
             if auditdata["conclusionType"] == 2:
                 reasons = [i["msg"] for i in auditdata["data"]]
                 await cave_comment.finish(
