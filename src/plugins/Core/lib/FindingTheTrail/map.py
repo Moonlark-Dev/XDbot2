@@ -18,15 +18,15 @@ def generate(
                 if random.random() <= block[1]:
                     game_map[r][c] = block[0]
     while True:
-        col = random.randint(1, row)
-        if game_map[1][col] not in [WALL, START]:
-            game_map[0][col] = TERMINAL
-            break
-    while True:
         r = random.randint(1, row - 1)
         c = random.randint(1, column - 1)
         if game_map[r][c] == NULL:
             game_map[r][c] = START
+            break
+    while True:
+        col = random.randint(1, row)
+        if game_map[1][col] not in [WALL, START]:
+            game_map[0][col] = TERMINAL
             break
     return game_map
 
