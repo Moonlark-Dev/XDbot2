@@ -21,7 +21,7 @@ def generate(
         col = random.randint(1, row)
         if game_map[1][col] not in [WALL, START]:
             game_map[0][col] = TERMINAL
-        break
+            break
     while True:
         r = random.randint(1, row - 1)
         c = random.randint(1, column - 1)
