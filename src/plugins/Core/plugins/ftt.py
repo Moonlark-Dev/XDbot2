@@ -97,6 +97,7 @@ async def _(
                 len(state["answer"]),
             ],
             event.user_id,
+            True
         )
         state["_steps"] = []
         state["prize_vi"] = {"normal": 2, "easy": 1}.get(
