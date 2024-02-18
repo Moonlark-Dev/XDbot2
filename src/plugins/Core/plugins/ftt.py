@@ -53,19 +53,28 @@ DIRECTION_TEXT = {
     const.UP: "up",
     const.DOWN: "down",
     const.LEFT: "left",
-    const.RIGHT: "right"
+    const.RIGHT: "right",
 }
 
+
 async def sendExampleAnswer(answer: list[int], userId: int) -> None:
-    await send_text("ftt.exampleAnswer", [
-        lang.text("ftt.exampleAnswerSep_nb", [], userId).join([
-            lang.text(f"ftt.step_{DIRECTION_TEXT[step]}_nb", [], userId)
-            for step in answer
-        ])
-    ], userId)
+    await send_text(
+        "ftt.exampleAnswer",
+        [
+            lang.text("ftt.exampleAnswerSep_nb", [], userId).join(
+                [
+                    lang.text(f"ftt.step_{DIRECTION_TEXT[step]}_nb", [], userId)
+                    for step in answer
+                ]
+            )
+        ],
+        userId,
+    )
+
 
 from .pawcoin import usePawCoin
 from .etm.exception import NoPawCoinException
+
 
 @ftt.handle()
 async def _(
@@ -90,10 +99,9 @@ async def _(
             event.user_id,
         )
         state["_steps"] = []
-        state["prize_vi"] = {
-            "normal": 2,
-            "easy": 1
-        }.get(difficulty, 0) * random.randint(len(state["answer"]) * 4, len(state["answer"]) * 5)
+        state["prize_vi"] = {"normal": 2, "easy": 1}.get(
+            difficulty, 0
+        ) * random.randint(len(state["answer"]) * 4, len(state["answer"]) * 5)
         if not cacheCreateProcess.is_alive():
             cacheCreateProcess = multiprocessing.Process(target=createMapCache)
             cacheCreateProcess.start()
@@ -140,6 +148,7 @@ async def handle_steps(state: T_State, steps: str, user_id: int) -> Optional[str
             state["_steps"] = []
             return lang.text("ftt.step_clear_nb", [], user_id)
 
+
 async def handle_steps_input(state: T_State, event: MessageEvent, steps: str) -> None:
     text = ""
     for s in steps.split(" "):
@@ -164,7 +173,9 @@ def execute(steps: list[int], game_map: list[list[int]]) -> bool:
 def parse_steps_input(steps: str) -> str:
     return " ".join([char for char in list(steps) if char])
 
+
 from .etm.economy import add_vi
+
 
 @ftt.got("steps")
 async def _(state: T_State, event: MessageEvent, steps: str = ArgPlainText("steps")):
