@@ -35,7 +35,15 @@ async def get_messages(bot: Bot, group_id: int) -> list:
         for message in message_list["messages"][::-1]:
             if time.time() - message["time"] <= 600:
                 print(message)
-                messages.append("".join([msg["data"]["text"] for msg in message["message"] if msg["type"] == "text"]))
+                messages.append(
+                    "".join(
+                        [
+                            msg["data"]["text"]
+                            for msg in message["message"]
+                            if msg["type"] == "text"
+                        ]
+                    )
+                )
                 message_seq = message["message_seq"]
             else:
                 return messages
@@ -77,7 +85,10 @@ def get_ma_count(messages: list[str]) -> int:
                     break
     return count
 
-def s(): return False
+
+def s():
+    return False
+
 
 # [HELPSTART] Version: 2
 # Command: ma-count
