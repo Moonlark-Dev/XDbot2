@@ -9,7 +9,6 @@ pillow
 psutil
 pyecharts
 nonebot_plugin_apscheduler
-lupa
 openai
 sentry_sdk
 playwright
