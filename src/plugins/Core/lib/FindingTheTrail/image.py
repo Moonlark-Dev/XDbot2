@@ -28,5 +28,5 @@ def generate(game_map: list[list[int]]) -> bytes:
             image.paste(BLOCKS[item], (x0, y0))
     buffer = io.BytesIO()
     image.save(buffer, format="PNG")
-    image.save("1.png")
+    # image.save("1.png")
     return buffer.getvalue()

@@ -93,8 +93,8 @@ def search(game_map: list[list[int]], max_step: int = 12) -> list[int]:
             return []
         if get_item_by_pos(item["original_pos"], item["game_map"]) == TERMINAL:
             return item["path"][:-1]
-        item["game_map"] = parse_sand(item["game_map"], item["original_pos"])
         game_map, pos = move(item["game_map"], item["original_pos"], item["direction"])
+        game_map = parse_sand(game_map, item["original_pos"])
         queue.extend(
             [
                 {

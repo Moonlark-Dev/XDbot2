@@ -101,7 +101,7 @@ async def _(
         state["_steps"] = []
         state["prize_vi"] = {"normal": 2, "easy": 1}.get(
             difficulty, 0
-        ) * random.randint(len(state["answer"]) * 4, len(state["answer"]) * 5)
+        ) * random.randint(len(state["answer"]) * 3, len(state["answer"]) * 4)
         if not cacheCreateProcess.is_alive():
             cacheCreateProcess = multiprocessing.Process(target=createMapCache)
             cacheCreateProcess.start()
@@ -165,8 +165,10 @@ async def handle_steps_input(state: T_State, event: MessageEvent, steps: str) ->
 def execute(steps: list[int], game_map: list[list[int]]) -> bool:
     game_map, pos = search.get_start_pos(game_map)
     for step in steps:
-        game_map = search.parse_sand(game_map, pos)
+        _pos = pos
         game_map, pos = search.move(game_map, pos, step)
+        if pos != _pos:
+            game_map = search.parse_sand(game_map, _pos)
     return search.get_item_by_pos(pos, game_map) == const.TERMINAL
 
 
