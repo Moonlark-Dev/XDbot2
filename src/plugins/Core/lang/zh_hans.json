@@ -411,7 +411,10 @@
   "ftt.step_clear_nb": "收到指令: 清除\n",
   "ftt.step_done": "指令输入完成，发送[clear]清除，发送[ok]开始执行",
   "ftt.quit": "已停止",
-  "ftt.success": "恭喜您，挑战成功！",
-  "ftt.fail": "很遗憾，挑战失败，请检查您的指令输入！\n请继续输入指令或输入[q]退出"
-
+  "ftt.success": "恭喜您，挑战成功！\n你获得了 {}vi",
+  "ftt.fail": "很遗憾，挑战失败，请检查您的指令输入！\n请继续输入指令或输入[q]退出",
+  "ftt.fail_no_vi": "很遗憾，挑战失败！",
+  "_utils.noPawCoin": "您没有足够的「猫爪币」",
+  "ftt.exampleAnswer": "参考解法: {}",
+  "ftt.exampleAnswerSep_nb": "、"
 }

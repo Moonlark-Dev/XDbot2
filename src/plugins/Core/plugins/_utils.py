@@ -47,6 +47,8 @@ def create_command(cmd: str, aliases: set = set(), **kwargs):
                 )
             except UserDataLocked as e:
                 await finish("_utils.UserDataLocked", [], event.user_id)
+            except NoPawCoinException:
+                await finish("_utils.noPawCoin", [], event.user_id)
             except Exception:
                 await error.report()
 
