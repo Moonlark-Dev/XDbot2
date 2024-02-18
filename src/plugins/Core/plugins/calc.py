@@ -6,14 +6,16 @@ from . import _error
 import traceback
 import math
 
+
 def run_sandbox(code):
-    env = {'__builtins__': None}
+    env = {"__builtins__": None}
     for func in dir(math):
         env[func] = getattr(math, func)
     try:
         return eval(code, env)
     except Exception:
         return f"无法识别的表达式：{code}"
+
 
 # [HELPSTART]
 # !Usage 1 calc <表达式>
