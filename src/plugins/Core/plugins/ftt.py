@@ -1,4 +1,5 @@
 import asyncio
+import random
 from ._utils import *
 from src.plugins.Core.lib.FindingTheTrail import search, const, image, map, argv
 from nonebot.params import ArgPlainText
@@ -48,12 +49,31 @@ async def getGameMap(difficulty: str) -> tuple[list[list[int]], list[int]]:
         return await loop.run_in_executor(None, generate_map, difficulty)
 
 
+DIRECTION_TEXT = {
+    const.UP: "up",
+    const.DOWN: "down",
+    const.LEFT: "left",
+    const.RIGHT: "right"
+}
+
+async def sendExampleAnswer(answer: list[int], userId: int) -> None:
+    await send_text("ftt.exampleAnswer", [
+        lang.text("ftt.exampleAnswerSep_nb", [], userId).join([
+            lang.text(f"ftt.step_{DIRECTION_TEXT[step]}_nb", [], userId)
+            for step in answer
+        ])
+    ], userId)
+
+from .pawcoin import usePawCoin
+from .etm.exception import NoPawCoinException
+
 @ftt.handle()
 async def _(
     state: T_State, bot: Bot, event: MessageEvent, message: Message = CommandArg()
 ) -> None:
     global cacheCreateProcess
     try:
+        await usePawCoin(event.get_user_id(), 1)
         difficulty = message.extract_plain_text().strip() or "easy"
         if difficulty not in argv.ARGUMENTS.keys():
             await finish(get_currency_key("unknown_argv"), [difficulty], event.user_id)
@@ -70,9 +90,15 @@ async def _(
             event.user_id,
         )
         state["_steps"] = []
+        state["prize_vi"] = {
+            "normal": 2,
+            "easy": 1
+        }.get(difficulty, 0) * random.randint(len(state["answer"]) * 4, len(state["answer"]) * 5)
         if not cacheCreateProcess.is_alive():
             cacheCreateProcess = multiprocessing.Process(target=createMapCache)
             cacheCreateProcess.start()
+    except NoPawCoinException:
+        await finish("_utils.noPawCoin", [], event.user_id)
     except Exception:
         await error.report()
 
@@ -108,11 +134,11 @@ async def handle_steps(state: T_State, steps: str, user_id: int) -> Optional[str
                 user_id,
             )
         case "q":
+            await sendExampleAnswer(state["answer"], user_id)
             await finish("ftt.quit", [], user_id)
         case "c":
             state["_steps"] = []
             return lang.text("ftt.step_clear_nb", [], user_id)
-
 
 async def handle_steps_input(state: T_State, event: MessageEvent, steps: str) -> None:
     text = ""
@@ -138,6 +164,7 @@ def execute(steps: list[int], game_map: list[list[int]]) -> bool:
 def parse_steps_input(steps: str) -> str:
     return " ".join([char for char in list(steps) if char])
 
+from .etm.economy import add_vi
 
 @ftt.got("steps")
 async def _(state: T_State, event: MessageEvent, steps: str = ArgPlainText("steps")):
@@ -158,13 +185,20 @@ async def _(state: T_State, event: MessageEvent, steps: str = ArgPlainText("step
                 )
             )
         elif steps == "quit":
+            await sendExampleAnswer(state["answer"], event.user_id)
             await finish("ftt.quit", [], event.user_id)
         elif steps == "ok":
             if execute(state["_steps"], copy.deepcopy(state["map"])):
-                await finish("ftt.success", [], event.user_id)
+                add_vi(event.get_user_id(), state["prize_vi"])
+                await finish("ftt.success", [state["prize_vi"]], event.user_id)
             else:
+                state["prize_vi"] -= 5
                 state["_steps"] = []
-                await ftt.reject(lang.text("ftt.fail", [], event.user_id))
+                if state["prize_vi"] >= 0:
+                    await ftt.reject(lang.text("ftt.fail", [], event.user_id))
+                else:
+                    await sendExampleAnswer(state["answer"], event.user_id)
+                    await finish("ftt.fail_no_vi", [], event.user_id)
         await ftt.reject(lang.text("ftt.step_done", [], event.user_id))
     except Exception:
         await error.report()

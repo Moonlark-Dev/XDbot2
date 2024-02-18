@@ -4,3 +4,7 @@ class UserDataLocked(Exception):
 
 class IllegalQuantityException(Exception):
     pass
+
+
+class NoPawCoinException(Exception):
+    pass
