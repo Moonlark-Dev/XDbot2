@@ -101,7 +101,7 @@ async def _(
         state["_steps"] = []
         state["prize_vi"] = {"normal": 2, "easy": 1}.get(
             difficulty, 0
-        ) * random.randint(len(state["answer"]) * 4, len(state["answer"]) * 5)
+        ) * random.randint(len(state["answer"]) * 3, len(state["answer"]) * 4)
         if not cacheCreateProcess.is_alive():
             cacheCreateProcess = multiprocessing.Process(target=createMapCache)
             cacheCreateProcess.start()
