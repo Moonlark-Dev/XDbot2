@@ -16,13 +16,13 @@ class ResourceLocation:
         return self.namespace
 
     def getPath(self) -> str:
-        return self.namespace
+        return self.path
 
     def __hash__(self) -> int:
         return str(self).__hash__()
 
     def __str__(self) -> str:
-        return f"{self.getNamespace()}:${self.getPath()}"
+        return f"{self.getNamespace()}:{self.getPath()}"
 
 
 class Registry(typing.Generic[T1]):
