@@ -34,7 +34,8 @@ async def get_messages(bot: Bot, group_id: int) -> list:
             break
         for message in message_list["messages"][::-1]:
             if time.time() - message["time"] <= 600:
-                messages.append(message["raw_message"])
+                print(message)
+                messages.append("".join([msg["data"]["text"] for msg in message["message"] if msg["type"] == "text"]))
                 message_seq = message["message_seq"]
             else:
                 return messages
@@ -76,9 +77,11 @@ def get_ma_count(messages: list[str]) -> int:
                     break
     return count
 
+def s(): return False
 
 # [HELPSTART] Version: 2
 # Command: ma-count
+# Check: s
 # Info: 计算近 10 分钟消息含妈量
 # Msg: 计算含妈量
 # Usage: ma-count
