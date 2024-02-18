@@ -55,6 +55,8 @@ async def _(
     global cacheCreateProcess
     try:
         difficulty = message.extract_plain_text().strip() or "easy"
+        if difficulty not in argv.ARGUMENTS.keys():
+            await finish(get_currency_key("unknown_argv"), [difficulty], event.user_id)
         message_id = await send_message(bot, event, "ftt.generating_map")
         state["map"], state["answer"] = await getGameMap(difficulty)
         await bot.delete_msg(message_id=message_id)
