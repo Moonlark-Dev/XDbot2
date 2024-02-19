@@ -11,8 +11,8 @@ def add_noise(image: Image) -> None:
         for j in range(num_regions_y):
             x = i * 16
             y = j * 16
-            pixel_x = x + random.randint(0,16)
-            pixel_y = y + random.randint(0,16)
+            pixel_x = x + random.randint(0, 16)
+            pixel_y = y + random.randint(0, 16)
             # 获取当前像素的RGB值
             r, g, b = image.getpixel((pixel_x, pixel_y))
             # 添加噪点
@@ -26,4 +26,3 @@ def add_noise(image: Image) -> None:
             b = max(0, min(255, b))
             # 设置当前像素的RGB值
             image.putpixel((pixel_x, pixel_y), (r, g, b))
-
