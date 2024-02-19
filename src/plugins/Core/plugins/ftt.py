@@ -57,7 +57,7 @@ DIRECTION_TEXT = {
 }
 
 
-async def sendExampleAnswer(answer: list[int], userId: int) -> None:
+async def sendExampleAnswer(answer: list[int], userId: int, gameMap: list[list[int]]) -> None:
     await send_text(
         "ftt.exampleAnswer",
         [
@@ -66,7 +66,8 @@ async def sendExampleAnswer(answer: list[int], userId: int) -> None:
                     lang.text(f"ftt.step_{DIRECTION_TEXT[step]}_nb", [], userId)
                     for step in answer
                 ]
-            )
+            ),
+            getAnswerSegment(gameMap, answer)
         ],
         userId,
     )
@@ -92,7 +93,7 @@ async def _(
         await send_text(
             "ftt.map",
             [
-                MessageSegment.image(image.generate(state["map"])),
+                MessageSegment.image(image.generateImage(state["map"])),
                 0,
                 len(state["answer"]),
             ],
@@ -143,7 +144,7 @@ async def handle_steps(state: T_State, steps: str, user_id: int) -> Optional[str
                 user_id,
             )
         case "q":
-            await sendExampleAnswer(state["answer"], user_id)
+            await sendExampleAnswer(state["answer"], user_id, state["map"])
             await finish("ftt.quit", [], user_id)
         case "c":
             state["_steps"] = []
@@ -162,6 +163,38 @@ async def handle_steps_input(state: T_State, event: MessageEvent, steps: str) ->
         )
     )
 
+import io
+
+from PIL import Image
+
+def generateMapFrame(gameMap: list[list[int]], pos: tuple[int, int]) -> Image.Image:
+    gameMap = copy.deepcopy(gameMap)
+    gameMap[pos[0]][pos[1]] = const.START
+    return image.generate(gameMap)
+
+def generateAnswerGif(gameMap: list[list[int]], steps: list[int]) -> bytes:
+    gameMap, pos = search.get_start_pos(copy.deepcopy(gameMap))
+    imgs = [generateMapFrame(gameMap, pos)]
+    for step in steps:
+        _pos = pos
+        gameMap, pos = search.move(gameMap, pos, step)
+        if pos != _pos:
+            gameMap = search.parse_sand(gameMap, _pos)
+        imgs.append(generateMapFrame(gameMap, pos))
+    buffer = io.BytesIO()
+    imgs[0].save(
+        buffer,
+        "GIF",
+        save_all=True,
+        append_images=imgs[1:],
+        duration=500,
+        loop=0
+    )
+    return buffer.getvalue()
+
+
+def getAnswerSegment(gameMap: list[list[int]], steps: list[int]) -> MessageSegment:
+    return MessageSegment.image(generateAnswerGif(gameMap, steps))
 
 def execute(steps: list[int], game_map: list[list[int]]) -> bool:
     game_map, pos = search.get_start_pos(game_map)
@@ -199,20 +232,28 @@ async def _(state: T_State, event: MessageEvent, steps: str = ArgPlainText("step
                 )
             )
         elif steps == "quit":
-            await sendExampleAnswer(state["answer"], event.user_id)
+            await sendExampleAnswer(state["answer"], event.user_id, state["map"])
             await finish("ftt.quit", [], event.user_id)
         elif steps == "ok":
             if execute(state["_steps"], copy.deepcopy(state["map"])):
                 add_vi(event.get_user_id(), state["prize_vi"])
-                await finish("ftt.success", [state["prize_vi"]], event.user_id)
+                await finish("ftt.success", [
+                    state["prize_vi"],
+                    getAnswerSegment(state["map"], state["_steps"])
+                ], event.user_id, parse_cq_code=True)
             else:
                 state["prize_vi"] -= 5
+                _steps = state["_steps"]
                 state["_steps"] = []
                 if state["prize_vi"] >= 0:
-                    await ftt.reject(lang.text("ftt.fail", [], event.user_id))
+                    await ftt.reject(Message(lang.text("ftt.fail", [
+                        getAnswerSegment(state["map"], _steps)
+                    ], event.user_id)))
                 else:
-                    await sendExampleAnswer(state["answer"], event.user_id)
-                    await finish("ftt.fail_no_vi", [], event.user_id)
+                    await sendExampleAnswer(state["answer"], event.user_id, state["map"])
+                    await finish("ftt.fail_no_vi", [
+                        getAnswerSegment(state["map"], _steps)
+                    ], event.user_id, parse_cq_code=True)
         await ftt.reject(lang.text("ftt.step_done", [], event.user_id))
     except Exception:
         await error.report()

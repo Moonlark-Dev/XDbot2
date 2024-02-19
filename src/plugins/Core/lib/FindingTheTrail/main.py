@@ -48,9 +48,9 @@ game_map = [
 # ]
 
 
-from .image import generate
+from .image import generateImage
 
-generate(game_map)
+generateImage(game_map)
 
 import copy
 
