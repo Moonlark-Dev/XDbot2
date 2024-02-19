@@ -16,7 +16,7 @@ BLOCKS = {
 }
 
 
-def generate(game_map: list[list[int]]) -> bytes:
+def generate(game_map: list[list[int]]) -> Image.Image:
     image = Image.new(
         "RGB", (len(game_map[0]) * 16, len(game_map) * 16), (51, 255, 255)
     )
@@ -26,7 +26,11 @@ def generate(game_map: list[list[int]]) -> bytes:
             x0 = column * 16
             y0 = row * 16
             image.paste(BLOCKS[item], (x0, y0))
+    return image
+
+
+def generateImage(game_map: list[list[int]]) -> bytes:
+    image = generate(game_map)
     buffer = io.BytesIO()
     image.save(buffer, format="PNG")
-    # image.save("1.png")
     return buffer.getvalue()

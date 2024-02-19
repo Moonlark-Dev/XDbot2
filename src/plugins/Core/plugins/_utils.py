@@ -100,7 +100,7 @@ async def send_text(
     matcher: Matcher = Matcher(),
 ) -> None:
     await matcher.send(
-        Message(lang.text(key, _format, user_id)),
+        message=Message(lang.text(key, _format, user_id)),
         at_sender=at_sender,
         reply_message=reply_message,
     )
