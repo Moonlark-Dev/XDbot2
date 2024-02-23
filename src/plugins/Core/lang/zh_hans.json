@@ -96,7 +96,7 @@
   "status.swap": "交换内存：",
   "status.run": "运行时间：",
   "status.boot": "开机时间：" ,
-  "status.loadavg": "平均Load：" ,
+  "status.load": "平均Load：" ,
   "status.py": "Python版本：",
   "status.error": "无效参数：{}\n可用值：cpu、mem、swap、system、host（可留空）",
   "vote.create_success": "投票创建成功！ID: #{}",

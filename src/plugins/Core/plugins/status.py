@@ -68,7 +68,7 @@ def format_time(seconds):
 
 def loadavg():
     try:
-        return " ".join(open("/proc/uptime", encoding="utf-8").read().split(" ")[:3])
+        return " ".join(open("/proc/loadavg", encoding="utf-8").read().split(" ")[:3])
     except Exception:
         return "Unknown"
 
