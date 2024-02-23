@@ -24,7 +24,7 @@ async def get_status_from_web():
 
 
 def cpu_percent():
-    return psutil.cpu_percent(2)
+    return psutil.cpu_percent()
 
 
 def cpu_freq():
@@ -65,6 +65,12 @@ def format_time(seconds):
     m = int(seconds / 60) % 60
     s = seconds % 60
     return f"{d}d {h}:{m}:{s}"
+
+def loadavg():
+    try:
+        return " ".join(open("/proc/uptime", encoding="utf-8").read().split(" ")[:3])
+    except Exception:
+        return "Unknown"
 
 
 def uptime():
@@ -110,6 +116,7 @@ async def statusHandle(bot: Bot, event: MessageEvent, message: Message = Command
 {_lang.text("status.swap",[],event.get_user_id())}{swap_used()}GiB / {swap_total()}GiB
 {_lang.text("status.run",[],event.get_user_id())}{format_time(int(time.time() - initData['time']))}
 {_lang.text("status.boot",[],event.get_user_id())}{uptime()}
+{_lang.text("status.load",[],event.get_user_id())}{loadavg()}
 {_lang.text("status.py",[],event.get_user_id())}{pyver()}"""
             )
         elif argument == "cpu":
