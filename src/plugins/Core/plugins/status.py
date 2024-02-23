@@ -66,6 +66,7 @@ def format_time(seconds):
     s = seconds % 60
     return f"{d}d {h}:{m}:{s}"
 
+
 def loadavg():
     try:
         return " ".join(open("/proc/loadavg", encoding="utf-8").read().split(" ")[:3])
