@@ -6,11 +6,15 @@ from nonebot.params import ArgPlainText
 from nonebot.typing import T_State
 import copy
 import asyncio
-
 import multiprocessing
 
 ftt = on_command("ftt", aliases={"FindingTheTrail"})
 
+def get_difficulty():
+    if random.random() <= 0.5:
+        return "easy"
+    else:
+        return random.choice(list(argv.ARGUMENTS.keys()))
 
 def generate_map(difficulty: str) -> tuple[list[list[int]], list[int]]:
     while True:
@@ -86,7 +90,7 @@ async def _(
     global cacheCreateProcess
     try:
         await usePawCoin(event.get_user_id(), 1)
-        difficulty = message.extract_plain_text().strip() or "easy"
+        difficulty = message.extract_plain_text().strip() or get_difficulty()
         if difficulty not in argv.ARGUMENTS.keys():
             await finish(get_currency_key("unknown_argv"), [difficulty], event.user_id)
         message_id = await send_message(bot, event, "ftt.generating_map")
@@ -103,7 +107,7 @@ async def _(
             True,
         )
         state["_steps"] = []
-        state["prize_vi"] = {"normal": 2, "easy": 1}.get(
+        state["prize_vi"] = {"normal": 1.5, "easy": 1, "hard": 2}.get(
             difficulty, 0
         ) * random.randint(len(state["answer"]) * 3, len(state["answer"]) * 4)
         if not cacheCreateProcess.is_alive():
