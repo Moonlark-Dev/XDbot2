@@ -7,6 +7,7 @@ def generate(
     row: int = 6,
     column: int = 8,
     blocks: list[tuple[int, float]] = ARGUMENTS["easy"]["map"]["blocks"],
+    portal: bool = False
 ) -> list[list[int]]:
     game_map = [[NULL for _ in range(column)] for _ in range(row)]
     for r in range(row):
@@ -17,8 +18,17 @@ def generate(
             for block in blocks:
                 if random.random() <= block[1]:
                     game_map[r][c] = block[0]
-    while True:
+    portal_count = 0
+    while portal:
         r = random.randint(1, row - 1)
+        c = random.randint(1, column - 1)
+        if game_map[r][c] == NULL:
+            game_map[r][c] = PORTAL
+            portal_count += 1
+        if portal_count >= 2:
+            break
+    while True:
+        r = int(row / 2 + random.randint(1, row - 1) / 2)
         c = random.randint(1, column - 1)
         if game_map[r][c] == NULL:
             game_map[r][c] = START

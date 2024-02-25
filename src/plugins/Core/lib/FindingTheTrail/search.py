@@ -1,4 +1,4 @@
-from typing import TypedDict
+from typing import Optional, TypedDict
 from .const import *
 import copy
 
@@ -25,16 +25,16 @@ def get_moved_pos(original_pos: tuple[int, int], direction: int) -> tuple[int, i
 
 
 def is_item_moveable(item: int) -> bool:
-    return item in [NULL, TERMINAL, PISTON, COBWEB]
+    return item in [NULL, TERMINAL, PISTON, COBWEB, PORTAL]
 
 
 def get_moveable_direction(
-    game_map: list[list[int]], pos: tuple[int, int]
+    game_map: list[list[int]], pos: tuple[int, int], ignored_direction: Optional[int] = None
 ) -> list[int]:
     return [
         i
         for i in range(1, 5)
-        if is_item_moveable(get_item_by_pos(get_moved_pos(pos, i), game_map))
+        if i != ignored_direction and is_item_moveable(get_item_by_pos(get_moved_pos(pos, i), game_map))
     ]
 
 
@@ -71,6 +71,16 @@ def move(
             if id(game_map) == _id:
                 game_map = copy.deepcopy(game_map)
             game_map[pos[0]][pos[1]] = WALL
+        elif item == PORTAL:
+            for row in range(len(game_map)):
+                for column in range(len(game_map[row])):
+                    if game_map[row][column] == PORTAL and (row, column) != pos:
+                        pos = (row, column)
+                        break
+                else:
+                    continue
+                break
+
 
 
 class QueueItem(TypedDict):
@@ -91,10 +101,14 @@ def search(game_map: list[list[int]], max_step: int = 12) -> list[int]:
             item = queue.pop(0)
         except IndexError:
             return []
-        if get_item_by_pos(item["original_pos"], item["game_map"]) == TERMINAL:
-            return item["path"][:-1]
         game_map, pos = move(item["game_map"], item["original_pos"], item["direction"])
+        if get_item_by_pos(pos, game_map) == TERMINAL:
+            return item["path"]
         game_map = parse_sand(game_map, item["original_pos"])
+        if game_map == item["game_map"]:
+            ignored_direction = get_back_direction(item["direction"])
+        else:
+            ignored_direction = None
         queue.extend(
             [
                 {
@@ -103,9 +117,10 @@ def search(game_map: list[list[int]], max_step: int = 12) -> list[int]:
                     "game_map": game_map,
                     "path": item["path"] + [d],
                 }
-                for d in get_moveable_direction(game_map, pos)
+                for d in get_moveable_direction(game_map, pos, ignored_direction)
             ]
         )
+        # print(ignored_direction, pos, [d for d in get_moveable_direction(game_map, pos) if d != ignored_direction])
         # print(item["path"])
         if len(item["path"]) >= max_step:
             return []
