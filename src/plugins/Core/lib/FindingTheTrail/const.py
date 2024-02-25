@@ -6,6 +6,7 @@ START = 4
 SAND = 5
 # BROKEN_SAND = 6
 COBWEB = 7
+PORTAL = 8
 
 UP = 1
 DOWN = 2

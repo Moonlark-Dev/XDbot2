@@ -286,5 +286,5 @@ async def _(state: T_State, event: MessageEvent, steps: str = ArgPlainText("step
 # Command: ftt
 # Msg: 寻径指津
 # Info: 开始「寻径指津」小游戏（玩法说明见 https://xdbot2.itcdt.top/games/ftt）
-# Usage: ftt [{easy|normal}]
+# Usage: ftt [{easy|normal|hard}]
 # [HELPEND]
