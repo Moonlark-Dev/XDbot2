@@ -2,7 +2,7 @@ from .map import generate
 from .search import search
 from .argv import ARGUMENTS
 
-difficulty = "hard"
+difficulty = "easy"
 
 game_map = generate(**ARGUMENTS[difficulty]["map"])
 print("Map:")
