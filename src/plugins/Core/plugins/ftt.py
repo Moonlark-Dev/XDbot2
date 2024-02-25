@@ -10,11 +10,13 @@ import multiprocessing
 
 ftt = on_command("ftt", aliases={"FindingTheTrail"})
 
+
 def get_difficulty():
     if random.random() <= 0.5:
         return "easy"
     else:
         return random.choice(list(argv.ARGUMENTS.keys()))
+
 
 def generate_map(difficulty: str) -> tuple[list[list[int]], list[int]]:
     while True:
