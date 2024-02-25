@@ -7,7 +7,7 @@ def generate(
     row: int = 6,
     column: int = 8,
     blocks: list[tuple[int, float]] = ARGUMENTS["easy"]["map"]["blocks"],
-    portal: bool = False
+    portal: bool = False,
 ) -> list[list[int]]:
     game_map = [[NULL for _ in range(column)] for _ in range(row)]
     for r in range(row):

@@ -29,12 +29,15 @@ def is_item_moveable(item: int) -> bool:
 
 
 def get_moveable_direction(
-    game_map: list[list[int]], pos: tuple[int, int], ignored_direction: Optional[int] = None
+    game_map: list[list[int]],
+    pos: tuple[int, int],
+    ignored_direction: Optional[int] = None,
 ) -> list[int]:
     return [
         i
         for i in range(1, 5)
-        if i != ignored_direction and is_item_moveable(get_item_by_pos(get_moved_pos(pos, i), game_map))
+        if i != ignored_direction
+        and is_item_moveable(get_item_by_pos(get_moved_pos(pos, i), game_map))
     ]
 
 
@@ -80,7 +83,6 @@ def move(
                 else:
                     continue
                 break
-
 
 
 class QueueItem(TypedDict):
