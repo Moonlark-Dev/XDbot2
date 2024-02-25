@@ -24,11 +24,10 @@ try:
 except Exception:
     json5 = json
 
-
 @scheduler.scheduled_job("cron", day="*", id="remove_emails")
 async def _():
     emails = json.load(open("data/su.mails.json", encoding="utf-8"))
-    items = emails.items()
+    items = list(emails.items())
     for email_id, data in items:
         if time.time() - data["time"] >= 2592000:  # 30d
             emails.pop(email_id)

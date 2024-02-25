@@ -32,7 +32,7 @@ def reload():
 def text(key: str, _format: list = [], _user: str | int = "default", params: dict = {}):
     user = str(_user)
     try:
-        lang = _lang_user[user]
+        lang = user[5:] if user.startswith("lang:") else _lang_user[user]
     except KeyError:
         lang = "zh_hans"
     if lang == "debug":
