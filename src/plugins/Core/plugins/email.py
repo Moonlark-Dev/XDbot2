@@ -24,6 +24,7 @@ try:
 except Exception:
     json5 = json
 
+
 @scheduler.scheduled_job("cron", day="*", id="remove_emails")
 async def _():
     emails = json.load(open("data/su.mails.json", encoding="utf-8"))
