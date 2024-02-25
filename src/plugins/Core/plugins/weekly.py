@@ -1,16 +1,19 @@
-
 from typing import Awaitable
 from ._utils import *
 
 generators = []
 
+
 def registry(func: Callable[[str], Awaitable[str]]) -> None:
     generators.append(func)
 
+
 from datetime import datetime
+
 
 def format_week() -> str:
     return datetime.now().strftime("%yw%Ua")
+
 
 @create_command("weekly")
 async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
@@ -19,6 +22,7 @@ async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
         messages.append(await generator(event.get_user_id()))
     await send_node_message(bot, await generate_node_message(bot, messages), event)
     await finish(get_currency_key("ok"), [], event.user_id)
+
 
 # @registry
 # async def _(_user: str) -> str:
@@ -34,4 +38,3 @@ async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
 #         ],
 #         _user
 #     )
-
