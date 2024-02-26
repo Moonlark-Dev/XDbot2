@@ -180,7 +180,7 @@
     "bank.usage": "Usage: /bank {view|lend|repay} [arguments...]",
     "pouch.put": "Placed: {} (x{})",
     "currency.no_money": "Insufficient funds ({}vim required)",
-    "currency.ok": "Complete!",
+    "currency.ok": "Completed!",
     "bank.full": "Fail: Exceeding loan limit (Max={}vim)",
     "bank.item": "\n{}. {}vim  (Interest: {}vim)",
     "bank.view": "[Account bank details]\nDebt: {}vim\n======================{}",
