@@ -107,7 +107,10 @@ def search(game_map: list[list[int]], max_step: int = 12) -> list[int]:
         if get_item_by_pos(pos, game_map) == TERMINAL:
             return item["path"]
         game_map = parse_sand(game_map, item["original_pos"])
-        if game_map == item["game_map"] and get_item_by_pos(item["original_pos"], game_map) != PISTON:
+        if (
+            game_map == item["game_map"]
+            and get_item_by_pos(item["original_pos"], game_map) != PISTON
+        ):
             ignored_direction = get_back_direction(item["direction"])
         else:
             ignored_direction = None
