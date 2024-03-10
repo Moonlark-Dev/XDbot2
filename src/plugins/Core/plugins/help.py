@@ -91,9 +91,18 @@ async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
     except TypeError:
         await finish("help.unknown_command", [argv], event.user_id)
 
+
 def help_rule(event: MessageEvent) -> bool:
     message = event.get_plaintext()
-    return any(message.endswith(end) for end in ["help", "-h"]) and any(message.startswith(prefix) for prefix in Json("init.json")["config"]["command_start"]) and Json("help.json")[message.split(" ")[0][1:]]
+    return (
+        any(message.endswith(end) for end in ["help", "-h"])
+        and any(
+            message.startswith(prefix)
+            for prefix in Json("init.json")["config"]["command_start"]
+        )
+        and Json("help.json")[message.split(" ")[0][1:]]
+    )
+
 
 @on_message(block=True, rule=help_rule, priority=-5).handle()
 async def _(event: MessageEvent) -> None:
@@ -102,5 +111,3 @@ async def _(event: MessageEvent) -> None:
         await get_command_help(message[0][1:], event.user_id)
     except TypeError:
         pass
-    
-
