@@ -27,9 +27,11 @@ from nonebot.params import CommandArg
 from nonebot.rule import to_me
 from typing import TypedDict
 
+
 class CaveMessage(TypedDict):
     message_id: int
     cave_id: str
+
 
 cave_comment = on_message(rule=to_me())
 cave_confirm_add = on_message(rule=to_me())
@@ -82,9 +84,7 @@ async def cave_comment_writer(event: GroupMessageEvent):
                 _lang.text("cave.cannot_comment", [], str(event.user_id))
             )
         await showEula(event.get_user_id())
-        auditdata = await context_review(
-            event.get_plaintext(), "text", event.user_id
-        )
+        auditdata = await context_review(event.get_plaintext(), "text", event.user_id)
         if auditdata["conclusionType"] == 2:
             reasons = [i["msg"] for i in auditdata["data"]]
             await cave_comment.finish(
@@ -106,9 +106,7 @@ async def cave_comment_writer(event: GroupMessageEvent):
             f"「新回声洞评论（{cave_id}#{data[cave_id]['count'] - 1}）」\n{event.get_message()}\n{event.get_session_id()}"
         )
         exp.add_exp(event.get_user_id(), 2)
-        await cave_comment.finish(
-            f"评论成功：{cave_id}#{data[cave_id]['count'] - 1}"
-        )
+        await cave_comment.finish(f"评论成功：{cave_id}#{data[cave_id]['count'] - 1}")
     except BaseException:
         await _error.report(traceback.format_exc())
 
@@ -489,10 +487,9 @@ async def cave_add_handler(
             )
         )
 
-        cave_messages.append({
-            "message_id": event.message_id,
-            "cave_id": data["count"]-1
-        })
+        cave_messages.append(
+            {"message_id": event.message_id, "cave_id": data["count"] - 1}
+        )
         if len(cave_messages) >= 10:
             cave_messages.pop(0)
 
@@ -624,10 +621,7 @@ async def cave_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent):
                 group_id=event.group_id,
             )
         )["message_id"]
-        cave_messages.append({
-            "message_id": message_id,
-            "cave_id": caveData["id"]
-        })
+        cave_messages.append({"message_id": message_id, "cave_id": caveData["id"]})
         if len(cave_messages) >= 10:
             cave_messages.pop(0)
         latest_use[f"g{event.group_id}"] = time.time()
