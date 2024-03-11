@@ -1,5 +1,6 @@
-from typing import Literal, Optional
+from typing import Optional
 from nonebot import get_driver
+from nonebot.params import RawCommand, CommandStart, Depends
 from ._utils import *
 
 command_start = ""
@@ -89,3 +90,24 @@ async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
         await get_command_help(argv, event.user_id)
     except TypeError:
         await finish("help.unknown_command", [argv], event.user_id)
+
+
+def help_rule(event: MessageEvent) -> bool:
+    message = event.get_plaintext()
+    return (
+        any(message.endswith(end) for end in ["help", "-h"])
+        and any(
+            message.startswith(prefix)
+            for prefix in Json("init.json")["config"]["command_start"]
+        )
+        and Json("help.json")[message.split(" ")[0][1:]]
+    )
+
+
+@on_message(block=True, rule=help_rule, priority=-5).handle()
+async def _(event: MessageEvent) -> None:
+    message = event.get_plaintext().split(" ")
+    try:
+        await get_command_help(message[0][1:], event.user_id)
+    except TypeError:
+        pass
