@@ -95,7 +95,8 @@ async def _(bot: Bot, event: MessageEvent, message: Message) -> None:
 def help_rule(event: MessageEvent) -> bool:
     message = event.get_plaintext()
     return (
-        any(message.endswith(end) for end in ["help", "-h"]) and message != "help"
+        any(message.endswith(end) for end in ["help", "-h"])
+        and message != "help"
         and any(
             message.startswith(prefix)
             for prefix in Json("init.json")["config"]["command_start"]
