@@ -96,7 +96,7 @@ def help_rule(event: MessageEvent) -> bool:
     message = event.get_plaintext()
     return (
         any(message.endswith(end) for end in ["help", "-h"])
-        and message != "help"
+        and message[1:] != "help"
         and any(
             message.startswith(prefix)
             for prefix in Json("init.json")["config"]["command_start"]
