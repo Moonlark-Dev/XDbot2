@@ -103,36 +103,32 @@ async def report(
     # 反馈错误
     if err.startswith("Traceback"):
         if feedback:
-            try:
-                error_data = get_error_data(err)
-                filename = f"data/_error.cache_{time.time()}.ro.png"
-                markdown2image.md2img(
-                    get_template()
-                    .replace("%error%", error)
-                    .replace("%because%", "\n".join(error_data["because"]))
-                    .replace("%do%", "- " + "\n- ".join(error_data["do"]))
-                    .replace("%log%", err),
-                    filename,
-                )
-                await matcher.send(
-                    Message(f"[CQ:image,file=file://{os.path.abspath(filename)}]"),
-                    at_sender=True,
-                )
-                os.remove(filename)
-            except:
-                logger.warning(f"渲染图片失败：{traceback.format_exc()}")
-                await matcher.send(f"处理失败！\n{error}", at_sender=True)
-
-    # 过滤错误
-    for e in IGNORED_EXCEPTION:
-        if e in error:  # Issue #120
-            return None
-    # 上报错误
-    bot = get_bots()[
-        json.load(open("data/su.multiaccoutdata.ro.json", encoding="utf-8"))[ctrlGroup]
-    ]
-    await bot.send_group_msg(message=err, group_id=ctrlGroup)
-    if not err.startswith("Traceback"):
+            # try:
+            #     error_data = get_error_data(err)
+            #     filename = f"data/_error.cache_{time.time()}.ro.png"
+            #     markdown2image.md2img(
+            #         get_template()
+            #         .replace("%error%", error)
+            #         .replace("%because%", "\n".join(error_data["because"]))
+            #         .replace("%do%", "- " + "\n- ".join(error_data["do"]))
+            #         .replace("%log%", err),
+            #         filename,
+            #     )
+            #     await matcher.send(
+            #         Message(f"[CQ:image,file=file://{os.path.abspath(filename)}]"),
+            #         at_sender=True,
+            #     )
+            #     os.remove(filename)
+            # except:
+            #     logger.warning(f"渲染图片失败：{traceback.format_exc()}")
+            await matcher.send(f"处理失败！\n{error}", at_sender=True)
+    else:
+        bot = get_bots()[
+            json.load(open("data/su.multiaccoutdata.ro.json", encoding="utf-8"))[
+                ctrlGroup
+            ]
+        ]
+        await bot.send_group_msg(message=err, group_id=ctrlGroup)
         return None
     logger.error(err)
     # 记录错误

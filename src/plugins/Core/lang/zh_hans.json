@@ -417,5 +417,7 @@
   "ftt.fail_no_vi": "很遗憾，挑战失败！\n{}",
   "_utils.noPawCoin": "您没有足够的「猫爪币」\n试试发送「签到」?",
   "ftt.exampleAnswer": "参考解法: {}\n{}",
-  "ftt.exampleAnswerSep_nb": "、"
+  "ftt.exampleAnswerSep_nb": "、",
+  "statistics.command_rank_title": "「指令使用次数排行榜」\n总调用量: {}",
+  "currency.rank_item": "{}. {}: {}"
 }
