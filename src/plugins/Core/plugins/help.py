@@ -23,6 +23,7 @@ async def _():
 def get_command_start() -> str:
     return command_start
 
+
 def get_command_status(status: Optional[bool]) -> str:
     return {True: "√", False: "X", None: "O"}[status]
 

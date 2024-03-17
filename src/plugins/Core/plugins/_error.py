@@ -121,10 +121,12 @@ async def report(
             #     os.remove(filename)
             # except:
             #     logger.warning(f"渲染图片失败：{traceback.format_exc()}")
-                await matcher.send(f"处理失败！\n{error}", at_sender=True)
+            await matcher.send(f"处理失败！\n{error}", at_sender=True)
     else:
         bot = get_bots()[
-            json.load(open("data/su.multiaccoutdata.ro.json", encoding="utf-8"))[ctrlGroup]
+            json.load(open("data/su.multiaccoutdata.ro.json", encoding="utf-8"))[
+                ctrlGroup
+            ]
         ]
         await bot.send_group_msg(message=err, group_id=ctrlGroup)
         return None
