@@ -2,7 +2,7 @@ import json
 import os
 import os.path
 import traceback
-from typing import Any, Callable, Optional, Type, Union
+from typing import Any, Awaitable, Callable, Optional, Type, Union
 import httpx
 from .etm.exception import *
 
@@ -20,6 +20,8 @@ from nonebot.adapters.onebot.v11 import MessageEvent
 from nonebot.adapters.onebot.v11.bot import Bot
 from nonebot.adapters.onebot.v11 import Message
 from nonebot.adapters.onebot.v11 import MessageSegment
+from nonebot.typing import T_State
+from nonebot.rule import Rule
 
 # import traceback
 
@@ -27,30 +29,56 @@ SUCCESS: bool = True
 FAILED: bool = False
 SKIP: None = None
 
+SIMPLE_HANDLER = Callable[[Bot, MessageEvent, Message], Awaitable[None]]
+GROUP_HANDLER = Callable[[Bot, GroupMessageEvent, Message], Awaitable[None]]
+HANDLER_WITH_STATE = Callable[[Bot, MessageEvent, Message, T_State], Awaitable[None]]
+
+async def execute_function(func: Awaitable[Any], event: MessageEvent, cmd: Optional[str]) -> None:
+    try:
+        await func
+    except IndexError as e:
+        if "arg" in traceback.format_exc():
+            await finish(get_currency_key("wrong_argv"), [cmd], event.user_id)
+    except IllegalQuantityException as e:
+        await finish(
+            "_utils.IllegalQuantityException", [e.args[0]], event.user_id
+        )
+    except UserDataLocked as e:
+        await finish("_utils.UserDataLocked", [], event.user_id)
+    except NoPawCoinException:
+        await finish("_utils.noPawCoin", [], event.user_id)
+    except Exception:
+        await error.report()
+        #pass
+
+
+
+def create_message_handler_with_state(rule: Optional[Rule] = None):
+    matcher = on_message(rule)
+    def deco(func: HANDLER_WITH_STATE):
+        async def handler(bot: Bot, event: MessageEvent, state: T_State) -> None:
+            await execute_function(func(bot, event, event.get_message(), state), event, None)
+        matcher.append_handler(handler)
+        return handler
+    return deco
+
+def create_message_handler(rule: Optional[Rule] = None):
+    matcher = on_message(rule)
+    def deco(func: SIMPLE_HANDLER):
+        async def handler(bot: Bot, event: MessageEvent) -> None:
+            await execute_function(func(bot, event, event.get_message()), event, None)
+        matcher.append_handler(handler)
+        return handler
+    return deco
 
 def create_command(cmd: str, aliases: set = set(), **kwargs):
     matcher = on_command(cmd, aliases=aliases, **kwargs)
 
-    def deco(func: Callable):
+    def deco(func: SIMPLE_HANDLER):
         async def handler(
             bot: Bot, event: MessageEvent, message: Message = CommandArg()
         ):
-            try:
-                logger.info(f"处理模块: {func.__module__}")
-                await func(bot, event, message)
-            except IndexError as e:
-                if "arg" in traceback.format_exc():
-                    await finish(get_currency_key("wrong_argv"), [cmd], event.user_id)
-            except IllegalQuantityException as e:
-                await finish(
-                    "_utils.IllegalQuantityException", [e.args[0]], event.user_id
-                )
-            except UserDataLocked as e:
-                await finish("_utils.UserDataLocked", [], event.user_id)
-            except NoPawCoinException:
-                await finish("_utils.noPawCoin", [], event.user_id)
-            except Exception:
-                await error.report()
+            await execute_function(func(bot, event, message), event, cmd)
 
         matcher.append_handler(handler)
         return handler
@@ -61,17 +89,13 @@ def create_command(cmd: str, aliases: set = set(), **kwargs):
 def create_group_command(cmd: str, aliases: set = set(), **kwargs):
     matcher = on_command(cmd, aliases=aliases, **kwargs)
 
-    def deco(func):
+    def deco(func: GROUP_HANDLER):
         async def handler(
             bot: Bot, event: MessageEvent, message: Message = CommandArg()
         ):
             if not isinstance(event, GroupMessageEvent):
                 await finish(get_currency_key("need_group"), [], event.user_id)
-            try:
-                await func(bot, event, message)
-            except:
-                await error.report()
-
+            await execute_function(func(bot, event, message), event, cmd)
         matcher.append_handler(handler)
         return handler
 
@@ -90,6 +114,9 @@ async def send_message(
         )
     )["message_id"]
 
+
+def get_prefix_list() -> list[str]:
+    return Json("init.json")["config"]["command_start"]
 
 async def send_text(
     key: str,
