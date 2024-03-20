@@ -63,7 +63,7 @@ class Dice(Item):
                         big_success_count,
                         round(big_success_count / count * 100, 1),
                         big_lose_count,
-                        round(big_lose_count / count* 100, 1),
+                        round(big_lose_count / count * 100, 1),
                     ],
                     str(self.user_id),
                 )
