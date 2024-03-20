@@ -573,7 +573,9 @@ async def cave_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent):
                 "cave.user_cd",
                 [
                     round(
-                        (600 - (time.time() - latest_use.get(f"u{event.user_id}", 0))) / 60, 3
+                        (600 - (time.time() - latest_use.get(f"u{event.user_id}", 0)))
+                        / 60,
+                        3,
                     )
                 ],
                 event.user_id,
@@ -587,8 +589,11 @@ async def cave_handler(cave: Matcher, bot: Bot, event: GroupMessageEvent):
                     [
                         str(
                             round(
-                                (cd_time
-                                - (time.time() - latest_use[f"g{event.group_id}"])) / 60,
+                                (
+                                    cd_time
+                                    - (time.time() - latest_use[f"g{event.group_id}"])
+                                )
+                                / 60,
                                 3,
                             )
                         )
