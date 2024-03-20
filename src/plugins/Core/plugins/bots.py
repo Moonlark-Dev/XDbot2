@@ -45,7 +45,8 @@ async def check_group_id(bot: Bot, api: str, data: dict) -> None:
     group_id = int(data["group_id"])
     if correct_bot := select_bot_by_group_id(group_id):
         raise MockApiException(await correct_bot.call_api(api, **data))
-    raise GroupNotFoundException(f"区域外的群号: {group_id}")
+    if bot.self_id not in Json("ignore_group_failed.json")["bots"]:
+        raise GroupNotFoundException(f"区域外的群号: {group_id}")
 
 
 def check_message_images(original_message: Message) -> Message:
