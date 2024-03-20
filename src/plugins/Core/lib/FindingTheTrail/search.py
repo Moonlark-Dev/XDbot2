@@ -110,6 +110,7 @@ def search(game_map: list[list[int]], max_step: int = 12) -> list[int]:
         if (
             game_map == item["game_map"]
             and get_item_by_pos(item["original_pos"], game_map) != PISTON
+            and all(get_item_by_pos(get_moved_pos(pos, d), game_map) != SAND for d in [UP, DOWN, RIGHT, LEFT])
         ):
             ignored_direction = get_back_direction(item["direction"])
         else:

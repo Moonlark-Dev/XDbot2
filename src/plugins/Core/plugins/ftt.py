@@ -163,6 +163,16 @@ async def handle_steps_input(state: T_State, event: MessageEvent, steps: str) ->
     text = ""
     for s in steps.split(" "):
         text += await handle_steps(state, s, event.user_id) or ""
+        try:
+            execute(state["_steps"], copy.deepcopy(state["map"]))
+        except InvalidMoveError as e:
+            state["_steps"] = state["_steps"][:-1]
+            await send_text("ftt.invalid_move", [e.step_index], event.user_id)
+            await ftt.reject(
+                lang.text(
+                    "ftt.map", [text, len(state["_steps"]), len(state["answer"])], event.user_id
+                )
+            )
     if len(state["_steps"]) == len(state["answer"]):
         await ftt.reject(lang.text("ftt.step_done", [], event.user_id))
     await ftt.reject(
@@ -202,14 +212,21 @@ def generateAnswerGif(gameMap: list[list[int]], steps: list[int]) -> bytes:
 def getAnswerSegment(gameMap: list[list[int]], steps: list[int]) -> MessageSegment:
     return MessageSegment.image(generateAnswerGif(gameMap, steps))
 
+class InvalidMoveError(Exception):
+    def __init__(self, step_index: int, *args: object) -> None:
+        super().__init__(*args)
+        self.step_index = step_index
 
 def execute(steps: list[int], game_map: list[list[int]]) -> bool:
     game_map, pos = search.get_start_pos(game_map)
+    length = 0
     for step in steps:
         _pos = pos
         game_map, pos = search.move(game_map, pos, step)
-        if pos != _pos:
-            game_map = search.parse_sand(game_map, _pos)
+        if pos == _pos:
+            raise InvalidMoveError(length)
+        length += 1
+        game_map = search.parse_sand(game_map, _pos)
     return search.get_item_by_pos(pos, game_map) == const.TERMINAL
 
 
