@@ -170,7 +170,9 @@ async def handle_steps_input(state: T_State, event: MessageEvent, steps: str) ->
             await send_text("ftt.invalid_move", [e.step_index], event.user_id)
             await ftt.reject(
                 lang.text(
-                    "ftt.map", [text, len(state["_steps"]), len(state["answer"])], event.user_id
+                    "ftt.map",
+                    [text, len(state["_steps"]), len(state["answer"])],
+                    event.user_id,
                 )
             )
     if len(state["_steps"]) == len(state["answer"]):
@@ -212,10 +214,12 @@ def generateAnswerGif(gameMap: list[list[int]], steps: list[int]) -> bytes:
 def getAnswerSegment(gameMap: list[list[int]], steps: list[int]) -> MessageSegment:
     return MessageSegment.image(generateAnswerGif(gameMap, steps))
 
+
 class InvalidMoveError(Exception):
     def __init__(self, step_index: int, *args: object) -> None:
         super().__init__(*args)
         self.step_index = step_index
+
 
 def execute(steps: list[int], game_map: list[list[int]]) -> bool:
     game_map, pos = search.get_start_pos(game_map)
