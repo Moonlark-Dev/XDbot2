@@ -242,7 +242,12 @@ def parse_steps_input(steps: str) -> str:
 from .etm.economy import add_vi
 
 
-async def handle_wrong_answer(state: T_State, event: MessageEvent, fail_type: Literal["fail", "invalid"] = "fail", invalid_step_length: int = -1) -> None:
+async def handle_wrong_answer(
+    state: T_State,
+    event: MessageEvent,
+    fail_type: Literal["fail", "invalid"] = "fail",
+    invalid_step_length: int = -1,
+) -> None:
     state["prize_vi"] -= 5
     _steps = state["_steps"]
     state["_steps"] = []
@@ -253,23 +258,20 @@ async def handle_wrong_answer(state: T_State, event: MessageEvent, fail_type: Li
                     f"ftt.{fail_type}",
                     [getAnswerSegment(state["map"], _steps)],
                     event.user_id,
-                    params={
-                        'step': str(invalid_step_length)
-                    }
+                    params={"step": str(invalid_step_length)},
                 )
             )
         )
     else:
-        await sendExampleAnswer(
-            state["answer"], event.user_id, state["map"]
-        )
+        await sendExampleAnswer(state["answer"], event.user_id, state["map"])
         await finish(
             f"ftt.{fail_type}_no_vi",
             [getAnswerSegment(state["map"], _steps), invalid_step_length],
             event.user_id,
             parse_cq_code=True,
-            step=str(invalid_step_length)
+            step=str(invalid_step_length),
         )
+
 
 async def check_answer(state: T_State, event: MessageEvent) -> None:
     try:
@@ -280,15 +282,13 @@ async def check_answer(state: T_State, event: MessageEvent) -> None:
         add_vi(event.get_user_id(), state["prize_vi"])
         await finish(
             "ftt.success",
-            [
-                state["prize_vi"],
-                getAnswerSegment(state["map"], state["_steps"]),
-            ],
+            [state["prize_vi"], getAnswerSegment(state["map"], state["_steps"])],
             event.user_id,
             parse_cq_code=True,
         )
     else:
         await handle_wrong_answer(state, event)
+
 
 @ftt.got("steps")
 async def _(state: T_State, event: MessageEvent, steps: str = ArgPlainText("steps")):
