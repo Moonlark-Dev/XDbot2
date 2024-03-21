@@ -65,6 +65,20 @@ async def get_multiaccount_data(bot: Bot, message: Message = CommandArg()):
                     reply += f"{length}. {group}: {multiAccountData[group]}\n"
                     length += 1
                 await su.finish(reply)
+            elif argument[1] in ["list", "ls", "列表"]:
+                reply = "「XDbot2 Multi-Account 账户列表」\n"
+                bots = get_bots()
+                reply += f"已连接账户：{len(bots.keys())}\n"
+                length = 1
+                for account in list(bots.keys()):
+                    userData = await bot.get_stranger_info(
+                        user_id=(await bots[account].get_login_info())["user_id"]
+                    )
+                    reply += (
+                        f"{length}. {userData['nickname']} ({userData['user_id']})\n"
+                    )
+                    length += 1
+                await su.send(reply)
     except BaseException:
         await _error.report(traceback.format_exc(), su)
 
