@@ -103,24 +103,24 @@ async def report(
     # 反馈错误
     if err.startswith("Traceback"):
         if feedback:
-            # try:
-            #     error_data = get_error_data(err)
-            #     filename = f"data/_error.cache_{time.time()}.ro.png"
-            #     markdown2image.md2img(
-            #         get_template()
-            #         .replace("%error%", error)
-            #         .replace("%because%", "\n".join(error_data["because"]))
-            #         .replace("%do%", "- " + "\n- ".join(error_data["do"]))
-            #         .replace("%log%", err),
-            #         filename,
-            #     )
-            #     await matcher.send(
-            #         Message(f"[CQ:image,file=file://{os.path.abspath(filename)}]"),
-            #         at_sender=True,
-            #     )
-            #     os.remove(filename)
-            # except:
-            #     logger.warning(f"渲染图片失败：{traceback.format_exc()}")
+            try:
+                error_data = get_error_data(err)
+                filename = f"data/_error.cache_{time.time()}.ro.png"
+                markdown2image.md2img(
+                    get_template()
+                    .replace("%error%", error)
+                    .replace("%because%", "\n".join(error_data["because"]))
+                    .replace("%do%", "- " + "\n- ".join(error_data["do"]))
+                    .replace("%log%", err),
+                    filename,
+                )
+                await matcher.send(
+                    Message(f"[CQ:image,file=file://{os.path.abspath(filename)}]"),
+                    at_sender=True,
+                )
+                os.remove(filename)
+            except:
+                logger.warning(f"渲染图片失败：{traceback.format_exc()}")
             await matcher.send(f"处理失败！\n{error}", at_sender=True)
     else:
         bot = get_bots()[
