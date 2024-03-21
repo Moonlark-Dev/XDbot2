@@ -415,10 +415,11 @@
   "ftt.success": "恭喜您，挑战成功！\n你获得了 {}vi\n{}",
   "ftt.fail": "很遗憾，挑战失败，请检查您的指令输入！\n请继续输入指令或输入[q]退出\n{}",
   "ftt.fail_no_vi": "很遗憾，挑战失败！\n{}",
+  "ftt.invalid": "在第 ${step} 步发现无效输入（无法移动）\n请继续输入指令或输入[q]退出\n{}",
+  "ftt.invalid_no_vi": "在第 ${step} 步发现无效输入（无法移动）\n很遗憾，挑战失败！\n{}",
   "_utils.noPawCoin": "您没有足够的「猫爪币」\n试试发送「签到」?",
   "ftt.exampleAnswer": "参考解法: {}\n{}",
   "ftt.exampleAnswerSep_nb": "、",
   "statistics.command_rank_title": "「指令使用次数排行榜」\n总调用量: {}",
-  "currency.rank_item": "{}. {}: {}",
-  "ftt.invalid_move": "在第 {} 步发现无效移动，请重新输入！"
+  "currency.rank_item": "{}. {}: {}"
 }
