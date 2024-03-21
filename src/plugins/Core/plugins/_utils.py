@@ -153,10 +153,11 @@ async def finish(
     reply_message: bool = False,
     matcher: Matcher = Matcher(),
     parse_cq_code: bool = False,
+    **kwargs,
 ) -> None:
     await matcher.finish(
         (
-            Message(lang.text(key, _format, user_id))
+            Message(lang.text(key, _format, user_id, params=kwargs))
             if parse_cq_code
             else lang.text(key, _format, user_id)
         ),

@@ -1,5 +1,6 @@
 import asyncio
 import random
+from typing import Literal
 from ._utils import *
 from src.plugins.Core.lib.FindingTheTrail import search, const, image, map, argv
 from nonebot.params import ArgPlainText
@@ -163,6 +164,18 @@ async def handle_steps_input(state: T_State, event: MessageEvent, steps: str) ->
     text = ""
     for s in steps.split(" "):
         text += await handle_steps(state, s, event.user_id) or ""
+        # try:
+        #     execute(state["_steps"], copy.deepcopy(state["map"]))
+        # except InvalidMoveError as e:
+        #     state["_steps"] = state["_steps"][:-1]
+        #     await send_text("ftt.invalid_move", [e.step_index], event.user_id)
+        #     await ftt.reject(
+        #         lang.text(
+        #             "ftt.map",
+        #             [text, len(state["_steps"]), len(state["answer"])],
+        #             event.user_id,
+        #         )
+        #     )
     if len(state["_steps"]) == len(state["answer"]):
         await ftt.reject(lang.text("ftt.step_done", [], event.user_id))
     await ftt.reject(
@@ -203,13 +216,22 @@ def getAnswerSegment(gameMap: list[list[int]], steps: list[int]) -> MessageSegme
     return MessageSegment.image(generateAnswerGif(gameMap, steps))
 
 
+class InvalidMoveError(Exception):
+    def __init__(self, step_index: int, *args: object) -> None:
+        super().__init__(*args)
+        self.step_index = step_index
+
+
 def execute(steps: list[int], game_map: list[list[int]]) -> bool:
     game_map, pos = search.get_start_pos(game_map)
+    length = 0
     for step in steps:
         _pos = pos
         game_map, pos = search.move(game_map, pos, step)
-        if pos != _pos:
-            game_map = search.parse_sand(game_map, _pos)
+        if pos == _pos:
+            raise InvalidMoveError(length)
+        length += 1
+        game_map = search.parse_sand(game_map, _pos)
     return search.get_item_by_pos(pos, game_map) == const.TERMINAL
 
 
@@ -218,6 +240,54 @@ def parse_steps_input(steps: str) -> str:
 
 
 from .etm.economy import add_vi
+
+
+async def handle_wrong_answer(
+    state: T_State,
+    event: MessageEvent,
+    fail_type: Literal["fail", "invalid"] = "fail",
+    invalid_step_length: int = -1,
+) -> None:
+    state["prize_vi"] -= 5
+    _steps = state["_steps"]
+    state["_steps"] = []
+    if state["prize_vi"] >= 0:
+        await ftt.reject(
+            Message(
+                lang.text(
+                    f"ftt.{fail_type}",
+                    [getAnswerSegment(state["map"], _steps)],
+                    event.user_id,
+                    params={"step": str(invalid_step_length)},
+                )
+            )
+        )
+    else:
+        await sendExampleAnswer(state["answer"], event.user_id, state["map"])
+        await finish(
+            f"ftt.{fail_type}_no_vi",
+            [getAnswerSegment(state["map"], _steps), invalid_step_length],
+            event.user_id,
+            parse_cq_code=True,
+            step=str(invalid_step_length),
+        )
+
+
+async def check_answer(state: T_State, event: MessageEvent) -> None:
+    try:
+        result = execute(state["_steps"], copy.deepcopy(state["map"]))
+    except InvalidMoveError as e:
+        await handle_wrong_answer(state, event, "invalid", e.step_index + 1)
+    if result:
+        add_vi(event.get_user_id(), state["prize_vi"])
+        await finish(
+            "ftt.success",
+            [state["prize_vi"], getAnswerSegment(state["map"], state["_steps"])],
+            event.user_id,
+            parse_cq_code=True,
+        )
+    else:
+        await handle_wrong_answer(state, event)
 
 
 @ftt.got("steps")
@@ -242,41 +312,7 @@ async def _(state: T_State, event: MessageEvent, steps: str = ArgPlainText("step
             await sendExampleAnswer(state["answer"], event.user_id, state["map"])
             await finish("ftt.quit", [], event.user_id)
         elif steps == "ok":
-            if execute(state["_steps"], copy.deepcopy(state["map"])):
-                add_vi(event.get_user_id(), state["prize_vi"])
-                await finish(
-                    "ftt.success",
-                    [
-                        state["prize_vi"],
-                        getAnswerSegment(state["map"], state["_steps"]),
-                    ],
-                    event.user_id,
-                    parse_cq_code=True,
-                )
-            else:
-                state["prize_vi"] -= 5
-                _steps = state["_steps"]
-                state["_steps"] = []
-                if state["prize_vi"] >= 0:
-                    await ftt.reject(
-                        Message(
-                            lang.text(
-                                "ftt.fail",
-                                [getAnswerSegment(state["map"], _steps)],
-                                event.user_id,
-                            )
-                        )
-                    )
-                else:
-                    await sendExampleAnswer(
-                        state["answer"], event.user_id, state["map"]
-                    )
-                    await finish(
-                        "ftt.fail_no_vi",
-                        [getAnswerSegment(state["map"], _steps)],
-                        event.user_id,
-                        parse_cq_code=True,
-                    )
+            await check_answer(state, event)
         await ftt.reject(lang.text("ftt.step_done", [], event.user_id))
     except Exception:
         await error.report()
