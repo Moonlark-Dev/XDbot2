@@ -17,4 +17,8 @@ pypinyin
 nonebot2[fastapi]
 nonebot-plugin-servicestate
 nonebot-plugin-mongodb
-nonebot-plugin-picmcstat
+nonebot-plugin-alconna>=0.40.1
+mcstatus>=11.1.0
+pil-utils>=0.1.6
+punycode>=0.2.1
+dnspython>=2.4.2
