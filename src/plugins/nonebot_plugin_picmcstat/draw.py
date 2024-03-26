@@ -116,8 +116,7 @@ class ImageGrid(List[ImageLine]):
     @classmethod
     def from_list(cls, li: Sequence[Union[ImageType, str]], **kwargs) -> "ImageGrid":
         return cls(
-            *(ImageLine(*cast(Tuple[Any, Any], x)) for x in chunks(li, 2)),
-            **kwargs,
+            *(ImageLine(*cast(Tuple[Any, Any], x)) for x in chunks(li, 2)), **kwargs
         )
 
     @property
@@ -146,26 +145,19 @@ class ImageGrid(List[ImageLine]):
         max_lw = max(x.left.width for x in self) if self.align_items else None
         y_offset = 0
         for line in self:
-            draw_image_type_on(
-                bg,
-                line.left,
-                calc_offset(offset_pos, (0, y_offset)),
-            )
+            draw_image_type_on(bg, line.left, calc_offset(offset_pos, (0, y_offset)))
             if line.right:
                 draw_image_type_on(
                     bg,
                     line.right,
                     calc_offset(
-                        offset_pos,
-                        ((max_lw or line.left.width) + line.gap, y_offset),
+                        offset_pos, ((max_lw or line.left.width) + line.gap, y_offset)
                     ),
                 )
             y_offset += line.height + self.spacing
 
     def to_image(
-        self,
-        background: Optional[ColorType] = None,
-        padding: int = 2,
+        self, background: Optional[ColorType] = None, padding: int = 2
     ) -> BuildImage:
         bg = BuildImage.new(
             "RGBA",
@@ -218,9 +210,7 @@ def build_img(
 
     if icon.size != (header_height, header_height):
         icon = icon.resize_height(
-            header_height,
-            inside=False,
-            resample=Resampling.NEAREST,
+            header_height, inside=False, resample=Resampling.NEAREST
         )
     bg.paste(icon, (MARGIN, MARGIN), alpha=True)
 
@@ -257,9 +247,7 @@ def build_img(
 
     if extra:
         draw_image_type_on(
-            bg,
-            extra,
-            (MARGIN, int(header_height + MARGIN + MARGIN / 2)),
+            bg, extra, (MARGIN, int(header_height + MARGIN + MARGIN / 2))
         )
 
     return bg.convert("RGB").save("jpeg")
@@ -306,8 +294,7 @@ def draw_java(res: JavaStatusResponse, addr: str) -> BytesIO:
     if mod_list:
         grid.append_line(l_style("Mod 总数: "), str(len(mod_list)))
     grid.append_line(
-        l_style("聊天签名: "),
-        "必需" if res.enforces_secure_chat else "无需",
+        l_style("聊天签名: "), "必需" if res.enforces_secure_chat else "无需"
     )
     if config.mcstat_show_delay:
         grid.append_line(
@@ -316,8 +303,7 @@ def draw_java(res: JavaStatusResponse, addr: str) -> BytesIO:
         )
     if mod_list and config.mcstat_show_mods:
         grid.append_line(
-            l_style("Mod 列表: "),
-            ImageGrid.from_list(mod_list, gap=LIST_GAP),
+            l_style("Mod 列表: "), ImageGrid.from_list(mod_list, gap=LIST_GAP)
         )
     if res.players.sample:
         grid.append_line(
@@ -363,8 +349,7 @@ def draw_bedrock(res: BedrockStatusResponse, addr: str) -> BytesIO:
         grid.append_line(l_style("存档名称: "), res.map)
     if res.gamemode:
         grid.append_line(
-            l_style("游戏模式: "),
-            GAME_MODE_MAP.get(res.gamemode, res.gamemode),
+            l_style("游戏模式: "), GAME_MODE_MAP.get(res.gamemode, res.gamemode)
         )
     if config.mcstat_show_delay:
         grid.append_line(
@@ -390,8 +375,7 @@ def draw_error(e: Exception, svr_type: ServerType) -> BytesIO:
 
 
 def draw_resp(
-    resp: Union[JavaStatusResponse, BedrockStatusResponse],
-    addr: str,
+    resp: Union[JavaStatusResponse, BedrockStatusResponse], addr: str
 ) -> BytesIO:
     if isinstance(resp, JavaStatusResponse):
         return draw_java(resp, addr)

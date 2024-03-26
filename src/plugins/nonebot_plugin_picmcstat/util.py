@@ -66,8 +66,7 @@ def format_mod_list(li: List[Union[Dict, str]]) -> List[str]:
 
 
 async def resolve_host(
-    host: str,
-    data_types: Optional[List[rd.RdataType]] = None,
+    host: str, data_types: Optional[List[rd.RdataType]] = None
 ) -> Optional[str]:
     data_types = data_types or [rd.CNAME, rd.AAAA, rd.A]
     for rd_type in data_types:
@@ -77,7 +76,7 @@ async def resolve_host(
         except Exception as e:
             logger.debug(
                 f"Failed to resolve {rd_type.name} record for {host}: "
-                f"{e.__class__.__name__}: {e}",
+                f"{e.__class__.__name__}: {e}"
             )
         else:
             logger.debug(f"Resolved {rd_type.name} record for {host}: {name}")
@@ -107,7 +106,7 @@ async def resolve_ip(ip: str, srv: bool = False) -> Tuple[str, Optional[int]]:
         except Exception as e:
             logger.debug(
                 f"Failed to resolve SRV record for {host}: "
-                f"{e.__class__.__name__}: {e}",
+                f"{e.__class__.__name__}: {e}"
             )
         logger.debug(f"Resolved SRV record for {ip}: {host}:{port}")
 

@@ -13,4 +13,4 @@
 # Usage: motd：查看插件帮助
 # Usage: motdpe <server>：查询基岩版服务器信息
 # Usage: motd <server>：查询 Java 版服务器信息
-#[HELPEND]
+# [HELPEND]

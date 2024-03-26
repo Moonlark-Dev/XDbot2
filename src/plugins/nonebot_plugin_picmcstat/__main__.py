@@ -35,7 +35,7 @@ motdpe_matcher = on_command(
 motd_matcher = on_command(
     "motd",
     aliases={"!motd", "！motd", "motdje", "!motdje", "！motdje"},
-#    priority=2,
+    #    priority=2,
     state={"svr_type": "je"},
 )
 
