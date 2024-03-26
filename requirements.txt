@@ -17,3 +17,4 @@ pypinyin
 nonebot2[fastapi]
 nonebot-plugin-servicestate
 nonebot-plugin-mongodb
+nonebot-plugin-picmcstat
