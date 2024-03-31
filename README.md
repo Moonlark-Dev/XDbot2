@@ -12,7 +12,7 @@
 
 ## 简介
 
-XDBot2 是一个简单的QQ功能型机器人，基于 Nonebot2 + Onebot V11 编写
+XDbot2 是一个简单的QQ功能型机器人，基于 Nonebot2 + Onebot V11 编写
 
 相比于[XDbot](https://github.com/Moonlark-Dev/XDbot)，XDbot2拥有这些特性
 
