@@ -10,6 +10,9 @@
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 </p>
 
+> [!WARNING]
+> The content of this page is **outdated** and it needs to be updated.
+
 ## Introduction
 
 IT Craft XDBot2(Hereinafter referred to as `XDbot2`) is a simple functional QQ Bot, based on Nonebot2 + Onebot V11
