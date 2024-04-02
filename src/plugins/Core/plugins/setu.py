@@ -40,13 +40,14 @@ async def delete_msg(bot: Bot, message: int) -> None:
         await bot.delete_msg(message_id=message)
     except Exception:
         await _error.report(traceback.format_exc())
-
+from ._utils import check_qqbot
 
 @setu.handle()
 async def setu_handler(
     bot: Bot, event: MessageEvent, message: Message = CommandArg()
 ) -> None:
     global latest_send, image_path
+    check_qqbot(str(event.self_id))
     try:
         # 冷却
         if time.time() - latest_send <= config["sleep"]:

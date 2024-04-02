@@ -223,6 +223,7 @@ async def handle_su_gpt(message: Message = CommandArg()) -> None:
 async def handle_gpt_command(
     matcher: Matcher, event: MessageEvent, message: Message = CommandArg()
 ) -> None:
+    check_qqbot(str(event.self_id))
     try:
         argv = message.extract_plain_text().split(" ")
         user_id = event.get_user_id()
