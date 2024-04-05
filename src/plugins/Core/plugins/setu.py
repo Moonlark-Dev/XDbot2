@@ -47,8 +47,9 @@ async def setu_handler(
     bot: Bot, event: MessageEvent, message: Message = CommandArg()
 ) -> None:
     global latest_send, image_path
-    check_qqbot(str(event.self_id))
     try:
+
+        check_qqbot(str(event.self_id))
         # 冷却
         if time.time() - latest_send <= config["sleep"]:
             await setu.finish(
