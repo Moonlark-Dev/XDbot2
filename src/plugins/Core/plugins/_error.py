@@ -100,6 +100,8 @@ async def report(
         await matcher.finish()
     elif "rejectedexception" in error.lower():
         raise RejectedException
+    elif "unsupportpublicqqbot" in error.lower():
+        await matcher.finish("此功能暂不支持在公开节点使用！")
     # 反馈错误
     if err.startswith("Traceback"):
         if feedback:

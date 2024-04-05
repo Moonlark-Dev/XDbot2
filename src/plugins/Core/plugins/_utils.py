@@ -81,6 +81,12 @@ def create_message_handler(rule: Optional[Rule] = None):
     return deco
 
 
+class UnsupportPublicQQBot(Exception): pass
+
+def check_qqbot(bot_id: str) -> None:
+    if bot_id in Json("qqbots.json")["bots"]:
+        raise UnsupportPublicQQBot
+
 def create_command(cmd: str, aliases: set = set(), **kwargs):
     matcher = on_command(cmd, aliases=aliases, **kwargs)
 
