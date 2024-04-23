@@ -92,8 +92,8 @@ async def get_latest_minecraft_version():
                         message=f'发现MC更新：{version["id"]} ({version["type"]})\n{version["time"]}',
                     )
                 except BaseException:
-                    await _error.report(traceback.format_exc())
+                    pass
             with open("data/mcver.mc_cache_version.txt", "w", encoding="utf-8") as f:
                 f.write(version["id"])
     except BaseException:
-        await _error.report(traceback.format_exc())
+        pass
