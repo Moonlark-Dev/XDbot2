@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 from ._utils import *
 import random
@@ -23,7 +24,10 @@ async def getJrrp(qq: str):
         data[qq] = {"max": 0}
     # 计算人品值
     random.seed(int(qq) + int((time.time() + 28800) / 86400))
-    luck = random.randint(0, 100)
+    if datetime(2024, 6, 1) <= datetime.now() <= datetime(2024, 7, 6):
+        luck = random.randint(60, 100)
+    else:
+        luck = random.randint(0, 100)
     if luck > data[qq]["max"]:
         await jrrp.send(
             Message(f"[CQ:at,qq={qq}] {_lang.text('jrrp.new_record',[],qq)}")
