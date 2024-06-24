@@ -40,7 +40,10 @@ async def delete_msg(bot: Bot, message: int) -> None:
         await bot.delete_msg(message_id=message)
     except Exception:
         await _error.report(traceback.format_exc())
+
+
 from ._utils import check_qqbot
+
 
 @setu.handle()
 async def setu_handler(
