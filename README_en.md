@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> This project is no longer in development, we recommend you to go to our latest project of the same type, [Moonlark](https://github.com/Moonlark-Dev/Moonlark).
+
 [简体中文](https://github.com/ITCraftDevelopmentTeam/XDbot2) | **English**
 
 ![](https://socialify.git.ci/ITCraftDevelopmentTeam/XDbot2/image?description=1&forks=1&issues=1&language=1&logo=https://www.thisisxd.top/img/XDbot2.png&name=1&owner=1&pulls=1&stargazers=1&theme=Light)
@@ -11,7 +14,9 @@
 </p>
 
 > [!WARNING]
-> The content of this page is **outdated** and it needs to be updated.
+> ~~The content of this page is **outdated** and it needs to be updated.~~
+> 
+> This document will not be updated as the development of this project has ceased.
 
 ## Introduction
 

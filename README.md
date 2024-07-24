@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> 本项目已经停止开发，我们推荐您前往我们最新的同类型项目  [Moonlark](https://github.com/Moonlark-Dev/Moonlark) 。
+
 **简体中文** | [English](https://github.com/ITCraftDevelopmentTeam/XDbot2/blob/master/README_en.md)
 
 ![](https://socialify.git.ci/Moonlark-Dev/XDbot2/image?description=1&forks=1&issues=1&language=1&logo=https://www.thisisxd.top/img/XDbot2.png&name=1&owner=1&pulls=1&stargazers=1&theme=Light)
